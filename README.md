@@ -20,3 +20,5 @@
 ## 🔰 Introduction
 
 _[Cobra](https://cobra.dev/) is an excellent framework for the development of command line applications, but there are few aspects that could do with being made easier to work with. This package aims to fullfil this purpose, especially in regards to creation of commands, encapulating commands into a container and providing an export mechanism to re-create cli data in a form that is free from cobra abstractions. The aim of this last aspect to to be able to inject data into the core of an application in a way that removes tight coupling to the cobra framework, which is achieved by representing data only in terms of the go standard library types._
+
+___Status___: 💤 not yet published
