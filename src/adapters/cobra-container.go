@@ -34,8 +34,6 @@ type CobraContainer struct {
 NewCobraContainer is a factory function for the CobraContainer. The client
 must pass in the root Cobra command.
 - root: the root Cobra command.
-
-Returns an error if the command with the same name has already been registered
 */
 func NewCobraContainer(root *cobra.Command) *CobraContainer {
 	return &CobraContainer{
