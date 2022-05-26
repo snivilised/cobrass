@@ -1,0 +1,11 @@
+version: '3'
+silent: true
+
+tasks:
+  b:
+    cmds:
+      - go build ./...
+
+  t:
+    cmds:
+      - go test ./...
