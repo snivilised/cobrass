@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,11 +13,21 @@ func TestGivenNewKeyDoesNotExistInsertSafePositional(t *testing.T) {
 	generic["colour"] = "blue"
 	generic["shape"] = "circle"
 
-	InsertSafePositional(generic, "size", "large")
+	const expect = "large"
+	const param = "size"
+	InsertSafePositional(generic, param, expect)
 	assert.True(t, true, "insertion should not cause panic")
+
+	if value, ok := generic[param]; !ok {
+		assert.Fail(t, fmt.Sprintf("inserted param '%v' is '%v' but should be: '%v'",
+			param, value, expect))
+	} else {
+		assert.Equal(t, value, expect, fmt.Sprintf("%v", value))
+	}
 }
 
 // comsider https://onsi.github.io/ginkgo/ for more sophisticate unit testing in go
+// provides bdd style of unit testing
 //
 
 func TestGivenNewKeyDoesExistsInsertSafePositional(t *testing.T) {

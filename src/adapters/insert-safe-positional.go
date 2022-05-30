@@ -11,7 +11,5 @@ func InsertSafePositional(generic GenericParameterSet, key, value string) {
 		panic(fmt.Sprintf("failed to insert '%v' at '%v', already exists as: '%v'",
 			value, key, existing))
 	}
-	fmt.Printf("---> DEBUG 🚀 inserting positional parameter; name: '%v', value: '%v'\n",
-		key, value)
 	generic[key] = value
 }
