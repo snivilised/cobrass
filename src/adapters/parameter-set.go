@@ -9,8 +9,8 @@ type GenericParameterSet map[string]any
 
 // NewParameterSet is a generic function on comparable type T which when
 // given a map containing field name to values, creates the native
-// object required by the client. It is intead that the user should use
-// Cobra's VisitAll facility on the command to create the values asscoiated
+// object required by the client. It is intended that the user should use
+// Cobra's VisitAll facility on the command to create the values associated
 // with each flag/argument. The comparable type T is the native parameter
 // set object that can be futher used by the cli without tight coupling to
 // Cobra.

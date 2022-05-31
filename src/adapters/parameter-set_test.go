@@ -122,3 +122,20 @@ func (suite *ParameterSetSuite) TestNativeParameterCreationFromGenericSet() {
 	assert.Equal(suite.T(), suite.Expected["IsOverwrite"], actual.IsOverwrite)
 	assert.Equal(suite.T(), suite.Expected["SegmentsFilePattern"], actual.SegmentsFilePattern)
 }
+
+func NewNonStructParameterSet(params GenericParameterSet) *int {
+	return NewParameterSet[int](params)
+}
+
+func (suite *ParameterSetSuite) TestNewParameterSetWithNonStruct() {
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				assert.True(suite.T(), true, "instantiation should cause panic")
+			}
+		}()
+		NewNonStructParameterSet(suite.Expected)
+		assert.Fail(suite.T(), "instantiation of NewParameterSet with a non struct should panic")
+	}()
+}
