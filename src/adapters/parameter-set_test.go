@@ -1,7 +1,9 @@
 package adapters
 
 import (
+	"fmt"
 	"reflect"
+	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -123,10 +125,6 @@ func (suite *ParameterSetSuite) TestNativeParameterCreationFromGenericSet() {
 	assert.Equal(suite.T(), suite.Expected["SegmentsFilePattern"], actual.SegmentsFilePattern)
 }
 
-func NewNonStructParameterSet(params GenericParameterSet) *int {
-	return NewParameterSet[int](params)
-}
-
 func (suite *ParameterSetSuite) TestNewParameterSetWithNonStruct() {
 
 	func() {
@@ -135,7 +133,38 @@ func (suite *ParameterSetSuite) TestNewParameterSetWithNonStruct() {
 				assert.True(suite.T(), true, "instantiation should cause panic")
 			}
 		}()
-		NewNonStructParameterSet(suite.Expected)
+		NewParameterSet[int](suite.Expected)
 		assert.Fail(suite.T(), "instantiation of NewParameterSet with a non struct should panic")
+	}()
+}
+
+func (suite *ParameterSetSuite) TestNativeObjectParamMismatchWithGenericEntry() {
+
+	expected := GenericParameterSet{
+		"directory":           "/once/upon/a/time",
+		"Output":              "foo-bar",
+		"Format":              XmlFormatEn,
+		"Shape":               SubPathShapeEn,
+		"IsConcise":           true,
+		"Strategy":            TraverseLeafEn,
+		"IsOverwrite":         false,
+		"SegmentsFilePattern": "*infex*",
+	}
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				recovery := fmt.Sprintf("%v", r)
+
+				if matched, err := regexp.MatchString(MissingNativeParamValuePattern, recovery); err == nil {
+					assert.True(suite.T(), matched, fmt.Sprintf("panic message: '%v' did not conform to format",
+						recovery))
+				} else {
+					assert.Fail(suite.T(), "panic message regexp error")
+				}
+			}
+		}()
+		NewFooParameterSet(expected)
+		assert.Fail(suite.T(), "should panic when no generic parameter for native member")
 	}()
 }
