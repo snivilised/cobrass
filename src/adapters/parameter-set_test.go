@@ -37,8 +37,9 @@ const (
 type ParameterSetSuite struct {
 	suite.Suite
 
-	Native   FooParameterSet
-	Expected GenericParameterSet
+	Native           FooParameterSet
+	Expected         GenericParameterSet
+	MissingDirectory GenericParameterSet
 }
 
 func (suite *ParameterSetSuite) SetupTest() {
@@ -60,6 +61,16 @@ func (suite *ParameterSetSuite) SetupTest() {
 	//
 	suite.Expected = GenericParameterSet{
 		"Directory":           "/once/upon/a/time",
+		"Output":              "foo-bar",
+		"Format":              XmlFormatEn,
+		"Shape":               SubPathShapeEn,
+		"IsConcise":           true,
+		"Strategy":            TraverseLeafEn,
+		"IsOverwrite":         false,
+		"SegmentsFilePattern": "*infex*",
+	}
+
+	suite.MissingDirectory = GenericParameterSet{
 		"Output":              "foo-bar",
 		"Format":              XmlFormatEn,
 		"Shape":               SubPathShapeEn,
@@ -123,6 +134,59 @@ func (suite *ParameterSetSuite) TestNativeParameterCreationFromGenericSet() {
 	assert.Equal(suite.T(), suite.Expected["Strategy"], actual.Strategy)
 	assert.Equal(suite.T(), suite.Expected["IsOverwrite"], actual.IsOverwrite)
 	assert.Equal(suite.T(), suite.Expected["SegmentsFilePattern"], actual.SegmentsFilePattern)
+}
+
+// CreateParameterSet
+func CreateFooParameterSet(params GenericParameterSet) *FooParameterSet {
+	return CreateParameterSet[FooParameterSet](params)
+}
+func (suite *ParameterSetSuite) TestCreateParameterSetWithDefaultOptions() {
+	actual := CreateFooParameterSet(suite.Expected)
+
+	assert.Equal(suite.T(), suite.Expected["Directory"], actual.Directory)
+	assert.Equal(suite.T(), suite.Expected["Output"], actual.Output)
+	assert.Equal(suite.T(), suite.Expected["Format"], actual.Format)
+	assert.Equal(suite.T(), suite.Expected["Shape"], actual.Shape)
+	assert.Equal(suite.T(), suite.Expected["IsConcise"], actual.IsConcise)
+	assert.Equal(suite.T(), suite.Expected["Strategy"], actual.Strategy)
+	assert.Equal(suite.T(), suite.Expected["IsOverwrite"], actual.IsOverwrite)
+	assert.Equal(suite.T(), suite.Expected["SegmentsFilePattern"], actual.SegmentsFilePattern)
+}
+
+func deferMissingGenericParam(t *testing.T) {
+	if r := recover(); r != nil {
+		recovery := fmt.Sprintf("%v", r)
+
+		pattern := errorTypes[MissingNativeMemberValueEn].Info[PatternEn]
+		if matched, err := regexp.MatchString(pattern, recovery); err == nil {
+			assert.True(t, matched, fmt.Sprintf("panic message: '%v' did not conform to format",
+				recovery))
+		} else {
+			assert.Fail(t, "panic message regexp error")
+		}
+	}
+}
+
+func (suite *ParameterSetSuite) TestCreateParameterSetStrictMissingParam() {
+	func() {
+		defer deferMissingGenericParam(suite.T())
+
+		CreateParameterSet[FooParameterSet](suite.MissingDirectory)
+		assert.Fail(suite.T(), "should panic when generic param is missing")
+	}()
+}
+
+func (suite *ParameterSetSuite) TestCreateParameterSetNotStrictMissingParam() {
+
+	CreateParameterSetWith[FooParameterSet](suite.MissingDirectory, ParameterSetCreateOptions{
+		Strict: false,
+	})
+}
+
+func (suite *ParameterSetSuite) TestCreateParameterSetNotStrict() {
+	CreateParameterSetWith[FooParameterSet](suite.Expected, ParameterSetCreateOptions{
+		Strict: false,
+	})
 }
 
 func (suite *ParameterSetSuite) TestNewParameterSetWithNonStruct() {
