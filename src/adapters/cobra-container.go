@@ -14,6 +14,7 @@ const RootName = "root"
 /*
 CobraCommandSpec is a wrapper around the cobra command, require to register
 multiple commands at he same time, see RegisterCommands.
+
 - Command: a pointer to the underlying cobra command
 */
 type CobraCommandSpec struct {
@@ -33,6 +34,7 @@ type CobraContainer struct {
 /*
 NewCobraContainer is a factory function for the CobraContainer. The client
 must pass in the root Cobra command.
+
 - root: the root Cobra command.
 */
 func NewCobraContainer(root *cobra.Command) *CobraContainer {
@@ -57,8 +59,10 @@ func (container *CobraContainer) insert(command *cobra.Command) error {
 /*
 RegisterCommand stores a command inside the container. The client passes in the
 name of the parent command and the command is added to that parent.
+
 - parent: the name of the parent command. The name can be derived by calling the Name()
 member function of the Cobra command.
+
 - command: the Cobra command to register.
 
 Returns an error if the there is no command currently registered with the name of parent
@@ -93,6 +97,7 @@ func (container *CobraContainer) RegisterCommands(
 /*
 RegisterRootChildCommand stores a command inside the container as a direct descendent
 of the root Cobra command and is added to the root command itself.
+
 - command: the Cobra command to register.
 
 Returns an error if the command with the same name has already been registered.
@@ -107,6 +112,7 @@ func (container *CobraContainer) RegisterRootChildCommand(
 IsPresent checks whether a command has been registered anywhere within the
 command tree. NB, the container stores all commands in a flat hierarchy as opposed
 to Cobra which stores commands in a tree like hierarchy.
+
 - name: the name of the command to check.
 
 Returns true if present, false otherwise
@@ -125,6 +131,7 @@ func (container *CobraContainer) Root() *cobra.Command {
 
 /*
 Command return the command registered with the name specified
+
 - name: the name of the Cobra command to check. The name can be derived by
 calling the Name() function on the command.
 
@@ -141,7 +148,9 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 
 /*
 IsChild determines if child command is a direct descendent of the parent
+
 - parent: the parent Cobra command
+
 - child: the child Cobra command
 
 Returns true if child is direct descendent of the parent, false otherwise.
