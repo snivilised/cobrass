@@ -2,7 +2,6 @@ package adapters
 
 import (
 	"fmt"
-	"reflect"
 	"regexp"
 	"testing"
 
@@ -96,45 +95,39 @@ type FooParameterSet struct {
 	SegmentsFilePattern string
 }
 
-// possibly this should be called ParameterSetFromMap
-//
-func NewFooParameterSet(params GenericParameterSet) *FooParameterSet {
-	return NewParameterSet[FooParameterSet](params)
-}
+// func (suite *ParameterSetSuite) TestNativeParameterCreationFromGenericSetWithReflection() {
+// 	//
+// 	// This test case is an excercise in using reflection and thus would not
+// 	// normally be tested this way. See the other test TestNativeParameterCreationFromGenericSet.
+// 	//
+// 	// based on the laws of reflection (https://go.dev/blog/laws-of-reflection)
 
-func (suite *ParameterSetSuite) TestNativeParameterCreationFromGenericSetWithReflection() {
-	//
-	// This test case is an excercise in using reflection and thus would not
-	// normally be tested this way. See the other test TestNativeParameterCreationFromGenericSet.
-	//
-	// based on the laws of reflection (https://go.dev/blog/laws-of-reflection)
+// 	target := NewFooParameterSet(suite.Expected)
 
-	target := NewFooParameterSet(suite.Expected)
+// 	refElemStruct := reflect.ValueOf(target).Elem()
+// 	refTypeOfStruct := refElemStruct.Type()
 
-	refElemStruct := reflect.ValueOf(target).Elem()
-	refTypeOfStruct := refElemStruct.Type()
+// 	if reflect.TypeOf(*target).Kind() == reflect.Struct {
+// 		for i, n := 0, refElemStruct.NumField(); i < n; i++ {
+// 			name := refTypeOfStruct.Field(i).Name
+// 			value := suite.Expected[name]
+// 			assert.Equal(suite.T(), suite.Expected[name], value)
+// 		}
+// 	}
+// }
 
-	if reflect.TypeOf(*target).Kind() == reflect.Struct {
-		for i, n := 0, refElemStruct.NumField(); i < n; i++ {
-			name := refTypeOfStruct.Field(i).Name
-			value := suite.Expected[name]
-			assert.Equal(suite.T(), suite.Expected[name], value)
-		}
-	}
-}
+// func (suite *ParameterSetSuite) TestNativeParameterCreationFromGenericSet() {
+// 	actual := NewFooParameterSet(suite.Expected)
 
-func (suite *ParameterSetSuite) TestNativeParameterCreationFromGenericSet() {
-	actual := NewFooParameterSet(suite.Expected)
-
-	assert.Equal(suite.T(), suite.Expected["Directory"], actual.Directory)
-	assert.Equal(suite.T(), suite.Expected["Output"], actual.Output)
-	assert.Equal(suite.T(), suite.Expected["Format"], actual.Format)
-	assert.Equal(suite.T(), suite.Expected["Shape"], actual.Shape)
-	assert.Equal(suite.T(), suite.Expected["IsConcise"], actual.IsConcise)
-	assert.Equal(suite.T(), suite.Expected["Strategy"], actual.Strategy)
-	assert.Equal(suite.T(), suite.Expected["IsOverwrite"], actual.IsOverwrite)
-	assert.Equal(suite.T(), suite.Expected["SegmentsFilePattern"], actual.SegmentsFilePattern)
-}
+// 	assert.Equal(suite.T(), suite.Expected["Directory"], actual.Directory)
+// 	assert.Equal(suite.T(), suite.Expected["Output"], actual.Output)
+// 	assert.Equal(suite.T(), suite.Expected["Format"], actual.Format)
+// 	assert.Equal(suite.T(), suite.Expected["Shape"], actual.Shape)
+// 	assert.Equal(suite.T(), suite.Expected["IsConcise"], actual.IsConcise)
+// 	assert.Equal(suite.T(), suite.Expected["Strategy"], actual.Strategy)
+// 	assert.Equal(suite.T(), suite.Expected["IsOverwrite"], actual.IsOverwrite)
+// 	assert.Equal(suite.T(), suite.Expected["SegmentsFilePattern"], actual.SegmentsFilePattern)
+// }
 
 // CreateParameterSet
 func CreateFooParameterSet(params GenericParameterSet) *FooParameterSet {
@@ -157,7 +150,7 @@ func deferMissingGenericParam(t *testing.T) {
 	if r := recover(); r != nil {
 		recovery := fmt.Sprintf("%v", r)
 
-		pattern := errorTypes[MissingNativeMemberValueEn].Info[PatternEn]
+		pattern := errorTypes[missingNativeMemberValueEn].Info[PatternEn]
 		if matched, err := regexp.MatchString(pattern, recovery); err == nil {
 			assert.True(t, matched, fmt.Sprintf("panic message: '%v' did not conform to format",
 				recovery))
@@ -189,78 +182,65 @@ func (suite *ParameterSetSuite) TestCreateParameterSetNotStrict() {
 	})
 }
 
-func (suite *ParameterSetSuite) TestNewParameterSetWithNonStruct() {
+// func (suite *ParameterSetSuite) TestNativeObjectParamMismatchWithGenericEntry() {
 
-	func() {
-		defer func() {
-			if r := recover(); r != nil {
-				assert.True(suite.T(), true, "instantiation should cause panic")
-			}
-		}()
-		NewParameterSet[int](suite.Expected)
-		assert.Fail(suite.T(), "instantiation of NewParameterSet with a non struct should panic")
-	}()
-}
+// 	expected := GenericParameterSet{
+// 		"directory":           "/once/upon/a/time",
+// 		"Output":              "foo-bar",
+// 		"Format":              XmlFormatEn,
+// 		"Shape":               SubPathShapeEn,
+// 		"IsConcise":           true,
+// 		"Strategy":            TraverseLeafEn,
+// 		"IsOverwrite":         false,
+// 		"SegmentsFilePattern": "*infex*",
+// 	}
 
-func (suite *ParameterSetSuite) TestNativeObjectParamMismatchWithGenericEntry() {
+// 	func() {
+// 		defer func() {
+// 			if r := recover(); r != nil {
+// 				recovery := fmt.Sprintf("%v", r)
 
-	expected := GenericParameterSet{
-		"directory":           "/once/upon/a/time",
-		"Output":              "foo-bar",
-		"Format":              XmlFormatEn,
-		"Shape":               SubPathShapeEn,
-		"IsConcise":           true,
-		"Strategy":            TraverseLeafEn,
-		"IsOverwrite":         false,
-		"SegmentsFilePattern": "*infex*",
-	}
+// 				pattern := errorTypes[missingNativeMemberValueEn].Info[PatternEn]
+// 				if matched, err := regexp.MatchString(pattern, recovery); err == nil {
+// 					assert.True(suite.T(), matched, fmt.Sprintf("panic message: '%v' did not conform to format",
+// 						recovery))
+// 				} else {
+// 					assert.Fail(suite.T(), "panic message regexp error")
+// 				}
+// 			}
+// 		}()
+// 		NewFooParameterSet(expected)
+// 		assert.Fail(suite.T(), "should panic when no generic parameter for native member")
+// 	}()
+// }
 
-	func() {
-		defer func() {
-			if r := recover(); r != nil {
-				recovery := fmt.Sprintf("%v", r)
+// func (suite *ParameterSetSuite) TestNativeObjectMemberTypeMismatch() {
+// 	expected := GenericParameterSet{
+// 		"Directory":           42.42,
+// 		"Output":              "foo-bar",
+// 		"Format":              XmlFormatEn,
+// 		"Shape":               SubPathShapeEn,
+// 		"IsConcise":           true,
+// 		"Strategy":            TraverseLeafEn,
+// 		"IsOverwrite":         false,
+// 		"SegmentsFilePattern": "*infex*",
+// 	}
 
-				pattern := errorTypes[MissingNativeMemberValueEn].Info[PatternEn]
-				if matched, err := regexp.MatchString(pattern, recovery); err == nil {
-					assert.True(suite.T(), matched, fmt.Sprintf("panic message: '%v' did not conform to format",
-						recovery))
-				} else {
-					assert.Fail(suite.T(), "panic message regexp error")
-				}
-			}
-		}()
-		NewFooParameterSet(expected)
-		assert.Fail(suite.T(), "should panic when no generic parameter for native member")
-	}()
-}
+// 	func() {
+// 		defer func() {
+// 			if r := recover(); r != nil {
+// 				recovery := fmt.Sprintf("%v", r)
 
-func (suite *ParameterSetSuite) TestNativeObjectMemberTypeMismatch() {
-	expected := GenericParameterSet{
-		"Directory":           42.42,
-		"Output":              "foo-bar",
-		"Format":              XmlFormatEn,
-		"Shape":               SubPathShapeEn,
-		"IsConcise":           true,
-		"Strategy":            TraverseLeafEn,
-		"IsOverwrite":         false,
-		"SegmentsFilePattern": "*infex*",
-	}
-
-	func() {
-		defer func() {
-			if r := recover(); r != nil {
-				recovery := fmt.Sprintf("%v", r)
-
-				pattern := errorTypes[MismatchNativeMemberValueTypeEn].Info[PatternEn]
-				if matched, err := regexp.MatchString(pattern, recovery); err == nil {
-					assert.True(suite.T(), matched, fmt.Sprintf("panic message: '%v' did not conform to format",
-						recovery))
-				} else {
-					assert.Fail(suite.T(), "panic message regexp error")
-				}
-			}
-		}()
-		NewFooParameterSet(expected)
-		assert.Fail(suite.T(), "should panic when member type mismatches generic param type")
-	}()
-}
+// 				pattern := errorTypes[mismatchNativeMemberValueTypeEn].Info[PatternEn]
+// 				if matched, err := regexp.MatchString(pattern, recovery); err == nil {
+// 					assert.True(suite.T(), matched, fmt.Sprintf("panic message: '%v' did not conform to format",
+// 						recovery))
+// 				} else {
+// 					assert.Fail(suite.T(), "panic message regexp error")
+// 				}
+// 			}
+// 		}()
+// 		NewFooParameterSet(expected)
+// 		assert.Fail(suite.T(), "should panic when member type mismatches generic param type")
+// 	}()
+// }

@@ -2,23 +2,22 @@ package adapters
 
 import (
 	"fmt"
-	"reflect"
 )
 
+/*
+GenericParameterSet is a map of flag names to their value as represented in Cobra. Note
+flag values are reprented by strings, which are internally converted to the required
+type on the native parameter set, via reflection
+*/
 type GenericParameterSet map[string]any
 
-const prefix = "Native object member '"
-const suffix = "', does not have a defined member inside the generic params, possible name case issue?"
 const identifierPattern = "[A-Z][A-Za-z_\\d]*"
-
-var MissingNativeParamValueFormat = fmt.Sprintf("%v%v%v", prefix, "%v", suffix)
-var MissingNativeParamValuePattern = fmt.Sprintf("%v%v%v", prefix, identifierPattern, suffix)
 
 type errorReportEnum int
 
 const (
-	MissingNativeMemberValueEn errorReportEnum = iota
-	MismatchNativeMemberValueTypeEn
+	missingNativeMemberValueEn errorReportEnum = iota
+	mismatchNativeMemberValueTypeEn
 )
 
 type errorReportFieldEnum int
@@ -35,7 +34,7 @@ type errorReportInfo struct {
 type errorReportInfoMap map[errorReportEnum]errorReportInfo
 
 var errorTypes errorReportInfoMap = errorReportInfoMap{
-	MissingNativeMemberValueEn: errorReportInfo{
+	missingNativeMemberValueEn: errorReportInfo{
 		Info: func() []string {
 			const prefix = "Native object member '"
 			const suffix = "', does not have a defined member inside the generic params, possible name case issue?"
@@ -46,7 +45,7 @@ var errorTypes errorReportInfoMap = errorReportInfoMap{
 			}
 		}(),
 	},
-	MismatchNativeMemberValueTypeEn: errorReportInfo{
+	mismatchNativeMemberValueTypeEn: errorReportInfo{
 		Info: func() []string {
 			const prefix = "mismatching types for '"
 			const suffix = "')"
@@ -62,12 +61,12 @@ var errorTypes errorReportInfoMap = errorReportInfoMap{
 // ParameterSetCreateOptions options for function CreateParameterSetWith
 // Allows the client to control the behaviour of CreateParameterSetWith.
 //
-// Available options:
-//
-// "Strict": each member of the native parameter set MUST have an entry in
-// the generic params.
-//
 type ParameterSetCreateOptions struct {
+	// Strict defines whether it is permissable for native parameter set
+	// member variable has a correspond entry inside the generic param
+	// map. When true, each member of the native parameter set MUST have
+	// an entry in the generic params.
+	//
 	Strict bool
 }
 
@@ -145,93 +144,7 @@ func CreateParameterSet[T comparable](params GenericParameterSet) *T {
 //
 func CreateParameterSetWith[T comparable](params GenericParameterSet, options ParameterSetCreateOptions) *T {
 	target := new(T)
-
-	refElemStruct := reflect.ValueOf(target).Elem()
-	refTypeOfStruct := refElemStruct.Type()
-
-	if reflect.TypeOf(*target).Kind() == reflect.Struct {
-		for i, n := 0, refElemStruct.NumField(); i < n; i++ {
-			name := refTypeOfStruct.Field(i).Name
-
-			if value, found := params[name]; found {
-				nativeType := refElemStruct.Field(i).Type()
-				paramType := reflect.TypeOf(value)
-
-				if nativeType != paramType {
-					message := fmt.Sprintf(errorTypes[MismatchNativeMemberValueTypeEn].Info[FormatEn],
-						name, nativeType, paramType)
-
-					panic(message)
-				}
-
-				refElemStruct.Field(i).Set(reflect.ValueOf(value))
-			} else {
-				if options.Strict {
-					message := fmt.Sprintf(errorTypes[MissingNativeMemberValueEn].Info[FormatEn], name)
-					panic(message)
-				}
-			}
-		}
-	} else {
-		name := reflect.TypeOf(*target).Name()
-		panic(fmt.Sprintf("the native parameter set object ('%v') must be a structure", name))
-	}
-
-	return target
-}
-
-// NewParameterSet is a generic function on comparable type T which when
-// given a map containing field name to values, creates the native
-// object required by the client. It is intended that the user should use
-// Cobra's VisitAll facility on the command to create the values associated
-// with each flag/argument. The comparable type T is the native parameter
-// set object that can be futher used by the cli without tight coupling to
-// Cobra.
-// Note:
-// - the native member means the exported (capitalised) member variable of T
-// - the generic member is the corresponding entry that is linked to the native member
-// - the name of the native member must match exactly (including by case) the
-// corresponding entry in the params map (panic will occur otherwise)
-// - there may be more generic entries in params than there are members in the native type T
-// - each member of T MUST have an entry in params
-// Panics in the following circumstances:
-// - instantiated with anything other than a struct
-// - params does not contain a corresponding value for native member
-// - the type of the value in params does not match the type of the correspnond
-// native member
-//
-func NewParameterSet[T comparable](params GenericParameterSet) *T {
-	target := new(T)
-
-	refElemStruct := reflect.ValueOf(target).Elem()
-	refTypeOfStruct := refElemStruct.Type()
-
-	if reflect.TypeOf(*target).Kind() == reflect.Struct {
-		for i, n := 0, refElemStruct.NumField(); i < n; i++ {
-			name := refTypeOfStruct.Field(i).Name
-
-			if value, found := params[name]; found {
-				nativeType := refElemStruct.Field(i).Type()
-				paramType := reflect.TypeOf(value)
-
-				if nativeType != paramType {
-					message := fmt.Sprintf(errorTypes[MismatchNativeMemberValueTypeEn].Info[FormatEn],
-						name, nativeType, paramType)
-
-					panic(message)
-				}
-
-				refElemStruct.Field(i).Set(reflect.ValueOf(value))
-			} else {
-				message := fmt.Sprintf(errorTypes[MissingNativeMemberValueEn].Info[FormatEn], name)
-				panic(message)
-			}
-
-		}
-	} else {
-		name := reflect.TypeOf(*target).Name()
-		panic(fmt.Sprintf("the native parameter set object ('%v') must be a structure", name))
-	}
+	constructParameterSet(target, params, options)
 
 	return target
 }
