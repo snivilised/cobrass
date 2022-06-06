@@ -20,3 +20,6 @@ dist/
 #
 .task/
 .env
+
+coverage
+ginkgo.report

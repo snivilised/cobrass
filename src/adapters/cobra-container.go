@@ -9,8 +9,6 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-const RootName = "root"
-
 /*
 CobraCommandSpec is a wrapper around the cobra command, require to register
 multiple commands at he same time, see RegisterCommands.
@@ -105,7 +103,8 @@ Returns an error if the command with the same name has already been registered.
 func (container *CobraContainer) RegisterRootChildCommand(
 	command *cobra.Command,
 ) error {
-	return container.RegisterCommand("root", command)
+
+	return container.RegisterCommand(container.root.Name(), command)
 }
 
 /*
@@ -138,7 +137,7 @@ calling the Name() function on the command.
 Returns the command identified by the name, nil if the command does not exist
 */
 func (container *CobraContainer) Command(name string) *cobra.Command {
-	if name == RootName {
+	if name == container.root.Name() {
 		return container.Root()
 	}
 	command, exists := container.commands[name]

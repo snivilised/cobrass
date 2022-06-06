@@ -1,47 +1,53 @@
-package adapters
+package adapters_test
 
 import (
 	"fmt"
-	"testing"
 
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
+	"github.com/snivilised/cobrass/src/adapters"
 )
 
-func TestGivenNewKeyDoesNotExistInsertSafePositional(t *testing.T) {
+var _ = Describe("InsertSafePositional", func() {
+	Context("given: new flag does not exist", func() {
+		It("🧪 should: insert ok", func() {
+			generic := make(adapters.GenericParamSet)
+			generic["colour"] = "blue"
+			generic["shape"] = "circle"
 
-	generic := make(GenericParameterSet)
-	generic["colour"] = "blue"
-	generic["shape"] = "circle"
+			const value = "large"
+			const flag = "size"
 
-	const expect = "large"
-	const param = "size"
-	InsertSafePositional(generic, param, expect)
-	assert.True(t, true, "insertion should not cause panic")
+			adapters.InsertSafePositional(generic, flag, value)
 
-	if value, ok := generic[param]; !ok {
-		assert.Fail(t, fmt.Sprintf("inserted param '%v' is '%v' but should be: '%v'",
-			param, value, expect))
-	} else {
-		assert.Equal(t, value, expect, fmt.Sprintf("%v", value))
-	}
-}
+			actual, ok := generic[flag]
 
-// comsider https://onsi.github.io/ginkgo/ for more sophisticate unit testing in go
-// provides bdd style of unit testing
-//
+			message := fmt.Sprintf("❌ inserted flag '%v' of value '%v' but should be present but isn't",
+				flag, actual)
+			Expect(ok).To(BeTrue(), message)
 
-func TestGivenNewKeyDoesExistsInsertSafePositional(t *testing.T) {
-	generic := make(GenericParameterSet)
-	generic["colour"] = "blue"
-	generic["shape"] = "circle"
+			message = fmt.Sprintf("❌ inserted param '%v' is '%v' but should be: '%v'",
+				flag, actual, value)
+			Expect(actual).To(Equal(value), message)
+		})
+	})
 
-	func() {
-		defer func() {
-			if r := recover(); r != nil {
-				assert.True(t, true, "insertion should cause panic")
-			}
-		}()
-		InsertSafePositional(generic, "shape", "square")
-		assert.Fail(t, "insertion should cause panic")
-	}()
-}
+	Context("given: inserted flag alrady exists", func() {
+		It("🧪 should: ", func() {
+			generic := make(adapters.GenericParamSet)
+			generic["colour"] = "blue"
+			generic["shape"] = "circle"
+
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						Expect(true).To(BeTrue(), "✔️ expected panic handled")
+					}
+				}()
+				adapters.InsertSafePositional(generic, "shape", "square")
+				Fail("❌ insertion should cause panic")
+			}()
+		})
+	})
+})
