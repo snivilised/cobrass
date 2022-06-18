@@ -31,14 +31,12 @@ import (
 // given:
 //
 // type OutputFormatEnum int
-//
 // const (
 //   _ OutputFormatEnum = iota
 // 	 XmlFormatEn
 // 	 JsonFormatEn
 // 	 TextFormatEn
-// 	 ScribbleFormatEn
-// )
+// 	 ScribbleFormatEn)
 //
 // we can define our acceptables asfollows:
 //
@@ -46,8 +44,14 @@ import (
 // 	 XmlFormatEn:      []string{"xml", "x"},
 // 	 JsonFormatEn:     []string{"json", "j"},
 // 	 TextFormatEn:     []string{"text", "tx"},
-// 	 ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
-// }
+// 	 ScribbleFormatEn: []string{"scribble", "scribbler", "scr"}}
+//
+// Note, when composing the list of acceptable string values for an enum, it is
+// recommended to make the first item to be the most expressive (ie the longest
+// string value), because whenever an enum needs to be printed, the client
+// can use the 'NameOf' method to display the useful name of the enum rather
+// than getting the integer value, which is not very expressive but
+// is what you get by default using the %v formatter for print functions.
 //
 type AcceptableEnumValues[E ~int] map[E][]string
 
@@ -70,6 +74,7 @@ type EnumInfo[E ~int] struct {
 	//
 	Source string
 
+	acceptables   AcceptableEnumValues[E]
 	reverseLookup lookupEnumValue[E]
 }
 
@@ -87,6 +92,16 @@ func (info *EnumInfo[E]) Value() E {
 	return E(info.reverseLookup[info.Source])
 }
 
+// NameOf returns the first acceptable name for the enum value specified.
+// Ideally, there would be a way in go reflection to obtain the name of a
+// variable (as opposed to type name), but this isnt possible. Go reflection
+// currently can only query type names not variable or function names, so
+// the NameOf method is used as a workaround.
+//
+func (info *EnumInfo[E]) NameOf(enum E) string {
+	return info.acceptables[enum][0]
+}
+
 // NewEnumInfo is the factory function that creates an EnumInfo instance given
 // a client defined acceptable values collection. Builds the reverse lookup
 // which then allows the client to lookup the enum value for a string.
@@ -100,13 +115,11 @@ func (info *EnumInfo[E]) Value() E {
 // The generic variable E represents the int based enum type, so given:
 //
 // type OutputFormatEnum int
-//
 // const (
 // 	 XmlFormatEn OutputFormatEnum = iota + 1
 // 	 JsonFormatEn
 // 	 TextFormatEn
-// 	 ScribbleFormatEn
-// )
+// 	 ScribbleFormatEn)
 //
 // ... the user should define an EnumInfo for it as:
 //
@@ -115,6 +128,7 @@ func (info *EnumInfo[E]) Value() E {
 func NewEnumInfo[E ~int](acceptables AcceptableEnumValues[E]) *EnumInfo[E] {
 
 	info := new(EnumInfo[E])
+	info.acceptables = acceptables
 	info.reverseLookup = make(lookupEnumValue[E])
 
 	// build the reverse lookup that will allow the client to lookup the enum
@@ -188,8 +202,7 @@ func NewFlagInfo(usage string, short string, def any) *FlagInfo {
 // 	 Concise   bool
 // 	 Strategy  TravseralStratgeyEnum
 // 	 Overwrite bool
-// 	 Pattern   string
-// }
+// 	 Pattern   string}
 //
 // ... is known as the 'native' parameter set for a 'widget' command which
 // would be used to instantiate ParamSet in a declaration as follows:

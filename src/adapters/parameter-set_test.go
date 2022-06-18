@@ -469,6 +469,8 @@ var _ = Describe("ParamSet", func() {
 
 				Expect(OutputFormatEnumInfo.En("j")).To(Equal(JsonFormatEn))
 				Expect(OutputFormatEnumInfo.En("json")).To(Equal(JsonFormatEn))
+
+				Expect(OutputFormatEnumInfo.NameOf(XmlFormatEn)).To(Equal("xml"))
 			})
 
 			Context("given: int based enum type", func() {
