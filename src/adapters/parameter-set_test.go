@@ -55,6 +55,8 @@ type WidgetParameterSet struct {
 	Hosts        []net.IP
 }
 
+type WidgetParameterSetPtr *WidgetParameterSet
+
 type TcEntry struct {
 	Message     string
 	Binder      func()
@@ -87,7 +89,9 @@ var _ = Describe("ParamSet", func() {
 					GinkgoWriter.Printf("**** 🍉 PRE-RUN\n")
 				},
 				RunE: func(command *cobra.Command, args []string) error {
-					GinkgoWriter.Printf("===> 🍓 EXECUTE\n")
+					GinkgoWriter.Printf("===> 🍓 EXECUTE (Directory: '%v')\n", args[0])
+
+					paramSet.Native.Directory = args[0]
 					return nil
 				},
 				PostRun: func(command *cobra.Command, args []string) {
@@ -496,6 +500,24 @@ var _ = Describe("ParamSet", func() {
 					paramSet.Native.Format = OutputFormatEnumInfo.Value()
 					Expect(paramSet.Native.Format).To(Equal(XmlFormatEn))
 				})
+			})
+		})
+		Context("Register ParamSet", func() {
+			It("🧪 should: be able get registered param set", func() {
+				const cname = "widget"
+				const psname = cname + "-ps"
+				container := adapters.NewCobraContainer(rootCommand)
+				container.RegisterParamSet(psname, paramSet)
+
+				testhelpers.ExecuteCommand(
+					rootCommand, cname, "/usr/fuse/home/cache",
+				)
+
+				if native, ok := container.Native(psname).(*WidgetParameterSet); ok {
+					Expect(native.Directory).To(Equal("/usr/fuse/home/cache"))
+				} else {
+					Fail("param set should be registered")
+				}
 			})
 		})
 	})
