@@ -78,8 +78,8 @@ type EnumInfo[E ~int] struct {
 	reverseLookup lookupEnumValue[E]
 }
 
-// En, when given a string value, will return the underlying int based enum
-// value it is associated with as defined by the Acceptables.
+// En, returns the underlying int based enum associated with the provided
+// string value as defined by the Acceptables.
 //
 func (info *EnumInfo[E]) En(value string) E {
 	return E(info.reverseLookup[value])
