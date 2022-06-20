@@ -142,7 +142,9 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 	return utils.TernaryIf(exists, command, nil)
 }
 
-// RegisterParamSet
+// RegisterParamSet stores the parameter set under the provided name. Used
+// to reduce the number of floating global variables that the client needs
+// to manage when using cobra.
 //
 func (container *CobraContainer) RegisterParamSet(name string, ps any) {
 

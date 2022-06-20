@@ -467,6 +467,7 @@ var _ = Describe("ParamSet", func() {
 					ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
 				})
 			})
+
 			It("🧪 should: create enum info", func() {
 				Expect(OutputFormatEnumInfo.En("x")).To(Equal(XmlFormatEn))
 				Expect(OutputFormatEnumInfo.En("xml")).To(Equal(XmlFormatEn))
@@ -499,9 +500,11 @@ var _ = Describe("ParamSet", func() {
 					//
 					paramSet.Native.Format = OutputFormatEnumInfo.Value()
 					Expect(paramSet.Native.Format).To(Equal(XmlFormatEn))
+					Expect(OutputFormatEnumInfo.String()).To(Equal("xml"))
 				})
 			})
 		})
+
 		Context("Register ParamSet", func() {
 			It("🧪 should: be able get registered param set", func() {
 				const cname = "widget"

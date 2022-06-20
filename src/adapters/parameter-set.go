@@ -92,6 +92,18 @@ func (info *EnumInfo[E]) Value() E {
 	return E(info.reverseLookup[info.Source])
 }
 
+// String returns the content of Source, assuming it is a valid acceptable enum
+// value. If not valid or not set yet causes panic. As it curently stands, the
+// client needs to validate incoming input as performed in a binder operation.
+//
+func (info *EnumInfo[E]) String() string {
+	if _, found := info.reverseLookup[info.Source]; !found {
+		panic(fmt.Errorf("'%v' is not a valid enum value", info.Source))
+	} else {
+		return info.Source
+	}
+}
+
 // NameOf returns the first acceptable name for the enum value specified.
 // Ideally, there would be a way in go reflection to obtain the name of a
 // variable (as opposed to type name), but this isnt possible. Go reflection
