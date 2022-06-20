@@ -132,6 +132,15 @@ func (info *EnumInfo[E]) En(value string) E {
 	return E(info.reverseLookup[value])
 }
 
+// Dump shows the contents of all acceptable values for the enum
+//
+func (info *EnumInfo[E]) Dump() {
+	fmt.Printf("=== (TYPE: %T) ===\n", info)
+	for k, v := range info.reverseLookup {
+		fmt.Printf("--- [%v] => [%v] (%v) ---\n", k, info.NameOf(v), v)
+	}
+}
+
 type EnumValue[E ~int] struct {
 	// Info is the EnumInfo associated with this enam value
 	//
