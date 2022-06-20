@@ -63,55 +63,14 @@ type lookupEnumValue[E ~int] map[string]E
 // https://medium.com/trendyol-tech/contributing-the-go-compiler-adding-new-tilde-operator-f66d0c6cff7
 //
 
+// EnumInfo represents the meta data for a pseduo int based enum type
+//
 type EnumInfo[E ~int] struct {
-	// The address of Source should be used with BindEnum. The reason why we
-	// need an alternative for the 'to' parameter on the binder method is that
-	// the associated native member is going to be the pseudo enum type, which
-	// is not compatible with the string value that the user provides on the
-	// comand line. So Source is just a temporary place holder for the value,
-	// which subsequently needs to be converted and injected into the native
-	// parameter set(see Value() method)
+	// (this should probably go into a different module as it's use goes beyond
+	// the context of cobra)
 	//
-	Source string
-
 	acceptables   AcceptableEnumValues[E]
 	reverseLookup lookupEnumValue[E]
-}
-
-// En, returns the underlying int based enum associated with the provided
-// string value as defined by the Acceptables.
-//
-func (info *EnumInfo[E]) En(value string) E {
-	return E(info.reverseLookup[value])
-}
-
-// Value, returns the value of the enum that is stored within the EnumInfo
-// captured from the command line.
-//
-func (info *EnumInfo[E]) Value() E {
-	return E(info.reverseLookup[info.Source])
-}
-
-// String returns the content of Source, assuming it is a valid acceptable enum
-// value. If not valid or not set yet causes panic. As it curently stands, the
-// client needs to validate incoming input as performed in a binder operation.
-//
-func (info *EnumInfo[E]) String() string {
-	if _, found := info.reverseLookup[info.Source]; !found {
-		panic(fmt.Errorf("'%v' is not a valid enum value", info.Source))
-	} else {
-		return info.Source
-	}
-}
-
-// NameOf returns the first acceptable name for the enum value specified.
-// Ideally, there would be a way in go reflection to obtain the name of a
-// variable (as opposed to type name), but this isnt possible. Go reflection
-// currently can only query type names not variable or function names, so
-// the NameOf method is used as a workaround.
-//
-func (info *EnumInfo[E]) NameOf(enum E) string {
-	return info.acceptables[enum][0]
 }
 
 // NewEnumInfo is the factory function that creates an EnumInfo instance given
@@ -158,6 +117,64 @@ func NewEnumInfo[E ~int](acceptables AcceptableEnumValues[E]) *EnumInfo[E] {
 	}
 
 	return info
+}
+
+// NewValue creates a new EnumValue associated with this EnumInfo
+//
+func (info *EnumInfo[E]) NewValue() EnumValue[E] {
+	return EnumValue[E]{Info: info}
+}
+
+// En, returns the underlying int based enum associated with the provided
+// string value as defined by the Acceptables.
+//
+func (info *EnumInfo[E]) En(value string) E {
+	return E(info.reverseLookup[value])
+}
+
+type EnumValue[E ~int] struct {
+	// Info is the EnumInfo associated with this enam value
+	//
+	Info *EnumInfo[E]
+
+	// The address of Source should be used with BindEnum. The reason why we
+	// need an alternative for the 'to' parameter on the binder method is that
+	// the associated native member is going to be the pseudo enum type, which
+	// is not compatible with the string value that the user provides on the
+	// comand line. So Source is just a temporary place holder for the value,
+	// which subsequently needs to be converted and injected into the native
+	// parameter set(see Value() method)
+	//
+	Source string
+}
+
+// Value, returns the value of the enum that is stored within the EnumValue
+// captured from the command line.
+//
+func (ev *EnumValue[E]) Value() E {
+	return E(ev.Info.reverseLookup[ev.Source])
+}
+
+// String returns the content of Source, assuming it is a valid acceptable enum
+// value. If not valid or not set yet causes panic. As it curently stands, the
+// client needs to validate incoming input as performed in a binder operation.
+//
+func (ev *EnumValue[E]) String() string {
+	if _, found := ev.Info.reverseLookup[ev.Source]; !found {
+		panic(fmt.Errorf("'%v' is not a valid enum value", ev.Source))
+	} else {
+		return ev.Source
+	}
+}
+
+// NameOf returns the first acceptable name for the enum value specified.
+// Ideally, there would be a way in go reflection to obtain the name of a
+// variable (as opposed to type name), but this isnt possible. Go reflection
+// currently can only query type names not variable or function names, so
+// the NameOf method is used as a workaround.
+//
+func (info *EnumInfo[E]) NameOf(enum E) string {
+	return info.acceptables[enum][0]
 }
 
 // FlagInfo collates together the paramters passed into the bind methods

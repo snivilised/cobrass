@@ -480,10 +480,11 @@ var _ = Describe("ParamSet", func() {
 
 			Context("given: int based enum type", func() {
 				It("🧪 should: populate member of native parameter set", func() {
+					outputFormatEnum := OutputFormatEnumInfo.NewValue()
 
 					paramSet.BindEnum(
 						&adapters.FlagInfo{Name: "format", Short: "f", Default: "text", Usage: "format"},
-						&OutputFormatEnumInfo.Source,
+						&outputFormatEnum.Source,
 					)
 
 					testhelpers.ExecuteCommand(
@@ -498,9 +499,9 @@ var _ = Describe("ParamSet", func() {
 					// as efficient, probably requiring more than a single line of code anyway.
 					// The documentation of BindEnum does in fact instruct the reader to do so.
 					//
-					paramSet.Native.Format = OutputFormatEnumInfo.Value()
+					paramSet.Native.Format = outputFormatEnum.Value()
 					Expect(paramSet.Native.Format).To(Equal(XmlFormatEn))
-					Expect(OutputFormatEnumInfo.String()).To(Equal("xml"))
+					Expect(outputFormatEnum.String()).To(Equal("xml"))
 				})
 			})
 		})
