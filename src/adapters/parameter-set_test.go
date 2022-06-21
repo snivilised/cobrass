@@ -478,6 +478,20 @@ var _ = Describe("ParamSet", func() {
 				Expect(OutputFormatEnumInfo.NameOf(XmlFormatEn)).To(Equal("xml"))
 			})
 
+			Context("IsValid", func() {
+				When("given: valid value", func() {
+					It("🧪 should: return true", func() {
+						Expect(OutputFormatEnumInfo.IsValid("text")).To(BeTrue())
+					})
+				})
+
+				When("given: invalid value", func() {
+					It("🧪 should: return false", func() {
+						Expect(OutputFormatEnumInfo.IsValid("foo")).To(BeFalse())
+					})
+				})
+			})
+
 			Context("given: int based enum type", func() {
 				It("🧪 should: populate member of native parameter set", func() {
 					outputFormatEnum := OutputFormatEnumInfo.NewValue()
