@@ -140,6 +140,18 @@ func (info *EnumInfo[E]) IsValid(value string) bool {
 	return found
 }
 
+// IsValidOrEmpty returns true if the string is an acceptable value for this enum
+// or the empty string false otherwise.
+//
+func (info *EnumInfo[E]) IsValidOrEmpty(value string) bool {
+	if value == "" {
+		return true
+	}
+
+	_, found := info.reverseLookup[value]
+	return found
+}
+
 // Dump shows the contents of all acceptable values for the enum
 //
 func (info *EnumInfo[E]) Dump() {
@@ -177,6 +189,13 @@ func (ev *EnumValue[E]) Value() E {
 //
 func (ev *EnumValue[E]) IsValid() bool {
 	return ev.Info.IsValid(ev.Source)
+}
+
+// IsValidOrEmpty returns true if the string is an acceptable value for this enum
+// or the empty string false otherwise.
+//
+func (ev *EnumValue[E]) IsValidOrEmpty() bool {
+	return ev.Info.IsValidOrEmpty(ev.Source)
 }
 
 // String returns the content of Source, assuming it is a valid acceptable enum

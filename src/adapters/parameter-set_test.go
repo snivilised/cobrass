@@ -492,6 +492,15 @@ var _ = Describe("ParamSet", func() {
 				})
 			})
 
+			Context("IsValidOrEmpty", func() {
+				When("given: empty value", func() {
+					It("🧪 should: return true", func() {
+						outputFormatEnum := OutputFormatEnumInfo.NewValue()
+						Expect(outputFormatEnum.IsValidOrEmpty()).To(BeTrue())
+					})
+				})
+			})
+
 			Context("given: int based enum type", func() {
 				It("🧪 should: populate member of native parameter set", func() {
 					outputFormatEnum := OutputFormatEnumInfo.NewValue()
