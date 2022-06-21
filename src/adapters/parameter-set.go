@@ -172,6 +172,13 @@ func (ev *EnumValue[E]) Value() E {
 	return E(ev.Info.reverseLookup[ev.Source])
 }
 
+// IsValid returns true if the string is an acceptable value for this enum
+// false otherwise.
+//
+func (ev *EnumValue[E]) IsValid() bool {
+	return ev.Info.IsValid(ev.Source)
+}
+
 // String returns the content of Source, assuming it is a valid acceptable enum
 // value. If not valid or not set yet causes panic. As it curently stands, the
 // client needs to validate incoming input as performed in a binder operation.

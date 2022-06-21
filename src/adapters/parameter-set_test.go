@@ -516,6 +516,7 @@ var _ = Describe("ParamSet", func() {
 					paramSet.Native.Format = outputFormatEnum.Value()
 					Expect(paramSet.Native.Format).To(Equal(XmlFormatEn))
 					Expect(outputFormatEnum.String()).To(Equal("xml"))
+					Expect(outputFormatEnum.IsValid()).To(BeTrue())
 				})
 			})
 		})
