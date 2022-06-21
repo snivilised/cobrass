@@ -252,7 +252,7 @@ type ParamSet[N any] struct {
 	// must be a struct.
 	//
 	Native  *N
-	flagSet *pflag.FlagSet
+	FlagSet *pflag.FlagSet
 }
 
 // NewParamSet is the factory function, which creates a 'parameter set' for
@@ -265,7 +265,7 @@ type ParamSet[N any] struct {
 //
 func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 	ps = new(ParamSet[N])
-	ps.flagSet = command.Flags()
+	ps.FlagSet = command.Flags()
 	ps.Native = new(N)
 
 	if reflect.TypeOf(*ps.Native).Kind() != reflect.Struct {
@@ -278,7 +278,7 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 // BindString, binds string flag with a shorthand
 //
 func (params *ParamSet[N]) BindString(info *FlagInfo, to *string) *ParamSet[N] {
-	params.flagSet.StringVarP(to, info.Name, info.Short, info.Default.(string), info.Usage)
+	params.FlagSet.StringVarP(to, info.Name, info.Short, info.Default.(string), info.Usage)
 
 	return params
 }
@@ -286,7 +286,7 @@ func (params *ParamSet[N]) BindString(info *FlagInfo, to *string) *ParamSet[N] {
 // BindInt, binds int flag with a shorthand
 //
 func (params *ParamSet[N]) BindInt(info *FlagInfo, to *int) *ParamSet[N] {
-	params.flagSet.IntVarP(to, info.Name, info.Short, info.Default.(int), info.Usage)
+	params.FlagSet.IntVarP(to, info.Name, info.Short, info.Default.(int), info.Usage)
 
 	return params
 }
@@ -294,7 +294,7 @@ func (params *ParamSet[N]) BindInt(info *FlagInfo, to *int) *ParamSet[N] {
 // BindInt8, binds int8 flag with a shorthand
 //
 func (params *ParamSet[N]) BindInt8(info *FlagInfo, to *int8) *ParamSet[N] {
-	params.flagSet.Int8VarP(to, info.Name, info.Short, info.Default.(int8), info.Usage)
+	params.FlagSet.Int8VarP(to, info.Name, info.Short, info.Default.(int8), info.Usage)
 
 	return params
 }
@@ -302,7 +302,7 @@ func (params *ParamSet[N]) BindInt8(info *FlagInfo, to *int8) *ParamSet[N] {
 // BindInt16, binds int16 flag with a shorthand
 //
 func (params *ParamSet[N]) BindInt16(info *FlagInfo, to *int16) *ParamSet[N] {
-	params.flagSet.Int16VarP(to, info.Name, info.Short, info.Default.(int16), info.Usage)
+	params.FlagSet.Int16VarP(to, info.Name, info.Short, info.Default.(int16), info.Usage)
 
 	return params
 }
@@ -310,7 +310,7 @@ func (params *ParamSet[N]) BindInt16(info *FlagInfo, to *int16) *ParamSet[N] {
 // BindInt32, binds int32 flag with a shorthand
 //
 func (params *ParamSet[N]) BindInt32(info *FlagInfo, to *int32) *ParamSet[N] {
-	params.flagSet.Int32VarP(to, info.Name, info.Short, info.Default.(int32), info.Usage)
+	params.FlagSet.Int32VarP(to, info.Name, info.Short, info.Default.(int32), info.Usage)
 
 	return params
 }
@@ -318,7 +318,7 @@ func (params *ParamSet[N]) BindInt32(info *FlagInfo, to *int32) *ParamSet[N] {
 // BindInt64, binds int64 flag with a shorthand
 //
 func (params *ParamSet[N]) BindInt64(info *FlagInfo, to *int64) *ParamSet[N] {
-	params.flagSet.Int64VarP(to, info.Name, info.Short, info.Default.(int64), info.Usage)
+	params.FlagSet.Int64VarP(to, info.Name, info.Short, info.Default.(int64), info.Usage)
 
 	return params
 }
@@ -326,7 +326,7 @@ func (params *ParamSet[N]) BindInt64(info *FlagInfo, to *int64) *ParamSet[N] {
 // BindUint, binds uint flag with a shorthand
 //
 func (params *ParamSet[N]) BindUint(info *FlagInfo, to *uint) *ParamSet[N] {
-	params.flagSet.UintVarP(to, info.Name, info.Short, info.Default.(uint), info.Usage)
+	params.FlagSet.UintVarP(to, info.Name, info.Short, info.Default.(uint), info.Usage)
 
 	return params
 }
@@ -334,7 +334,7 @@ func (params *ParamSet[N]) BindUint(info *FlagInfo, to *uint) *ParamSet[N] {
 // BindUint8, binds int8 flag with a shorthand
 //
 func (params *ParamSet[N]) BindUint8(info *FlagInfo, to *uint8) *ParamSet[N] {
-	params.flagSet.Uint8VarP(to, info.Name, info.Short, info.Default.(uint8), info.Usage)
+	params.FlagSet.Uint8VarP(to, info.Name, info.Short, info.Default.(uint8), info.Usage)
 
 	return params
 }
@@ -342,7 +342,7 @@ func (params *ParamSet[N]) BindUint8(info *FlagInfo, to *uint8) *ParamSet[N] {
 // BindUint16, binds int16 flag with a shorthand
 //
 func (params *ParamSet[N]) BindUint16(info *FlagInfo, to *uint16) *ParamSet[N] {
-	params.flagSet.Uint16VarP(to, info.Name, info.Short, info.Default.(uint16), info.Usage)
+	params.FlagSet.Uint16VarP(to, info.Name, info.Short, info.Default.(uint16), info.Usage)
 
 	return params
 }
@@ -350,7 +350,7 @@ func (params *ParamSet[N]) BindUint16(info *FlagInfo, to *uint16) *ParamSet[N] {
 // BindUint32, binds int32 flag with a shorthand
 //
 func (params *ParamSet[N]) BindUint32(info *FlagInfo, to *uint32) *ParamSet[N] {
-	params.flagSet.Uint32VarP(to, info.Name, info.Short, info.Default.(uint32), info.Usage)
+	params.FlagSet.Uint32VarP(to, info.Name, info.Short, info.Default.(uint32), info.Usage)
 
 	return params
 }
@@ -358,7 +358,7 @@ func (params *ParamSet[N]) BindUint32(info *FlagInfo, to *uint32) *ParamSet[N] {
 // BindUint64, binds int64 flag with a shorthand
 //
 func (params *ParamSet[N]) BindUint64(info *FlagInfo, to *uint64) *ParamSet[N] {
-	params.flagSet.Uint64VarP(to, info.Name, info.Short, info.Default.(uint64), info.Usage)
+	params.FlagSet.Uint64VarP(to, info.Name, info.Short, info.Default.(uint64), info.Usage)
 
 	return params
 }
@@ -369,7 +369,7 @@ func (params *ParamSet[N]) BindUint64(info *FlagInfo, to *uint64) *ParamSet[N] {
 // When present, it is set to true as would be expected.
 //
 func (params *ParamSet[N]) BindBool(info *FlagInfo, to *bool) *ParamSet[N] {
-	params.flagSet.BoolVarP(to, info.Name, info.Short, false, info.Usage)
+	params.FlagSet.BoolVarP(to, info.Name, info.Short, false, info.Usage)
 
 	return params
 }
@@ -377,7 +377,7 @@ func (params *ParamSet[N]) BindBool(info *FlagInfo, to *bool) *ParamSet[N] {
 // BindFloat64, binds float64 flag with a shorthand
 //
 func (params *ParamSet[N]) BindFloat64(info *FlagInfo, to *float64) *ParamSet[N] {
-	params.flagSet.Float64VarP(to, info.Name, info.Short, info.Default.(float64), info.Usage)
+	params.FlagSet.Float64VarP(to, info.Name, info.Short, info.Default.(float64), info.Usage)
 
 	return params
 }
@@ -385,7 +385,7 @@ func (params *ParamSet[N]) BindFloat64(info *FlagInfo, to *float64) *ParamSet[N]
 // BindFloat32, binds float32 flag with a shorthand
 //
 func (params *ParamSet[N]) BindFloat32(info *FlagInfo, to *float32) *ParamSet[N] {
-	params.flagSet.Float32VarP(to, info.Name, info.Short, info.Default.(float32), info.Usage)
+	params.FlagSet.Float32VarP(to, info.Name, info.Short, info.Default.(float32), info.Usage)
 
 	return params
 }
@@ -404,13 +404,13 @@ func (params *ParamSet[N]) BindFloat32(info *FlagInfo, to *float32) *ParamSet[N]
 // flag, would need to have this assignment performed.
 //
 func (params *ParamSet[N]) BindEnum(info *FlagInfo, to *string) {
-	params.flagSet.StringVarP(to, info.Name, info.Short, info.Default.(string), info.Usage)
+	params.FlagSet.StringVarP(to, info.Name, info.Short, info.Default.(string), info.Usage)
 }
 
 // BindDuration, binds time.Duration flag with a shorthand
 //
 func (params *ParamSet[N]) BindDuration(info *FlagInfo, to *time.Duration) *ParamSet[N] {
-	params.flagSet.DurationVarP(to, info.Name, info.Short, info.Default.(time.Duration), info.Usage)
+	params.FlagSet.DurationVarP(to, info.Name, info.Short, info.Default.(time.Duration), info.Usage)
 
 	return params
 }
@@ -418,7 +418,7 @@ func (params *ParamSet[N]) BindDuration(info *FlagInfo, to *time.Duration) *Para
 // BindIp, binds time.Duration flag with a shorthand
 //
 func (params *ParamSet[N]) BindIp(info *FlagInfo, to *net.IP) *ParamSet[N] {
-	params.flagSet.IPVarP(to, info.Name, info.Short, info.Default.(net.IP), info.Usage)
+	params.FlagSet.IPVarP(to, info.Name, info.Short, info.Default.(net.IP), info.Usage)
 
 	return params
 }
@@ -426,7 +426,7 @@ func (params *ParamSet[N]) BindIp(info *FlagInfo, to *net.IP) *ParamSet[N] {
 // BindIpMask, binds net.IPMask flag with a shorthand
 //
 func (params *ParamSet[N]) BindIpMask(info *FlagInfo, to *net.IPMask) *ParamSet[N] {
-	params.flagSet.IPMaskVarP(to, info.Name, info.Short, info.Default.(net.IPMask), info.Usage)
+	params.FlagSet.IPMaskVarP(to, info.Name, info.Short, info.Default.(net.IPMask), info.Usage)
 
 	return params
 }
@@ -434,41 +434,41 @@ func (params *ParamSet[N]) BindIpMask(info *FlagInfo, to *net.IPMask) *ParamSet[
 // BindStringSlice, binds string slice flag with a shorthand
 //
 func (params *ParamSet[N]) BindStringSlice(info *FlagInfo, to *[]string) {
-	params.flagSet.StringSliceVarP(to, info.Name, info.Short, info.Default.([]string), info.Usage)
+	params.FlagSet.StringSliceVarP(to, info.Name, info.Short, info.Default.([]string), info.Usage)
 }
 
 // BindIntSlice, binds int slice flag with a shorthand
 //
 func (params *ParamSet[N]) BindIntSlice(info *FlagInfo, to *[]int) {
-	params.flagSet.IntSliceVarP(to, info.Name, info.Short, info.Default.([]int), info.Usage)
+	params.FlagSet.IntSliceVarP(to, info.Name, info.Short, info.Default.([]int), info.Usage)
 }
 
 // BindUintSlice, binds uint slice flag with a shorthand
 //
 func (params *ParamSet[N]) BindUintSlice(info *FlagInfo, to *[]uint) {
-	params.flagSet.UintSliceVarP(to, info.Name, info.Short, info.Default.([]uint), info.Usage)
+	params.FlagSet.UintSliceVarP(to, info.Name, info.Short, info.Default.([]uint), info.Usage)
 }
 
 // BindBoolSlice, binds uint slice flag with a shorthand
 //
 func (params *ParamSet[N]) BindBoolSlice(info *FlagInfo, to *[]bool) {
-	params.flagSet.BoolSliceVarP(to, info.Name, info.Short, info.Default.([]bool), info.Usage)
+	params.FlagSet.BoolSliceVarP(to, info.Name, info.Short, info.Default.([]bool), info.Usage)
 }
 
 // BindFloat64Slice, binds float64 slice flag with a shorthand
 //
 func (params *ParamSet[N]) BindFloat64Slice(info *FlagInfo, to *[]float64) {
-	params.flagSet.Float64SliceVarP(to, info.Name, info.Short, info.Default.([]float64), info.Usage)
+	params.FlagSet.Float64SliceVarP(to, info.Name, info.Short, info.Default.([]float64), info.Usage)
 }
 
 // BindFloat32Slice, binds float32 slice flag with a shorthand
 //
 func (params *ParamSet[N]) BindFloat32Slice(info *FlagInfo, to *[]float32) {
-	params.flagSet.Float32SliceVarP(to, info.Name, info.Short, info.Default.([]float32), info.Usage)
+	params.FlagSet.Float32SliceVarP(to, info.Name, info.Short, info.Default.([]float32), info.Usage)
 }
 
 // BindIpSlice, binds float32 slice flag with a shorthand
 //
 func (params *ParamSet[N]) BindIpSlice(info *FlagInfo, to *[]net.IP) {
-	params.flagSet.IPSliceVarP(to, info.Name, info.Short, info.Default.([]net.IP), info.Usage)
+	params.FlagSet.IPSliceVarP(to, info.Name, info.Short, info.Default.([]net.IP), info.Usage)
 }
