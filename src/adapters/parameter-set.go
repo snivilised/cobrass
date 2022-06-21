@@ -132,6 +132,14 @@ func (info *EnumInfo[E]) En(value string) E {
 	return E(info.reverseLookup[value])
 }
 
+// IsValid returns true if the string is an acceptable value for this enum
+// false otherwise.
+//
+func (info *EnumInfo[E]) IsValid(value string) bool {
+	_, found := info.reverseLookup[value]
+	return found
+}
+
 // Dump shows the contents of all acceptable values for the enum
 //
 func (info *EnumInfo[E]) Dump() {
