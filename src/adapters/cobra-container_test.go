@@ -52,7 +52,7 @@ var _ = Describe("CobraContainer", func() {
 		When("command previously registered", func() {
 			It("🧪 should: return registered command", func() {
 				name := DummyCommand.Name()
-				Container.RegisterRootChildCommand(DummyCommand)
+				Container.RegisterRootedCommand(DummyCommand)
 
 				message := fmt.Sprintf(
 					"❌ Container should contain previously added command '%v'",
@@ -74,17 +74,17 @@ var _ = Describe("CobraContainer", func() {
 		})
 	})
 
-	Context("RegisterRootChildCommand", func() {
+	Context("RegisterRootedCommand", func() {
 		When("command previously registered", func() {
 			It("🧪 should: return error", func() {
-				Container.RegisterRootChildCommand(DummyCommand)
+				Container.RegisterRootedCommand(DummyCommand)
 				name := DummyCommand.Name()
 
 				message := fmt.Sprintf(
 					"❌ Trying to register a root child command '%v' previously registered should return error",
 					name,
 				)
-				err := Container.RegisterRootChildCommand(DummyCommand)
+				err := Container.RegisterRootedCommand(DummyCommand)
 				Expect(err).Error().NotTo(BeNil(), message)
 			})
 		})
@@ -97,7 +97,7 @@ var _ = Describe("CobraContainer", func() {
 					"❌ Register a root child command '%v' previously NOT registered should NOT return error",
 					name,
 				)
-				err := Container.RegisterRootChildCommand(DummyCommand)
+				err := Container.RegisterRootedCommand(DummyCommand)
 				Expect(err).Error().To(BeNil(), message)
 			})
 		})
@@ -109,7 +109,7 @@ var _ = Describe("CobraContainer", func() {
 				It("🧪 should: return requested command error", func() {
 					name := DummyCommand.Name()
 					parent := ParentCommand.Name()
-					Container.RegisterRootChildCommand(ParentCommand)
+					Container.RegisterRootedCommand(ParentCommand)
 					Container.RegisterCommand(parent, DummyCommand)
 
 					err := Container.RegisterCommand(parent, DummyCommand)
@@ -126,7 +126,7 @@ var _ = Describe("CobraContainer", func() {
 				It("🧪 should: register requesyted command ok", func() {
 					name := DummyCommand.Name()
 					parent := ParentCommand.Name()
-					Container.RegisterRootChildCommand(ParentCommand)
+					Container.RegisterRootedCommand(ParentCommand)
 
 					err := Container.RegisterCommand(parent, DummyCommand)
 
@@ -187,7 +187,7 @@ var _ = Describe("CobraContainer", func() {
 						Long:  "Delta child command for test case",
 					},
 				}
-				Container.RegisterRootChildCommand(ParentCommand)
+				Container.RegisterRootedCommand(ParentCommand)
 
 				parent := ParentCommand.Name()
 
