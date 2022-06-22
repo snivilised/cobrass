@@ -93,14 +93,14 @@ func (container *CobraContainer) RegisterCommands(
 	return nil
 }
 
-// RegisterRootChildCommand stores a command inside the container as a direct descendent
+// RegisterRootedCommand stores a command inside the container as a direct descendent
 // of the root Cobra command and is added to the root command itself.
 //
 // - command: the Cobra command to register.
 //
 // Returns an error if the command with the same name has already been registered.
 //
-func (container *CobraContainer) RegisterRootChildCommand(
+func (container *CobraContainer) RegisterRootedCommand(
 	command *cobra.Command,
 ) error {
 
