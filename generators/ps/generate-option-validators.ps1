@@ -1,6 +1,6 @@
 
-[array]$instances = @(
-  [PSCustomObject]@{
+$types = @{
+  "Enum"     = [PSCustomObject]@{
     TypeName           = "Enum"
     GoType             = "string"
     UnderlyingTypeName = "String"
@@ -19,10 +19,15 @@
     DefSliceVal        = "[]string{}"
     ExpectSlice        = "[]string{""xml"", ""json"", ""text""}"
     #
-    Comparable         = $true
+    # Currently 'Comparable' for enum disabled because enum comparison would be
+    # performed in the string domain but it might make more sense to the use if
+    # it was in the int domain. We don't want to commit to publish this particluar
+    # api, if it's not clear how this would be implemented, so that it makes sense.
+    #
+    # Comparable         = $true
   }
 
-  , [PSCustomObject]@{
+  "String"   = [PSCustomObject]@{
     TypeName      = "String"
     GoType        = "string"
     FlagName      = "Pattern"
@@ -39,6 +44,7 @@
     ExpectSlice   = "[]string{""alpha"", ""beta"", ""delta""}"
     #
     Comparable    = $true
+    #
     BhTests       = @{
       "Within"      = @{
         First  = """c"""
@@ -64,7 +70,7 @@
       }
 
       # for string only!
-      # ????
+      #
       "IsMatch"     = @{
         First  = """\\d{2}-\\d{2}-\\d{4}"""
         Second = """null"""
@@ -121,7 +127,7 @@
     }
   }
 
-  , [PSCustomObject]@{
+  "Int"      = [PSCustomObject]@{
     TypeName      = "Int"
     GoType        = "int"
     FlagName      = "Offset"
@@ -140,179 +146,306 @@
     Threshold     = 10
     Value         = 9
     GtExpectNil   = "false"
+    #
+    BhTests       = @{
+      "Within"      = @{
+        First  = "3"
+        Second = "5"
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below   = @("2", "false")
+          EqualLo = @("3", "true")
+          Inside  = @("4", "true")
+          EqualHi = @("5", "true")
+          Above   = @("6", "false")
+        }
+      }
+
+      "Contains"    = @{
+        # Any test data that contains a type spec, needs to be defined by a template
+        #
+        First  = "[]{{SLICE-TYPE}}{1, 2, 3}"
+        Second = "0"
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          DoesContain    = @("1", "true")
+          DoesNotContain = @("99", "false")
+        }
+      }
+
+      "GreaterThan" = @{
+        First  = "3"
+        Second = "0"
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("2", "false")
+          Equal = @("3", "false")
+          Above = @("4", "true")
+        }
+      }
+
+      "AtLeast"     = @{
+        First  = "3"
+        Second = "0"
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("2", "false")
+          Equal = @("3", "true")
+          Above = @("4", "true")
+        }
+      }
+
+      "LessThan"    = @{
+        First  = "3"
+        Second = "0"
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("2", "true")
+          Equal = @("3", "false")
+          Above = @("4", "false")
+        }
+      }
+
+      "AtMost"      = @{
+        First  = "3"
+        Second = "0"
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("2", "true")
+          Equal = @("3", "true")
+          Above = @("4", "false")
+        }
+      }
+    }
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Int8"
-    GoType     = "int8"
-    FlagName   = "Offset8"
-    Short      = "o"
-    Def        = "int8(-1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Offset8 = int8(-99)"
-    Assert     = "Expect(value).To(Equal(int8(-99)))"
-    Equate     = "Equal"
+  "Int8"     = [PSCustomObject]@{
+    TypeName       = "Int8"
+    GoType         = "int8"
+    FlagName       = "Offset8"
+    Short          = "o"
+    Def            = "int8(-1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Offset8 = int8(-99)"
+    Assert         = "Expect(value).To(Equal(int8(-99)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "int8"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Int16"
-    GoType     = "int16"
-    FlagName   = "Offset16"
-    Short      = "o"
-    Def        = "int16(-1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Offset16 = int16(-999)"
-    Assert     = "Expect(value).To(Equal(int16(-999)))"
-    Equate     = "Equal"
+  "Int16"    = [PSCustomObject]@{
+    TypeName       = "Int16"
+    GoType         = "int16"
+    FlagName       = "Offset16"
+    Short          = "o"
+    Def            = "int16(-1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Offset16 = int16(-999)"
+    Assert         = "Expect(value).To(Equal(int16(-999)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "int16"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Int32"
-    GoType     = "int32"
-    FlagName   = "Offset32"
-    Short      = "o"
-    Def        = "int32(-1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Offset32 = int32(-9999)"
-    Assert     = "Expect(value).To(Equal(int32(-9999)))"
-    Equate     = "Equal"
+  "Int32"    = [PSCustomObject]@{
+    TypeName       = "Int32"
+    GoType         = "int32"
+    FlagName       = "Offset32"
+    Short          = "o"
+    Def            = "int32(-1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Offset32 = int32(-9999)"
+    Assert         = "Expect(value).To(Equal(int32(-9999)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "int32"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Int64"
-    GoType     = "int64"
-    FlagName   = "Offset64"
-    Short      = "o"
-    Def        = "int64(-1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Offset64 = int64(-99999)"
-    Assert     = "Expect(value).To(Equal(int64(-99999)))"
-    Equate     = "Equal"
+  "Int64"    = [PSCustomObject]@{
+    TypeName       = "Int64"
+    GoType         = "int64"
+    FlagName       = "Offset64"
+    Short          = "o"
+    Def            = "int64(-1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Offset64 = int64(-99999)"
+    Assert         = "Expect(value).To(Equal(int64(-99999)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "int64"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName      = "Uint"
-    GoType        = "uint"
-    FlagName      = "Count"
-    Short         = "c"
-    Def           = "uint(0)"
-    CastDef       = $true
-    Setup         = "paramSet.Native.Count = uint(99999)"
-    Assert        = "Expect(value).To(Equal(uint(99999)))"
-    Equate        = "Equal"
-    GenerateSlice = $true
-    SliceFlagName = "Points"
-    SliceShort    = "P"
-    DefSliceVal   = "[]uint{}"
-    ExpectSlice   = "[]uint{2, 4, 6, 8}"
+  "Unit"     = [PSCustomObject]@{
+    TypeName       = "Uint"
+    GoType         = "uint"
+    FlagName       = "Count"
+    Short          = "c"
+    Def            = "uint(0)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Count = uint(99999)"
+    Assert         = "Expect(value).To(Equal(uint(99999)))"
+    Equate         = "Equal"
+    GenerateSlice  = $true
+    SliceFlagName  = "Points"
+    SliceShort     = "P"
+    DefSliceVal    = "[]uint{}"
+    ExpectSlice    = "[]uint{2, 4, 6, 8}"
     #
-    Comparable    = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "uint"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Uint8"
-    GoType     = "uint8"
-    FlagName   = "Count8"
-    Short      = "c"
-    Def        = "uint8(1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Count8 = uint8(33)"
-    Assert     = "Expect(value).To(Equal(uint8(33)))"
-    Equate     = "Equal"
+  "Uint8"    = [PSCustomObject]@{
+    TypeName       = "Uint8"
+    GoType         = "uint8"
+    FlagName       = "Count8"
+    Short          = "c"
+    Def            = "uint8(1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Count8 = uint8(33)"
+    Assert         = "Expect(value).To(Equal(uint8(33)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "uint8"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Uint16"
-    GoType     = "uint16"
-    FlagName   = "Count16"
-    Short      = "c"
-    Def        = "uint16(1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Count16 = uint16(333)"
-    Assert     = "Expect(value).To(Equal(uint16(333)))"
-    Equate     = "Equal"
+  "Uint16"   = [PSCustomObject]@{
+    TypeName       = "Uint16"
+    GoType         = "uint16"
+    FlagName       = "Count16"
+    Short          = "c"
+    Def            = "uint16(1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Count16 = uint16(333)"
+    Assert         = "Expect(value).To(Equal(uint16(333)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "uint16"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Uint32"
-    GoType     = "uint32"
-    FlagName   = "Count32"
-    Short      = "c"
-    Def        = "uint32(1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Count32 = uint32(3333)"
-    Assert     = "Expect(value).To(Equal(uint32(3333)))"
-    Equate     = "Equal"
+  "Uint32"   = [PSCustomObject]@{
+    TypeName       = "Uint32"
+    GoType         = "uint32"
+    FlagName       = "Count32"
+    Short          = "c"
+    Def            = "uint32(1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Count32 = uint32(3333)"
+    Assert         = "Expect(value).To(Equal(uint32(3333)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "uint32"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName   = "Uint64"
-    GoType     = "uint64"
-    FlagName   = "Count64"
-    Short      = "c"
-    Def        = "uint64(1)"
-    CastDef    = $true
-    Setup      = "paramSet.Native.Count64 = uint64(33333)"
-    Assert     = "Expect(value).To(Equal(uint64(33333)))"
-    Equate     = "Equal"
+  "Uit64"    = [PSCustomObject]@{
+    TypeName       = "Uint64"
+    GoType         = "uint64"
+    FlagName       = "Count64"
+    Short          = "c"
+    Def            = "uint64(1)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Count64 = uint64(33333)"
+    Assert         = "Expect(value).To(Equal(uint64(33333)))"
+    Equate         = "Equal"
     #
-    Comparable = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "uint64"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName      = "Float32"
-    GoType        = "float32"
-    FlagName      = "Gradient"
-    Short         = "t"
-    Def           = "float32(999.123)"
-    CastDef       = $true
-    Setup         = "paramSet.Native.Gradient = float32(32.1234)"
-    Assert        = "Expect(value).To(Equal(float32(32.1234)))"
-    Equate        = "Equal"
-    GenerateSlice = $true
-    SliceFlagName = "Temperatures"
-    SliceShort    = "T"
-    DefSliceVal   = "[]float32{}"
-    ExpectSlice   = "[]float32{2.99, 4.99, 6.99, 8.99}"
+  "Float32"  = [PSCustomObject]@{
+    TypeName       = "Float32"
+    GoType         = "float32"
+    FlagName       = "Gradient"
+    Short          = "t"
+    Def            = "float32(999.123)"
+    CastDef        = $true
+    Setup          = "paramSet.Native.Gradient = float32(32.1234)"
+    Assert         = "Expect(value).To(Equal(float32(32.1234)))"
+    Equate         = "Equal"
+    GenerateSlice  = $true
+    SliceFlagName  = "Temperatures"
+    SliceShort     = "T"
+    DefSliceVal    = "[]float32{}"
+    ExpectSlice    = "[]float32{2.99, 4.99, 6.99, 8.99}"
     #
-    Comparable    = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "float32"
+    #
+    BhTests        = $null
   }
 
-  , [PSCustomObject]@{
-    TypeName      = "Float64"
-    GoType        = "float64"
-    FlagName      = "Threshold"
-    Short         = "t"
-    Def           = "float64(999.123)"
-    Setup         = "paramSet.Native.Threshold = float64(64.1234)"
-    Assert        = "Expect(value).To(Equal(float64(64.1234)))"
-    Equate        = "Equal"
-    GenerateSlice = $true
-    SliceFlagName = "Scales"
-    SliceShort    = "S"
-    DefSliceVal   = "[]float64{}"
-    ExpectSlice   = "[]float64{3.99, 5.99, 7.99, 9.99}"
+  "Float64"  = [PSCustomObject]@{
+    TypeName       = "Float64"
+    GoType         = "float64"
+    FlagName       = "Threshold"
+    Short          = "t"
+    Def            = "float64(999.123)"
+    Setup          = "paramSet.Native.Threshold = float64(64.1234)"
+    Assert         = "Expect(value).To(Equal(float64(64.1234)))"
+    Equate         = "Equal"
+    GenerateSlice  = $true
+    SliceFlagName  = "Scales"
+    SliceShort     = "S"
+    DefSliceVal    = "[]float64{}"
+    ExpectSlice    = "[]float64{3.99, 5.99, 7.99, 9.99}"
     #
-    Comparable    = $true
+    Comparable     = $true
+    #
+    BhParent       = "Int"
+    CastLiteralsAs = "float64"
+    #
+    BhTests        = $null
   }
 
   # Bool requires the manual definition of the not set test case
+  # There must be a way to implement this automatically as an exception.
   #
-  , [PSCustomObject]@{
+  "Bool"     = [PSCustomObject]@{
     TypeName      = "Bool"
     GoType        = "bool"
     FlagName      = "Concise"
@@ -328,7 +461,7 @@
     ExpectSlice   = "[]bool{true, false, true, false}"
   }
 
-  , [PSCustomObject]@{
+  "Duration" = [PSCustomObject]@{
     TypeName   = "Duration"
     GoType     = "time.Duration"
     FlagName   = "Latency"
@@ -349,7 +482,7 @@
     Comparable = $true
   }
 
-  , [PSCustomObject]@{
+  "IPNet"    = [PSCustomObject]@{
     TypeName = "IPNet"
     GoType   = "net.IPNet"
     FlagName = "IpAddress"
@@ -360,7 +493,7 @@
     Equate   = "BeEquivalentTo"
   }
 
-  , [PSCustomObject]@{
+  "IPMask"   = [PSCustomObject]@{
     TypeName = "IPMask"
     GoType   = "net.IPMask"
     FlagName = "IpMask"
@@ -370,11 +503,12 @@
     Assert   = "Expect(value).To(BeEquivalentTo(net.IPMask([]byte{255, 255, 255, 0})))"
     Equate   = "BeEquivalentTo"
   }
-)
+}
 
-$operators = @(
+[array]$operators = @(
   [PSCustomObject]@{
     Name               = "Within"
+    Documentation      = "fails validation if the option value does not lie within 'lo' and 'hi' (inclusive)"
     Dual               = $true
     Args               = "lo, hi"
     Condition          = "value >= lo && value <= hi"
@@ -390,6 +524,7 @@ $operators = @(
 
   , [PSCustomObject]@{
     Name               = "Contains"
+    Documentation      = "fails validation if the option value is not a member of the 'collection' slice"
     Contains           = $true
     MethodTemplate     = "{{OpName}}{{TypeName}}"
     Args               = "collection"
@@ -406,6 +541,7 @@ $operators = @(
 
   , [PSCustomObject]@{
     Name                 = "IsMatch"
+    Documentation        = "fails validation if the option value does not match the regular expression denoted by 'pattern'"
     AppliesOnlyTo        = "String"
     Args                 = "pattern"
     Condition            = "regexp.MustCompile(pattern).Match([]byte(value))"
@@ -422,6 +558,7 @@ $operators = @(
 
   , [PSCustomObject]@{
     Name            = "GreaterThan"
+    Documentation   = "fails validation if the option value is not comparably greater than 'threshold'"
     Args            = "threshold"
     Condition       = "value > threshold"
     ErrorMessage    = "not greater than"
@@ -432,6 +569,7 @@ $operators = @(
 
   , [PSCustomObject]@{
     Name            = "AtLeast"
+    Documentation   = "fails validation if the option value is not comparably greater than or equal to 'threshold'"
     Args            = "threshold"
     Condition       = "value >= threshold"
     ErrorMessage    = "not at least"
@@ -442,6 +580,7 @@ $operators = @(
 
   , [PSCustomObject]@{
     Name            = "LessThan"
+    Documentation   = "fails validation if the option value is not comparably less than 'threshold'"
     Args            = "threshold"
     Condition       = "value < threshold"
     ErrorMessage    = "not less than"
@@ -452,6 +591,7 @@ $operators = @(
 
   , [PSCustomObject]@{
     Name            = "AtMost"
+    Documentation   = "fails validation if the option value is not comparably less than or equal to 'threshold'"
     Args            = "threshold"
     Condition       = "value <= threshold"
     ErrorMessage    = "not at most"
@@ -470,11 +610,12 @@ Write-Host "🤖 Build-BinderHelperTests(gen-help-t) 🧪 => paramset-binder-hel
 function Build-Validators {
   # (option-validator-auto.go)
   #
-  [Alias("gen-ov", "genv")]
+  [Alias("gen-ov")]
   param()
 
-  $content = ($instances | ForEach-Object {
-      $spec = $_
+  $content = ($types.Keys | Sort-Object | ForEach-Object {
+      $spec = $types[$_]
+
       $validatorType = $spec.TypeName
       $validatorStruct = "$($validatorType)OptionValidator"
       $validatorFn = $("$($spec.TypeName)ValidatorFn")
@@ -541,13 +682,14 @@ func (validator $($sliceValidatorStruct)) Validate() error {
 function Build-ParamSet {
   # (param-set-auto.go)
   #
-  [Alias("gen-ps", "genp")]
+  [Alias("gen-ps")]
   param()
 
   # each operation defined independently
   #
-  $content = ($instances | ForEach-Object {
-      $spec = $_
+  $content = ($types.Keys | Sort-Object | ForEach-Object {
+      $spec = $types[$_]
+
       $validatorFn = $("$($spec.TypeName)ValidatorFn")
       $actualTypeName = [string]::IsNullOrEmpty($spec.UnderlyingTypeName) ? $spec.TypeName : $spec.UnderlyingTypeName
 
@@ -647,10 +789,11 @@ func (params *ParamSet[N]) BindValidated$($sliceTypeName)(info *FlagInfo, to *$(
 function Build-TestEntry {
   # (option-validator-auto_test.go)
   #
-  [Alias("gen-ov-t", "gent")]
+  [Alias("gen-ov-t")]
   param()
-  $content = ($instances | ForEach-Object {
-      $spec = $_
+  $content = ($types.Keys | Sort-Object | ForEach-Object {
+      $spec = $types[$_]
+
       $lowerFlagName = $spec.FlagName.ToLower()
       $default = $spec.QuoteExpect ? $('"' + $spec.Def + '"') : $spec.Def
       $bindTo = [string]::IsNullOrEmpty($spec.BindTo) ? $("&paramSet.Native.$($spec.FlagName)") : $spec.BindTo
@@ -709,11 +852,12 @@ Entry(nil, OvEntry{
 function Build-Predefined {
   # (paramset-binder-helpers-auto.go)
   #
-  [Alias("gen-help", "genpre")]
+  [Alias("gen-help")]
   param()
 
-  $content = ($instances | ForEach-Object {
-      $spec = $_
+  $content = ($types.Keys | Sort-Object | ForEach-Object {
+      $spec = $types[$_]
+
       if ($spec.Comparable) {
         foreach ($op in $operators) {
           if (-not([string]::IsNullOrEmpty($op.AppliesOnlyTo)) -and ($op.AppliesOnlyTo -ne $spec.TypeName)) {
@@ -742,8 +886,10 @@ function Build-Predefined {
           # generate BuildValidatedXXXXOp/BuildValidatedOpXXXX
           #
           @"
-// BindValidated$($methodSubStmt) (documentation comment pending ...)
-//
+// BindValidated$($methodSubStmt) is an alternative to using BindValidated$($spec.TypeName). Instead of providing
+// a function, the client passes in argument(s): '$($op.Args)' to utilise predefined functionality as a helper.
+// This method $($op.Documentation).
+// 
 func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$($spec.GoType), $($argumentsStmt)) OptionValidator {
 
   params.Bind$($spec.TypeName)(info, to)
@@ -767,6 +913,15 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
           if ($op.Negate) {
             $negateErrorMessage = "$($op.NegateErrorMessage): $($op.ArgsPlaceholder)"
 
+            $methodSubStmt = if (-not([string]::IsNullOrEmpty($op.MethodTemplate))) {
+              $op.MethodTemplate.Replace("{{OpName}}", $op.Name).Replace("{{TypeName}}", $spec.TypeName)
+            }
+            else {
+              # Default is TypeNameOpName, eg: StringGreaterThan
+              #
+              $("$($spec.TypeName)$($op.Name)")
+            }
+
             $notMethodSubStmt = if (-not([string]::IsNullOrEmpty($op.NegateMethodTemplate))) {
               $op.NegateMethodTemplate.Replace("{{OpName}}", $op.Name).Replace("{{TypeName}}", $spec.TypeName)
             }
@@ -777,10 +932,12 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
             }
             $negatedCondition = $("!($($op.Condition))")
   
-            # generate not method
+            # generate NOT method
             #
             @"
-// BindValidated$($notMethodSubStmt) (documentation comment pending ...)
+// BindValidated$($notMethodSubStmt) is an alternative to using BindValidated$($spec.TypeName). Instead of providing
+// a function, the client passes in argument(s): '$($op.Args)' to utilise predefined functionality as a helper.
+// This method performs the inverse of 'BindValidated$($methodSubStmt)'.
 //
 func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to *$($spec.GoType), $($argumentsStmt)) OptionValidator {
 
@@ -813,20 +970,41 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
 function Build-BinderHelperTests {
   # (paramset-binder-helpers-auto_test.go)
   #
-  [Alias("gen-help-t", "genth")]
+  [Alias("gen-help-t")]
   param()
 
-  $content = ($instances | ForEach-Object {
-      $spec = $_
+  $content = ($types.Keys | Sort-Object | ForEach-Object {
+      $spec = $types[$_]
 
-      if ($spec.Comparable -and ($spec.TypeName -eq "String")) {
-        # string check is temporary
+      if ($spec.Comparable) {
         $bindTo = [string]::IsNullOrEmpty($spec.BindTo) ? $("&paramSet.Native.$($spec.FlagName)") : $spec.BindTo
         $default = $spec.QuoteExpect ? $('"' + $spec.Def + '"') : $spec.Def
         [int]$ValueIndex = 0
         [int]$ExpectNilIndex = 1
 
-        foreach ($op in $operators) {
+        foreach ($current in $operators) {
+          if (($null -eq $spec.BhTests)) {
+            if (-not([string]::IsNullOrEmpty($spec.BhParent)) -and ($types.ContainsKey($spec.BhParent))) {
+              $spec.BhTests = $types[$spec.BhParent].BhTests
+
+              if ($null -eq $spec.BhTests) {
+                Write-Host "===> 🔥🔥🔥 BhParent '$($spec.BhParent)' of '$($spec.TypeName)' does not have a valid BhTests, skipping ..."
+                continue
+              }
+            }
+            else {
+              continue
+            }
+          }
+          $cast = $spec.CastLiteralsAs
+
+          if (-not($spec.BhTests.ContainsKey($current.Name))) {
+            continue
+          }
+
+          $op = $current
+          $testOp = $($spec.BhTests[$op.Name])
+
           # $methodSubStmt = Get-MethodSubStmtFromOperator -Spec $spec -Operator $op
           $methodSubStmt = if (-not([string]::IsNullOrEmpty($op.MethodTemplate))) {
             $op.MethodTemplate.Replace("{{OpName}}", $op.Name).Replace("{{TypeName}}", $spec.TypeName)
@@ -836,20 +1014,29 @@ function Build-BinderHelperTests {
             #
             $("$($spec.TypeName)$($op.Name)")
           }
-          $testOp = $($spec.BhTests[$op.Name])
 
-          if ($op.Dual -and ($spec.TypeName -eq "String")) {
-            # string check is temporary
+
+          if ($op.Dual) {
             # dual means we need hi and lo
-            $belowEntryArgs = $("$($testOp.Entry.Below[$ValueIndex]), $($testOp.Entry.Below[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $insideEntryArgs = $("$($testOp.Entry.Inside[$ValueIndex]), $($testOp.Entry.Inside[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $equalLoEntryArgs = $("$($testOp.Entry.EqualLo[$ValueIndex]), $($testOp.Entry.EqualLo[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $equalHiEntryArgs = $("$($testOp.Entry.EqualHi[$ValueIndex]), $($testOp.Entry.EqualHi[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $aboveEntryArgs = $("$($testOp.Entry.Above[$ValueIndex]), $($testOp.Entry.Above[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+            #
+            if ([string]::IsNullOrEmpty($cast)) {
+              $belowEntryArgs = $("$($testOp.Entry.Below[$ValueIndex]), $($testOp.Entry.Below[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+              $equalLoEntryArgs = $("$($testOp.Entry.EqualLo[$ValueIndex]), $($testOp.Entry.EqualLo[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+              $insideEntryArgs = $("$($testOp.Entry.Inside[$ValueIndex]), $($testOp.Entry.Inside[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+              $equalHiEntryArgs = $("$($testOp.Entry.EqualHi[$ValueIndex]), $($testOp.Entry.EqualHi[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+              $aboveEntryArgs = $("$($testOp.Entry.Above[$ValueIndex]), $($testOp.Entry.Above[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")  
+            }
+            else {
+              $belowEntryArgs = $("$($cast)($($testOp.Entry.Below[$ValueIndex])), $($testOp.Entry.Below[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+              $equalLoEntryArgs = $("$($cast)($($testOp.Entry.EqualLo[$ValueIndex])), $($testOp.Entry.EqualLo[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+              $insideEntryArgs = $("$($cast)($($testOp.Entry.Inside[$ValueIndex])), $($testOp.Entry.Inside[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+              $equalHiEntryArgs = $("$($cast)($($testOp.Entry.EqualHi[$ValueIndex])), $($testOp.Entry.EqualHi[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+              $aboveEntryArgs = $("$($cast)($($testOp.Entry.Above[$ValueIndex])), $($testOp.Entry.Above[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+            }
 
             @"
 DescribeTable("BindValidated$($methodSubStmt)",
-  func(given, should string, value string, expectNil bool, low, high $($spec.GoType)) {
+  func(given, should string, value $($spec.GoType), expectNil bool, low, high $($spec.GoType)) {
     validator := paramSet.BindValidated$($methodSubStmt)(
       adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), low, high,
@@ -863,7 +1050,7 @@ DescribeTable("BindValidated$($methodSubStmt)",
     }
 
   },
-  func(given, should string, value string, expectNil bool, low, high $($spec.GoType)) string {
+  func(given, should string, value $($spec.GoType), expectNil bool, low, high $($spec.GoType)) string {
     return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
       given, should)
   },
@@ -876,14 +1063,22 @@ DescribeTable("BindValidated$($methodSubStmt)",
 
 "@
           }
-          elseif ($op.Contains -and ($spec.TypeName -eq "String")) {
-            # string check is temporary
+          elseif ($op.Contains) {
             # contains requires a sequence
-            $doesContainArgs = $("$($testOp.Entry.DoesContain[$ValueIndex]), $($testOp.Entry.DoesContain[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $doesNotContainArgs = $("$($testOp.Entry.DoesNotContain[$ValueIndex]), $($testOp.Entry.DoesNotContain[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+            if ([string]::IsNullOrEmpty($cast)) {
+              $literalCollection = $($testOp.First).Replace("{{SLICE-TYPE}}", $($spec.GoType))
+              $doesContainArgs = $("$($testOp.Entry.DoesContain[$ValueIndex]), $($testOp.Entry.DoesContain[$ExpectNilIndex]), $literalCollection, $($testOp.Second)")
+              $doesNotContainArgs = $("$($testOp.Entry.DoesNotContain[$ValueIndex]), $($testOp.Entry.DoesNotContain[$ExpectNilIndex]), $literalCollection, $($testOp.Second)")
+            }
+            else {
+              $literalCollection = $($testOp.First).Replace("{{SLICE-TYPE}}", $($cast))
+              $doesContainArgs = $("$($cast)($($testOp.Entry.DoesContain[$ValueIndex])), $($testOp.Entry.DoesContain[$ExpectNilIndex]), $literalCollection, $($cast)($($testOp.Second))")
+              $doesNotContainArgs = $("$($cast)($($testOp.Entry.DoesNotContain[$ValueIndex])), $($testOp.Entry.DoesNotContain[$ExpectNilIndex]), $literalCollection, $($cast)($($testOp.Second))")
+            }
+
             @"
 DescribeTable("BindValidated$($methodSubStmt)",
-  func(given, should string, value $($spec.GoType), expectNil bool, collection []$($spec.GoType), dummy string) {
+  func(given, should string, value $($spec.GoType), expectNil bool, collection []$($spec.GoType), dummy $($spec.GoType)) {
     validator := paramSet.BindValidated$($methodSubStmt)(
       adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), collection,
@@ -897,7 +1092,7 @@ DescribeTable("BindValidated$($methodSubStmt)",
     }
 
   },
-  func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
+  func(given, should string, value $($spec.GoType), expectNil bool, collection []$($spec.GoType), dummy $($spec.GoType)) string {
     return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
       given, should)
   },
@@ -908,13 +1103,20 @@ DescribeTable("BindValidated$($methodSubStmt)",
 "@
           }
           elseif (($op.AppliesOnlyTo -eq "String") -and ($op.Name -eq "IsMatch")) {
-            # generate BindValidatedStringIsMatch
+            # generate DescribeTable tests for BindValidatedStringIsMatch
             #
-            $doesMatchArgs = $("$($testOp.Entry.DoesMatch[$ValueIndex]), $($testOp.Entry.DoesMatch[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $doesNotMatchArgs = $("$($testOp.Entry.DoesNotMatch[$ValueIndex]), $($testOp.Entry.DoesNotMatch[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+            if ([string]::IsNullOrEmpty($cast)) {
+              $doesMatchArgs = $("$($testOp.Entry.DoesMatch[$ValueIndex]), $($testOp.Entry.DoesMatch[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+              $doesNotMatchArgs = $("$($testOp.Entry.DoesNotMatch[$ValueIndex]), $($testOp.Entry.DoesNotMatch[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+            }
+            else {
+              $doesMatchArgs = $("$($cast)($($testOp.Entry.DoesMatch[$ValueIndex])), $($testOp.Entry.DoesMatch[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+              $doesNotMatchArgs = $("$($cast)($($testOp.Entry.DoesNotMatch[$ValueIndex])), $($testOp.Entry.DoesNotMatch[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+            }
+
             @"
 DescribeTable("BindValidated$($methodSubStmt)",
-  func(given, should string, value string, expectNil bool, pattern, dummy string) {
+  func(given, should string, value $($spec.GoType), expectNil bool, pattern, dummy string) {
     validator := paramSet.BindValidated$($methodSubStmt)(
       adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), pattern,
@@ -947,13 +1149,13 @@ DescribeTable("BindValidated$($methodSubStmt)",
                 #
                 $("$($spec.TypeName)Not$($op.Name)")
               }
-              # For the not scenario test cases, we should still be able to use the exact same test data,
+              # For the NOT scenario test cases, we should still be able to use the exact same test data,
               # but just tweak the test code to reverse the logic. Eg, so we simply negate the expectNil
               # and everything else stays the same.
               #
               @"
 DescribeTable("BindValidated$($notMethodSubStmt)",
-  func(given, should string, value string, expectNil bool, pattern, dummy string) {
+  func(given, should string, value $($spec.GoType), expectNil bool, pattern, dummy string) {
     validator := paramSet.BindValidated$($notMethodSubStmt)(
       adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), pattern,
@@ -978,13 +1180,17 @@ DescribeTable("BindValidated$($notMethodSubStmt)",
 "@  
             }
           }
-          elseif ($spec.TypeName -eq "String") {
-            # string check is temporary
-            $belowEntryArgs = $("$($testOp.Entry.Below[$ValueIndex]), $($testOp.Entry.Below[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $aboveEntryArgs = $("$($testOp.Entry.Above[$ValueIndex]), $($testOp.Entry.Above[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
-            $equalEntryArgs = $(
-              "$($testOp.Entry.Equal[$ValueIndex]), $($testOp.Entry.Equal[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)"
-            )
+          else {
+            if ([string]::IsNullOrEmpty($cast)) {
+              $belowEntryArgs = $("$($testOp.Entry.Below[$ValueIndex]), $($testOp.Entry.Below[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+              $equalEntryArgs = $("$($testOp.Entry.Equal[$ValueIndex]), $($testOp.Entry.Equal[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+              $aboveEntryArgs = $("$($testOp.Entry.Above[$ValueIndex]), $($testOp.Entry.Above[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
+            }
+            else {
+              $belowEntryArgs = $("$($cast)($($testOp.Entry.Below[$ValueIndex])), $($testOp.Entry.Below[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+              $equalEntryArgs = $("$($cast)($($testOp.Entry.Equal[$ValueIndex])), $($testOp.Entry.Equal[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")                
+              $aboveEntryArgs = $("$($cast)($($testOp.Entry.Above[$ValueIndex])), $($testOp.Entry.Above[$ExpectNilIndex]), $($cast)($($testOp.First)), $($cast)($($testOp.Second))")
+            }
 
             @"
 DescribeTable("BindValidated$($methodSubStmt)",
