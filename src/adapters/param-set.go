@@ -82,7 +82,7 @@ func (info *FlagInfo) FlagName() string {
 // var paramSet *ParamSet[WidgetParameterSet]
 //
 type ParamSet[N any] struct {
-	validatorGroup *ValidatorGroup
+	validators *ValidatorContainer
 	// Native is the native client defined parameter set instance, which
 	// must be a struct.
 	//
@@ -107,19 +107,18 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 		name := reflect.TypeOf(*ps.Native).Name()
 		panic(fmt.Sprintf("the native param set object ('%v') must be a structure", name))
 	}
-	ps.validatorGroup = NewValidatorGroup(nil)
+	ps.validators = NewValidatorContainer(nil)
 	return ps
 }
 
-// Validator returns the compound validator that the client will need to invoke
+// Validators returns the compound validator that the client will need to invoke
 // option validation (Run), typically inside the Run function defined on
 // the cobra command.
 //
-func (params *ParamSet[N]) Validator() *ValidatorGroup {
-	return params.validatorGroup
+func (params *ParamSet[N]) Validators() *ValidatorContainer {
+	return params.validators
 }
 
-//
 // BindEnum, binds pseudo int based enum flag with a shorthand. Note that normally
 // the client would bind to a member of the native parameter set. However, since
 // there is a discrepency between the type of the native int based pseudo enum

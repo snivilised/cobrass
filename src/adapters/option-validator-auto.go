@@ -15,7 +15,7 @@ type BoolValidatorFn func(value bool) error
 // BoolValidatorFn for bool type. This is the instance that is returned by
 // validated binder function BindValidatedBool. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type BoolOptionValidator GenericOptionValidatorWrapper[bool]
 
@@ -47,7 +47,7 @@ type DurationValidatorFn func(value time.Duration) error
 // DurationValidatorFn for time.Duration type. This is the instance that is returned by
 // validated binder function BindValidatedDuration. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type DurationOptionValidator GenericOptionValidatorWrapper[time.Duration]
 
@@ -65,7 +65,7 @@ type EnumValidatorFn func(value string) error
 // EnumValidatorFn for string type. This is the instance that is returned by
 // validated binder function BindValidatedEnum. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type EnumOptionValidator GenericOptionValidatorWrapper[string]
 
@@ -83,7 +83,7 @@ type Float32ValidatorFn func(value float32) error
 // Float32ValidatorFn for float32 type. This is the instance that is returned by
 // validated binder function BindValidatedFloat32. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Float32OptionValidator GenericOptionValidatorWrapper[float32]
 
@@ -115,7 +115,7 @@ type Float64ValidatorFn func(value float64) error
 // Float64ValidatorFn for float64 type. This is the instance that is returned by
 // validated binder function BindValidatedFloat64. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Float64OptionValidator GenericOptionValidatorWrapper[float64]
 
@@ -147,7 +147,7 @@ type IntValidatorFn func(value int) error
 // IntValidatorFn for int type. This is the instance that is returned by
 // validated binder function BindValidatedInt. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type IntOptionValidator GenericOptionValidatorWrapper[int]
 
@@ -179,7 +179,7 @@ type Int16ValidatorFn func(value int16) error
 // Int16ValidatorFn for int16 type. This is the instance that is returned by
 // validated binder function BindValidatedInt16. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Int16OptionValidator GenericOptionValidatorWrapper[int16]
 
@@ -197,7 +197,7 @@ type Int32ValidatorFn func(value int32) error
 // Int32ValidatorFn for int32 type. This is the instance that is returned by
 // validated binder function BindValidatedInt32. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Int32OptionValidator GenericOptionValidatorWrapper[int32]
 
@@ -215,7 +215,7 @@ type Int64ValidatorFn func(value int64) error
 // Int64ValidatorFn for int64 type. This is the instance that is returned by
 // validated binder function BindValidatedInt64. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Int64OptionValidator GenericOptionValidatorWrapper[int64]
 
@@ -233,7 +233,7 @@ type Int8ValidatorFn func(value int8) error
 // Int8ValidatorFn for int8 type. This is the instance that is returned by
 // validated binder function BindValidatedInt8. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Int8OptionValidator GenericOptionValidatorWrapper[int8]
 
@@ -251,7 +251,7 @@ type IPMaskValidatorFn func(value net.IPMask) error
 // IPMaskValidatorFn for net.IPMask type. This is the instance that is returned by
 // validated binder function BindValidatedIPMask. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type IPMaskOptionValidator GenericOptionValidatorWrapper[net.IPMask]
 
@@ -269,7 +269,7 @@ type IPNetValidatorFn func(value net.IPNet) error
 // IPNetValidatorFn for net.IPNet type. This is the instance that is returned by
 // validated binder function BindValidatedIPNet. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type IPNetOptionValidator GenericOptionValidatorWrapper[net.IPNet]
 
@@ -287,7 +287,7 @@ type StringValidatorFn func(value string) error
 // StringValidatorFn for string type. This is the instance that is returned by
 // validated binder function BindValidatedString. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type StringOptionValidator GenericOptionValidatorWrapper[string]
 
@@ -319,7 +319,7 @@ type Uint16ValidatorFn func(value uint16) error
 // Uint16ValidatorFn for uint16 type. This is the instance that is returned by
 // validated binder function BindValidatedUint16. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Uint16OptionValidator GenericOptionValidatorWrapper[uint16]
 
@@ -337,7 +337,7 @@ type Uint32ValidatorFn func(value uint32) error
 // Uint32ValidatorFn for uint32 type. This is the instance that is returned by
 // validated binder function BindValidatedUint32. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Uint32OptionValidator GenericOptionValidatorWrapper[uint32]
 
@@ -355,7 +355,7 @@ type Uint8ValidatorFn func(value uint8) error
 // Uint8ValidatorFn for uint8 type. This is the instance that is returned by
 // validated binder function BindValidatedUint8. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Uint8OptionValidator GenericOptionValidatorWrapper[uint8]
 
@@ -373,7 +373,7 @@ type Uint64ValidatorFn func(value uint64) error
 // Uint64ValidatorFn for uint64 type. This is the instance that is returned by
 // validated binder function BindValidatedUint64. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type Uint64OptionValidator GenericOptionValidatorWrapper[uint64]
 
@@ -391,7 +391,7 @@ type UintValidatorFn func(value uint) error
 // UintValidatorFn for uint type. This is the instance that is returned by
 // validated binder function BindValidatedUint. If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type UintOptionValidator GenericOptionValidatorWrapper[uint]
 
