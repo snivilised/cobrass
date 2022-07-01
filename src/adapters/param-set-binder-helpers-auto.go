@@ -28,7 +28,7 @@ func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -50,7 +50,7 @@ func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *ti
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -72,7 +72,7 @@ func (params *ParamSet[N]) BindValidatedContainsDuration(info *FlagInfo, to *tim
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -94,7 +94,7 @@ func (params *ParamSet[N]) BindValidatedDurationNotContains(info *FlagInfo, to *
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -116,7 +116,7 @@ func (params *ParamSet[N]) BindValidatedDurationGreaterThan(info *FlagInfo, to *
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -138,7 +138,7 @@ func (params *ParamSet[N]) BindValidatedDurationAtLeast(info *FlagInfo, to *time
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -160,7 +160,7 @@ func (params *ParamSet[N]) BindValidatedDurationLessThan(info *FlagInfo, to *tim
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -182,7 +182,7 @@ func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -204,7 +204,7 @@ func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float3
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -226,7 +226,7 @@ func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *flo
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -248,7 +248,7 @@ func (params *ParamSet[N]) BindValidatedContainsFloat32(info *FlagInfo, to *floa
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -270,7 +270,7 @@ func (params *ParamSet[N]) BindValidatedFloat32NotContains(info *FlagInfo, to *f
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -292,7 +292,7 @@ func (params *ParamSet[N]) BindValidatedFloat32GreaterThan(info *FlagInfo, to *f
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -314,7 +314,7 @@ func (params *ParamSet[N]) BindValidatedFloat32AtLeast(info *FlagInfo, to *float
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -336,7 +336,7 @@ func (params *ParamSet[N]) BindValidatedFloat32LessThan(info *FlagInfo, to *floa
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -358,7 +358,7 @@ func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float3
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -380,7 +380,7 @@ func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float6
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -402,7 +402,7 @@ func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *flo
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -424,7 +424,7 @@ func (params *ParamSet[N]) BindValidatedContainsFloat64(info *FlagInfo, to *floa
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -446,7 +446,7 @@ func (params *ParamSet[N]) BindValidatedFloat64NotContains(info *FlagInfo, to *f
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -468,7 +468,7 @@ func (params *ParamSet[N]) BindValidatedFloat64GreaterThan(info *FlagInfo, to *f
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -490,7 +490,7 @@ func (params *ParamSet[N]) BindValidatedFloat64AtLeast(info *FlagInfo, to *float
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -512,7 +512,7 @@ func (params *ParamSet[N]) BindValidatedFloat64LessThan(info *FlagInfo, to *floa
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -534,7 +534,7 @@ func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float6
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -556,7 +556,7 @@ func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, lo, h
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -578,7 +578,7 @@ func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -600,7 +600,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt(info *FlagInfo, to *int, col
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -622,7 +622,7 @@ func (params *ParamSet[N]) BindValidatedIntNotContains(info *FlagInfo, to *int, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -644,7 +644,7 @@ func (params *ParamSet[N]) BindValidatedIntGreaterThan(info *FlagInfo, to *int, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -666,7 +666,7 @@ func (params *ParamSet[N]) BindValidatedIntAtLeast(info *FlagInfo, to *int, thre
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -688,7 +688,7 @@ func (params *ParamSet[N]) BindValidatedIntLessThan(info *FlagInfo, to *int, thr
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -710,7 +710,7 @@ func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, thres
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -732,7 +732,7 @@ func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, l
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -754,7 +754,7 @@ func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -776,7 +776,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt16(info *FlagInfo, to *int16,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -798,7 +798,7 @@ func (params *ParamSet[N]) BindValidatedInt16NotContains(info *FlagInfo, to *int
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -820,7 +820,7 @@ func (params *ParamSet[N]) BindValidatedInt16GreaterThan(info *FlagInfo, to *int
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -842,7 +842,7 @@ func (params *ParamSet[N]) BindValidatedInt16AtLeast(info *FlagInfo, to *int16, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -864,7 +864,7 @@ func (params *ParamSet[N]) BindValidatedInt16LessThan(info *FlagInfo, to *int16,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -886,7 +886,7 @@ func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, t
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -908,7 +908,7 @@ func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, l
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -930,7 +930,7 @@ func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -952,7 +952,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt32(info *FlagInfo, to *int32,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -974,7 +974,7 @@ func (params *ParamSet[N]) BindValidatedInt32NotContains(info *FlagInfo, to *int
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -996,7 +996,7 @@ func (params *ParamSet[N]) BindValidatedInt32GreaterThan(info *FlagInfo, to *int
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1018,7 +1018,7 @@ func (params *ParamSet[N]) BindValidatedInt32AtLeast(info *FlagInfo, to *int32, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1040,7 +1040,7 @@ func (params *ParamSet[N]) BindValidatedInt32LessThan(info *FlagInfo, to *int32,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1062,7 +1062,7 @@ func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, t
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1084,7 +1084,7 @@ func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, l
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1106,7 +1106,7 @@ func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1128,7 +1128,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt64(info *FlagInfo, to *int64,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1150,7 +1150,7 @@ func (params *ParamSet[N]) BindValidatedInt64NotContains(info *FlagInfo, to *int
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1172,7 +1172,7 @@ func (params *ParamSet[N]) BindValidatedInt64GreaterThan(info *FlagInfo, to *int
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1194,7 +1194,7 @@ func (params *ParamSet[N]) BindValidatedInt64AtLeast(info *FlagInfo, to *int64, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1216,7 +1216,7 @@ func (params *ParamSet[N]) BindValidatedInt64LessThan(info *FlagInfo, to *int64,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1238,7 +1238,7 @@ func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, t
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1260,7 +1260,7 @@ func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, lo,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1282,7 +1282,7 @@ func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1304,7 +1304,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt8(info *FlagInfo, to *int8, c
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1326,7 +1326,7 @@ func (params *ParamSet[N]) BindValidatedInt8NotContains(info *FlagInfo, to *int8
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1348,7 +1348,7 @@ func (params *ParamSet[N]) BindValidatedInt8GreaterThan(info *FlagInfo, to *int8
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1370,7 +1370,7 @@ func (params *ParamSet[N]) BindValidatedInt8AtLeast(info *FlagInfo, to *int8, th
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1392,7 +1392,7 @@ func (params *ParamSet[N]) BindValidatedInt8LessThan(info *FlagInfo, to *int8, t
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1414,7 +1414,7 @@ func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, thr
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1436,7 +1436,7 @@ func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1458,7 +1458,7 @@ func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *stri
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1480,7 +1480,7 @@ func (params *ParamSet[N]) BindValidatedContainsString(info *FlagInfo, to *strin
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1502,7 +1502,7 @@ func (params *ParamSet[N]) BindValidatedStringNotContains(info *FlagInfo, to *st
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1524,7 +1524,7 @@ func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1546,7 +1546,7 @@ func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *str
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1568,7 +1568,7 @@ func (params *ParamSet[N]) BindValidatedStringGreaterThan(info *FlagInfo, to *st
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1590,7 +1590,7 @@ func (params *ParamSet[N]) BindValidatedStringAtLeast(info *FlagInfo, to *string
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1612,7 +1612,7 @@ func (params *ParamSet[N]) BindValidatedStringLessThan(info *FlagInfo, to *strin
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1634,7 +1634,7 @@ func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1656,7 +1656,7 @@ func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1678,7 +1678,7 @@ func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1700,7 +1700,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint16(info *FlagInfo, to *uint1
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1722,7 +1722,7 @@ func (params *ParamSet[N]) BindValidatedUint16NotContains(info *FlagInfo, to *ui
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1744,7 +1744,7 @@ func (params *ParamSet[N]) BindValidatedUint16GreaterThan(info *FlagInfo, to *ui
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1766,7 +1766,7 @@ func (params *ParamSet[N]) BindValidatedUint16AtLeast(info *FlagInfo, to *uint16
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1788,7 +1788,7 @@ func (params *ParamSet[N]) BindValidatedUint16LessThan(info *FlagInfo, to *uint1
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1810,7 +1810,7 @@ func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1832,7 +1832,7 @@ func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1854,7 +1854,7 @@ func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1876,7 +1876,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint32(info *FlagInfo, to *uint3
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1898,7 +1898,7 @@ func (params *ParamSet[N]) BindValidatedUint32NotContains(info *FlagInfo, to *ui
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1920,7 +1920,7 @@ func (params *ParamSet[N]) BindValidatedUint32GreaterThan(info *FlagInfo, to *ui
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1942,7 +1942,7 @@ func (params *ParamSet[N]) BindValidatedUint32AtLeast(info *FlagInfo, to *uint32
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1964,7 +1964,7 @@ func (params *ParamSet[N]) BindValidatedUint32LessThan(info *FlagInfo, to *uint3
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -1986,7 +1986,7 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2008,7 +2008,7 @@ func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, l
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2030,7 +2030,7 @@ func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2052,7 +2052,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2074,7 +2074,7 @@ func (params *ParamSet[N]) BindValidatedUint8NotContains(info *FlagInfo, to *uin
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2096,7 +2096,7 @@ func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uin
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2118,7 +2118,7 @@ func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2140,7 +2140,7 @@ func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2162,7 +2162,7 @@ func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, t
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2184,7 +2184,7 @@ func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2206,7 +2206,7 @@ func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2228,7 +2228,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint64(info *FlagInfo, to *uint6
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2250,7 +2250,7 @@ func (params *ParamSet[N]) BindValidatedUint64NotContains(info *FlagInfo, to *ui
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2272,7 +2272,7 @@ func (params *ParamSet[N]) BindValidatedUint64GreaterThan(info *FlagInfo, to *ui
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2294,7 +2294,7 @@ func (params *ParamSet[N]) BindValidatedUint64AtLeast(info *FlagInfo, to *uint64
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2316,7 +2316,7 @@ func (params *ParamSet[N]) BindValidatedUint64LessThan(info *FlagInfo, to *uint6
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2338,7 +2338,7 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2360,7 +2360,7 @@ func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, lo,
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2382,7 +2382,7 @@ func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, 
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2404,7 +2404,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint(info *FlagInfo, to *uint, c
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2426,7 +2426,7 @@ func (params *ParamSet[N]) BindValidatedUintNotContains(info *FlagInfo, to *uint
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2448,7 +2448,7 @@ func (params *ParamSet[N]) BindValidatedUintGreaterThan(info *FlagInfo, to *uint
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2470,7 +2470,7 @@ func (params *ParamSet[N]) BindValidatedUintAtLeast(info *FlagInfo, to *uint, th
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2492,7 +2492,7 @@ func (params *ParamSet[N]) BindValidatedUintLessThan(info *FlagInfo, to *uint, t
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -2514,7 +2514,7 @@ func (params *ParamSet[N]) BindValidatedUintAtMost(info *FlagInfo, to *uint, thr
 		},
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 

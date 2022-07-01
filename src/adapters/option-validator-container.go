@@ -4,10 +4,10 @@ import "fmt"
 
 type ValidatorCollection map[string]OptionValidator
 
-// ValidatorGroup manages the collection of client defined option validator
+// ValidatorContainer manages the collection of client defined option validator
 // functions.
 //
-type ValidatorGroup struct {
+type ValidatorContainer struct {
 	validators ValidatorCollection
 }
 
@@ -19,33 +19,33 @@ type ValidatorGroupOptions struct {
 	Size uint
 }
 
-// NewValidatorGroup creates an initialised ValidatorGroup instance. To
+// NewValidatorContainer creates an initialised ValidatorContainer instance. To
 // use defaults, pass in nil for options.
 //
-func NewValidatorGroup(options *ValidatorGroupOptions) *ValidatorGroup {
+func NewValidatorContainer(options *ValidatorGroupOptions) *ValidatorContainer {
 	size := uint(1)
 	if options != nil && options.Size > 0 {
 		size = options.Size
 	}
-	return &ValidatorGroup{
+	return &ValidatorContainer{
 		validators: make(ValidatorCollection, size),
 	}
 }
 
-func (group ValidatorGroup) Add(flag string, validator OptionValidator) {
-	if _, found := group.validators[flag]; found {
+func (container ValidatorContainer) Add(flag string, validator OptionValidator) {
+	if _, found := container.validators[flag]; found {
 		message := fmt.Errorf("failed to add validator for flag: '%v', because it already exists",
 			flag)
 		panic(message)
 	}
-	group.validators[flag] = validator
+	container.validators[flag] = validator
 }
 
 // Get returns the option validator for the specified flag, nil if
 // not found.
 //
-func (group ValidatorGroup) Get(flag string) OptionValidator {
-	if validator, found := group.validators[flag]; found {
+func (container ValidatorContainer) Get(flag string) OptionValidator {
+	if validator, found := container.validators[flag]; found {
 		return validator
 	}
 	return nil
@@ -54,9 +54,9 @@ func (group ValidatorGroup) Get(flag string) OptionValidator {
 // Run invokes all validators registered by calling their Vaildate method, which
 // in turn, invokes the client defined validator function.
 //
-func (group ValidatorGroup) Run() error {
+func (container ValidatorContainer) Run() error {
 
-	for _, validator := range group.validators {
+	for _, validator := range container.validators {
 		if err := validator.Validate(); err != nil {
 			return err
 		}

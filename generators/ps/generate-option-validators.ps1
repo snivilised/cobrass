@@ -634,7 +634,7 @@ type $($validatorFn) func(value $($spec.GoType)) error
 // $($validatorFn) for $($spec.GoType) type. This is the instance that is returned by
 // validated binder function BindValidated$($spec.TypeName). If not using the ParamSet
 // (which is recommended), the client should add this instance to a self managed
-// ValidatorGroup.
+// ValidatorContainer.
 //
 type $($validatorStruct) GenericOptionValidatorWrapper[$($spec.GoType)]
 
@@ -725,7 +725,7 @@ func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$(
     Fn:    validator,
     Value: to,
   }
-  params.validatorGroup.Add(info.FlagName(), wrapper)
+  params.validators.Add(info.FlagName(), wrapper)
   return wrapper
 }
 
@@ -772,7 +772,7 @@ func (params *ParamSet[N]) BindValidated$($sliceTypeName)(info *FlagInfo, to *$(
     Fn:    validator,
     Value: to,
   }
-  params.validatorGroup.Add(info.FlagName(), wrapper)
+  params.validators.Add(info.FlagName(), wrapper)
   return wrapper
 }
 
@@ -904,7 +904,7 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
     },
     Value: to,
   }
-  params.validatorGroup.Add(info.FlagName(), wrapper)
+  params.validators.Add(info.FlagName(), wrapper)
   return wrapper
 }
 
@@ -953,7 +953,7 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
     },
     Value: to,
   }
-  params.validatorGroup.Add(info.FlagName(), wrapper)
+  params.validators.Add(info.FlagName(), wrapper)
   return wrapper
 }
             

@@ -11,30 +11,30 @@ import (
 )
 
 var _ = Describe("OptionValidatorGroup", func() {
-	var validators *adapters.ValidatorGroup
+	var validators *adapters.ValidatorContainer
 	var rootCommand *cobra.Command
 	var widgetCommand *cobra.Command
 	var paramSet *adapters.ParamSet[WidgetParameterSet]
 
 	Context("NewValidatorGroup", func() {
 		When("options set to nil", func() {
-			It("🧪 should: create ValidatorGroup with default options", func() {
-				validators = adapters.NewValidatorGroup(nil)
+			It("🧪 should: create ValidatorContainer with default options", func() {
+				validators = adapters.NewValidatorContainer(nil)
 				Expect(validators).ToNot(BeNil())
 			})
 		})
 
 		When("options specified", func() {
-			It("🧪 should: create ValidatorGroup", func() {
-				validators = adapters.NewValidatorGroup(nil)
+			It("🧪 should: create ValidatorContainer", func() {
+				validators = adapters.NewValidatorContainer(nil)
 				Expect(validators).ToNot(BeNil())
 			})
 		})
 	})
 
-	Context("ValidatorGroup", func() {
+	Context("ValidatorContainer", func() {
 		BeforeEach(func() {
-			validators = adapters.NewValidatorGroup(nil)
+			validators = adapters.NewValidatorContainer(nil)
 
 			rootCommand = &cobra.Command{
 				Use:   "peek",

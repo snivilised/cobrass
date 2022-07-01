@@ -31,7 +31,7 @@ func (params *ParamSet[N]) BindValidatedBool(info *FlagInfo, to *bool, validator
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -59,7 +59,7 @@ func (params *ParamSet[N]) BindValidatedBoolSlice(info *FlagInfo, to *[]bool, va
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -87,7 +87,7 @@ func (params *ParamSet[N]) BindValidatedDuration(info *FlagInfo, to *time.Durati
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -115,7 +115,7 @@ func (params *ParamSet[N]) BindValidatedEnum(info *FlagInfo, to *string, validat
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -143,7 +143,7 @@ func (params *ParamSet[N]) BindValidatedFloat32(info *FlagInfo, to *float32, val
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -171,7 +171,7 @@ func (params *ParamSet[N]) BindValidatedFloat32Slice(info *FlagInfo, to *[]float
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -199,7 +199,7 @@ func (params *ParamSet[N]) BindValidatedFloat64(info *FlagInfo, to *float64, val
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -227,7 +227,7 @@ func (params *ParamSet[N]) BindValidatedFloat64Slice(info *FlagInfo, to *[]float
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -255,7 +255,7 @@ func (params *ParamSet[N]) BindValidatedInt(info *FlagInfo, to *int, validator I
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -283,7 +283,7 @@ func (params *ParamSet[N]) BindValidatedIntSlice(info *FlagInfo, to *[]int, vali
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -311,7 +311,7 @@ func (params *ParamSet[N]) BindValidatedInt16(info *FlagInfo, to *int16, validat
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -339,7 +339,7 @@ func (params *ParamSet[N]) BindValidatedInt32(info *FlagInfo, to *int32, validat
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -367,7 +367,7 @@ func (params *ParamSet[N]) BindValidatedInt64(info *FlagInfo, to *int64, validat
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -395,7 +395,7 @@ func (params *ParamSet[N]) BindValidatedInt8(info *FlagInfo, to *int8, validator
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -423,7 +423,7 @@ func (params *ParamSet[N]) BindValidatedIPMask(info *FlagInfo, to *net.IPMask, v
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -451,7 +451,7 @@ func (params *ParamSet[N]) BindValidatedIPNet(info *FlagInfo, to *net.IPNet, val
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -479,7 +479,7 @@ func (params *ParamSet[N]) BindValidatedString(info *FlagInfo, to *string, valid
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -507,7 +507,7 @@ func (params *ParamSet[N]) BindValidatedStringSlice(info *FlagInfo, to *[]string
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -535,7 +535,7 @@ func (params *ParamSet[N]) BindValidatedUint16(info *FlagInfo, to *uint16, valid
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -563,7 +563,7 @@ func (params *ParamSet[N]) BindValidatedUint32(info *FlagInfo, to *uint32, valid
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -591,7 +591,7 @@ func (params *ParamSet[N]) BindValidatedUint8(info *FlagInfo, to *uint8, validat
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -619,7 +619,7 @@ func (params *ParamSet[N]) BindValidatedUint64(info *FlagInfo, to *uint64, valid
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -647,7 +647,7 @@ func (params *ParamSet[N]) BindValidatedUint(info *FlagInfo, to *uint, validator
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 
@@ -675,7 +675,7 @@ func (params *ParamSet[N]) BindValidatedUintSlice(info *FlagInfo, to *[]uint, va
 		Fn:    validator,
 		Value: to,
 	}
-	params.validatorGroup.Add(info.FlagName(), wrapper)
+	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
 }
 

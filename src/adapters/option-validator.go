@@ -9,7 +9,7 @@ type OptionValidator interface {
 }
 
 // Needed because its not possible to create a type safe hetrogenious collection
-// of objects that would be required for the ValidatorGroup
+// of objects that would be required for the ValidatorContainer
 //
 type GenericOptionValidatorWrapper[T any] struct {
 	Fn    func(value T) error
