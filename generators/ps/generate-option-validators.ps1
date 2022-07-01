@@ -18,6 +18,31 @@ $types = @{
     SliceShort         = "F"
     DefSliceVal        = "[]string{}"
     ExpectSlice        = "[]string{""xml"", ""json"", ""text""}"
+    BindDoc = @"
+
+// Note that normally the client would bind to a member of the native parameter
+// set. However, since there is a discrepency between the type of the native int
+// based pseudo enum member and the equivalent acceptable string value typed by
+// the user on the command line (idiomatically stored on the enum info), the
+// client needs to extract the enum value from the enum info, something like this:
+//
+// paramSet.Native.Format = OutputFormatEnumInfo.Value()
+//
+// The best place to put this would be inside the PreRun/PreRunE function, assuming the
+// paramset and the enum info are both in scope. Actually, every int based enum
+// flag, would need to have this assignment performed.
+//
+"@
+
+    BindValidatedDoc = @"
+
+// Custom enum types created via the generic 'EnumInfo'/'EnumValue' come with a 'IsValid' method.
+// The client can utilise this method inside a custom function passed into 'BindValidatedEnum'.
+// The implementation would simply call this method, either on the EnumInfo or the EnumValue.
+// Please see the readme for more details.
+//
+"@
+
     #
     # Currently 'Comparable' for enum disabled because enum comparison would be
     # performed in the string domain but it might make more sense to the use if
@@ -698,7 +723,7 @@ function Build-ParamSet {
       @"
 // Bind$($spec.TypeName) binds $($spec.GoType) slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name.
-//
+//$($spec.BindDoc)
 func (params *ParamSet[N]) Bind$($spec.TypeName)(info *FlagInfo, to *$($spec.GoType)) *ParamSet[N] {
   if info.Short == "" {
     params.FlagSet.$($actualTypeName)Var(to, info.FlagName(), info.Default.($($spec.GoType)), info.Usage)
@@ -717,7 +742,7 @@ func (params *ParamSet[N]) Bind$($spec.TypeName)(info *FlagInfo, to *$($spec.GoT
 // BindValidated$($spec.TypeName) binds $($spec.GoType) slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name. Client can provide a
 // function to validate option values of $($spec.GoType) type.
-//
+//$($spec.BindValidatedDoc)
 func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$($spec.GoType), validator $($validatorFn)) OptionValidator {
 
   params.Bind$($spec.TypeName)(info, to)
