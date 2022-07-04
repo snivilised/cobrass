@@ -71,41 +71,6 @@ var _ = Describe("OptionValidator", func() {
 		// ----> auto generated(Build-TestEntry/gen-ov-t)
 
 		Entry(nil, OvEntry{
-			Message: "bool type (auto)",
-			Setup: func() {
-				paramSet.Native.Concise = true
-			},
-			Validator: func() adapters.OptionValidator {
-
-				return paramSet.BindValidatedBool(
-					adapters.NewFlagInfo("concise", "c", false),
-					&paramSet.Native.Concise,
-					func(value bool) error {
-						Expect(value).To(BeTrue())
-						return nil
-					},
-				)
-			},
-		}),
-
-		Entry(nil, OvEntry{
-			Message: "[]bool type (auto)",
-			Setup: func() {
-				paramSet.Native.Switches = []bool{true, false, true, false}
-			},
-			Validator: func() adapters.OptionValidator {
-				return paramSet.BindValidatedBoolSlice(
-					adapters.NewFlagInfo("Switches", "S", []bool{}),
-					&paramSet.Native.Switches,
-					func(value []bool) error {
-						Expect(value).To(Equal([]bool{true, false, true, false}))
-						return nil
-					},
-				)
-			},
-		}),
-
-		Entry(nil, OvEntry{
 			Message: "time.Duration type (auto)",
 			Setup: func() {
 				paramSet.Native.Latency, _ = time.ParseDuration("300ms")
@@ -145,13 +110,13 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "float32 type (auto)",
 			Setup: func() {
-				paramSet.Native.Gradient = float32(32.1234)
+				paramSet.Native.Gradientf32 = float32(32.1234)
 			},
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedFloat32(
-					adapters.NewFlagInfo("gradient", "t", float32(999.123)),
-					&paramSet.Native.Gradient,
+					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					&paramSet.Native.Gradientf32,
 					func(value float32) error {
 						Expect(value).To(Equal(float32(32.1234)))
 						return nil
@@ -163,12 +128,12 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "[]float32 type (auto)",
 			Setup: func() {
-				paramSet.Native.Temperatures = []float32{2.99, 4.99, 6.99, 8.99}
+				paramSet.Native.Gradientsf32 = []float32{2.99, 4.99, 6.99, 8.99}
 			},
 			Validator: func() adapters.OptionValidator {
 				return paramSet.BindValidatedFloat32Slice(
-					adapters.NewFlagInfo("Temperatures", "T", []float32{}),
-					&paramSet.Native.Temperatures,
+					adapters.NewFlagInfo("Gradientsf32", "G", []float32{}),
+					&paramSet.Native.Gradientsf32,
 					func(value []float32) error {
 						Expect(value).To(Equal([]float32{2.99, 4.99, 6.99, 8.99}))
 						return nil
@@ -180,13 +145,13 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "float64 type (auto)",
 			Setup: func() {
-				paramSet.Native.Threshold = float64(64.1234)
+				paramSet.Native.Gradientf64 = float64(64.1234)
 			},
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedFloat64(
-					adapters.NewFlagInfo("threshold", "t", float64(999.123)),
-					&paramSet.Native.Threshold,
+					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					&paramSet.Native.Gradientf64,
 					func(value float64) error {
 						Expect(value).To(Equal(float64(64.1234)))
 						return nil
@@ -198,12 +163,12 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "[]float64 type (auto)",
 			Setup: func() {
-				paramSet.Native.Scales = []float64{3.99, 5.99, 7.99, 9.99}
+				paramSet.Native.Gradientsf64 = []float64{3.99, 5.99, 7.99, 9.99}
 			},
 			Validator: func() adapters.OptionValidator {
 				return paramSet.BindValidatedFloat64Slice(
-					adapters.NewFlagInfo("Scales", "S", []float64{}),
-					&paramSet.Native.Scales,
+					adapters.NewFlagInfo("Gradientsf64", "G", []float64{}),
+					&paramSet.Native.Gradientsf64,
 					func(value []float64) error {
 						Expect(value).To(Equal([]float64{3.99, 5.99, 7.99, 9.99}))
 						return nil
@@ -233,12 +198,12 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "[]int type (auto)",
 			Setup: func() {
-				paramSet.Native.Dimensions = []int{2, 4, 6, 8}
+				paramSet.Native.Offsets = []int{2, 4, 6, 8}
 			},
 			Validator: func() adapters.OptionValidator {
 				return paramSet.BindValidatedIntSlice(
-					adapters.NewFlagInfo("Dimensions", "D", []int{}),
-					&paramSet.Native.Dimensions,
+					adapters.NewFlagInfo("Offsets", "D", []int{}),
+					&paramSet.Native.Offsets,
 					func(value []int) error {
 						Expect(value).To(Equal([]int{2, 4, 6, 8}))
 						return nil
@@ -284,6 +249,23 @@ var _ = Describe("OptionValidator", func() {
 		}),
 
 		Entry(nil, OvEntry{
+			Message: "[]int32 type (auto)",
+			Setup: func() {
+				paramSet.Native.Offsets32 = []int32{2, 4, 6, 8}
+			},
+			Validator: func() adapters.OptionValidator {
+				return paramSet.BindValidatedInt32Slice(
+					adapters.NewFlagInfo("Offsets32", "O", []int32{}),
+					&paramSet.Native.Offsets32,
+					func(value []int32) error {
+						Expect(value).To(Equal([]int32{2, 4, 6, 8}))
+						return nil
+					},
+				)
+			},
+		}),
+
+		Entry(nil, OvEntry{
 			Message: "int64 type (auto)",
 			Setup: func() {
 				paramSet.Native.Offset64 = int64(-99999)
@@ -295,6 +277,23 @@ var _ = Describe("OptionValidator", func() {
 					&paramSet.Native.Offset64,
 					func(value int64) error {
 						Expect(value).To(Equal(int64(-99999)))
+						return nil
+					},
+				)
+			},
+		}),
+
+		Entry(nil, OvEntry{
+			Message: "[]int64 type (auto)",
+			Setup: func() {
+				paramSet.Native.Offsets64 = []int64{2, 4, 6, 8}
+			},
+			Validator: func() adapters.OptionValidator {
+				return paramSet.BindValidatedInt64Slice(
+					adapters.NewFlagInfo("Offsets64", "O", []int64{}),
+					&paramSet.Native.Offsets64,
+					func(value []int64) error {
+						Expect(value).To(Equal([]int64{2, 4, 6, 8}))
 						return nil
 					},
 				)
@@ -376,12 +375,12 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "[]string type (auto)",
 			Setup: func() {
-				paramSet.Native.Categories = []string{"alpha", "beta", "delta"}
+				paramSet.Native.Directories = []string{"alpha", "beta", "delta"}
 			},
 			Validator: func() adapters.OptionValidator {
 				return paramSet.BindValidatedStringSlice(
-					adapters.NewFlagInfo("Categories", "C", []string{}),
-					&paramSet.Native.Categories,
+					adapters.NewFlagInfo("Directories", "C", []string{}),
+					&paramSet.Native.Directories,
 					func(value []string) error {
 						Expect(value).To(Equal([]string{"alpha", "beta", "delta"}))
 						return nil
@@ -427,24 +426,6 @@ var _ = Describe("OptionValidator", func() {
 		}),
 
 		Entry(nil, OvEntry{
-			Message: "uint8 type (auto)",
-			Setup: func() {
-				paramSet.Native.Count8 = uint8(33)
-			},
-			Validator: func() adapters.OptionValidator {
-
-				return paramSet.BindValidatedUint8(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
-					&paramSet.Native.Count8,
-					func(value uint8) error {
-						Expect(value).To(Equal(uint8(33)))
-						return nil
-					},
-				)
-			},
-		}),
-
-		Entry(nil, OvEntry{
 			Message: "uint64 type (auto)",
 			Setup: func() {
 				paramSet.Native.Count64 = uint64(33333)
@@ -456,6 +437,24 @@ var _ = Describe("OptionValidator", func() {
 					&paramSet.Native.Count64,
 					func(value uint64) error {
 						Expect(value).To(Equal(uint64(33333)))
+						return nil
+					},
+				)
+			},
+		}),
+
+		Entry(nil, OvEntry{
+			Message: "uint8 type (auto)",
+			Setup: func() {
+				paramSet.Native.Count8 = uint8(33)
+			},
+			Validator: func() adapters.OptionValidator {
+
+				return paramSet.BindValidatedUint8(
+					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					&paramSet.Native.Count8,
+					func(value uint8) error {
+						Expect(value).To(Equal(uint8(33)))
 						return nil
 					},
 				)
@@ -483,12 +482,12 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "[]uint type (auto)",
 			Setup: func() {
-				paramSet.Native.Points = []uint{2, 4, 6, 8}
+				paramSet.Native.Counts = []uint{2, 4, 6, 8}
 			},
 			Validator: func() adapters.OptionValidator {
 				return paramSet.BindValidatedUintSlice(
-					adapters.NewFlagInfo("Points", "P", []uint{}),
-					&paramSet.Native.Points,
+					adapters.NewFlagInfo("Counts", "P", []uint{}),
+					&paramSet.Native.Counts,
 					func(value []uint) error {
 						Expect(value).To(Equal([]uint{2, 4, 6, 8}))
 						return nil

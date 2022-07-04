@@ -43,10 +43,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat32Within",
 			func(given, should string, value float32, expectNil bool, low, high float32) {
 				validator := paramSet.BindValidatedFloat32Within(
-					adapters.NewFlagInfo("gradient", "t", float32(999.123)),
-					&paramSet.Native.Gradient, low, high,
+					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					&paramSet.Native.Gradientf32, low, high,
 				)
-				paramSet.Native.Gradient = value
+				paramSet.Native.Gradientf32 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -69,10 +69,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedContainsFloat32",
 			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) {
 				validator := paramSet.BindValidatedContainsFloat32(
-					adapters.NewFlagInfo("gradient", "t", float32(999.123)),
-					&paramSet.Native.Gradient, collection,
+					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					&paramSet.Native.Gradientf32, collection,
 				)
-				paramSet.Native.Gradient = value
+				paramSet.Native.Gradientf32 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -92,10 +92,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat32GreaterThan",
 			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
 				validator := paramSet.BindValidatedFloat32GreaterThan(
-					adapters.NewFlagInfo("gradient", "t", float32(999.123)),
-					&paramSet.Native.Gradient, threshold,
+					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					&paramSet.Native.Gradientf32, threshold,
 				)
-				paramSet.Native.Gradient = value
+				paramSet.Native.Gradientf32 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -116,10 +116,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat32AtLeast",
 			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
 				validator := paramSet.BindValidatedFloat32AtLeast(
-					adapters.NewFlagInfo("gradient", "t", float32(999.123)),
-					&paramSet.Native.Gradient, threshold,
+					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					&paramSet.Native.Gradientf32, threshold,
 				)
-				paramSet.Native.Gradient = value
+				paramSet.Native.Gradientf32 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -140,10 +140,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat32LessThan",
 			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
 				validator := paramSet.BindValidatedFloat32LessThan(
-					adapters.NewFlagInfo("gradient", "t", float32(999.123)),
-					&paramSet.Native.Gradient, threshold,
+					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					&paramSet.Native.Gradientf32, threshold,
 				)
-				paramSet.Native.Gradient = value
+				paramSet.Native.Gradientf32 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -164,10 +164,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat32AtMost",
 			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
 				validator := paramSet.BindValidatedFloat32AtMost(
-					adapters.NewFlagInfo("gradient", "t", float32(999.123)),
-					&paramSet.Native.Gradient, threshold,
+					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					&paramSet.Native.Gradientf32, threshold,
 				)
-				paramSet.Native.Gradient = value
+				paramSet.Native.Gradientf32 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -188,10 +188,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat64Within",
 			func(given, should string, value float64, expectNil bool, low, high float64) {
 				validator := paramSet.BindValidatedFloat64Within(
-					adapters.NewFlagInfo("threshold", "t", float64(999.123)),
-					&paramSet.Native.Threshold, low, high,
+					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					&paramSet.Native.Gradientf64, low, high,
 				)
-				paramSet.Native.Threshold = value
+				paramSet.Native.Gradientf64 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -214,10 +214,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedContainsFloat64",
 			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) {
 				validator := paramSet.BindValidatedContainsFloat64(
-					adapters.NewFlagInfo("threshold", "t", float64(999.123)),
-					&paramSet.Native.Threshold, collection,
+					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					&paramSet.Native.Gradientf64, collection,
 				)
-				paramSet.Native.Threshold = value
+				paramSet.Native.Gradientf64 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -237,10 +237,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat64GreaterThan",
 			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
 				validator := paramSet.BindValidatedFloat64GreaterThan(
-					adapters.NewFlagInfo("threshold", "t", float64(999.123)),
-					&paramSet.Native.Threshold, threshold,
+					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					&paramSet.Native.Gradientf64, threshold,
 				)
-				paramSet.Native.Threshold = value
+				paramSet.Native.Gradientf64 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -261,10 +261,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat64AtLeast",
 			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
 				validator := paramSet.BindValidatedFloat64AtLeast(
-					adapters.NewFlagInfo("threshold", "t", float64(999.123)),
-					&paramSet.Native.Threshold, threshold,
+					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					&paramSet.Native.Gradientf64, threshold,
 				)
-				paramSet.Native.Threshold = value
+				paramSet.Native.Gradientf64 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -285,10 +285,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat64LessThan",
 			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
 				validator := paramSet.BindValidatedFloat64LessThan(
-					adapters.NewFlagInfo("threshold", "t", float64(999.123)),
-					&paramSet.Native.Threshold, threshold,
+					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					&paramSet.Native.Gradientf64, threshold,
 				)
-				paramSet.Native.Threshold = value
+				paramSet.Native.Gradientf64 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -309,10 +309,10 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		DescribeTable("BindValidatedFloat64AtMost",
 			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
 				validator := paramSet.BindValidatedFloat64AtMost(
-					adapters.NewFlagInfo("threshold", "t", float64(999.123)),
-					&paramSet.Native.Threshold, threshold,
+					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					&paramSet.Native.Gradientf64, threshold,
 				)
-				paramSet.Native.Threshold = value
+				paramSet.Native.Gradientf64 = value
 
 				if expectNil {
 					Expect(validator.Validate()).Error().To(BeNil())
@@ -1536,151 +1536,6 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "value is above threshold", "NOT return error", uint32(4), false, uint32(3), uint32(0)),
 		)
 
-		DescribeTable("BindValidatedUint8Within",
-			func(given, should string, value uint8, expectNil bool, low, high uint8) {
-				validator := paramSet.BindValidatedUint8Within(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
-					&paramSet.Native.Count8, low, high,
-				)
-				paramSet.Native.Count8 = value
-
-				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
-				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
-				}
-
-			},
-			func(given, should string, value uint8, expectNil bool, low, high uint8) string {
-				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
-					given, should)
-			},
-			Entry(nil, "value is below range", "return error", uint8(2), false, uint8(3), uint8(5)),
-			Entry(nil, "value is equal to low end of range", "return error", uint8(3), true, uint8(3), uint8(5)),
-			Entry(nil, "value is inside range", "return error", uint8(4), true, uint8(3), uint8(5)),
-			Entry(nil, "value is equal to high end of range", "return error", uint8(5), true, uint8(3), uint8(5)),
-			Entry(nil, "value is above range", "NOT return error", uint8(6), false, uint8(3), uint8(5)),
-		)
-
-		DescribeTable("BindValidatedContainsUint8",
-			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) {
-				validator := paramSet.BindValidatedContainsUint8(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
-					&paramSet.Native.Count8, collection,
-				)
-				paramSet.Native.Count8 = value
-
-				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
-				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
-				}
-
-			},
-			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) string {
-				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
-					given, should)
-			},
-			Entry(nil, "collection contains member", "return error", uint8(1), true, []uint8{1, 2, 3}, uint8(0)),
-			Entry(nil, "collection does not contain member", "return error", uint8(99), false, []uint8{1, 2, 3}, uint8(0)),
-		)
-
-		DescribeTable("BindValidatedUint8GreaterThan",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
-				validator := paramSet.BindValidatedUint8GreaterThan(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
-					&paramSet.Native.Count8, threshold,
-				)
-				paramSet.Native.Count8 = value
-
-				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
-				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
-				}
-
-			},
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
-				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
-					given, should)
-			},
-			Entry(nil, "value is below threshold", "return error", uint8(2), false, uint8(3), uint8(0)),
-			Entry(nil, "value is equal to threshold", "return error", uint8(3), false, uint8(3), uint8(0)),
-			Entry(nil, "value is above threshold", "NOT return error", uint8(4), true, uint8(3), uint8(0)),
-		)
-
-		DescribeTable("BindValidatedUint8AtLeast",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
-				validator := paramSet.BindValidatedUint8AtLeast(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
-					&paramSet.Native.Count8, threshold,
-				)
-				paramSet.Native.Count8 = value
-
-				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
-				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
-				}
-
-			},
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
-				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
-					given, should)
-			},
-			Entry(nil, "value is below threshold", "return error", uint8(2), false, uint8(3), uint8(0)),
-			Entry(nil, "value is equal to threshold", "return error", uint8(3), true, uint8(3), uint8(0)),
-			Entry(nil, "value is above threshold", "NOT return error", uint8(4), true, uint8(3), uint8(0)),
-		)
-
-		DescribeTable("BindValidatedUint8LessThan",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
-				validator := paramSet.BindValidatedUint8LessThan(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
-					&paramSet.Native.Count8, threshold,
-				)
-				paramSet.Native.Count8 = value
-
-				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
-				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
-				}
-
-			},
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
-				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
-					given, should)
-			},
-			Entry(nil, "value is below threshold", "return error", uint8(2), true, uint8(3), uint8(0)),
-			Entry(nil, "value is equal to threshold", "return error", uint8(3), false, uint8(3), uint8(0)),
-			Entry(nil, "value is above threshold", "NOT return error", uint8(4), false, uint8(3), uint8(0)),
-		)
-
-		DescribeTable("BindValidatedUint8AtMost",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
-				validator := paramSet.BindValidatedUint8AtMost(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
-					&paramSet.Native.Count8, threshold,
-				)
-				paramSet.Native.Count8 = value
-
-				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
-				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
-				}
-
-			},
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
-				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
-					given, should)
-			},
-			Entry(nil, "value is below threshold", "return error", uint8(2), true, uint8(3), uint8(0)),
-			Entry(nil, "value is equal to threshold", "return error", uint8(3), true, uint8(3), uint8(0)),
-			Entry(nil, "value is above threshold", "NOT return error", uint8(4), false, uint8(3), uint8(0)),
-		)
-
 		DescribeTable("BindValidatedUint64Within",
 			func(given, should string, value uint64, expectNil bool, low, high uint64) {
 				validator := paramSet.BindValidatedUint64Within(
@@ -1824,6 +1679,151 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "value is below threshold", "return error", uint64(2), true, uint64(3), uint64(0)),
 			Entry(nil, "value is equal to threshold", "return error", uint64(3), true, uint64(3), uint64(0)),
 			Entry(nil, "value is above threshold", "NOT return error", uint64(4), false, uint64(3), uint64(0)),
+		)
+
+		DescribeTable("BindValidatedUint8Within",
+			func(given, should string, value uint8, expectNil bool, low, high uint8) {
+				validator := paramSet.BindValidatedUint8Within(
+					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					&paramSet.Native.Count8, low, high,
+				)
+				paramSet.Native.Count8 = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value uint8, expectNil bool, low, high uint8) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "value is below range", "return error", uint8(2), false, uint8(3), uint8(5)),
+			Entry(nil, "value is equal to low end of range", "return error", uint8(3), true, uint8(3), uint8(5)),
+			Entry(nil, "value is inside range", "return error", uint8(4), true, uint8(3), uint8(5)),
+			Entry(nil, "value is equal to high end of range", "return error", uint8(5), true, uint8(3), uint8(5)),
+			Entry(nil, "value is above range", "NOT return error", uint8(6), false, uint8(3), uint8(5)),
+		)
+
+		DescribeTable("BindValidatedContainsUint8",
+			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) {
+				validator := paramSet.BindValidatedContainsUint8(
+					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					&paramSet.Native.Count8, collection,
+				)
+				paramSet.Native.Count8 = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "collection contains member", "return error", uint8(1), true, []uint8{1, 2, 3}, uint8(0)),
+			Entry(nil, "collection does not contain member", "return error", uint8(99), false, []uint8{1, 2, 3}, uint8(0)),
+		)
+
+		DescribeTable("BindValidatedUint8GreaterThan",
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+				validator := paramSet.BindValidatedUint8GreaterThan(
+					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					&paramSet.Native.Count8, threshold,
+				)
+				paramSet.Native.Count8 = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "value is below threshold", "return error", uint8(2), false, uint8(3), uint8(0)),
+			Entry(nil, "value is equal to threshold", "return error", uint8(3), false, uint8(3), uint8(0)),
+			Entry(nil, "value is above threshold", "NOT return error", uint8(4), true, uint8(3), uint8(0)),
+		)
+
+		DescribeTable("BindValidatedUint8AtLeast",
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+				validator := paramSet.BindValidatedUint8AtLeast(
+					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					&paramSet.Native.Count8, threshold,
+				)
+				paramSet.Native.Count8 = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "value is below threshold", "return error", uint8(2), false, uint8(3), uint8(0)),
+			Entry(nil, "value is equal to threshold", "return error", uint8(3), true, uint8(3), uint8(0)),
+			Entry(nil, "value is above threshold", "NOT return error", uint8(4), true, uint8(3), uint8(0)),
+		)
+
+		DescribeTable("BindValidatedUint8LessThan",
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+				validator := paramSet.BindValidatedUint8LessThan(
+					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					&paramSet.Native.Count8, threshold,
+				)
+				paramSet.Native.Count8 = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "value is below threshold", "return error", uint8(2), true, uint8(3), uint8(0)),
+			Entry(nil, "value is equal to threshold", "return error", uint8(3), false, uint8(3), uint8(0)),
+			Entry(nil, "value is above threshold", "NOT return error", uint8(4), false, uint8(3), uint8(0)),
+		)
+
+		DescribeTable("BindValidatedUint8AtMost",
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+				validator := paramSet.BindValidatedUint8AtMost(
+					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					&paramSet.Native.Count8, threshold,
+				)
+				paramSet.Native.Count8 = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "value is below threshold", "return error", uint8(2), true, uint8(3), uint8(0)),
+			Entry(nil, "value is equal to threshold", "return error", uint8(3), true, uint8(3), uint8(0)),
+			Entry(nil, "value is above threshold", "NOT return error", uint8(4), false, uint8(3), uint8(0)),
 		)
 
 		DescribeTable("BindValidatedUintWithin",

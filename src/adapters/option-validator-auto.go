@@ -13,9 +13,7 @@ type BoolValidatorFn func(value bool) error
 
 // BoolOptionValidator defines the struct that wraps the client defined validator function
 // BoolValidatorFn for bool type. This is the instance that is returned by
-// validated binder function BindValidatedBool. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedBool.
 //
 type BoolOptionValidator GenericOptionValidatorWrapper[bool]
 
@@ -45,9 +43,7 @@ type DurationValidatorFn func(value time.Duration) error
 
 // DurationOptionValidator defines the struct that wraps the client defined validator function
 // DurationValidatorFn for time.Duration type. This is the instance that is returned by
-// validated binder function BindValidatedDuration. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedDuration.
 //
 type DurationOptionValidator GenericOptionValidatorWrapper[time.Duration]
 
@@ -63,9 +59,7 @@ type EnumValidatorFn func(value string) error
 
 // EnumOptionValidator defines the struct that wraps the client defined validator function
 // EnumValidatorFn for string type. This is the instance that is returned by
-// validated binder function BindValidatedEnum. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedEnum.
 //
 type EnumOptionValidator GenericOptionValidatorWrapper[string]
 
@@ -81,9 +75,7 @@ type Float32ValidatorFn func(value float32) error
 
 // Float32OptionValidator defines the struct that wraps the client defined validator function
 // Float32ValidatorFn for float32 type. This is the instance that is returned by
-// validated binder function BindValidatedFloat32. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedFloat32.
 //
 type Float32OptionValidator GenericOptionValidatorWrapper[float32]
 
@@ -113,9 +105,7 @@ type Float64ValidatorFn func(value float64) error
 
 // Float64OptionValidator defines the struct that wraps the client defined validator function
 // Float64ValidatorFn for float64 type. This is the instance that is returned by
-// validated binder function BindValidatedFloat64. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedFloat64.
 //
 type Float64OptionValidator GenericOptionValidatorWrapper[float64]
 
@@ -145,9 +135,7 @@ type IntValidatorFn func(value int) error
 
 // IntOptionValidator defines the struct that wraps the client defined validator function
 // IntValidatorFn for int type. This is the instance that is returned by
-// validated binder function BindValidatedInt. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedInt.
 //
 type IntOptionValidator GenericOptionValidatorWrapper[int]
 
@@ -177,9 +165,7 @@ type Int16ValidatorFn func(value int16) error
 
 // Int16OptionValidator defines the struct that wraps the client defined validator function
 // Int16ValidatorFn for int16 type. This is the instance that is returned by
-// validated binder function BindValidatedInt16. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedInt16.
 //
 type Int16OptionValidator GenericOptionValidatorWrapper[int16]
 
@@ -195,9 +181,7 @@ type Int32ValidatorFn func(value int32) error
 
 // Int32OptionValidator defines the struct that wraps the client defined validator function
 // Int32ValidatorFn for int32 type. This is the instance that is returned by
-// validated binder function BindValidatedInt32. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedInt32.
 //
 type Int32OptionValidator GenericOptionValidatorWrapper[int32]
 
@@ -207,15 +191,27 @@ func (validator Int32OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value)
 }
 
+// Int32SliceOptionValidator defines the validator function for Int32Slice type.
+//
+type Int32SliceValidatorFn func(value []int32) error
+
+// Int32SliceOptionValidator wraps the client defined validator function for type []int32.
+//
+type Int32SliceOptionValidator GenericOptionValidatorWrapper[[]int32]
+
+// Validate invokes the client defined validator function for []int32 type.
+//
+func (validator Int32SliceOptionValidator) Validate() error {
+	return validator.Fn(*validator.Value)
+}
+
 // Int64ValidatorFn defines the validator function for int64 type.
 //
 type Int64ValidatorFn func(value int64) error
 
 // Int64OptionValidator defines the struct that wraps the client defined validator function
 // Int64ValidatorFn for int64 type. This is the instance that is returned by
-// validated binder function BindValidatedInt64. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedInt64.
 //
 type Int64OptionValidator GenericOptionValidatorWrapper[int64]
 
@@ -225,15 +221,27 @@ func (validator Int64OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value)
 }
 
+// Int64SliceOptionValidator defines the validator function for Int64Slice type.
+//
+type Int64SliceValidatorFn func(value []int64) error
+
+// Int64SliceOptionValidator wraps the client defined validator function for type []int64.
+//
+type Int64SliceOptionValidator GenericOptionValidatorWrapper[[]int64]
+
+// Validate invokes the client defined validator function for []int64 type.
+//
+func (validator Int64SliceOptionValidator) Validate() error {
+	return validator.Fn(*validator.Value)
+}
+
 // Int8ValidatorFn defines the validator function for int8 type.
 //
 type Int8ValidatorFn func(value int8) error
 
 // Int8OptionValidator defines the struct that wraps the client defined validator function
 // Int8ValidatorFn for int8 type. This is the instance that is returned by
-// validated binder function BindValidatedInt8. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedInt8.
 //
 type Int8OptionValidator GenericOptionValidatorWrapper[int8]
 
@@ -249,9 +257,7 @@ type IPMaskValidatorFn func(value net.IPMask) error
 
 // IPMaskOptionValidator defines the struct that wraps the client defined validator function
 // IPMaskValidatorFn for net.IPMask type. This is the instance that is returned by
-// validated binder function BindValidatedIPMask. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedIPMask.
 //
 type IPMaskOptionValidator GenericOptionValidatorWrapper[net.IPMask]
 
@@ -267,9 +273,7 @@ type IPNetValidatorFn func(value net.IPNet) error
 
 // IPNetOptionValidator defines the struct that wraps the client defined validator function
 // IPNetValidatorFn for net.IPNet type. This is the instance that is returned by
-// validated binder function BindValidatedIPNet. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedIPNet.
 //
 type IPNetOptionValidator GenericOptionValidatorWrapper[net.IPNet]
 
@@ -285,9 +289,7 @@ type StringValidatorFn func(value string) error
 
 // StringOptionValidator defines the struct that wraps the client defined validator function
 // StringValidatorFn for string type. This is the instance that is returned by
-// validated binder function BindValidatedString. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedString.
 //
 type StringOptionValidator GenericOptionValidatorWrapper[string]
 
@@ -317,9 +319,7 @@ type Uint16ValidatorFn func(value uint16) error
 
 // Uint16OptionValidator defines the struct that wraps the client defined validator function
 // Uint16ValidatorFn for uint16 type. This is the instance that is returned by
-// validated binder function BindValidatedUint16. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedUint16.
 //
 type Uint16OptionValidator GenericOptionValidatorWrapper[uint16]
 
@@ -335,9 +335,7 @@ type Uint32ValidatorFn func(value uint32) error
 
 // Uint32OptionValidator defines the struct that wraps the client defined validator function
 // Uint32ValidatorFn for uint32 type. This is the instance that is returned by
-// validated binder function BindValidatedUint32. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedUint32.
 //
 type Uint32OptionValidator GenericOptionValidatorWrapper[uint32]
 
@@ -347,33 +345,13 @@ func (validator Uint32OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value)
 }
 
-// Uint8ValidatorFn defines the validator function for uint8 type.
-//
-type Uint8ValidatorFn func(value uint8) error
-
-// Uint8OptionValidator defines the struct that wraps the client defined validator function
-// Uint8ValidatorFn for uint8 type. This is the instance that is returned by
-// validated binder function BindValidatedUint8. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
-//
-type Uint8OptionValidator GenericOptionValidatorWrapper[uint8]
-
-// Validate invokes the client defined validator function for uint8 type.
-//
-func (validator Uint8OptionValidator) Validate() error {
-	return validator.Fn(*validator.Value)
-}
-
 // Uint64ValidatorFn defines the validator function for uint64 type.
 //
 type Uint64ValidatorFn func(value uint64) error
 
 // Uint64OptionValidator defines the struct that wraps the client defined validator function
 // Uint64ValidatorFn for uint64 type. This is the instance that is returned by
-// validated binder function BindValidatedUint64. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedUint64.
 //
 type Uint64OptionValidator GenericOptionValidatorWrapper[uint64]
 
@@ -383,15 +361,29 @@ func (validator Uint64OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value)
 }
 
+// Uint8ValidatorFn defines the validator function for uint8 type.
+//
+type Uint8ValidatorFn func(value uint8) error
+
+// Uint8OptionValidator defines the struct that wraps the client defined validator function
+// Uint8ValidatorFn for uint8 type. This is the instance that is returned by
+// validated binder function BindValidatedUint8.
+//
+type Uint8OptionValidator GenericOptionValidatorWrapper[uint8]
+
+// Validate invokes the client defined validator function for uint8 type.
+//
+func (validator Uint8OptionValidator) Validate() error {
+	return validator.Fn(*validator.Value)
+}
+
 // UintValidatorFn defines the validator function for uint type.
 //
 type UintValidatorFn func(value uint) error
 
 // UintOptionValidator defines the struct that wraps the client defined validator function
 // UintValidatorFn for uint type. This is the instance that is returned by
-// validated binder function BindValidatedUint. If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidatedUint.
 //
 type UintOptionValidator GenericOptionValidatorWrapper[uint]
 

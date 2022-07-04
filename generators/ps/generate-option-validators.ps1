@@ -13,12 +13,13 @@ $types = @{
     Assert             = "Expect(value).To(Equal(""xml""))"
     QuoteExpect        = $true
     Equate             = "Equal"
+    Validatable        = $true
     GenerateSlice      = $false
     SliceFlagName      = "Formats"
     SliceShort         = "F"
     DefSliceVal        = "[]string{}"
     ExpectSlice        = "[]string{""xml"", ""json"", ""text""}"
-    BindDoc = @"
+    BindDoc            = @"
 
 // Note that normally the client would bind to a member of the native parameter
 // set. However, since there is a discrepency between the type of the native int
@@ -34,7 +35,7 @@ $types = @{
 //
 "@
 
-    BindValidatedDoc = @"
+    BindValidatedDoc   = @"
 
 // Custom enum types created via the generic 'EnumInfo'/'EnumValue' come with a 'IsValid' method.
 // The client can utilise this method inside a custom function passed into 'BindValidatedEnum'.
@@ -62,8 +63,9 @@ $types = @{
     Assert        = "Expect(value).To(Equal(""*music.infex*""))"
     QuoteExpect   = $true
     Equate        = "Equal"
+    Validatable   = $true
     GenerateSlice = $true
-    SliceFlagName = "Categories"
+    SliceFlagName = "Directories"
     SliceShort    = "C"
     DefSliceVal   = "[]string{}"
     ExpectSlice   = "[]string{""alpha"", ""beta"", ""delta""}"
@@ -161,8 +163,9 @@ $types = @{
     Setup         = "paramSet.Native.Offset = -9"
     Assert        = "Expect(value).To(Equal(-9))"
     Equate        = "Equal"
+    Validatable   = $true
     GenerateSlice = $true
-    SliceFlagName = "Dimensions"
+    SliceFlagName = "Offsets"
     SliceShort    = "D"
     DefSliceVal   = "[]int{}"
     ExpectSlice   = "[]int{2, 4, 6, 8}"
@@ -254,6 +257,7 @@ $types = @{
     Setup          = "paramSet.Native.Offset8 = int8(-99)"
     Assert         = "Expect(value).To(Equal(int8(-99)))"
     Equate         = "Equal"
+    Validatable    = $true
     #
     Comparable     = $true
     #
@@ -273,6 +277,7 @@ $types = @{
     Setup          = "paramSet.Native.Offset16 = int16(-999)"
     Assert         = "Expect(value).To(Equal(int16(-999)))"
     Equate         = "Equal"
+    Validatable    = $true
     #
     Comparable     = $true
     #
@@ -292,6 +297,14 @@ $types = @{
     Setup          = "paramSet.Native.Offset32 = int32(-9999)"
     Assert         = "Expect(value).To(Equal(int32(-9999)))"
     Equate         = "Equal"
+    Validatable    = $true
+    GenerateSlice  = $true
+
+    #!!!!
+    SliceFlagName  = "Offsets32"
+    SliceShort     = "O"
+    DefSliceVal    = "[]int32{}"
+    ExpectSlice    = "[]int32{2, 4, 6, 8}"
     #
     Comparable     = $true
     #
@@ -311,6 +324,13 @@ $types = @{
     Setup          = "paramSet.Native.Offset64 = int64(-99999)"
     Assert         = "Expect(value).To(Equal(int64(-99999)))"
     Equate         = "Equal"
+    Validatable    = $true
+    GenerateSlice  = $true
+
+    SliceFlagName  = "Offsets64"
+    SliceShort     = "O"
+    DefSliceVal    = "[]int64{}"
+    ExpectSlice    = "[]int64{2, 4, 6, 8}"
     #
     Comparable     = $true
     #
@@ -330,8 +350,9 @@ $types = @{
     Setup          = "paramSet.Native.Count = uint(99999)"
     Assert         = "Expect(value).To(Equal(uint(99999)))"
     Equate         = "Equal"
+    Validatable    = $true
     GenerateSlice  = $true
-    SliceFlagName  = "Points"
+    SliceFlagName  = "Counts"
     SliceShort     = "P"
     DefSliceVal    = "[]uint{}"
     ExpectSlice    = "[]uint{2, 4, 6, 8}"
@@ -354,6 +375,7 @@ $types = @{
     Setup          = "paramSet.Native.Count8 = uint8(33)"
     Assert         = "Expect(value).To(Equal(uint8(33)))"
     Equate         = "Equal"
+    Validatable    = $true
     #
     Comparable     = $true
     #
@@ -373,6 +395,7 @@ $types = @{
     Setup          = "paramSet.Native.Count16 = uint16(333)"
     Assert         = "Expect(value).To(Equal(uint16(333)))"
     Equate         = "Equal"
+    Validatable    = $true
     #
     Comparable     = $true
     #
@@ -392,6 +415,7 @@ $types = @{
     Setup          = "paramSet.Native.Count32 = uint32(3333)"
     Assert         = "Expect(value).To(Equal(uint32(3333)))"
     Equate         = "Equal"
+    Validatable    = $true
     #
     Comparable     = $true
     #
@@ -401,7 +425,7 @@ $types = @{
     BhTests        = $null
   }
 
-  "Uit64"    = [PSCustomObject]@{
+  "Uint64"   = [PSCustomObject]@{
     TypeName       = "Uint64"
     GoType         = "uint64"
     FlagName       = "Count64"
@@ -411,6 +435,7 @@ $types = @{
     Setup          = "paramSet.Native.Count64 = uint64(33333)"
     Assert         = "Expect(value).To(Equal(uint64(33333)))"
     Equate         = "Equal"
+    Validatable    = $true
     #
     Comparable     = $true
     #
@@ -423,16 +448,17 @@ $types = @{
   "Float32"  = [PSCustomObject]@{
     TypeName       = "Float32"
     GoType         = "float32"
-    FlagName       = "Gradient"
+    FlagName       = "Gradientf32"
     Short          = "t"
     Def            = "float32(999.123)"
     CastDef        = $true
-    Setup          = "paramSet.Native.Gradient = float32(32.1234)"
+    Setup          = "paramSet.Native.Gradientf32 = float32(32.1234)"
     Assert         = "Expect(value).To(Equal(float32(32.1234)))"
     Equate         = "Equal"
+    Validatable    = $true
     GenerateSlice  = $true
-    SliceFlagName  = "Temperatures"
-    SliceShort     = "T"
+    SliceFlagName  = "Gradientsf32"
+    SliceShort     = "G"
     DefSliceVal    = "[]float32{}"
     ExpectSlice    = "[]float32{2.99, 4.99, 6.99, 8.99}"
     #
@@ -447,15 +473,16 @@ $types = @{
   "Float64"  = [PSCustomObject]@{
     TypeName       = "Float64"
     GoType         = "float64"
-    FlagName       = "Threshold"
+    FlagName       = "Gradientf64"
     Short          = "t"
     Def            = "float64(999.123)"
-    Setup          = "paramSet.Native.Threshold = float64(64.1234)"
+    Setup          = "paramSet.Native.Gradientf64 = float64(64.1234)"
     Assert         = "Expect(value).To(Equal(float64(64.1234)))"
     Equate         = "Equal"
+    Validatable    = $true
     GenerateSlice  = $true
-    SliceFlagName  = "Scales"
-    SliceShort     = "S"
+    SliceFlagName  = "Gradientsf64"
+    SliceShort     = "G"
     DefSliceVal    = "[]float64{}"
     ExpectSlice    = "[]float64{3.99, 5.99, 7.99, 9.99}"
     #
@@ -487,46 +514,49 @@ $types = @{
   }
 
   "Duration" = [PSCustomObject]@{
-    TypeName   = "Duration"
-    GoType     = "time.Duration"
-    FlagName   = "Latency"
-    Short      = "l"
-    Def        = "temp"
-    Assign     = "temp, _ := time.ParseDuration(""0ms"")"
-    Setup      = "paramSet.Native.Latency, _ = time.ParseDuration(""300ms"")"
-    Assert     = @"
+    TypeName    = "Duration"
+    GoType      = "time.Duration"
+    FlagName    = "Latency"
+    Short       = "l"
+    Def         = "temp"
+    Assign      = "temp, _ := time.ParseDuration(""0ms"")"
+    Setup       = "paramSet.Native.Latency, _ = time.ParseDuration(""300ms"")"
+    Assert      = @"
     expect, _ := time.ParseDuration("300ms")
     Expect(value).To(BeEquivalentTo(expect))
 "@
-    Equate     = "BeEquivalentTo"
+    Equate      = "BeEquivalentTo"
+    Validatable = $true
     # SliceShort    = "?"
     # DefSliceVal   = "[]time.Duration{}"
     # ExpectSlice   = "[]bool{true, false, true, false}"
     # missing Durations slice on WidgetParameterSet
     #
-    Comparable = $true
+    Comparable  = $true
   }
 
   "IPNet"    = [PSCustomObject]@{
-    TypeName = "IPNet"
-    GoType   = "net.IPNet"
-    FlagName = "IpAddress"
-    Short    = "i"
-    Def      = "net.IPNet{IP: net.IPv4(0, 0, 0, 0), Mask: net.IPMask([]byte{0, 0, 0, 0}) }"
-    Setup    = "paramSet.Native.IpAddress = net.IPNet{IP: net.IPv4(172, 16, 0, 0), Mask: net.IPMask([]byte{255, 255, 255, 0}) }"
-    Assert   = "Expect(value).To(BeEquivalentTo(net.IPNet{IP: net.IPv4(172, 16, 0, 0), Mask: net.IPMask([]byte{255, 255, 255, 0}) }))"
-    Equate   = "BeEquivalentTo"
+    TypeName    = "IPNet"
+    GoType      = "net.IPNet"
+    FlagName    = "IpAddress"
+    Short       = "i"
+    Def         = "net.IPNet{IP: net.IPv4(0, 0, 0, 0), Mask: net.IPMask([]byte{0, 0, 0, 0}) }"
+    Setup       = "paramSet.Native.IpAddress = net.IPNet{IP: net.IPv4(172, 16, 0, 0), Mask: net.IPMask([]byte{255, 255, 255, 0}) }"
+    Assert      = "Expect(value).To(BeEquivalentTo(net.IPNet{IP: net.IPv4(172, 16, 0, 0), Mask: net.IPMask([]byte{255, 255, 255, 0}) }))"
+    Equate      = "BeEquivalentTo"
+    Validatable = $true
   }
 
   "IPMask"   = [PSCustomObject]@{
-    TypeName = "IPMask"
-    GoType   = "net.IPMask"
-    FlagName = "IpMask"
-    Short    = "m"
-    Def      = "net.IPMask([]byte{0, 0, 0, 0})"
-    Setup    = "paramSet.Native.IpMask = net.IPMask([]byte{255, 255, 255, 0})"
-    Assert   = "Expect(value).To(BeEquivalentTo(net.IPMask([]byte{255, 255, 255, 0})))"
-    Equate   = "BeEquivalentTo"
+    TypeName    = "IPMask"
+    GoType      = "net.IPMask"
+    FlagName    = "IpMask"
+    Short       = "m"
+    Def         = "net.IPMask([]byte{0, 0, 0, 0})"
+    Setup       = "paramSet.Native.IpMask = net.IPMask([]byte{255, 255, 255, 0})"
+    Assert      = "Expect(value).To(BeEquivalentTo(net.IPMask([]byte{255, 255, 255, 0})))"
+    Equate      = "BeEquivalentTo"
+    Validatable = $true
   }
 }
 
@@ -550,7 +580,7 @@ $types = @{
   , [PSCustomObject]@{
     Name               = "Contains"
     Documentation      = "fails validation if the option value is not a member of the 'collection' slice"
-    Contains           = $true
+    Container          = $true
     MethodTemplate     = "{{OpName}}{{TypeName}}"
     Args               = "collection"
     Condition          = "lo.IndexOf(collection, value) >= 0"
@@ -657,9 +687,7 @@ type $($validatorFn) func(value $($spec.GoType)) error
 
 // $($validatorStruct) defines the struct that wraps the client defined validator function
 // $($validatorFn) for $($spec.GoType) type. This is the instance that is returned by
-// validated binder function BindValidated$($spec.TypeName). If not using the ParamSet
-// (which is recommended), the client should add this instance to a self managed
-// ValidatorContainer.
+// validated binder function BindValidated$($spec.TypeName).
 //
 type $($validatorStruct) GenericOptionValidatorWrapper[$($spec.GoType)]
 
@@ -736,9 +764,13 @@ func (params *ParamSet[N]) Bind$($spec.TypeName)(info *FlagInfo, to *$($spec.GoT
 
 "@
 
-      # generate BindValidatedXXXX
-      #
-      @"
+      if ($spec.Validatable) {
+        if ($spec.TypeName -eq "Bool") {
+          Write-Host ">>> 🍅🍅🍅 Is Validateable: '$($spec.Validatable)'"
+        }
+        # generate BindValidatedXXXX
+        #
+        @"
 // BindValidated$($spec.TypeName) binds $($spec.GoType) slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name. Client can provide a
 // function to validate option values of $($spec.GoType) type.
@@ -755,6 +787,7 @@ func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$(
 }
 
 "@
+      }
 
       # generate BindXXXXSlice
       #
@@ -778,14 +811,19 @@ func (params *ParamSet[N]) Bind$($sliceTypeName)(info *FlagInfo, to *$($sliceTyp
 }
 
 "@
-        # generate BindValidatedXXXXSlice
-        #
-        $sliceTypeName = "$($spec.TypeName)Slice"
-        $sliceType = "[]$($spec.GoType)"
-        $defaultSlice = $("[]$($spec.GoType)")
-        $sliceValidatorFn = $("$($sliceTypeName)ValidatorFn")
 
-        @"
+        if ($spec.Validatable) {
+          if ($spec.TypeName -eq "Bool") {
+            Write-Host ">>> 🍅🍅🍅 Slice Is Validateable: '$($spec.Validatable)'"
+          }
+          # generate BindValidatedXXXXSlice
+          #
+          $sliceTypeName = "$($spec.TypeName)Slice"
+          $sliceType = "[]$($spec.GoType)"
+          $defaultSlice = $("[]$($spec.GoType)")
+          $sliceValidatorFn = $("$($sliceTypeName)ValidatorFn")
+
+          @"
 // BindValidated$($sliceTypeName) binds $($sliceType) slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name.  Client can provide a
 // function to validate option values of $sliceType type.
@@ -802,6 +840,7 @@ func (params *ParamSet[N]) BindValidated$($sliceTypeName)(info *FlagInfo, to *$(
 }
 
 "@
+        }
       }
     })
   $content | Set-Clipboard
@@ -823,7 +862,10 @@ function Build-TestEntry {
       $default = $spec.QuoteExpect ? $('"' + $spec.Def + '"') : $spec.Def
       $bindTo = [string]::IsNullOrEmpty($spec.BindTo) ? $("&paramSet.Native.$($spec.FlagName)") : $spec.BindTo
 
-      @"
+      if ($spec.Validatable) {
+        # generate BindValidatedXXX OvEntry
+        #
+        @"
 Entry(nil, OvEntry{
   Message: "$($spec.GoType) type (auto)",
   Setup: func() {
@@ -843,12 +885,16 @@ Entry(nil, OvEntry{
 }),
 
 "@
-      # generate XXXXSlice
-      #
+      }
+
       if ($spec.GenerateSlice) {
-        $sliceTypeName = "$($spec.TypeName)Slice"
-        $sliceType = "[]$($spec.GoType)"
-        @"
+        if ($spec.Validatable) {
+          $sliceTypeName = "$($spec.TypeName)Slice"
+          $sliceType = "[]$($spec.GoType)"
+
+          # generate BindValidatedXXXSlice OvEntry
+          #
+          @"
 Entry(nil, OvEntry{
   Message: "$($sliceType) type (auto)",
   Setup: func() {
@@ -867,6 +913,8 @@ Entry(nil, OvEntry{
 }),
 
 "@
+        }
+
       }
     })
   $content | Set-Clipboard
@@ -874,7 +922,7 @@ Entry(nil, OvEntry{
   Write-Host "🎯 Paste into ---> 'option-validator-auto_test.go'"
 }
 
-function Build-Predefined {
+function Build-BinderHelpers {
   # (paramset-binder-helpers-auto.go)
   #
   [Alias("gen-help")]
@@ -890,7 +938,7 @@ function Build-Predefined {
           }
           # assuming all args have the same type
           #
-          $argumentsStmt = if ($op.Contains) {
+          $argumentsStmt = if ($op.Container) {
             "$("$($op.Args) []$($spec.GoType)")"
           }
           else {
@@ -1088,7 +1136,7 @@ DescribeTable("BindValidated$($methodSubStmt)",
 
 "@
           }
-          elseif ($op.Contains) {
+          elseif ($op.Container) {
             # contains requires a sequence
             if ([string]::IsNullOrEmpty($cast)) {
               $literalCollection = $($testOp.First).Replace("{{SLICE-TYPE}}", $($spec.GoType))
