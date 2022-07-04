@@ -20,21 +20,6 @@ func (params *ParamSet[N]) BindBool(info *FlagInfo, to *bool) *ParamSet[N] {
 	return params
 }
 
-// BindValidatedBool binds bool slice flag with a shorthand if
-// 'info.Short' has been set otherwise binds without a short name. Client can provide a
-// function to validate option values of bool type.
-//
-func (params *ParamSet[N]) BindValidatedBool(info *FlagInfo, to *bool, validator BoolValidatorFn) OptionValidator {
-
-	params.BindBool(info, to)
-	wrapper := BoolOptionValidator{
-		Fn:    validator,
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
 // BindBoolSlice binds []bool slice flag with a shorthand if 'info.Short' has been set
 // otherwise binds without a short name.
 //
@@ -46,21 +31,6 @@ func (params *ParamSet[N]) BindBoolSlice(info *FlagInfo, to *[]bool) *ParamSet[N
 	}
 
 	return params
-}
-
-// BindValidatedBoolSlice binds []bool slice flag with a shorthand if
-// 'info.Short' has been set otherwise binds without a short name.  Client can provide a
-// function to validate option values of []bool type.
-//
-func (params *ParamSet[N]) BindValidatedBoolSlice(info *FlagInfo, to *[]bool, validator BoolSliceValidatorFn) OptionValidator {
-
-	params.BindBoolSlice(info, to)
-	wrapper := BoolSliceOptionValidator{
-		Fn:    validator,
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
 }
 
 // BindDuration binds time.Duration slice flag with a shorthand if
@@ -360,6 +330,34 @@ func (params *ParamSet[N]) BindValidatedInt32(info *FlagInfo, to *int32, validat
 	return wrapper
 }
 
+// BindInt32Slice binds []int32 slice flag with a shorthand if 'info.Short' has been set
+// otherwise binds without a short name.
+//
+func (params *ParamSet[N]) BindInt32Slice(info *FlagInfo, to *[]int32) *ParamSet[N] {
+	if info.Short == "" {
+		params.FlagSet.Int32SliceVar(to, info.FlagName(), info.Default.([]int32), info.Usage)
+	} else {
+		params.FlagSet.Int32SliceVarP(to, info.FlagName(), info.Short, info.Default.([]int32), info.Usage)
+	}
+
+	return params
+}
+
+// BindValidatedInt32Slice binds []int32 slice flag with a shorthand if
+// 'info.Short' has been set otherwise binds without a short name.  Client can provide a
+// function to validate option values of []int32 type.
+//
+func (params *ParamSet[N]) BindValidatedInt32Slice(info *FlagInfo, to *[]int32, validator Int32SliceValidatorFn) OptionValidator {
+
+	params.BindInt32Slice(info, to)
+	wrapper := Int32SliceOptionValidator{
+		Fn:    validator,
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
 // BindInt64 binds int64 slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name.
 //
@@ -381,6 +379,34 @@ func (params *ParamSet[N]) BindValidatedInt64(info *FlagInfo, to *int64, validat
 
 	params.BindInt64(info, to)
 	wrapper := Int64OptionValidator{
+		Fn:    validator,
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindInt64Slice binds []int64 slice flag with a shorthand if 'info.Short' has been set
+// otherwise binds without a short name.
+//
+func (params *ParamSet[N]) BindInt64Slice(info *FlagInfo, to *[]int64) *ParamSet[N] {
+	if info.Short == "" {
+		params.FlagSet.Int64SliceVar(to, info.FlagName(), info.Default.([]int64), info.Usage)
+	} else {
+		params.FlagSet.Int64SliceVarP(to, info.FlagName(), info.Short, info.Default.([]int64), info.Usage)
+	}
+
+	return params
+}
+
+// BindValidatedInt64Slice binds []int64 slice flag with a shorthand if
+// 'info.Short' has been set otherwise binds without a short name.  Client can provide a
+// function to validate option values of []int64 type.
+//
+func (params *ParamSet[N]) BindValidatedInt64Slice(info *FlagInfo, to *[]int64, validator Int64SliceValidatorFn) OptionValidator {
+
+	params.BindInt64Slice(info, to)
+	wrapper := Int64SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 	}
@@ -584,34 +610,6 @@ func (params *ParamSet[N]) BindValidatedUint32(info *FlagInfo, to *uint32, valid
 	return wrapper
 }
 
-// BindUint8 binds uint8 slice flag with a shorthand if
-// 'info.Short' has been set otherwise binds without a short name.
-//
-func (params *ParamSet[N]) BindUint8(info *FlagInfo, to *uint8) *ParamSet[N] {
-	if info.Short == "" {
-		params.FlagSet.Uint8Var(to, info.FlagName(), info.Default.(uint8), info.Usage)
-	} else {
-		params.FlagSet.Uint8VarP(to, info.FlagName(), info.Short, info.Default.(uint8), info.Usage)
-	}
-
-	return params
-}
-
-// BindValidatedUint8 binds uint8 slice flag with a shorthand if
-// 'info.Short' has been set otherwise binds without a short name. Client can provide a
-// function to validate option values of uint8 type.
-//
-func (params *ParamSet[N]) BindValidatedUint8(info *FlagInfo, to *uint8, validator Uint8ValidatorFn) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := Uint8OptionValidator{
-		Fn:    validator,
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
 // BindUint64 binds uint64 slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name.
 //
@@ -633,6 +631,34 @@ func (params *ParamSet[N]) BindValidatedUint64(info *FlagInfo, to *uint64, valid
 
 	params.BindUint64(info, to)
 	wrapper := Uint64OptionValidator{
+		Fn:    validator,
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindUint8 binds uint8 slice flag with a shorthand if
+// 'info.Short' has been set otherwise binds without a short name.
+//
+func (params *ParamSet[N]) BindUint8(info *FlagInfo, to *uint8) *ParamSet[N] {
+	if info.Short == "" {
+		params.FlagSet.Uint8Var(to, info.FlagName(), info.Default.(uint8), info.Usage)
+	} else {
+		params.FlagSet.Uint8VarP(to, info.FlagName(), info.Short, info.Default.(uint8), info.Usage)
+	}
+
+	return params
+}
+
+// BindValidatedUint8 binds uint8 slice flag with a shorthand if
+// 'info.Short' has been set otherwise binds without a short name. Client can provide a
+// function to validate option values of uint8 type.
+//
+func (params *ParamSet[N]) BindValidatedUint8(info *FlagInfo, to *uint8, validator Uint8ValidatorFn) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := Uint8OptionValidator{
 		Fn:    validator,
 		Value: to,
 	}

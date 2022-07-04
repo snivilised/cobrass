@@ -1990,182 +1990,6 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 	return wrapper
 }
 
-// BindValidatedUint8Within is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
-func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if value >= lo && value <= hi {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', out of range: [%v]..[%v]",
-				info.FlagName(), value, lo, hi,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
-// BindValidatedUint8NotWithin is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method performs the inverse of 'BindValidatedUint8Within'.
-//
-func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if !(value >= lo && value <= hi) {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', is within range: [%v]..[%v]",
-				info.FlagName(), value, lo, hi,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
-// BindValidatedContainsUint8 is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
-// This method fails validation if the option value is not a member of the 'collection' slice.
-//
-func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8, collection []uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if lo.IndexOf(collection, value) >= 0 {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', not a member of: [%v]",
-				info.FlagName(), value, collection,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
-// BindValidatedUint8NotContains is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
-// This method performs the inverse of 'BindValidatedContainsUint8'.
-//
-func (params *ParamSet[N]) BindValidatedUint8NotContains(info *FlagInfo, to *uint8, collection []uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if !(lo.IndexOf(collection, value) >= 0) {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', is a member of: [%v]",
-				info.FlagName(), value, collection,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
-// BindValidatedUint8GreaterThan is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
-// This method fails validation if the option value is not comparably greater than 'threshold'.
-//
-func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if value > threshold {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', not greater than: [%v]",
-				info.FlagName(), value, threshold,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
-// BindValidatedUint8AtLeast is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
-// This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
-func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if value >= threshold {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', not at least: [%v]",
-				info.FlagName(), value, threshold,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
-// BindValidatedUint8LessThan is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
-// This method fails validation if the option value is not comparably less than 'threshold'.
-//
-func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if value < threshold {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', not less than: [%v]",
-				info.FlagName(), value, threshold,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
-// BindValidatedUint8AtMost is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
-// This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
-func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
-
-	params.BindUint8(info, to)
-	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
-			if value <= threshold {
-				return nil
-			}
-			return fmt.Errorf("(%v): option validation failed, '%v', not at most: [%v]",
-				info.FlagName(), value, threshold,
-			)
-		},
-		Value: to,
-	}
-	params.validators.Add(info.FlagName(), wrapper)
-	return wrapper
-}
-
 // BindValidatedUint64Within is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
@@ -2329,6 +2153,182 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64) error {
+			if value <= threshold {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', not at most: [%v]",
+				info.FlagName(), value, threshold,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedUint8Within is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
+//
+func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
+			if value >= lo && value <= hi {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', out of range: [%v]..[%v]",
+				info.FlagName(), value, lo, hi,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedUint8NotWithin is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// This method performs the inverse of 'BindValidatedUint8Within'.
+//
+func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
+			if !(value >= lo && value <= hi) {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', is within range: [%v]..[%v]",
+				info.FlagName(), value, lo, hi,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedContainsUint8 is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
+// This method fails validation if the option value is not a member of the 'collection' slice.
+//
+func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8, collection []uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
+			if lo.IndexOf(collection, value) >= 0 {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', not a member of: [%v]",
+				info.FlagName(), value, collection,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedUint8NotContains is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
+// This method performs the inverse of 'BindValidatedContainsUint8'.
+//
+func (params *ParamSet[N]) BindValidatedUint8NotContains(info *FlagInfo, to *uint8, collection []uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
+			if !(lo.IndexOf(collection, value) >= 0) {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', is a member of: [%v]",
+				info.FlagName(), value, collection,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedUint8GreaterThan is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
+// This method fails validation if the option value is not comparably greater than 'threshold'.
+//
+func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
+			if value > threshold {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', not greater than: [%v]",
+				info.FlagName(), value, threshold,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedUint8AtLeast is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
+// This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
+//
+func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
+			if value >= threshold {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', not at least: [%v]",
+				info.FlagName(), value, threshold,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedUint8LessThan is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
+// This method fails validation if the option value is not comparably less than 'threshold'.
+//
+func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
+			if value < threshold {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', not less than: [%v]",
+				info.FlagName(), value, threshold,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedUint8AtMost is an alternative to using BindValidatedUint8. Instead of providing
+// a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
+// This method fails validation if the option value is not comparably less than or equal to 'threshold'.
+//
+func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
+
+	params.BindUint8(info, to)
+	wrapper := GenericOptionValidatorWrapper[uint8]{
+		Fn: func(value uint8) error {
 			if value <= threshold {
 				return nil
 			}

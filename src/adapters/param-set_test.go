@@ -40,18 +40,23 @@ type WidgetParameterSet struct {
 	Count32 uint32
 	Count64 uint64
 	//
-	Threshold float64
-	Gradient  float32
-	Latency   time.Duration
-	IpAddress net.IPNet
-	IpMask    net.IPMask
+	Gradientf32 float32
+	Gradientf64 float64
+	Latency     time.Duration
+	IpAddress   net.IPNet
+	IpMask      net.IPMask
 	//
-	Categories   []string
-	Dimensions   []int
-	Points       []uint
+	// some slice types are missing eg, Offsets16, because that slice type is not
+	// supported by pflag; ie there is no Int16SliceVar/Int16SliceVarP
+	//
+	Directories  []string
+	Offsets      []int
+	Offsets32    []int32
+	Offsets64    []int64
+	Counts       []uint
 	Switches     []bool
-	Scales       []float64
-	Temperatures []float32
+	Gradientsf32 []float32
+	Gradientsf64 []float64
 	Hosts        []net.IP
 	Formats      []OutputFormatEnum
 }
@@ -260,11 +265,11 @@ var _ = Describe("ParamSet", func() {
 				Binder: func() {
 					paramSet.BindFloat64(
 						adapters.NewFlagInfo("threshold", "t", 999.9),
-						&paramSet.Native.Threshold,
+						&paramSet.Native.Gradientf64,
 					)
 				},
 				CommandLine: "--threshold=99.1234",
-				Assert:      func() { Expect(paramSet.Native.Threshold).To(Equal(99.1234)) },
+				Assert:      func() { Expect(paramSet.Native.Gradientf64).To(Equal(99.1234)) },
 			}),
 
 			Entry(nil, TcEntry{
@@ -272,11 +277,11 @@ var _ = Describe("ParamSet", func() {
 				Binder: func() {
 					paramSet.BindFloat32(
 						adapters.NewFlagInfo("gradient", "g", float32(0.5105)),
-						&paramSet.Native.Gradient,
+						&paramSet.Native.Gradientf32,
 					)
 				},
 				CommandLine: "--gradient=0.12345",
-				Assert:      func() { Expect(paramSet.Native.Gradient).To(Equal(float32(0.12345))) },
+				Assert:      func() { Expect(paramSet.Native.Gradientf32).To(Equal(float32(0.12345))) },
 			}),
 
 			Entry(nil, TcEntry{
@@ -360,13 +365,13 @@ var _ = Describe("ParamSet", func() {
 				Binder: func() {
 					paramSet.BindStringSlice(
 						adapters.NewFlagInfo("categories", "c", []string{""}),
-						&paramSet.Native.Categories,
+						&paramSet.Native.Directories,
 					)
 				},
 				CommandLine: "--categories=a,b,c",
 				Assert: func() {
 					expected := []string{"a", "b", "c"}
-					Expect(paramSet.Native.Categories).To(BeEquivalentTo(expected))
+					Expect(paramSet.Native.Directories).To(BeEquivalentTo(expected))
 				},
 			}),
 
@@ -375,13 +380,13 @@ var _ = Describe("ParamSet", func() {
 				Binder: func() {
 					paramSet.BindIntSlice(
 						adapters.NewFlagInfo("dimensions", "d", []int{}),
-						&paramSet.Native.Dimensions,
+						&paramSet.Native.Offsets,
 					)
 				},
 				CommandLine: "--dimensions=1,2,3,4",
 				Assert: func() {
 					expected := []int{1, 2, 3, 4}
-					Expect(paramSet.Native.Dimensions).To(BeEquivalentTo(expected))
+					Expect(paramSet.Native.Offsets).To(BeEquivalentTo(expected))
 				},
 			}),
 
@@ -390,13 +395,13 @@ var _ = Describe("ParamSet", func() {
 				Binder: func() {
 					paramSet.BindUintSlice(
 						adapters.NewFlagInfo("points", "p", []uint{}),
-						&paramSet.Native.Points,
+						&paramSet.Native.Counts,
 					)
 				},
 				CommandLine: "--points=0,15,30,45",
 				Assert: func() {
 					expected := []uint{0, 15, 30, 45}
-					Expect(paramSet.Native.Points).To(BeEquivalentTo(expected))
+					Expect(paramSet.Native.Counts).To(BeEquivalentTo(expected))
 				},
 			}),
 
@@ -420,13 +425,13 @@ var _ = Describe("ParamSet", func() {
 				Binder: func() {
 					paramSet.BindFloat64Slice(
 						adapters.NewFlagInfo("scales", "s", []float64{}),
-						&paramSet.Native.Scales,
+						&paramSet.Native.Gradientsf64,
 					)
 				},
 				CommandLine: "--scales=1.2,2.3,3.4,4.5",
 				Assert: func() {
 					expected := []float64{1.2, 2.3, 3.4, 4.5}
-					Expect(paramSet.Native.Scales).To(BeEquivalentTo(expected))
+					Expect(paramSet.Native.Gradientsf64).To(BeEquivalentTo(expected))
 				},
 			}),
 
@@ -435,13 +440,13 @@ var _ = Describe("ParamSet", func() {
 				Binder: func() {
 					paramSet.BindFloat32Slice(
 						adapters.NewFlagInfo("temperatures", "t", []float32{}),
-						&paramSet.Native.Temperatures,
+						&paramSet.Native.Gradientsf32,
 					)
 				},
 				CommandLine: "--temperatures=99.2,99.3,99.4,99.5",
 				Assert: func() {
 					expected := []float32{99.2, 99.3, 99.4, 99.5}
-					Expect(paramSet.Native.Temperatures).To(BeEquivalentTo(expected))
+					Expect(paramSet.Native.Gradientsf32).To(BeEquivalentTo(expected))
 				},
 			}),
 		)
