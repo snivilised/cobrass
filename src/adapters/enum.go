@@ -1,6 +1,9 @@
 package adapters
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // AcceptableEnumValues maps values of enum type to an array of
 // string values that are acceptable to be interpreted as that enum
@@ -143,13 +146,18 @@ func (info *EnumInfo[E]) IsValidOrEmpty(value string) bool {
 	return found
 }
 
-// Dump shows the contents of all acceptable values for the enum
+// String returns a string representing contents of all acceptable values for
+// the enum.
 //
-func (info *EnumInfo[E]) Dump() {
-	fmt.Printf("=== (TYPE: %T) ===\n", info)
+func (info *EnumInfo[E]) String() string {
+	var builder strings.Builder
+
+	fmt.Fprintf(&builder, "=== (TYPE: %T) ===\n", info)
 	for k, v := range info.reverseLookup {
-		fmt.Printf("--- [%v] => [%v] (%v) ---\n", k, info.NameOf(v), v)
+		fmt.Fprintf(&builder, "--- [%v] => [%v] (%v) ---\n", k, info.NameOf(v), v)
 	}
+
+	return builder.String()
 }
 
 type EnumValue[E ~int] struct {

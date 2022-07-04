@@ -101,6 +101,13 @@ var _ = Describe("Enum", func() {
 				Expect(outputFormatEnum.IsValid()).To(BeTrue())
 			})
 		})
-	})
 
+		Context("EnumInfo.String", func() {
+			It("🧪 should: return contents of enum info", func() {
+				result := OutputFormatEnumInfo.String()
+				GinkgoWriter.Println("===> contents of OutputFormatEnumInfo:")
+				GinkgoWriter.Println(result)
+			})
+		})
+	})
 })
