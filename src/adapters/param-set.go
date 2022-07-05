@@ -60,7 +60,7 @@ func (info *FlagInfo) FlagName() string {
 // different activation scenarios (ie which set of parameters that the user provides)
 // then the client can define mutiple parameter sets to reflect this.
 //
-// The binder mnethods are defined explicitly for each type as 'go' does not
+// The binder methods are defined explicitly for each type as 'go' does not
 // allow for generic parameters defined at the method level as opposed to
 // being defined on the receiver struct.
 //
@@ -86,7 +86,10 @@ type ParamSet[N any] struct {
 	// Native is the native client defined parameter set instance, which
 	// must be a struct.
 	//
-	Native  *N
+	Native *N
+
+	// FlagSet is the Cobra FlagSet
+	//
 	FlagSet *pflag.FlagSet
 }
 
@@ -118,39 +121,3 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 func (params *ParamSet[N]) Validators() *ValidatorContainer {
 	return params.validators
 }
-
-// BindEnum, binds pseudo int based enum flag with a shorthand. Note that normally
-// the client would bind to a member of the native parameter set. However, since
-// there is a discrepency between the type of the native int based pseudo enum
-// member and the equivalent acceptable string value typed by the user on the
-// command line (idiomatically stored on the enum info), the client needs to extract
-// the enum value from the enum info, something like this:
-//
-// paramSet.Native.Format = OutputFormatEnumInfo.Value()
-//
-// The best place to put this would be inside the PreRun/PreRunE function, assuming the
-// paramset and the enum info are both in scope. Actually, every int based enum
-// flag, would need to have this assignment performed.
-
-// func (params *ParamSet[N]) BindEnum(info *FlagInfo, to *string) {
-// 	params.FlagSet.StringVarP(to, info.Name, info.Short, info.Default.(string), info.Usage)
-// }
-
-// We can also defined pre-defined validators !! such as a string value must be of limited
-// length, or with a set of predefined values (like ValidArgs)
-//
-
-// BindValidatedString binds string slice flag with a shorthand if
-// 'info.Short' has been set otherwise binds without a short name. Client can provide a
-// function to validate option values of string type.
-//
-// func (params *ParamSet[N]) BindValidatedEnum(info *FlagInfo, to *string, validator StringValidatorFn) OptionValidator {
-
-// 	params.BindEnum(info, to)
-// 	wrapper := &StringOptionValidator{
-// 		fn:    validator,
-// 		value: to,
-// 	}
-// 	params.validatorGroup.Add(info.Name, wrapper)
-// 	return wrapper
-// }

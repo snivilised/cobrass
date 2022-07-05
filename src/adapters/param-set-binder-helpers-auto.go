@@ -186,6 +186,50 @@ func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.
 	return wrapper
 }
 
+// BindValidatedContainsEnum is an alternative to using BindValidatedEnum. Instead of providing
+// a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
+// This method fails validation if the option value is not a member of the 'collection' slice.
+//
+func (params *ParamSet[N]) BindValidatedContainsEnum(info *FlagInfo, to *string, collection []string) OptionValidator {
+
+	params.BindEnum(info, to)
+	wrapper := GenericOptionValidatorWrapper[string]{
+		Fn: func(value string) error {
+			if lo.IndexOf(collection, value) >= 0 {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', not a member of: [%v]",
+				info.FlagName(), value, collection,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
+// BindValidatedEnumNotContains is an alternative to using BindValidatedEnum. Instead of providing
+// a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
+// This method performs the inverse of 'BindValidatedContainsEnum'.
+//
+func (params *ParamSet[N]) BindValidatedEnumNotContains(info *FlagInfo, to *string, collection []string) OptionValidator {
+
+	params.BindEnum(info, to)
+	wrapper := GenericOptionValidatorWrapper[string]{
+		Fn: func(value string) error {
+			if !(lo.IndexOf(collection, value) >= 0) {
+				return nil
+			}
+			return fmt.Errorf("(%v): option validation failed, '%v', is a member of: [%v]",
+				info.FlagName(), value, collection,
+			)
+		},
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
 // BindValidatedFloat32Within is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).

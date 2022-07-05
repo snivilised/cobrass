@@ -19,7 +19,7 @@
 
 ## 🔰 Introduction
 
-_[Cobra](https://cobra.dev/) is an excellent framework for the development of command line applications, but there are few aspects that could do with being made easier to work with. This package aims to fullfil this purpose, especially in regards to creation of commands, encapulating commands into a container and providing an export mechanism to re-create cli data in a form that is free from cobra (and indeed cobrass) abstractions. The aim of this last aspect to to be able to inject data into the core of an application in a way that removes tight coupling to the cobra framework, which is achieved by representing data only in terms of client defined (native) abstractions. Currently, Cobra does not provide a mechanism for validating option values, this is implemented by cobrass._
+_[Cobra](https://cobra.dev/) is an excellent framework for the development of command line applications, but there are few aspects that could do with being made easier to work with. This package aims to fullfil this purpose, especially in regards to creation of commands, encapulating commands into a container and providing an export mechanism to re-create cli data in a form that is free from cobra (and indeed cobrass) abstractions. The aim of this last aspect to to be able to inject data into the core of an application in a way that removes tight coupling to the cobra framework, which is achieved by representing data only in terms of client defined (native) abstractions. Currently, Cobra does not provide a mechanism for validating option values, this is also implemented by_ ___Cobrass___.
 
 ___Status___: 💤 not yet published
 
@@ -60,7 +60,7 @@ The ___ParamSet___ also handles flag definition on each command. The client defi
 
 - 3️⃣ ___BindValidated\<Type>\<Op>___: (eg BindValidatedStringWithin) same as 2️⃣, except user passes in operation specific parameters (See [Validation Helpers](#validation-helpers)).
 
-⚠️ ___Support for Persistent flags is currently pending implementation___ (See: [add option validation support for PersistentFlags](#issues/34))
+⚠️ ___Support for Persistent flags is currently pending implementation___ (See: [add option validation support for PersistentFlags](issues/34))
 
 ### 💠 Pseudo Enum
 
@@ -121,6 +121,20 @@ Points to note from the above:
 - A string value can be checked to determine if it is a valid value (as defined by the acceptable values passed into ___NewEnumInfo___), to the ___IsValid___ method on the ___EnumInfo___  or we can simply call the same method on ___EnumValue___ without passing in a string value; in this case, the check is performed on it's member variable 'Source' which can be assigned at any time.
 
 - The ___EnumInfo___ struct contains a ___String___ method to support printing. It is provided because passing in the ___int___ form of the enum value to a printing function just results in the numeric value being displayed, which is not very useful. Instead, when there is a need to print an ___EnumValue___, it's custom ___String___ method should be invoked. Since that method retrieves the first acceptable value defined for the enum value, the user should specify a longer more expressive form as the first entry, followed by 1 or more shorter forms. Actually, to be clear, as long as the first item is expressive enough when displayed in isolation, it doesn't really matter if the first item is the longest or not. 
+
+#### 🍈 Enum Slice
+
+If an option value needs to be defined as a collection of enum values, then the client can make use of ___EnumSlice___.
+
+📌 ___An enum slice is not the same as defining a slice of enums, eg []MyCustomEnum___, because doing so in that manner would incorrectly replicate the 'parent' EnumInfo reference. Using ___EnumSlice___, ensures that there is just a single EnumInfo reference for multiple enum values.
+
+In the same way an ___EnumValue___ can be created off the ___EnumInfo___, an ___EnumSlice___ can be created by invoking the ___NewSlice___ method off ___EnumInfo___, eg:
+
+```go
+outputFormatSlice := OutputFormatEnumInfo.NewSlice()
+```
+
+___NewSlice___ contains various _collection_ methods equilavent to it's value based (___EnumValue___) counterpart.
 
 ## ☂️ Option Binding and Validation
 
@@ -255,7 +269,31 @@ The validation process will fail on the first error encountered and return that 
 
 As previously described, the validator is a client defined type specific function that takes a single argument representing the option value to be validated. The function should return nil if valid, or an error describing the reason for validation failure.
 
-There are multiple ___BindValidated___ methods on the ___ParamSet___, all which relate to the different types supported. Our pseudo enums are a special case though (expanded on further below). The `binder` method simply adds a wrapper around the function to be invoked later and adds that to an internal collection. The wrapper object is returned, but need not be consumed.
+There are multiple ___BindValidated___ methods on the ___ParamSet___, all which relate to the different types supported. The `binder` method simply adds a wrapper around the function to be invoked later and adds that to an internal collection. The wrapper object is returned, but need not be consumed.
+
+For `enum` validation, ___ParamSet___ contains a validator ___BindValidatedEnum___. It is important to be aware that the validation occurs in the `string` domain not in the `int` domain as the reader might expect. So when a `enum` validator is defined, the function has to take a string parameter, not the native `enum` type.
+
+The following is an example of how to define an `enum` validator:
+
+```go
+  outputFormatEnum := outputFormatEnumInfo.NewValue()
+
+  wrapper := paramSet.BindValidatedEnum(
+    adapters.NewFlagInfo("format", "f", "xml"),
+    &outputFormatEnum.Source,
+    func(value string) error {
+      return lo.Ternary(outputFormatEnumInfo.IsValid(value), nil,
+        fmt.Errorf("Enum value: '%v' is not valid", value))
+    },
+  )
+  outputFormatEnum.Source = "xml"
+```
+
+The following points should be noted:
+
+- validation is implemented using the ___EnumInfo___ instance. This could easily have been implemented using an ___EnumValue___ instance instead.
+- the manual assignment of __'outputFormatEnum.Source'___ is a synthetic operation just done for the purposes of illustration. When used within the context of a cobra cli, it's cobra that would perform this assignment as it parses the command line, assuming the corresponding flag has been bound in as is peformed here using ___BindValidatedEnum___.
+- the client would convert this string to the enum type and set on the appropriate native member (ie ___paramSet.Native.Format = outputFormatEnum.Value()___)
 
 ### 🛡️ Validator Helpers<a name="validation-helpers"></a>
 
@@ -273,5 +311,7 @@ Specialised for type:
 `Not` versions of most methods have also been provided, so for example to get string not match, use ___'BindValidatedStringIsNotMatch'___. The `Not` functions that have been omitted are the ones which can easily be implemented by using the opposite operator. There are no `Not` versions of the _comparison_ helpers, eg there is no ___'BindValidatedIntNotGreaterThan'___ because that can be easily acheieved using ___'BindValidatedIntAtMost'___.
 
 There are also `slice` versions of some of the validators, to allow an option value to be defined as a collection of values. An example of a `slice` version is ___'BindValidatedStringSlice'___.
+
+Our pseudo enums are a special case, because it is not possible to define generic versions of the binder methods where a generic parameter would be the client defined int based enum, there are no option validator helpers for `enum` types.
 
 ## 🧰 Developer Info
