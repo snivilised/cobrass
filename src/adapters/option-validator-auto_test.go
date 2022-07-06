@@ -115,7 +115,7 @@ var _ = Describe("OptionValidator", func() {
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedFloat32(
-					adapters.NewFlagInfo("gradientf32", "t", float32(999.123)),
+					adapters.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32,
 					func(value float32) error {
 						Expect(value).To(Equal(float32(32.1234)))
@@ -150,7 +150,7 @@ var _ = Describe("OptionValidator", func() {
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedFloat64(
-					adapters.NewFlagInfo("gradientf64", "t", float64(999.123)),
+					adapters.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64,
 					func(value float64) error {
 						Expect(value).To(Equal(float64(64.1234)))
@@ -397,7 +397,7 @@ var _ = Describe("OptionValidator", func() {
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedUint16(
-					adapters.NewFlagInfo("count16", "c", uint16(1)),
+					adapters.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16,
 					func(value uint16) error {
 						Expect(value).To(Equal(uint16(333)))
@@ -415,7 +415,7 @@ var _ = Describe("OptionValidator", func() {
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedUint32(
-					adapters.NewFlagInfo("count32", "c", uint32(1)),
+					adapters.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32,
 					func(value uint32) error {
 						Expect(value).To(Equal(uint32(3333)))
@@ -433,7 +433,7 @@ var _ = Describe("OptionValidator", func() {
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedUint64(
-					adapters.NewFlagInfo("count64", "c", uint64(1)),
+					adapters.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64,
 					func(value uint64) error {
 						Expect(value).To(Equal(uint64(33333)))
@@ -451,7 +451,7 @@ var _ = Describe("OptionValidator", func() {
 			Validator: func() adapters.OptionValidator {
 
 				return paramSet.BindValidatedUint8(
-					adapters.NewFlagInfo("count8", "c", uint8(1)),
+					adapters.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8,
 					func(value uint8) error {
 						Expect(value).To(Equal(uint8(33)))

@@ -3,6 +3,8 @@ package adapters
 import (
 	"fmt"
 	"strings"
+
+	"github.com/samber/lo"
 )
 
 // AcceptableEnumValues maps values of enum type to an array of
@@ -119,6 +121,12 @@ func (info *EnumInfo[E]) NewValue() EnumValue[E] {
 	return EnumValue[E]{Info: info}
 }
 
+// NewSlice creates a new EnumSlice associated with this EnumInfo
+//
+func (info *EnumInfo[E]) NewSlice() EnumSlice[E] {
+	return EnumSlice[E]{Info: info, Source: []string{}}
+}
+
 // En, returns the underlying int based enum associated with the provided
 // string value as defined by the Acceptables.
 //
@@ -158,6 +166,16 @@ func (info *EnumInfo[E]) String() string {
 	}
 
 	return builder.String()
+}
+
+// NameOf returns the first acceptable name for the enum value specified.
+// Ideally, there would be a way in go reflection to obtain the name of a
+// variable (as opposed to type name), but this isnt possible. Go reflection
+// currently can only query type names not variable or function names, so
+// the NameOf method is used as a workaround.
+//
+func (info *EnumInfo[E]) NameOf(enum E) string {
+	return info.acceptables[enum][0]
 }
 
 type EnumValue[E ~int] struct {
@@ -209,12 +227,50 @@ func (ev *EnumValue[E]) String() string {
 	}
 }
 
-// NameOf returns the first acceptable name for the enum value specified.
-// Ideally, there would be a way in go reflection to obtain the name of a
-// variable (as opposed to type name), but this isnt possible. Go reflection
-// currently can only query type names not variable or function names, so
-// the NameOf method is used as a workaround.
+// EnumSlice represents a collection of EnumValues. Note that this abstraction is
+// not the same as definining a slice of EnumValues, ie []EnumValues.
+type EnumSlice[E ~int] struct {
+	// Info is the EnumInfo associated with this enam value
+	//
+	Info *EnumInfo[E]
+
+	// The address of Source should be used with BindEnum. The reason why we
+	// need an alternative for the 'to' parameter on the binder method is that
+	// the associated native member is going to be the pseudo enum type, which
+	// is not compatible with the string value that the user provides on the
+	// comand line. So Source is just a temporary place holder for the value,
+	// which subsequently needs to be converted and injected into the native
+	// parameter set(see Value() method)
+	//
+	Source []string
+}
+
+// Values, returns an an array of int based enum values replicating the slice of
+// string values stored in Source
 //
-func (info *EnumInfo[E]) NameOf(enum E) string {
-	return info.acceptables[enum][0]
+func (es *EnumSlice[E]) Values() []E {
+
+	return lo.Map(es.Source, func(v string, _ int) E {
+		return E(es.Info.reverseLookup[v])
+	})
+}
+
+// AllAreValid returns true if the Source strings are all acceptable values for
+// this enum false otherwise.
+//
+func (es *EnumSlice[E]) AllAreValid() bool {
+
+	return lo.EveryBy(es.Source, func(v string) bool {
+		return es.Info.IsValid(v)
+	})
+}
+
+// AllAreValidOrEmpty returns true if the Source strings are all acceptable values
+// for this enum or the empty string false otherwise.
+//
+func (es *EnumSlice[E]) AllAreValidOrEmpty() bool {
+
+	return lo.EveryBy(es.Source, func(v string) bool {
+		return es.Info.IsValidOrEmpty(v)
+	})
 }
