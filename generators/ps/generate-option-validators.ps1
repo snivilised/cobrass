@@ -814,10 +814,11 @@ function Build-ParamSet {
 // 'info.Short' has been set otherwise binds without a short name.
 //$($spec.BindDoc)
 func (params *ParamSet[N]) Bind$($spec.TypeName)(info *FlagInfo, to *$($spec.GoType)) *ParamSet[N] {
+  flagSet := params.ResolveFlagSet(info)
   if info.Short == "" {
-    params.FlagSet.$($actualTypeName)Var(to, info.FlagName(), info.Default.($($spec.GoType)), info.Usage)
+    flagSet.$($actualTypeName)Var(to, info.FlagName(), info.Default.($($spec.GoType)), info.Usage)
   } else {
-    params.FlagSet.$($actualTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($spec.GoType)), info.Usage)
+    flagSet.$($actualTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($spec.GoType)), info.Usage)
   }
 
   return params
@@ -859,10 +860,11 @@ func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$(
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) Bind$($sliceTypeName)(info *FlagInfo, to *$($sliceType)) *ParamSet[N] {
+  flagSet := params.ResolveFlagSet(info)
   if info.Short == "" {
-    params.FlagSet.$($sliceTypeName)Var(to, info.FlagName(), info.Default.($($sliceType)), info.Usage)
+    flagSet.$($sliceTypeName)Var(to, info.FlagName(), info.Default.($($sliceType)), info.Usage)
   } else {
-    params.FlagSet.$($sliceTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($defaultSlice)), info.Usage)
+    flagSet.$($sliceTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($defaultSlice)), info.Usage)
   }
 
   return params
