@@ -469,5 +469,19 @@ var _ = Describe("ParamSet", func() {
 				}
 			})
 		})
+
+		Context("NewFlagInfoOnFlagSet", func() {
+			It("🧪 should: bind flag to alternative flag set", func() {
+				paramSet.BindString(
+					adapters.NewFlagInfoOnFlagSet("pattern", "p", "default-pattern",
+						widgetCommand.PersistentFlags()), &paramSet.Native.Pattern,
+				)
+				commandLine := "--pattern=*music.infex*"
+				testhelpers.ExecuteCommand(
+					rootCommand, "widget", "/usr/fuse/home/music", commandLine,
+				)
+				Expect(paramSet.Native.Pattern).To(Equal("*music.infex*"))
+			})
+		})
 	})
 })
