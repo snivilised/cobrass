@@ -11,10 +11,11 @@ import (
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindBool(info *FlagInfo, to *bool) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.BoolVar(to, info.FlagName(), info.Default.(bool), info.Usage)
+		flagSet.BoolVar(to, info.FlagName(), info.Default.(bool), info.Usage)
 	} else {
-		params.FlagSet.BoolVarP(to, info.FlagName(), info.Short, info.Default.(bool), info.Usage)
+		flagSet.BoolVarP(to, info.FlagName(), info.Short, info.Default.(bool), info.Usage)
 	}
 
 	return params
@@ -24,10 +25,11 @@ func (params *ParamSet[N]) BindBool(info *FlagInfo, to *bool) *ParamSet[N] {
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindBoolSlice(info *FlagInfo, to *[]bool) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.BoolSliceVar(to, info.FlagName(), info.Default.([]bool), info.Usage)
+		flagSet.BoolSliceVar(to, info.FlagName(), info.Default.([]bool), info.Usage)
 	} else {
-		params.FlagSet.BoolSliceVarP(to, info.FlagName(), info.Short, info.Default.([]bool), info.Usage)
+		flagSet.BoolSliceVarP(to, info.FlagName(), info.Short, info.Default.([]bool), info.Usage)
 	}
 
 	return params
@@ -37,10 +39,11 @@ func (params *ParamSet[N]) BindBoolSlice(info *FlagInfo, to *[]bool) *ParamSet[N
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindDuration(info *FlagInfo, to *time.Duration) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.DurationVar(to, info.FlagName(), info.Default.(time.Duration), info.Usage)
+		flagSet.DurationVar(to, info.FlagName(), info.Default.(time.Duration), info.Usage)
 	} else {
-		params.FlagSet.DurationVarP(to, info.FlagName(), info.Short, info.Default.(time.Duration), info.Usage)
+		flagSet.DurationVarP(to, info.FlagName(), info.Short, info.Default.(time.Duration), info.Usage)
 	}
 
 	return params
@@ -77,10 +80,11 @@ func (params *ParamSet[N]) BindValidatedDuration(info *FlagInfo, to *time.Durati
 // flag, would need to have this assignment performed.
 //
 func (params *ParamSet[N]) BindEnum(info *FlagInfo, to *string) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.StringVar(to, info.FlagName(), info.Default.(string), info.Usage)
+		flagSet.StringVar(to, info.FlagName(), info.Default.(string), info.Usage)
 	} else {
-		params.FlagSet.StringVarP(to, info.FlagName(), info.Short, info.Default.(string), info.Usage)
+		flagSet.StringVarP(to, info.FlagName(), info.Short, info.Default.(string), info.Usage)
 	}
 
 	return params
@@ -110,10 +114,11 @@ func (params *ParamSet[N]) BindValidatedEnum(info *FlagInfo, to *string, validat
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindFloat32(info *FlagInfo, to *float32) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Float32Var(to, info.FlagName(), info.Default.(float32), info.Usage)
+		flagSet.Float32Var(to, info.FlagName(), info.Default.(float32), info.Usage)
 	} else {
-		params.FlagSet.Float32VarP(to, info.FlagName(), info.Short, info.Default.(float32), info.Usage)
+		flagSet.Float32VarP(to, info.FlagName(), info.Short, info.Default.(float32), info.Usage)
 	}
 
 	return params
@@ -138,10 +143,11 @@ func (params *ParamSet[N]) BindValidatedFloat32(info *FlagInfo, to *float32, val
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindFloat32Slice(info *FlagInfo, to *[]float32) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Float32SliceVar(to, info.FlagName(), info.Default.([]float32), info.Usage)
+		flagSet.Float32SliceVar(to, info.FlagName(), info.Default.([]float32), info.Usage)
 	} else {
-		params.FlagSet.Float32SliceVarP(to, info.FlagName(), info.Short, info.Default.([]float32), info.Usage)
+		flagSet.Float32SliceVarP(to, info.FlagName(), info.Short, info.Default.([]float32), info.Usage)
 	}
 
 	return params
@@ -166,10 +172,11 @@ func (params *ParamSet[N]) BindValidatedFloat32Slice(info *FlagInfo, to *[]float
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindFloat64(info *FlagInfo, to *float64) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Float64Var(to, info.FlagName(), info.Default.(float64), info.Usage)
+		flagSet.Float64Var(to, info.FlagName(), info.Default.(float64), info.Usage)
 	} else {
-		params.FlagSet.Float64VarP(to, info.FlagName(), info.Short, info.Default.(float64), info.Usage)
+		flagSet.Float64VarP(to, info.FlagName(), info.Short, info.Default.(float64), info.Usage)
 	}
 
 	return params
@@ -194,10 +201,11 @@ func (params *ParamSet[N]) BindValidatedFloat64(info *FlagInfo, to *float64, val
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindFloat64Slice(info *FlagInfo, to *[]float64) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Float64SliceVar(to, info.FlagName(), info.Default.([]float64), info.Usage)
+		flagSet.Float64SliceVar(to, info.FlagName(), info.Default.([]float64), info.Usage)
 	} else {
-		params.FlagSet.Float64SliceVarP(to, info.FlagName(), info.Short, info.Default.([]float64), info.Usage)
+		flagSet.Float64SliceVarP(to, info.FlagName(), info.Short, info.Default.([]float64), info.Usage)
 	}
 
 	return params
@@ -222,10 +230,11 @@ func (params *ParamSet[N]) BindValidatedFloat64Slice(info *FlagInfo, to *[]float
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindInt(info *FlagInfo, to *int) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.IntVar(to, info.FlagName(), info.Default.(int), info.Usage)
+		flagSet.IntVar(to, info.FlagName(), info.Default.(int), info.Usage)
 	} else {
-		params.FlagSet.IntVarP(to, info.FlagName(), info.Short, info.Default.(int), info.Usage)
+		flagSet.IntVarP(to, info.FlagName(), info.Short, info.Default.(int), info.Usage)
 	}
 
 	return params
@@ -250,10 +259,11 @@ func (params *ParamSet[N]) BindValidatedInt(info *FlagInfo, to *int, validator I
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindIntSlice(info *FlagInfo, to *[]int) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.IntSliceVar(to, info.FlagName(), info.Default.([]int), info.Usage)
+		flagSet.IntSliceVar(to, info.FlagName(), info.Default.([]int), info.Usage)
 	} else {
-		params.FlagSet.IntSliceVarP(to, info.FlagName(), info.Short, info.Default.([]int), info.Usage)
+		flagSet.IntSliceVarP(to, info.FlagName(), info.Short, info.Default.([]int), info.Usage)
 	}
 
 	return params
@@ -278,10 +288,11 @@ func (params *ParamSet[N]) BindValidatedIntSlice(info *FlagInfo, to *[]int, vali
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindInt16(info *FlagInfo, to *int16) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Int16Var(to, info.FlagName(), info.Default.(int16), info.Usage)
+		flagSet.Int16Var(to, info.FlagName(), info.Default.(int16), info.Usage)
 	} else {
-		params.FlagSet.Int16VarP(to, info.FlagName(), info.Short, info.Default.(int16), info.Usage)
+		flagSet.Int16VarP(to, info.FlagName(), info.Short, info.Default.(int16), info.Usage)
 	}
 
 	return params
@@ -306,10 +317,11 @@ func (params *ParamSet[N]) BindValidatedInt16(info *FlagInfo, to *int16, validat
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindInt32(info *FlagInfo, to *int32) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Int32Var(to, info.FlagName(), info.Default.(int32), info.Usage)
+		flagSet.Int32Var(to, info.FlagName(), info.Default.(int32), info.Usage)
 	} else {
-		params.FlagSet.Int32VarP(to, info.FlagName(), info.Short, info.Default.(int32), info.Usage)
+		flagSet.Int32VarP(to, info.FlagName(), info.Short, info.Default.(int32), info.Usage)
 	}
 
 	return params
@@ -334,10 +346,11 @@ func (params *ParamSet[N]) BindValidatedInt32(info *FlagInfo, to *int32, validat
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindInt32Slice(info *FlagInfo, to *[]int32) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Int32SliceVar(to, info.FlagName(), info.Default.([]int32), info.Usage)
+		flagSet.Int32SliceVar(to, info.FlagName(), info.Default.([]int32), info.Usage)
 	} else {
-		params.FlagSet.Int32SliceVarP(to, info.FlagName(), info.Short, info.Default.([]int32), info.Usage)
+		flagSet.Int32SliceVarP(to, info.FlagName(), info.Short, info.Default.([]int32), info.Usage)
 	}
 
 	return params
@@ -362,10 +375,11 @@ func (params *ParamSet[N]) BindValidatedInt32Slice(info *FlagInfo, to *[]int32, 
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindInt64(info *FlagInfo, to *int64) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Int64Var(to, info.FlagName(), info.Default.(int64), info.Usage)
+		flagSet.Int64Var(to, info.FlagName(), info.Default.(int64), info.Usage)
 	} else {
-		params.FlagSet.Int64VarP(to, info.FlagName(), info.Short, info.Default.(int64), info.Usage)
+		flagSet.Int64VarP(to, info.FlagName(), info.Short, info.Default.(int64), info.Usage)
 	}
 
 	return params
@@ -390,10 +404,11 @@ func (params *ParamSet[N]) BindValidatedInt64(info *FlagInfo, to *int64, validat
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindInt64Slice(info *FlagInfo, to *[]int64) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Int64SliceVar(to, info.FlagName(), info.Default.([]int64), info.Usage)
+		flagSet.Int64SliceVar(to, info.FlagName(), info.Default.([]int64), info.Usage)
 	} else {
-		params.FlagSet.Int64SliceVarP(to, info.FlagName(), info.Short, info.Default.([]int64), info.Usage)
+		flagSet.Int64SliceVarP(to, info.FlagName(), info.Short, info.Default.([]int64), info.Usage)
 	}
 
 	return params
@@ -418,10 +433,11 @@ func (params *ParamSet[N]) BindValidatedInt64Slice(info *FlagInfo, to *[]int64, 
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindInt8(info *FlagInfo, to *int8) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Int8Var(to, info.FlagName(), info.Default.(int8), info.Usage)
+		flagSet.Int8Var(to, info.FlagName(), info.Default.(int8), info.Usage)
 	} else {
-		params.FlagSet.Int8VarP(to, info.FlagName(), info.Short, info.Default.(int8), info.Usage)
+		flagSet.Int8VarP(to, info.FlagName(), info.Short, info.Default.(int8), info.Usage)
 	}
 
 	return params
@@ -446,10 +462,11 @@ func (params *ParamSet[N]) BindValidatedInt8(info *FlagInfo, to *int8, validator
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindIPMask(info *FlagInfo, to *net.IPMask) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.IPMaskVar(to, info.FlagName(), info.Default.(net.IPMask), info.Usage)
+		flagSet.IPMaskVar(to, info.FlagName(), info.Default.(net.IPMask), info.Usage)
 	} else {
-		params.FlagSet.IPMaskVarP(to, info.FlagName(), info.Short, info.Default.(net.IPMask), info.Usage)
+		flagSet.IPMaskVarP(to, info.FlagName(), info.Short, info.Default.(net.IPMask), info.Usage)
 	}
 
 	return params
@@ -474,10 +491,11 @@ func (params *ParamSet[N]) BindValidatedIPMask(info *FlagInfo, to *net.IPMask, v
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindIPNet(info *FlagInfo, to *net.IPNet) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.IPNetVar(to, info.FlagName(), info.Default.(net.IPNet), info.Usage)
+		flagSet.IPNetVar(to, info.FlagName(), info.Default.(net.IPNet), info.Usage)
 	} else {
-		params.FlagSet.IPNetVarP(to, info.FlagName(), info.Short, info.Default.(net.IPNet), info.Usage)
+		flagSet.IPNetVarP(to, info.FlagName(), info.Short, info.Default.(net.IPNet), info.Usage)
 	}
 
 	return params
@@ -502,10 +520,11 @@ func (params *ParamSet[N]) BindValidatedIPNet(info *FlagInfo, to *net.IPNet, val
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindString(info *FlagInfo, to *string) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.StringVar(to, info.FlagName(), info.Default.(string), info.Usage)
+		flagSet.StringVar(to, info.FlagName(), info.Default.(string), info.Usage)
 	} else {
-		params.FlagSet.StringVarP(to, info.FlagName(), info.Short, info.Default.(string), info.Usage)
+		flagSet.StringVarP(to, info.FlagName(), info.Short, info.Default.(string), info.Usage)
 	}
 
 	return params
@@ -530,10 +549,11 @@ func (params *ParamSet[N]) BindValidatedString(info *FlagInfo, to *string, valid
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindStringSlice(info *FlagInfo, to *[]string) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.StringSliceVar(to, info.FlagName(), info.Default.([]string), info.Usage)
+		flagSet.StringSliceVar(to, info.FlagName(), info.Default.([]string), info.Usage)
 	} else {
-		params.FlagSet.StringSliceVarP(to, info.FlagName(), info.Short, info.Default.([]string), info.Usage)
+		flagSet.StringSliceVarP(to, info.FlagName(), info.Short, info.Default.([]string), info.Usage)
 	}
 
 	return params
@@ -558,10 +578,11 @@ func (params *ParamSet[N]) BindValidatedStringSlice(info *FlagInfo, to *[]string
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindUint16(info *FlagInfo, to *uint16) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Uint16Var(to, info.FlagName(), info.Default.(uint16), info.Usage)
+		flagSet.Uint16Var(to, info.FlagName(), info.Default.(uint16), info.Usage)
 	} else {
-		params.FlagSet.Uint16VarP(to, info.FlagName(), info.Short, info.Default.(uint16), info.Usage)
+		flagSet.Uint16VarP(to, info.FlagName(), info.Short, info.Default.(uint16), info.Usage)
 	}
 
 	return params
@@ -586,10 +607,11 @@ func (params *ParamSet[N]) BindValidatedUint16(info *FlagInfo, to *uint16, valid
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindUint32(info *FlagInfo, to *uint32) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Uint32Var(to, info.FlagName(), info.Default.(uint32), info.Usage)
+		flagSet.Uint32Var(to, info.FlagName(), info.Default.(uint32), info.Usage)
 	} else {
-		params.FlagSet.Uint32VarP(to, info.FlagName(), info.Short, info.Default.(uint32), info.Usage)
+		flagSet.Uint32VarP(to, info.FlagName(), info.Short, info.Default.(uint32), info.Usage)
 	}
 
 	return params
@@ -614,10 +636,11 @@ func (params *ParamSet[N]) BindValidatedUint32(info *FlagInfo, to *uint32, valid
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindUint64(info *FlagInfo, to *uint64) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Uint64Var(to, info.FlagName(), info.Default.(uint64), info.Usage)
+		flagSet.Uint64Var(to, info.FlagName(), info.Default.(uint64), info.Usage)
 	} else {
-		params.FlagSet.Uint64VarP(to, info.FlagName(), info.Short, info.Default.(uint64), info.Usage)
+		flagSet.Uint64VarP(to, info.FlagName(), info.Short, info.Default.(uint64), info.Usage)
 	}
 
 	return params
@@ -642,10 +665,11 @@ func (params *ParamSet[N]) BindValidatedUint64(info *FlagInfo, to *uint64, valid
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindUint8(info *FlagInfo, to *uint8) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.Uint8Var(to, info.FlagName(), info.Default.(uint8), info.Usage)
+		flagSet.Uint8Var(to, info.FlagName(), info.Default.(uint8), info.Usage)
 	} else {
-		params.FlagSet.Uint8VarP(to, info.FlagName(), info.Short, info.Default.(uint8), info.Usage)
+		flagSet.Uint8VarP(to, info.FlagName(), info.Short, info.Default.(uint8), info.Usage)
 	}
 
 	return params
@@ -670,10 +694,11 @@ func (params *ParamSet[N]) BindValidatedUint8(info *FlagInfo, to *uint8, validat
 // 'info.Short' has been set otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindUint(info *FlagInfo, to *uint) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.UintVar(to, info.FlagName(), info.Default.(uint), info.Usage)
+		flagSet.UintVar(to, info.FlagName(), info.Default.(uint), info.Usage)
 	} else {
-		params.FlagSet.UintVarP(to, info.FlagName(), info.Short, info.Default.(uint), info.Usage)
+		flagSet.UintVarP(to, info.FlagName(), info.Short, info.Default.(uint), info.Usage)
 	}
 
 	return params
@@ -698,10 +723,11 @@ func (params *ParamSet[N]) BindValidatedUint(info *FlagInfo, to *uint, validator
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) BindUintSlice(info *FlagInfo, to *[]uint) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
 	if info.Short == "" {
-		params.FlagSet.UintSliceVar(to, info.FlagName(), info.Default.([]uint), info.Usage)
+		flagSet.UintSliceVar(to, info.FlagName(), info.Default.([]uint), info.Usage)
 	} else {
-		params.FlagSet.UintSliceVarP(to, info.FlagName(), info.Short, info.Default.([]uint), info.Usage)
+		flagSet.UintSliceVarP(to, info.FlagName(), info.Short, info.Default.([]uint), info.Usage)
 	}
 
 	return params

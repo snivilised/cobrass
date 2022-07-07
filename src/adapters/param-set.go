@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -14,10 +15,32 @@ import (
 // on the cobra flag set in order to define flags.
 //
 type FlagInfo struct {
-	Name      string
-	Usage     string
-	Short     string
-	Default   any
+	// Name of flag derived from the Usage
+	//
+	Name string
+
+	// Usage provides a description of the flag, the first word should eb the name
+	// of the flag.
+	//
+	Usage string
+
+	// Short is the 1 letter character shortcut for the flag.
+	//
+	Short string
+
+	// Default is the default value for the flag if the user does not provide a
+	// value.
+	//
+	Default any
+
+	// AlternativeFlagSet defines the flag set to use. Allows the user to specify which flag
+	// to define this flag on. By default, it is on command.Flags()
+	//
+	AlternativeFlagSet *pflag.FlagSet
+
+	// Validator is a function that will be used to validate a flag's associated option
+	// value.
+	//
 	Validator StringValidatorFn
 }
 
@@ -31,7 +54,8 @@ func extractNameFromUsage(usage string) string {
 	return name
 }
 
-// NewFlagInfo factory function for FlagInfo
+// NewFlagInfo factory function for FlagInfo. Use this function if the flag
+// is to be defined on the default flag set, ie the one on command.Flags().
 //
 func NewFlagInfo(usage string, short string, def any) *FlagInfo {
 
@@ -40,6 +64,21 @@ func NewFlagInfo(usage string, short string, def any) *FlagInfo {
 		Usage:   usage,
 		Short:   short,
 		Default: def,
+	}
+}
+
+// NewFlagInfoOnFlagSet factory function for FlagInfo, with an alternative flag set.
+// This function need only be usd to enable defining flags on the flag set
+// other than that of command.Flags(), eg command.PersistentFlags().
+//
+func NewFlagInfoOnFlagSet(usage string, short string, def any, alternativeFlagSet *pflag.FlagSet) *FlagInfo {
+
+	return &FlagInfo{
+		Name:               extractNameFromUsage(usage),
+		Usage:              usage,
+		Short:              short,
+		Default:            def,
+		AlternativeFlagSet: alternativeFlagSet,
 	}
 }
 
@@ -88,7 +127,7 @@ type ParamSet[N any] struct {
 	//
 	Native *N
 
-	// FlagSet is the Cobra FlagSet
+	// FlagSet is the default Cobra FlagSet
 	//
 	FlagSet *pflag.FlagSet
 }
@@ -98,6 +137,9 @@ type ParamSet[N any] struct {
 // different ways a command can be used
 //
 // paramSet = NewParamSet[WidgetParameterSet](widgetCommand)
+//
+// The default flag set is defined, ie command.Flags(). If an alternative
+// flag set is required, then the client should use
 //
 // The generic parameter N represents the client defined native parameter set.
 //
@@ -120,4 +162,13 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 //
 func (params *ParamSet[N]) Validators() *ValidatorContainer {
 	return params.validators
+}
+
+// ResolveFlagSet resolves between the default flag set on the param set
+// and the optional one defined on the FlagInfo. If there is no default
+// flag set, then there must be one on the flag info, otherwise a panic
+// will occur due dereferencing a nil pointer.
+//
+func (params *ParamSet[N]) ResolveFlagSet(info *FlagInfo) *pflag.FlagSet {
+	return lo.Ternary(info.AlternativeFlagSet == nil, params.FlagSet, info.AlternativeFlagSet)
 }

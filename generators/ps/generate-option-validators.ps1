@@ -712,7 +712,10 @@ function Build-Validators {
   # (option-validator-auto.go)
   #
   [Alias("gen-ov")]
-  param()
+  param(
+    [Parameter()]
+    [switch]$NoClip
+  )
 
   $content = ($types.Keys | Sort-Object | ForEach-Object {
       # iterate over spec Types only
@@ -775,16 +778,24 @@ func (validator $($sliceValidatorStruct)) Validate() error {
 "@
       }
     })
-  $content | Set-Clipboard
-
-  Write-Host "🎯 Paste into ---> 'option-validator-auto.go'"
+    
+  if ($NoClip.IsPresent) {
+    return $content
+  }
+  else {
+    Write-Host "🎯 Paste into ---> 'option-validator-auto.go'"
+    $content | Set-Clipboard  
+  }
 }
 
 function Build-ParamSet {
   # (param-set-auto.go)
   #
   [Alias("gen-ps")]
-  param()
+  param(
+    [Parameter()]
+    [switch]$NoClip
+  )
 
   # each operation defined independently
   #
@@ -803,10 +814,11 @@ function Build-ParamSet {
 // 'info.Short' has been set otherwise binds without a short name.
 //$($spec.BindDoc)
 func (params *ParamSet[N]) Bind$($spec.TypeName)(info *FlagInfo, to *$($spec.GoType)) *ParamSet[N] {
+  flagSet := params.ResolveFlagSet(info)
   if info.Short == "" {
-    params.FlagSet.$($actualTypeName)Var(to, info.FlagName(), info.Default.($($spec.GoType)), info.Usage)
+    flagSet.$($actualTypeName)Var(to, info.FlagName(), info.Default.($($spec.GoType)), info.Usage)
   } else {
-    params.FlagSet.$($actualTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($spec.GoType)), info.Usage)
+    flagSet.$($actualTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($spec.GoType)), info.Usage)
   }
 
   return params
@@ -848,10 +860,11 @@ func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$(
 // otherwise binds without a short name.
 //
 func (params *ParamSet[N]) Bind$($sliceTypeName)(info *FlagInfo, to *$($sliceType)) *ParamSet[N] {
+  flagSet := params.ResolveFlagSet(info)
   if info.Short == "" {
-    params.FlagSet.$($sliceTypeName)Var(to, info.FlagName(), info.Default.($($sliceType)), info.Usage)
+    flagSet.$($sliceTypeName)Var(to, info.FlagName(), info.Default.($($sliceType)), info.Usage)
   } else {
-    params.FlagSet.$($sliceTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($defaultSlice)), info.Usage)
+    flagSet.$($sliceTypeName)VarP(to, info.FlagName(), info.Short, info.Default.($($defaultSlice)), info.Usage)
   }
 
   return params
@@ -887,9 +900,14 @@ func (params *ParamSet[N]) BindValidated$($sliceTypeName)(info *FlagInfo, to *$(
         }
       }
     })
-  $content | Set-Clipboard
 
-  Write-Host "🎯 Paste into ---> 'param-set-auto.go'"
+  if ($NoClip.IsPresent) {
+    return $content
+  }
+  else {
+    Write-Host "🎯 Paste into ---> 'param-set-auto.go'"
+    $content | Set-Clipboard  
+  }
 }
 
 
@@ -898,7 +916,10 @@ function Build-TestEntry {
   # (option-validator-auto_test.go)
   #
   [Alias("gen-ov-t")]
-  param()
+  param(
+    [Parameter()]
+    [switch]$NoClip
+  )
   $content = ($types.Keys | Sort-Object | ForEach-Object {
       # iterate over spec Types only
       #
@@ -963,9 +984,13 @@ Entry(nil, OvEntry{
 
       }
     })
-  $content | Set-Clipboard
-
-  Write-Host "🎯 Paste into ---> 'option-validator-auto_test.go'"
+  if ($NoClip.IsPresent) {
+    return $content
+  }
+  else {
+    Write-Host "🎯 Paste into ---> 'option-validator-auto_test.go'"
+    $content | Set-Clipboard  
+  }
 }
 
 function Build-BinderHelpers {
@@ -975,9 +1000,11 @@ function Build-BinderHelpers {
   [CmdletBinding()]
   param(
     [Parameter()]
-    [Switch]$Indicate
-  )
+    [Switch]$Indicate,
 
+    [Parameter()]
+    [switch]$NoClip
+  )
   $content = ($types.Keys | Sort-Object | ForEach-Object {
       # iterate over spec Types and Operations
       #
@@ -1088,9 +1115,14 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
         }
       }
     })
-  $content | Set-Clipboard
 
-  Write-Host "🎯 Paste into ---> 'paramset-binder-helpers-auto.go'"
+  if ($NoClip.IsPresent) {
+    return $content
+  }
+  else {
+    Write-Host "🎯 Paste into ---> 'paramset-binder-helpers-auto.go'"
+    $content | Set-Clipboard  
+  }
 }
 
 function Build-BinderHelperTests {
@@ -1100,7 +1132,10 @@ function Build-BinderHelperTests {
   [CmdletBinding()]
   param(
     [Parameter()]
-    [Switch]$Indicate
+    [Switch]$Indicate,
+
+    [Parameter()]
+    [switch]$NoClip
   )
 
   $content = ($types.Keys | Sort-Object | ForEach-Object {
@@ -1328,9 +1363,14 @@ DescribeTable("BindValidated$($side.Method)",
         }
       }
     })
-  $content | Set-Clipboard
 
-  Write-Host "🎯 Paste into ---> 'paramset-binder-helpers-auto_test.go'"
+  if ($NoClip.IsPresent) {
+    return $content
+  }
+  else {
+    Write-Host "🎯 Paste into ---> 'paramset-binder-helpers-auto_test.go'"
+    $content | Set-Clipboard  
+  }
 }
 
 # === Utilities
@@ -1346,7 +1386,11 @@ function Get-MethodSubStmtFromOperator {
     [PSCustomObject]$Spec,
 
     [Parameter]
-    [PSCustomObject]$Operator
+    [PSCustomObject]$Operator,
+
+    [Parameter()]
+    [switch]$NoClip
+
   )
 
   $result = if (-not([string]::IsNullOrEmpty($Operator.MethodTemplate))) {
@@ -1389,4 +1433,85 @@ function Test-IsCompatibleCombo {
   }
 
   return $result
+}
+
+function Checkpoint-ParamSetSignatures {
+  [Alias("check-sig")]
+  [CmdletBinding()]
+  [OutputType([PSCustomObject])]
+  param(
+    [Parameter()]
+    $Sources = @("gen-ov", "gen-ps", "gen-help")
+  )
+  [System.Text.StringBuilder]$hBuilder = [System.Text.StringBuilder]::new()
+
+  [hashtable]$metrics = @{}
+  $capture = ""
+
+  $totals = [PSCustomObject]@{
+    Counters = [PSCustomObject]@{
+      Functions = 0
+      Types     = 0
+    }
+  }
+
+  foreach ($producer in $Sources) {
+    $capture = $(Invoke-Expression -Command "$producer -NoClip")
+
+    $metrics[$producer] = [PSCustomObject]@{
+      Counters = [PSCustomObject]@{
+        Functions = 0
+        Types     = 0
+      }
+    }
+
+    $endings = $IsWindows ? "`r`n" : "`n"
+    $capture -split $endings | ForEach-Object {
+      $line = $_
+      if ($line.StartsWith("func")) {
+        $index = $line.LastIndexOf(" {")
+        if ($index -ge 0) {
+          $signature = $line.Substring(0, $index + 1)
+          $null = $hBuilder.AppendLine($signature.Trim())
+          $metrics[$producer].Counters.Functions++
+        }
+      }
+      elseif ($line.StartsWith("type")) {
+        $null = $hBuilder.AppendLine($line.Trim())
+        $metrics[$producer].Counters.Types++
+      }
+    }
+    $totals.Counters.Functions += $metrics[$producer].Counters.Functions
+    $totals.Counters.Types += $metrics[$producer].Counters.Types
+  }
+
+  [System.Text.StringBuilder]$oBuilder = [System.Text.StringBuilder]::new()
+  $metrics.Keys | ForEach-Object {
+    $metric = $metrics[$_]
+    $null = $oBuilder.AppendLine("---> 🍄 [$_] Signature Counts - 🍅functions: '$($metric.Counters.Functions)', 🥦types: '$($metric.Counters.Types)'")
+  }
+  $null = $oBuilder.AppendLine("---> 🍄 Total Counts - 🍅functions: '$($totals.Counters.Functions)', 🥦types: '$($totals.Counters.Types)'")
+
+  $stream = [IO.MemoryStream]::new([byte[]][char[]]$hBuilder.ToString())
+  $hash = Get-FileHash -InputStream $stream -Algorithm SHA256
+
+  return [PSCustomObject]@{
+    Hash    = $hash.Hash
+    Metrics = $metrics
+    Output  = $oBuilder.ToString() 
+  }
+}
+
+function Show-ParamSetSignatures {
+  [Alias("show-sig")]
+  [CmdletBinding()]
+  [OutputType([string])]
+  param(
+    [Parameter()]
+    $Sources = @("gen-ov", "gen-ps", "gen-help")
+  )
+  $paramSigs = Checkpoint-ParamSetSignatures -Sources $Sources
+
+  Write-Host $paramSigs.Output -ForegroundColor Cyan
+  Write-Host "===> [🤖] HASH: '$($paramSigs.Hash)'" -ForegroundColor Green
 }
