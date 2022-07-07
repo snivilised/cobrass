@@ -60,8 +60,6 @@ The ___ParamSet___ also handles flag definition on each command. The client defi
 
 - 3️⃣ ___BindValidated\<Type>\<Op>___: (eg BindValidatedStringWithin) same as 2️⃣, except user passes in operation specific parameters (See [Validation Helpers](#validation-helpers)).
 
-⚠️ ___Support for Persistent flags is currently pending implementation___ (See: [add option validation support for PersistentFlags](issues/34))
-
 ### 💠 Pseudo Enum
 
 Since Go does not have built in support for enums, this feature has to be faked by the use of custom definitions. Typically these would be via int based type definitions. However, when developing a cli, attention has to be paid into how the user specifies discreet values and how they are interpreted as options.
@@ -143,8 +141,6 @@ The following sections describe the validation process, option validators and th
 📌 ___When using the option validators, there is no need to use the `Cobra` flag set methods (eg cmd.Flags().StringVarP) directly to define he flags for the command. This is taken care of on the client's behalf___.
 
 ### ✅ Validation Sequencing
-
-⚠️ THIS SECTION NOT COMPLETED YET AND SUBJECT TO CHANGE.
 
 The following is a checklist of items that need to be performed:
 
@@ -264,6 +260,19 @@ Note, because we can't bind directly to the `native` member of WidgetParameterSe
 ```
 
 The validation process will fail on the first error encountered and return that error. Also note how we retrieve the parameter set previously registered from the cobra container using the ___Native___ method. Since ___Native___ returns ___any___, a type assertion has to be performed to get back the `native` type. It is not mandatory to register the parameter set this way, it is there to help minimise the number of package global variables.
+
+### 🎭 Alternative Flag Set
+
+By default, binding a flag is performed on the default flag set. This flag set is the one you get from calling ___command.Flags()___ (this is performed automatically by ___NewFlagInfo___). However, there are a few more options for defining flags in `Cobra`. There are multiple flag set methods on the `Cobra` command, eg ___command.PersistentFlags()___. To utilise an alternative flag set, the client should use ___NewFlagInfoOnFlagSet___ instead of ___NewFlagInfo___. ___NewFlagInfoOnFlagSet___ requires that an extra parameter be provided and that is the alternative flag set, which can be derived from calling the appropriate method on the `command`, eg:
+
+```go
+  paramSet.BindString(
+    adapters.NewFlagInfoOnFlagSet("pattern", "p", "default-pattern",
+      widgetCommand.PersistentFlags()), &paramSet.Native.Pattern,
+  )
+```
+
+The flag set defined for the flag (in the above case 'pattern'), will always override the default one defined on the parameter set.
 
 ### ⛔ Option Validators<a name="option-validators"></a>
 
