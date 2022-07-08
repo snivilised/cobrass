@@ -72,9 +72,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", "scr", false, []string{"json", "text", "xml"}, "null"),
 		)
 
-		DescribeTable("BindValidatedEnumNotContains",
+		DescribeTable("BindValidatedNotContainsEnum",
 			func(given, should string, value string, expectNil bool, collection []string, dummy string) {
-				validator := paramSet.BindValidatedEnumNotContains(
+				validator := paramSet.BindValidatedNotContainsEnum(
 					adapters.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source, collection,
 				)
@@ -170,9 +170,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", float32(99), false, []float32{1, 2, 3}, float32(0)),
 		)
 
-		DescribeTable("BindValidatedFloat32NotContains",
+		DescribeTable("BindValidatedNotContainsFloat32",
 			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) {
-				validator := paramSet.BindValidatedFloat32NotContains(
+				validator := paramSet.BindValidatedNotContainsFloat32(
 					adapters.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, collection,
 				)
@@ -268,9 +268,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", float64(99), false, []float64{1, 2, 3}, float64(0)),
 		)
 
-		DescribeTable("BindValidatedFloat64NotContains",
+		DescribeTable("BindValidatedNotContainsFloat64",
 			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) {
-				validator := paramSet.BindValidatedFloat64NotContains(
+				validator := paramSet.BindValidatedNotContainsFloat64(
 					adapters.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, collection,
 				)
@@ -366,9 +366,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", 99, false, []int{1, 2, 3}, 0),
 		)
 
-		DescribeTable("BindValidatedIntNotContains",
+		DescribeTable("BindValidatedNotContainsInt",
 			func(given, should string, value int, expectNil bool, collection []int, dummy int) {
-				validator := paramSet.BindValidatedIntNotContains(
+				validator := paramSet.BindValidatedNotContainsInt(
 					adapters.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, collection,
 				)
@@ -464,9 +464,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", int16(99), false, []int16{1, 2, 3}, int16(0)),
 		)
 
-		DescribeTable("BindValidatedInt16NotContains",
+		DescribeTable("BindValidatedNotContainsInt16",
 			func(given, should string, value int16, expectNil bool, collection []int16, dummy int16) {
-				validator := paramSet.BindValidatedInt16NotContains(
+				validator := paramSet.BindValidatedNotContainsInt16(
 					adapters.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, collection,
 				)
@@ -562,9 +562,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", int32(99), false, []int32{1, 2, 3}, int32(0)),
 		)
 
-		DescribeTable("BindValidatedInt32NotContains",
+		DescribeTable("BindValidatedNotContainsInt32",
 			func(given, should string, value int32, expectNil bool, collection []int32, dummy int32) {
-				validator := paramSet.BindValidatedInt32NotContains(
+				validator := paramSet.BindValidatedNotContainsInt32(
 					adapters.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, collection,
 				)
@@ -660,9 +660,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", int64(99), false, []int64{1, 2, 3}, int64(0)),
 		)
 
-		DescribeTable("BindValidatedInt64NotContains",
+		DescribeTable("BindValidatedNotContainsInt64",
 			func(given, should string, value int64, expectNil bool, collection []int64, dummy int64) {
-				validator := paramSet.BindValidatedInt64NotContains(
+				validator := paramSet.BindValidatedNotContainsInt64(
 					adapters.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, collection,
 				)
@@ -758,9 +758,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", int8(99), false, []int8{1, 2, 3}, int8(0)),
 		)
 
-		DescribeTable("BindValidatedInt8NotContains",
+		DescribeTable("BindValidatedNotContainsInt8",
 			func(given, should string, value int8, expectNil bool, collection []int8, dummy int8) {
-				validator := paramSet.BindValidatedInt8NotContains(
+				validator := paramSet.BindValidatedNotContainsInt8(
 					adapters.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, collection,
 				)
@@ -856,9 +856,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", "x", false, []string{"a", "b", "c"}, "null"),
 		)
 
-		DescribeTable("BindValidatedStringNotContains",
+		DescribeTable("BindValidatedNotContainsString",
 			func(given, should string, value string, expectNil bool, collection []string, dummy string) {
-				validator := paramSet.BindValidatedStringNotContains(
+				validator := paramSet.BindValidatedNotContainsString(
 					adapters.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, collection,
 				)
@@ -1000,9 +1000,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", uint16(99), false, []uint16{1, 2, 3}, uint16(0)),
 		)
 
-		DescribeTable("BindValidatedUint16NotContains",
+		DescribeTable("BindValidatedNotContainsUint16",
 			func(given, should string, value uint16, expectNil bool, collection []uint16, dummy uint16) {
-				validator := paramSet.BindValidatedUint16NotContains(
+				validator := paramSet.BindValidatedNotContainsUint16(
 					adapters.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, collection,
 				)
@@ -1098,9 +1098,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", uint32(99), false, []uint32{1, 2, 3}, uint32(0)),
 		)
 
-		DescribeTable("BindValidatedUint32NotContains",
+		DescribeTable("BindValidatedNotContainsUint32",
 			func(given, should string, value uint32, expectNil bool, collection []uint32, dummy uint32) {
-				validator := paramSet.BindValidatedUint32NotContains(
+				validator := paramSet.BindValidatedNotContainsUint32(
 					adapters.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, collection,
 				)
@@ -1196,9 +1196,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", uint64(99), false, []uint64{1, 2, 3}, uint64(0)),
 		)
 
-		DescribeTable("BindValidatedUint64NotContains",
+		DescribeTable("BindValidatedNotContainsUint64",
 			func(given, should string, value uint64, expectNil bool, collection []uint64, dummy uint64) {
-				validator := paramSet.BindValidatedUint64NotContains(
+				validator := paramSet.BindValidatedNotContainsUint64(
 					adapters.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, collection,
 				)
@@ -1294,9 +1294,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", uint8(99), false, []uint8{1, 2, 3}, uint8(0)),
 		)
 
-		DescribeTable("BindValidatedUint8NotContains",
+		DescribeTable("BindValidatedNotContainsUint8",
 			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) {
-				validator := paramSet.BindValidatedUint8NotContains(
+				validator := paramSet.BindValidatedNotContainsUint8(
 					adapters.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, collection,
 				)
@@ -1392,9 +1392,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 			Entry(nil, "collection does not contain member", "return error", uint(99), false, []uint{1, 2, 3}, uint(0)),
 		)
 
-		DescribeTable("BindValidatedUintNotContains",
+		DescribeTable("BindValidatedNotContainsUint",
 			func(given, should string, value uint, expectNil bool, collection []uint, dummy uint) {
-				validator := paramSet.BindValidatedUintNotContains(
+				validator := paramSet.BindValidatedNotContainsUint(
 					adapters.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, collection,
 				)
