@@ -304,6 +304,33 @@ The following points should be noted:
 - the manual assignment of __'outputFormatEnum.Source'___ is a synthetic operation just done for the purposes of illustration. When used within the context of a cobra cli, it's cobra that would perform this assignment as it parses the command line, assuming the corresponding flag has been bound in as is peformed here using ___BindValidatedEnum___.
 - the client would convert this string to the enum type and set on the appropriate native member (ie ___paramSet.Native.Format = outputFormatEnum.Value()___)
 
+To bind a flag without a short name, the client can either:
+
+- pass in an empty string for the ___Short___ parameter of ___NewFlagInfo___ eg:
+
+```go
+  adapters.NewFlagInfo("format", "", "xml"),
+```
+
+or
+
+- not use the ___NewFlagInfo___ constructor function at all and pass in a literal struct without setting the ___Short___ member. Note in this case, make sure that the ___Name___ property is set properly, ie it should be the first word of ___Usage___ eg:
+
+```go
+  paramSet.BindValidatedEnum(
+    &adapters.FlagInfo{
+      Name: "format",
+      Usage: "format usage",
+      Default: "xml",
+		},
+    &outputFormatEnum.Source,
+    func(value string) error {
+      return lo.Ternary(outputFormatEnumInfo.IsValid(value), nil,
+        fmt.Errorf("Enum value: '%v' is not valid", value))
+    },
+  )
+```
+
 ### 🛡️ Validator Helpers<a name="validation-helpers"></a>
 
 An alternative way of implementing option validation, the client can use the validation helpers defined based on type.

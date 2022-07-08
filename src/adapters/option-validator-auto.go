@@ -7,36 +7,6 @@ import (
 
 // ----> auto generated(Build-Validators/gen-ov)
 
-// BoolValidatorFn defines the validator function for bool type.
-//
-type BoolValidatorFn func(value bool) error
-
-// BoolOptionValidator defines the struct that wraps the client defined validator function
-// BoolValidatorFn for bool type. This is the instance that is returned by
-// validated binder function BindValidatedBool.
-//
-type BoolOptionValidator GenericOptionValidatorWrapper[bool]
-
-// Validate invokes the client defined validator function for bool type.
-//
-func (validator BoolOptionValidator) Validate() error {
-	return validator.Fn(*validator.Value)
-}
-
-// BoolSliceOptionValidator defines the validator function for BoolSlice type.
-//
-type BoolSliceValidatorFn func(value []bool) error
-
-// BoolSliceOptionValidator wraps the client defined validator function for type []bool.
-//
-type BoolSliceOptionValidator GenericOptionValidatorWrapper[[]bool]
-
-// Validate invokes the client defined validator function for []bool type.
-//
-func (validator BoolSliceOptionValidator) Validate() error {
-	return validator.Fn(*validator.Value)
-}
-
 // DurationValidatorFn defines the validator function for time.Duration type.
 //
 type DurationValidatorFn func(value time.Duration) error
@@ -67,21 +37,15 @@ func (validator DurationSliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value)
 }
 
-// EnumValidatorFn defines the validator function for string type.
+// EnumValidatorFn defines the validator function for enum type.
 //
 type EnumValidatorFn func(value string) error
 
 // EnumOptionValidator defines the struct that wraps the client defined validator function
-// EnumValidatorFn for string type. This is the instance that is returned by
+// EnumValidatorFn for enum type. This is the instance that is returned by
 // validated binder function BindValidatedEnum.
 //
 type EnumOptionValidator GenericOptionValidatorWrapper[string]
-
-// Validate invokes the client defined validator function for string type.
-//
-func (validator EnumOptionValidator) Validate() error {
-	return validator.Fn(*validator.Value)
-}
 
 // Float32ValidatorFn defines the validator function for float32 type.
 //

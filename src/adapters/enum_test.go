@@ -88,6 +88,22 @@ var _ = Describe("Enum", func() {
 					GinkgoWriter.Println(result)
 				})
 			})
+
+			When("given: duplicated enum values in acceptables", func() {
+				It("🧪 should: panic", func() {
+					defer func() {
+						recover()
+					}()
+
+					adapters.NewEnumInfo(adapters.AcceptableEnumValues[OutputFormatEnum]{
+						XmlFormatEn:      []string{"xml", "x"},
+						JsonFormatEn:     []string{"json", "j"},
+						TextFormatEn:     []string{"text", "tx", "x"},
+						ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
+					})
+					Fail("❌ expected panic due to duplicate enum value 'x'")
+				})
+			})
 		})
 
 		Context("EnumSlice", func() {
@@ -196,6 +212,19 @@ var _ = Describe("Enum", func() {
 					Expect(paramSet.Native.Format).To(Equal(XmlFormatEn))
 					Expect(outputFormatEnum.String()).To(Equal("xml"))
 					Expect(outputFormatEnum.IsValid()).To(BeTrue())
+				})
+			})
+
+			When("given: Source set to an invalid value", func() {
+				It("🧪 should: panic", func() {
+					defer func() {
+						recover()
+					}()
+
+					outputFormatEnum := outputFormatEnumInfo.NewValue()
+					outputFormatEnum.Source = "foo-bar"
+					_ = outputFormatEnum.String()
+					Fail("❌ expected panic due to invalid enum value 'foo-bar'")
 				})
 			})
 		})
