@@ -57,6 +57,7 @@ type WidgetParameterSet struct {
 	Switches     []bool
 	Gradientsf32 []float32
 	Gradientsf64 []float64
+	Latencies    []time.Duration
 	Hosts        []net.IP
 	Formats      []OutputFormatEnum
 }

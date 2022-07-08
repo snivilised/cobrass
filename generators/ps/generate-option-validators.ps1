@@ -546,21 +546,95 @@ $types = @{
     GoType      = "time.Duration"
     FlagName    = "Latency"
     Short       = "l"
-    Def         = "temp"
-    Assign      = "temp, _ := time.ParseDuration(""0ms"")"
-    Setup       = "paramSet.Native.Latency, _ = time.ParseDuration(""300ms"")"
+    Def         = "duration(""0ms"")"
+    Setup       = "paramSet.Native.Latency = duration(""300ms"")"
     Assert      = @"
-    expect, _ := time.ParseDuration("300ms")
+    expect := duration("300ms")
     Expect(value).To(BeEquivalentTo(expect))
 "@
     Equate      = "BeEquivalentTo"
     Validatable = $true
-    # SliceShort    = "?"
-    # DefSliceVal   = "[]time.Duration{}"
-    # ExpectSlice   = "[]bool{true, false, true, false}"
-    # missing Durations slice on WidgetParameterSet
-    #
+    GenerateSlice  = $true
+    SliceFlagName = "Latencies"
+    SliceShort    = "L"
+    DefSliceVal   = "[]time.Duration{}"
+    ExpectSlice   = "[]time.Duration{duration(""1s""), duration(""2s""), duration(""3s"")}"
     Comparable  = $true
+    #
+    # 'duration' is a function defined in the test suite, that is syntactically the
+    # same as a type cast.
+    # 
+    CastLiteralsAs = "duration"
+    BhTests       = @{
+      "Within"      = @{
+        First  = """3s"""
+        Second = """5s"""
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below   = @("""2s""", "false")
+          EqualLo = @("""3s""", "true")
+          Inside  = @("""4s""", "true")
+          EqualHi = @("""5s""", "true")
+          Above   = @("""6s""", "false")
+        }
+      }
+
+      "Contains"    = @{
+        # Any test data that contains a type spec, needs to be defined by a template
+        #
+        First  = "[]time.Duration{duration(""1s""), duration(""2s""), duration(""3s"")}"
+        Second = """0s"""
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          DoesContain    = @("""1s""", "true")
+          DoesNotContain = @("""99s""", "false")
+        }
+      }
+
+      "GreaterThan" = @{
+        First  = """3s"""
+        Second = """0s"""
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("""2s""", "false")
+          Equal = @("""3s""", "false")
+          Above = @("""4s""", "true")
+        }
+      }
+
+      "AtLeast"     = @{
+        First  = """3s"""
+        Second = """0s"""
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("""2s""", "false")
+          Equal = @("""3s""", "true")
+          Above = @("""4s""", "true")
+        }
+      }
+
+      "LessThan"    = @{
+        First  = """3s"""
+        Second = """0s"""
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("""2s""", "true")
+          Equal = @("""3s""", "false")
+          Above = @("""4s""", "false")
+        }
+      }
+
+      "AtMost"      = @{
+        First  = """3s"""
+        Second = """0s"""
+        Entry  = [PSCustomObject]@{
+          # array: @(Value, ExpectNil)
+          Below = @("""2s""", "true")
+          Equal = @("""3s""", "true")
+          Above = @("""4s""", "false")
+        }
+      }
+    }
   }
 
   "IPNet"    = [PSCustomObject]@{

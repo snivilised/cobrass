@@ -53,6 +53,20 @@ func (validator DurationOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value)
 }
 
+// DurationSliceOptionValidator defines the validator function for DurationSlice type.
+//
+type DurationSliceValidatorFn func(value []time.Duration) error
+
+// DurationSliceOptionValidator wraps the client defined validator function for type []time.Duration.
+//
+type DurationSliceOptionValidator GenericOptionValidatorWrapper[[]time.Duration]
+
+// Validate invokes the client defined validator function for []time.Duration type.
+//
+func (validator DurationSliceOptionValidator) Validate() error {
+	return validator.Fn(*validator.Value)
+}
+
 // EnumValidatorFn defines the validator function for string type.
 //
 type EnumValidatorFn func(value string) error

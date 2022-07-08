@@ -64,6 +64,35 @@ func (params *ParamSet[N]) BindValidatedDuration(info *FlagInfo, to *time.Durati
 	return wrapper
 }
 
+// BindDurationSlice binds []time.Duration slice flag with a shorthand if 'info.Short' has been set
+// otherwise binds without a short name.
+//
+func (params *ParamSet[N]) BindDurationSlice(info *FlagInfo, to *[]time.Duration) *ParamSet[N] {
+	flagSet := params.ResolveFlagSet(info)
+	if info.Short == "" {
+		flagSet.DurationSliceVar(to, info.FlagName(), info.Default.([]time.Duration), info.Usage)
+	} else {
+		flagSet.DurationSliceVarP(to, info.FlagName(), info.Short, info.Default.([]time.Duration), info.Usage)
+	}
+
+	return params
+}
+
+// BindValidatedDurationSlice binds []time.Duration slice flag with a shorthand if
+// 'info.Short' has been set otherwise binds without a short name.  Client can provide a
+// function to validate option values of []time.Duration type.
+//
+func (params *ParamSet[N]) BindValidatedDurationSlice(info *FlagInfo, to *[]time.Duration, validator DurationSliceValidatorFn) OptionValidator {
+
+	params.BindDurationSlice(info, to)
+	wrapper := DurationSliceOptionValidator{
+		Fn:    validator,
+		Value: to,
+	}
+	params.validators.Add(info.FlagName(), wrapper)
+	return wrapper
+}
+
 // BindEnum binds string slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name.
 //

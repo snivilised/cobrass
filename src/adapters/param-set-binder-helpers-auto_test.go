@@ -2,12 +2,18 @@ package adapters_test
 
 import (
 	"fmt"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/snivilised/cobrass/src/adapters"
 	"github.com/spf13/cobra"
 )
+
+func duration(d string) time.Duration {
+	result, _ := time.ParseDuration(d)
+	return result
+}
 
 var _ = Describe("ParamSetBinderHelpers", func() {
 	var rootCommand *cobra.Command
@@ -48,6 +54,104 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		})
 
 		// ----> auto generated(Build-BinderHelperTests/gen-help-t)
+
+		DescribeTable("BindValidatedDurationWithin",
+			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) {
+				validator := paramSet.BindValidatedDurationWithin(
+					adapters.NewFlagInfo("latency", "l", duration("0ms")),
+					&paramSet.Native.Latency, low, high,
+				)
+				paramSet.Native.Latency = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "value is below range", "return error", duration("2s"), false, duration("3s"), duration("5s")),
+			Entry(nil, "value is equal to low end of range", "return error", duration("3s"), true, duration("3s"), duration("5s")),
+			Entry(nil, "value is inside range", "return error", duration("4s"), true, duration("3s"), duration("5s")),
+			Entry(nil, "value is equal to high end of range", "return error", duration("5s"), true, duration("3s"), duration("5s")),
+			Entry(nil, "value is above range", "NOT return error", duration("6s"), false, duration("3s"), duration("5s")),
+		)
+
+		DescribeTable("BindValidatedDurationNotWithin",
+			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) {
+				validator := paramSet.BindValidatedDurationNotWithin(
+					adapters.NewFlagInfo("latency", "l", duration("0ms")),
+					&paramSet.Native.Latency, low, high,
+				)
+				paramSet.Native.Latency = value
+
+				if !expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "value is below range", "return error", duration("2s"), false, duration("3s"), duration("5s")),
+			Entry(nil, "value is equal to low end of range", "return error", duration("3s"), true, duration("3s"), duration("5s")),
+			Entry(nil, "value is inside range", "return error", duration("4s"), true, duration("3s"), duration("5s")),
+			Entry(nil, "value is equal to high end of range", "return error", duration("5s"), true, duration("3s"), duration("5s")),
+			Entry(nil, "value is above range", "NOT return error", duration("6s"), false, duration("3s"), duration("5s")),
+		)
+
+		DescribeTable("BindValidatedContainsDuration",
+			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) {
+				validator := paramSet.BindValidatedContainsDuration(
+					adapters.NewFlagInfo("latency", "l", duration("0ms")),
+					&paramSet.Native.Latency, collection,
+				)
+				paramSet.Native.Latency = value
+
+				if expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "collection contains member", "return error", duration("1s"), true, []time.Duration{duration("1s"), duration("2s"), duration("3s")}, duration("0s")),
+			Entry(nil, "collection does not contain member", "return error", duration("99s"), false, []time.Duration{duration("1s"), duration("2s"), duration("3s")}, duration("0s")),
+		)
+
+		DescribeTable("BindValidatedNotContainsDuration",
+			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) {
+				validator := paramSet.BindValidatedNotContainsDuration(
+					adapters.NewFlagInfo("latency", "l", duration("0ms")),
+					&paramSet.Native.Latency, collection,
+				)
+				paramSet.Native.Latency = value
+
+				if !expectNil {
+					Expect(validator.Validate()).Error().To(BeNil())
+				} else {
+					Expect(validator.Validate()).Error().ToNot(BeNil())
+				}
+
+			},
+			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: '%v', should: '%v'",
+					given, should)
+			},
+			Entry(nil, "collection contains member", "return error", duration("1s"), true, []time.Duration{duration("1s"), duration("2s"), duration("3s")}, duration("0s")),
+			Entry(nil, "collection does not contain member", "return error", duration("99s"), false, []time.Duration{duration("1s"), duration("2s"), duration("3s")}, duration("0s")),
+		)
 
 		DescribeTable("BindValidatedContainsEnum",
 			func(given, should string, value string, expectNil bool, collection []string, dummy string) {
