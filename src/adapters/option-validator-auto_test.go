@@ -73,16 +73,33 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "time.Duration type (auto)",
 			Setup: func() {
-				paramSet.Native.Latency, _ = time.ParseDuration("300ms")
+				paramSet.Native.Latency = duration("300ms")
 			},
 			Validator: func() adapters.OptionValidator {
-				temp, _ := time.ParseDuration("0ms")
+
 				return paramSet.BindValidatedDuration(
-					adapters.NewFlagInfo("latency", "l", temp),
+					adapters.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency,
 					func(value time.Duration) error {
-						expect, _ := time.ParseDuration("300ms")
+						expect := duration("300ms")
 						Expect(value).To(BeEquivalentTo(expect))
+						return nil
+					},
+				)
+			},
+		}),
+
+		Entry(nil, OvEntry{
+			Message: "[]time.Duration type (auto)",
+			Setup: func() {
+				paramSet.Native.Latencies = []time.Duration{duration("1s"), duration("2s"), duration("3s")}
+			},
+			Validator: func() adapters.OptionValidator {
+				return paramSet.BindValidatedDurationSlice(
+					adapters.NewFlagInfo("Latencies", "L", []time.Duration{}),
+					&paramSet.Native.Latencies,
+					func(value []time.Duration) error {
+						Expect(value).To(BeEquivalentTo([]time.Duration{duration("1s"), duration("2s"), duration("3s")}))
 						return nil
 					},
 				)
