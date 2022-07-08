@@ -542,30 +542,30 @@ $types = @{
   }
 
   "Duration" = [PSCustomObject]@{
-    TypeName    = "Duration"
-    GoType      = "time.Duration"
-    FlagName    = "Latency"
-    Short       = "l"
-    Def         = "duration(""0ms"")"
-    Setup       = "paramSet.Native.Latency = duration(""300ms"")"
-    Assert      = @"
+    TypeName       = "Duration"
+    GoType         = "time.Duration"
+    FlagName       = "Latency"
+    Short          = "l"
+    Def            = "duration(""0ms"")"
+    Setup          = "paramSet.Native.Latency = duration(""300ms"")"
+    Assert         = @"
     expect := duration("300ms")
     Expect(value).To(BeEquivalentTo(expect))
 "@
-    Equate      = "BeEquivalentTo"
-    Validatable = $true
+    Equate         = "BeEquivalentTo"
+    Validatable    = $true
     GenerateSlice  = $true
-    SliceFlagName = "Latencies"
-    SliceShort    = "L"
-    DefSliceVal   = "[]time.Duration{}"
-    ExpectSlice   = "[]time.Duration{duration(""1s""), duration(""2s""), duration(""3s"")}"
-    Comparable  = $true
+    SliceFlagName  = "Latencies"
+    SliceShort     = "L"
+    DefSliceVal    = "[]time.Duration{}"
+    ExpectSlice    = "[]time.Duration{duration(""1s""), duration(""2s""), duration(""3s"")}"
+    Comparable     = $true
     #
     # 'duration' is a function defined in the test suite, that is syntactically the
     # same as a type cast.
     # 
     CastLiteralsAs = "duration"
-    BhTests       = @{
+    BhTests        = @{
       "Within"      = @{
         First  = """3s"""
         Second = """5s"""
@@ -681,22 +681,22 @@ $types = @{
   }
 
   , [PSCustomObject]@{
-    Name               = "Contains"
-    Documentation      = "fails validation if the option value is not a member of the 'collection' slice"
-    Container          = $true
-    MethodTemplate     = "{{OpName}}{{TypeName}}"
-    Args               = "collection"
-    Condition          = "lo.IndexOf(collection, value) >= 0"
-    ErrorMessage       = "not a member of"
-    ArgsPlaceholder    = "[%v]"
-    ErrorArgs          = "collection"
-    Comment            = "option value must be a member of collection"
+    Name                 = "Contains"
+    Documentation        = "fails validation if the option value is not a member of the 'collection' slice"
+    Container            = $true
+    MethodTemplate       = "{{OpName}}{{TypeName}}"
+    Args                 = "collection"
+    Condition            = "lo.IndexOf(collection, value) >= 0"
+    ErrorMessage         = "not a member of"
+    ArgsPlaceholder      = "[%v]"
+    ErrorArgs            = "collection"
+    Comment              = "option value must be a member of collection"
     #
-    Negate             = $true
-    ExcludeTypes       = @("Bool", "IPMask", "IPNet")
+    Negate               = $true
+    ExcludeTypes         = @("Bool", "IPMask", "IPNet")
     NegateMethodTemplate = "Not{{OpName}}{{TypeName}}"
-    NegateErrorMessage = "is a member of"
-    NegateComment      = "option value must not be a member of collection"
+    NegateErrorMessage   = "is a member of"
+    NegateComment        = "option value must not be a member of collection"
   }
 
   , [PSCustomObject]@{
@@ -1563,9 +1563,10 @@ function Checkpoint-ParamSetSignatures {
   $hash = Get-FileHash -InputStream $stream -Algorithm SHA256
 
   return [PSCustomObject]@{
-    Hash    = $hash.Hash
-    Metrics = $metrics
-    Output  = $oBuilder.ToString() 
+    PreviousHash = $($env:COBRASS_API_HASH)
+    Hash         = $hash.Hash
+    Metrics      = $metrics
+    Output       = $oBuilder.ToString() 
   }
 }
 
@@ -1577,8 +1578,20 @@ function Show-ParamSetSignatures {
     [Parameter()]
     $Sources = @("gen-ov", "gen-ps", "gen-help")
   )
-  $paramSigs = Checkpoint-ParamSetSignatures -Sources $Sources
+  $paramSigs = Checkpoint-ParamSetSignatures -Sources $Sources 
 
   Write-Host $paramSigs.Output -ForegroundColor Cyan
-  Write-Host "===> [🤖] HASH: '$($paramSigs.Hash)'" -ForegroundColor Green
+  Write-Host "===> [🤖]   HASH: '$($paramSigs.Hash)'" -ForegroundColor Green
+
+  $status = if ([string]::IsNullOrEmpty($paramSigs.PreviousHash)) {
+    "💤 Previous api hash not found"
+  }
+  elseif ($paramSigs.PreviousHash -eq $paramSigs.Hash) {
+    "✔️ Hashes are equal"
+  }
+  else {
+    Write-Host "===> [👾]   HASH: '$($paramSigs.PreviousHash)'" -ForegroundColor Magenta
+    "💥 Api changes detected"
+  }
+  Write-Host "===> [🛡️] STATUS: '$($status)' (COBRASS_API_HASH)" -ForegroundColor Blue
 }
