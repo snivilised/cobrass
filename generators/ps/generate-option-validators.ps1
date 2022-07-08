@@ -620,6 +620,7 @@ $types = @{
     #
     Negate             = $true
     ExcludeTypes       = @("Bool", "IPMask", "IPNet")
+    NegateMethodTemplate = "Not{{OpName}}{{TypeName}}"
     NegateErrorMessage = "is a member of"
     NegateComment      = "option value must not be a member of collection"
   }
@@ -1067,15 +1068,6 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
 
           $negateErrorMessage = "$($op.NegateErrorMessage): $($op.ArgsPlaceholder)"
 
-          $methodSubStmt = if (-not([string]::IsNullOrEmpty($op.MethodTemplate))) {
-            $op.MethodTemplate.Replace("{{OpName}}", $op.Name).Replace("{{TypeName}}", $spec.TypeName)
-          }
-          else {
-            # Default is TypeNameOpName, eg: StringGreaterThan
-            #
-            $("$($spec.TypeName)$($op.Name)")
-          }
-
           $notMethodSubStmt = if (-not([string]::IsNullOrEmpty($op.NegateMethodTemplate))) {
             $op.NegateMethodTemplate.Replace("{{OpName}}", $op.Name).Replace("{{TypeName}}", $spec.TypeName)
           }
@@ -1186,6 +1178,7 @@ function Build-BinderHelperTests {
           #
           $("$($spec.TypeName)$($op.Name)")
         }
+
         $notMethodSubStmt = if (-not([string]::IsNullOrEmpty($op.NegateMethodTemplate))) {
           $op.NegateMethodTemplate.Replace("{{OpName}}", $op.Name).Replace("{{TypeName}}", $spec.TypeName)
         }
