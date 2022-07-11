@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 	"time"
+
+	"github.com/snivilised/cobrass/src/adapters"
 )
 
 type OutputFormatEnum int
@@ -92,4 +94,11 @@ func ipnet(v string) net.IPNet {
 	}
 
 	return result
+}
+
+var AcceptableOutputFormats = adapters.AcceptableEnumValues[OutputFormatEnum]{
+	XmlFormatEn:      []string{"xml", "x"},
+	JsonFormatEn:     []string{"json", "j"},
+	TextFormatEn:     []string{"text", "tx"},
+	ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
 }

@@ -38,12 +38,7 @@ var _ = Describe("Enum", func() {
 			rootCommand.AddCommand(widgetCommand)
 			paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
 
-			outputFormatEnumInfo = adapters.NewEnumInfo(adapters.AcceptableEnumValues[OutputFormatEnum]{
-				XmlFormatEn:      []string{"xml", "x"},
-				JsonFormatEn:     []string{"json", "j"},
-				TextFormatEn:     []string{"text", "tx"},
-				ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
-			})
+			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
 			outputFormatEnumSlice = outputFormatEnumInfo.NewSlice()
 		})
 
@@ -95,12 +90,14 @@ var _ = Describe("Enum", func() {
 						recover()
 					}()
 
-					adapters.NewEnumInfo(adapters.AcceptableEnumValues[OutputFormatEnum]{
+					invalidAcceptables := adapters.AcceptableEnumValues[OutputFormatEnum]{
 						XmlFormatEn:      []string{"xml", "x"},
 						JsonFormatEn:     []string{"json", "j"},
 						TextFormatEn:     []string{"text", "tx", "x"},
 						ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
-					})
+					}
+
+					adapters.NewEnumInfo(invalidAcceptables)
 					Fail("❌ expected panic due to duplicate enum value 'x'")
 				})
 			})
