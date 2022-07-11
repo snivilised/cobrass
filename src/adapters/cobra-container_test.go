@@ -159,36 +159,44 @@ var _ = Describe("CobraContainer", func() {
 	})
 
 	Context("RegisterCommands", func() {
+
+		const alphaName = "alpha"
+		const betaName = "beta"
+		const deltaName = "delta"
+
+		var (
+			alpha, beta, delta *adapters.CobraCommandSpec
+		)
+
+		BeforeEach(func() {
+			alpha = &adapters.CobraCommandSpec{
+				Command: &cobra.Command{
+					Use:   fmt.Sprintf("%v usage", alphaName),
+					Short: "Alpha command",
+					Long:  "Alpha child command for test case",
+				},
+			}
+
+			beta = &adapters.CobraCommandSpec{
+				Command: &cobra.Command{
+					Use:   fmt.Sprintf("%v usage", betaName),
+					Short: "Beta command",
+					Long:  "Beta child command for test case",
+				},
+			}
+
+			delta = &adapters.CobraCommandSpec{
+				Command: &cobra.Command{
+					Use:   fmt.Sprintf("%v usage", deltaName),
+					Short: "Delta command",
+					Long:  "Delta child command for test case",
+				},
+			}
+		})
+
 		When("child commands NOT registered", func() {
 			It("🧪 should: register all requested commands ok", func() {
-				alphaName := "alpha"
-				alpha := &adapters.CobraCommandSpec{
-					Command: &cobra.Command{
-						Use:   fmt.Sprintf("%v usage", alphaName),
-						Short: "Alpha command",
-						Long:  "Alpha child command for test case",
-					},
-				}
-
-				betaName := "beta"
-				beta := &adapters.CobraCommandSpec{
-					Command: &cobra.Command{
-						Use:   fmt.Sprintf("%v usage", betaName),
-						Short: "Beta command",
-						Long:  "Beta child command for test case",
-					},
-				}
-
-				deltaName := "delta"
-				delta := &adapters.CobraCommandSpec{
-					Command: &cobra.Command{
-						Use:   fmt.Sprintf("%v usage", deltaName),
-						Short: "Delta command",
-						Long:  "Delta child command for test case",
-					},
-				}
 				Container.RegisterRootedCommand(ParentCommand)
-
 				parent := ParentCommand.Name()
 
 				specs := []*adapters.CobraCommandSpec{alpha, beta, delta}
@@ -211,6 +219,34 @@ var _ = Describe("CobraContainer", func() {
 
 					Expect(spec.Command.Parent() == ParentCommand).To(BeTrue(), message)
 				}
+			})
+		})
+
+		When("when 1 of the commands is already registered", func() {
+			It("🧪 should: return err", func() {
+				Container.RegisterRootedCommand(ParentCommand)
+				parent := ParentCommand.Name()
+
+				specs := []*adapters.CobraCommandSpec{alpha, beta, beta}
+				Expect(Container.RegisterCommands(parent, specs...)).Error().ToNot(BeNil())
+			})
+		})
+	})
+
+	Context("IsPresent", func() {
+		It("🧪 should: return bool indicating command presence", func() {
+			Container.IsPresent("child")
+		})
+	})
+
+	Context("Native", func() {
+		When("given: a parameter set name not previously registered", func() {
+			It("🧪 should: panic", func() {
+				defer func() {
+					recover()
+				}()
+				Container.Native("foo-bar")
+				Fail("❌ expected panic")
 			})
 		})
 	})

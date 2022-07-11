@@ -93,11 +93,11 @@ func (params *ParamSet[N]) BindValidatedDurationSlice(info *FlagInfo, to *[]time
 	return wrapper
 }
 
-// BindEnum binds string slice flag with a shorthand if
+// BindEnum binds enum slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name.
 //
 // Note that normally the client would bind to a member of the native parameter
-// set. However, since there is a discrepency between the type of the native int
+// set. However, since there is a discrepancy between the type of the native int
 // based pseudo enum member and the equivalent acceptable string value typed by
 // the user on the command line (idiomatically stored on the enum info), the
 // client needs to extract the enum value from the enum info, something like this:
@@ -105,7 +105,7 @@ func (params *ParamSet[N]) BindValidatedDurationSlice(info *FlagInfo, to *[]time
 // paramSet.Native.Format = OutputFormatEnumInfo.Value()
 //
 // The best place to put this would be inside the PreRun/PreRunE function, assuming the
-// paramset and the enum info are both in scope. Actually, every int based enum
+// param set and the enum info are both in scope. Actually, every int based enum
 // flag, would need to have this assignment performed.
 //
 func (params *ParamSet[N]) BindEnum(info *FlagInfo, to *string) *ParamSet[N] {
@@ -119,9 +119,9 @@ func (params *ParamSet[N]) BindEnum(info *FlagInfo, to *string) *ParamSet[N] {
 	return params
 }
 
-// BindValidatedEnum binds string slice flag with a shorthand if
+// BindValidatedEnum binds enum slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name. Client can provide a
-// function to validate option values of string type.
+// function to validate option values of enum type.
 //
 // Custom enum types created via the generic 'EnumInfo'/'EnumValue' come with a 'IsValid' method.
 // The client can utilise this method inside a custom function passed into 'BindValidatedEnum'.

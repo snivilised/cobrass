@@ -105,7 +105,8 @@ func NewEnumInfo[E ~int](acceptables AcceptableEnumValues[E]) *EnumInfo[E] {
 	for enum, values := range acceptables {
 		for _, acc := range values {
 			if existing, found := info.reverseLookup[acc]; found {
-				panic(fmt.Sprintf("'%v' already exists, invalid enum info specified", existing))
+				panic(fmt.Sprintf("'%v (%v)' already exists, invalid enum info specified",
+					info.NameOf(existing), existing))
 			}
 
 			info.reverseLookup[acc] = enum

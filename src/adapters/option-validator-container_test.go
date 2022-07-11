@@ -10,13 +10,13 @@ import (
 	"github.com/snivilised/cobrass/src/adapters"
 )
 
-var _ = Describe("OptionValidatorGroup", func() {
+var _ = Describe("ValidatorContainer", func() {
 	var validators *adapters.ValidatorContainer
 	var rootCommand *cobra.Command
 	var widgetCommand *cobra.Command
 	var paramSet *adapters.ParamSet[WidgetParameterSet]
 
-	Context("NewValidatorGroup", func() {
+	Context("NewValidatorContainer", func() {
 		When("options set to nil", func() {
 			It("🧪 should: create ValidatorContainer with default options", func() {
 				validators = adapters.NewValidatorContainer(nil)
@@ -26,7 +26,9 @@ var _ = Describe("OptionValidatorGroup", func() {
 
 		When("options specified", func() {
 			It("🧪 should: create ValidatorContainer", func() {
-				validators = adapters.NewValidatorContainer(nil)
+				validators = adapters.NewValidatorContainer(&adapters.ValidatorGroupOptions{
+					Size: 10,
+				})
 				Expect(validators).ToNot(BeNil())
 			})
 		})
@@ -143,6 +145,19 @@ var _ = Describe("OptionValidatorGroup", func() {
 			When("validator not found", func() {
 				It("🧪 should: return nil value", func() {
 					Expect(validators.Get("missing")).To(BeNil())
+				})
+			})
+
+			When("validator is present", func() {
+				It("🧪 should: return the requested validator", func() {
+					validators.Add("Directory", paramSet.BindValidatedString(
+						adapters.NewFlagInfo("directory", "d", "/foo-bar"),
+						&paramSet.Native.Directory,
+						func(value string) error {
+							return nil
+						},
+					))
+					Expect(validators.Get("Directory")).ToNot(BeNil())
 				})
 			})
 		})

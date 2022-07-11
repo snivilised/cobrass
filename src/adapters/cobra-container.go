@@ -7,7 +7,6 @@ import (
 
 	"github.com/snivilised/cobrass/src/utils"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slices"
 )
 
 // CobraCommandSpec is a wrapper around the cobra command, require to register
@@ -186,20 +185,4 @@ func (container *CobraContainer) Native(name string) any {
 	} else {
 		panic(fmt.Errorf("parameter set '%v' not found", name))
 	}
-}
-
-// IsChild
-// - parent: the parent Cobra command
-//
-// - child: the child Cobra command
-//
-// Returns true if child is direct descendent of the parent, false otherwise.
-//
-func IsChild(parent *cobra.Command, child *cobra.Command) bool {
-	_, exists := slices.BinarySearchFunc(parent.Commands(), child, func(a, b *cobra.Command) int {
-
-		return utils.TernaryIfIf(a.Name() == b.Name(), 0, a.Name() < b.Name(), -1, 1)
-	})
-
-	return exists
 }
