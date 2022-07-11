@@ -173,6 +173,13 @@ func (params *ParamSet[N]) ResolveFlagSet(info *FlagInfo) *pflag.FlagSet {
 	return lo.Ternary(info.AlternativeFlagSet == nil, params.FlagSet, info.AlternativeFlagSet)
 }
 
+// Validate invokes all option validators and returns the first error
+// encountered.
+//
+func (params *ParamSet[N]) Validate() error {
+	return params.validators.run()
+}
+
 // CrossValidate provides an optional way to perform cross field validation
 // on the native parameter set. It invokes the client validator function which
 // should be done after all parsed values have been bound and individually validated.

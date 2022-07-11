@@ -32,6 +32,10 @@ func NewValidatorContainer(options *ValidatorGroupOptions) *ValidatorContainer {
 	}
 }
 
+// Add adds the validator to the registered set of option validators. Only 1
+// validator can be registered per flag, a panic will occur if the flag
+// already has a validator registered for it.
+//
 func (container ValidatorContainer) Add(flag string, validator OptionValidator) {
 	if _, found := container.validators[flag]; found {
 		message := fmt.Errorf("failed to add validator for flag: '%v', because it already exists",
@@ -51,10 +55,10 @@ func (container ValidatorContainer) Get(flag string) OptionValidator {
 	return nil
 }
 
-// Run invokes all validators registered by calling their Validate method, which
+// run invokes all validators registered by calling their Validate method, which
 // in turn, invokes the client defined validator function.
 //
-func (container ValidatorContainer) Run() error {
+func (container ValidatorContainer) run() error {
 
 	for _, validator := range container.validators {
 		if err := validator.Validate(); err != nil {

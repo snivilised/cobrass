@@ -229,6 +229,29 @@ var _ = Describe("ParamSet (manual)", func() {
 					Fail("❌ expected panic due to attempt to register pointer to non struct")
 				})
 			})
+
+			Context("ParamSet", func() {
+				When("param set is registered", func() {
+					It("🧪 should: return the parameter wrapper", func() {
+
+						container.RegisterParamSet(psname, paramSet)
+						resultPS := container.ParamSet(psname).(*adapters.ParamSet[WidgetParameterSet])
+
+						Expect(resultPS).ToNot(BeNil())
+					})
+				})
+
+				When("param set is NOT registered", func() {
+					It("🧪 should: panic", func() {
+						defer func() {
+							recover()
+						}()
+						_ = container.ParamSet("foo").(*adapters.ParamSet[WidgetParameterSet])
+
+						Fail("❌ expected panic due to parameter set not found")
+					})
+				})
+			})
 		})
 
 		Context("NewFlagInfoOnFlagSet", func() {
