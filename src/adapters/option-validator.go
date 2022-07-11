@@ -23,3 +23,9 @@ func (validator GenericOptionValidatorWrapper[T]) Validate() error {
 	//
 	return validator.Fn(*validator.Value)
 }
+
+// CrossFieldValidator is a client function that is the callback passed into
+// ParamSet.CrossValidate. Should be done after all parsed values have been bound
+// and individually validated
+//
+type CrossFieldValidator[N any] func(native *N) error

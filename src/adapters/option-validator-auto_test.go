@@ -26,12 +26,7 @@ var _ = Describe("OptionValidator", func() {
 	var outputFormatEnumInfo *adapters.EnumInfo[OutputFormatEnum]
 
 	BeforeEach(func() {
-		outputFormatEnumInfo = adapters.NewEnumInfo(adapters.AcceptableEnumValues[OutputFormatEnum]{
-			XmlFormatEn:      []string{"xml", "x"},
-			JsonFormatEn:     []string{"json", "j"},
-			TextFormatEn:     []string{"text", "tx"},
-			ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
-		})
+		outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
 
 		rootCommand = &cobra.Command{
 			Use:   "poke",
