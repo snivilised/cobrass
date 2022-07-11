@@ -229,7 +229,7 @@ func (ev *EnumValue[E]) String() string {
 }
 
 // EnumSlice represents a collection of EnumValues. Note that this abstraction is
-// not the same as definining a slice of EnumValues, ie []EnumValues.
+// not the same as defining a slice of EnumValues, ie []EnumValues.
 type EnumSlice[E ~int] struct {
 	// Info is the EnumInfo associated with this enam value
 	//
