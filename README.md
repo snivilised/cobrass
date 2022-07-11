@@ -57,15 +57,17 @@ The rationale behind the concept of a parameter set came from initial discovery 
 
 To manage this, the concept of a `parameter set` was introduced to bring about a consistency of design to the implemenation of multiple cli applications. The aim of this is to reduce the number package level global variables that have to be managed. Instead of handling multiple option variables independently, the client can group them together into a parameter set.
 
-Each `Cobra` command can define multiple parameter sets which reflects the different ways that a particular command can be invoked by the user. However, to reduce complexity, it's probably best to sticking with a single parameter set per command. Option values not defined by the user can already be defaulted by the `Cobra` api itself, but it may be, that distinguishing the way that a command is invoked (ie what combination of flags/options appear on the command line) may be significant to the application in which case, the client can define multiple parameter sets.
+Each `Cobra` command can define multiple parameter sets which reflects the different ways that a particular command can be invoked by the user. However, to reduce complexity, it's probably best to stick with a single parameter set per command. Option values not defined by the user can already be defaulted by the `Cobra` api itself, but it may be, that distinguishing the way that a command is invoked (ie what combination of flags/options appear on the command line) may be significant to the application, in which case the client can define multiple parameter sets.
 
 The ___ParamSet___ also handles flag definition on each command. The client defines the flag info and passes this into the appropriate `binder` method depending on the option value type. There are 3 forms of binder methods:
 
 - 1️⃣ ___Bind\<Type>___ : where ___\<Type>___ represents the type, (eg ___BindString___), the client passes in '___info___', a ___FlagInfo___ object and '___to___' a pointer to a variable to which `Cobra` will bind the option value to.
 
-- 2️⃣ ___BindValidated\<Type>___: (eg BindValidatedString) same as 1️⃣, except the user can also pass in a function whose signature reflect the type of the option value to be bound to (See [Option Validators](#option-validators)).
+- 2️⃣ ___BindValidated\<Type>___: (eg BindValidatedString) same as 1️⃣, except the user can also pass in a function whose signature reflects the type of the option value to be bound to (See [Option Validators](#option-validators)).
 
 - 3️⃣ ___BindValidated\<Type>\<Op>___: (eg BindValidatedStringWithin) same as 2️⃣, except user passes in operation specific parameters (See [Validation Helpers](#validation-helpers)).
+
+📌 The names of the ___BindValidated\<Type>\<Op>___ methods are not always strictly in this form as sometime it reads better with _Op_ and _Type_ are swapped around especially when one considers that there are _Not_ versions of some commands. The reader is invited to review the go package documentation to see the exact names.
 
 ### 💠 Pseudo Enum
 
@@ -121,7 +123,7 @@ outputFormatEnum := OutputFormatEnumInfo.NewValue()
 
 Points to note from the above:
 
-- As many enum values as need in the client can be created
+- As many enum values as needed in the client can be created
 
 - A string value can be checked to determine if it is a valid value (as defined by the acceptable values passed into ___NewEnumInfo___), to the ___IsValid___ method on the ___EnumInfo___  or we can simply call the same method on ___EnumValue___ without passing in a string value; in this case, the check is performed on it's member variable 'Source' which can be assigned at any time.
 
@@ -145,7 +147,7 @@ ___NewSlice___ contains various _collection_ methods equilavent to it's value ba
 
 The following sections describe the validation process, option validators and the helpers.
 
-📌 ___When using the option validators, there is no need to use the `Cobra` flag set methods (eg cmd.Flags().StringVarP) directly to define he flags for the command. This is taken care of on the client's behalf___.
+📌 ___When using the option validators, there is no need to use the `Cobra` flag set methods (eg cmd.Flags().StringVarP) directly to define the flags for the command. This is taken care of on the client's behalf___.
 
 ### ✅ Validation Sequencing<a name="validation-sequencing"></a>
 
@@ -176,7 +178,7 @@ assuming a command with the name "foo", has already been registered
   Container.RegisterCommand("foo", widgetCommand)
 ```
 
-📌 _Note, when using the Cobra Container to register commands, you do not need to use Cobra's AddCommand. The container takes care of this for you._
+📌 ___Note, when using the Cobra Container to register commands, you do not need to use Cobra's AddCommand. The container takes care of this for you.___
 
 - 3️⃣ _define native parameter set_: for each parameter set associated with each command eg:
 
@@ -248,25 +250,50 @@ Note, because we can't bind directly to the `native` member of WidgetParameterSe
 
 ```go
   RunE: func(command *cobra.Command, args []string) error {
-    if native, found := Container.Native(
-      "widget-ps").(*WidgetParameterSet); found {
 
-      if err := Container.Validators().Run(); err == nil {
-        // rebind enum into native member
+    ps := container.ParamSet("widget-ps").(*adapters.ParamSet[WidgetParameterSet])
+
+    if err := ps.Validate(); err == nil {
+      native = ps.Native
+
+      // rebind enum into native member
+      //
+      native.Format = outputFormatEnum.Value()
+
+      // optionally invoke cross field validation
+      //
+      xv := ps.CrossValidate(func(ps *WidgetParameterSet) error {
+        condition := (ps.Format == XmlFormatEn)
+        if condition {
+          return nil
+        }
+        return fmt.Errorf("format: '%v' is invalid", ps.Format)
+      })
+
+      if (xv == nil) {
+        // ---> execute application core with the parameter set (native)
         //
-        native.Format = outputFormatEnum.Value()
-
-        // ---> execute application core with the parameter set
+        // runApplication(native)
+        //
       } else {
-        return err
+        return xv
       }
+
     } else {
-      return fmt.Errorf("failed to retrieve widget parameter set")
+      return err
     }
   },
 ```
 
-The validation process will fail on the first error encountered and return that error. Also note how we retrieve the parameter set previously registered from the cobra container using the ___Native___ method. Since ___Native___ returns ___any___, a type assertion has to be performed to get back the `native` type. It is not mandatory to register the parameter set this way, it is there to help minimise the number of package global variables.
+The validation may occur in 2 stages depending on whether cross field valiation is required. To proceed, we need to obtain both the wrapper parameter set (ie ___container.ParamSet___ in this example) and the native parameter set ___native = ps.Native___).
+
+Also note how we retrieve the parameter set previously registered from the cobra container using the ___Native___ method. Since ___Native___ returns ___any___, a type assertion has to be performed to get back the `native` type. If the param set you created using ___NewParamSet___ is in scope, then there is no need to query the container for it by name. It is just shown here this way, to illustrate how to proceed if parameter set was created in a local function/method and is therefore no longer in scope.
+
+Option validation occurs first (___ps.Validate()___), then rebinding of enum members, if any (___native.Format = outputFormatEnum.Value()___), then cross field validation (___xv := ps.CrossValidate___).
+
+If we have no errors at this point, we can enter the application, passing in the native parameters set.
+
+The validation process will fail on the first error encountered and return that error. It is not mandatory to register the parameter set this way, it is there to help minimise the number of package global variables.
 
 - 9️⃣ _invoke cross field validation_ (optional): see [Cross Field Validation](#cross-field-validation)
 

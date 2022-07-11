@@ -163,13 +163,13 @@ func (container *CobraContainer) RegisterParamSet(name string, ps any) {
 	container.paramSets[name] = ps
 }
 
-// Native retrieves the Native parameters set that was previously registered
+// Native retrieves the Native parameter set that was previously registered
 //
 func (container *CobraContainer) Native(name string) any {
 
 	// Need to use reflection to get the Native property. The collection of
 	// parameter sets can't be defined as a generic, because collections
-	// of generics are homogeneous, but we need a heterogenious collection of
+	// of generics are homogeneous, but we need a heterogeneous collection of
 	// parameter sets. This is why we need to use reflection to get hold of
 	// the Native property.
 	//
@@ -177,6 +177,19 @@ func (container *CobraContainer) Native(name string) any {
 		paramSetStruct := reflect.ValueOf(paramSet).Elem()
 
 		return paramSetStruct.FieldByName("Native").Interface()
+	} else {
+		panic(fmt.Errorf("parameter set '%v' not found", name))
+	}
+}
+
+// ParamSet like Native, except that it returns the paramter set
+// wrapper. The client must perform a type assertion on the
+// returned pointer to translate it back into the native type,
+// ie ParamSet[N] (as opposed to N)
+//
+func (container *CobraContainer) ParamSet(name string) any {
+	if paramSet, found := container.paramSets[name]; found {
+		return paramSet
 	} else {
 		panic(fmt.Errorf("parameter set '%v' not found", name))
 	}
