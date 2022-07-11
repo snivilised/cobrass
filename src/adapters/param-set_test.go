@@ -2,9 +2,11 @@ package adapters_test
 
 import (
 	"fmt"
+	"strings"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/adapters"
@@ -24,6 +26,12 @@ var _ = Describe("ParamSet (manual)", func() {
 		var rootCommand *cobra.Command
 		var widgetCommand *cobra.Command
 		var paramSet *adapters.ParamSet[WidgetParameterSet]
+		var outputFormatEnumInfo *adapters.EnumInfo[OutputFormatEnum]
+		var outputFormatEnum adapters.EnumValue[OutputFormatEnum]
+		var container *adapters.CobraContainer
+
+		const cname = "widget"
+		const psname = cname + "-ps"
 
 		BeforeEach(func() {
 			rootCommand = &cobra.Command{
@@ -52,9 +60,12 @@ var _ = Describe("ParamSet (manual)", func() {
 					GinkgoWriter.Printf("**** 🍒 POST-RUN\n")
 				},
 			}
-			rootCommand.AddCommand(widgetCommand)
+			container = adapters.NewCobraContainer(rootCommand)
+			container.RegisterRootedCommand(widgetCommand)
 
 			paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
+			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
+			outputFormatEnum = outputFormatEnumInfo.NewValue()
 		})
 
 		// These are binder based tests that have a characteristic that can't be accommodated easily
@@ -111,18 +122,67 @@ var _ = Describe("ParamSet (manual)", func() {
 			})
 		})
 
-		Context("Register ParamSet", func() {
-			var container *adapters.CobraContainer
-			const cname = "widget"
-			const psname = cname + "-ps"
+		Context("ParamSet.CrossValidate", func() {
+			When("given: a passing param set", func() {
+				It("🧪 should: return no error", func() {
+					paramSet.BindEnum(
+						adapters.NewFlagInfo("format", "f", "xml"),
+						&outputFormatEnum.Source,
+					)
 
-			BeforeEach(func() {
-				container = adapters.NewCobraContainer(rootCommand)
+					paramSet.BindString(
+						adapters.NewFlagInfo("pattern", "p", "cakewalk"),
+						&paramSet.Native.Pattern,
+					)
+					container.RegisterParamSet(psname, paramSet)
+
+					commandLine := "--format xml --pattern cakewalk"
+					testhelpers.ExecuteCommand(
+						rootCommand, "widget", "/usr/fuse/home/music", commandLine,
+					)
+					paramSet.Native.Format = outputFormatEnum.Value()
+
+					result := paramSet.CrossValidate(func(ps *WidgetParameterSet) error {
+						condition := (ps.Format == XmlFormatEn) && strings.Contains(ps.Pattern, "walk")
+						return lo.Ternary(condition, nil,
+							fmt.Errorf("invalid combination, pattern: '%v'", ps.Pattern))
+					})
+					Expect(result).Error().To(BeNil())
+				})
 			})
 
+			When("given: an invalid param set", func() {
+				It("🧪 should: return error", func() {
+					paramSet.BindEnum(
+						adapters.NewFlagInfo("format", "f", "xml"),
+						&outputFormatEnum.Source,
+					)
+
+					paramSet.BindString(
+						adapters.NewFlagInfo("pattern", "p", "cakewalk"),
+						&paramSet.Native.Pattern,
+					)
+					container.RegisterParamSet(psname, paramSet)
+
+					commandLine := "--format xml --pattern cakewalk"
+					testhelpers.ExecuteCommand(
+						rootCommand, "widget", "/usr/fuse/home/music", commandLine,
+					)
+					paramSet.Native.Format = outputFormatEnum.Value()
+
+					result := paramSet.CrossValidate(func(ps *WidgetParameterSet) error {
+						condition := (ps.Format == XmlFormatEn) && strings.Contains(ps.Pattern, "foobar")
+						return lo.Ternary(condition, nil,
+							fmt.Errorf("invalid combination, pattern: '%v'", ps.Pattern))
+					})
+					Expect(result).Error().ToNot(BeNil())
+				})
+			})
+		})
+
+		Context("Register ParamSet", func() {
+
 			It("🧪 should: be able get registered param set", func() {
-				const cname = "widget"
-				const psname = cname + "-ps"
 				container.RegisterParamSet(psname, paramSet)
 
 				testhelpers.ExecuteCommand(

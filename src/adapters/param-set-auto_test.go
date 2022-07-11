@@ -53,12 +53,7 @@ var _ = Describe("ParamSet (auto)", func() {
 
 			paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
 
-			outputFormatEnumInfo = adapters.NewEnumInfo(adapters.AcceptableEnumValues[OutputFormatEnum]{
-				XmlFormatEn:      []string{"xml", "x"},
-				JsonFormatEn:     []string{"json", "j"},
-				TextFormatEn:     []string{"text", "tx"},
-				ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
-			})
+			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
 			outputFormatEnum = outputFormatEnumInfo.NewValue()
 		})
 

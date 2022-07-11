@@ -19,12 +19,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 
 	Context("Comparables", func() {
 		BeforeEach(func() {
-			outputFormatEnumInfo = adapters.NewEnumInfo(adapters.AcceptableEnumValues[OutputFormatEnum]{
-				XmlFormatEn:      []string{"xml", "x"},
-				JsonFormatEn:     []string{"json", "j"},
-				TextFormatEn:     []string{"text", "tx"},
-				ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
-			})
+			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
 			outputFormatEnum = outputFormatEnumInfo.NewValue()
 
 			rootCommand = &cobra.Command{

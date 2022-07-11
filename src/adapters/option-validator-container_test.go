@@ -101,7 +101,7 @@ var _ = Describe("ValidatorContainer", func() {
 							return fmt.Errorf("directory does not exist")
 						},
 					))
-					Expect(validators.Run()).Error().NotTo(BeNil())
+					Expect(paramSet.Validate()).Error().NotTo(BeNil())
 				})
 			})
 
@@ -119,7 +119,7 @@ var _ = Describe("ValidatorContainer", func() {
 						},
 						Value: &paramSet.Native.Count,
 					})
-					Expect(validators.Run()).Error().To(BeNil())
+					Expect(paramSet.Validate()).Error().To(BeNil())
 				})
 				It("🧪 should: (via paramset) return nil", func() {
 					validators.Add("Directory", paramSet.BindValidatedString(
@@ -136,7 +136,7 @@ var _ = Describe("ValidatorContainer", func() {
 							return nil
 						},
 					))
-					Expect(validators.Run()).Error().To(BeNil())
+					Expect(paramSet.Validate()).Error().To(BeNil())
 				})
 			})
 		})

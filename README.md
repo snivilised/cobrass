@@ -111,7 +111,7 @@ Points to note from the above:
 - Each application need only create a single instance of ___EnumInfo___ for each enum entity so logically this should be treated as a singleton, although it hasnt been enforced as a singleton in code.
 
 
-#### 🍉 Enum Value
+#### 🍉 Enum Value<a name="enum-value"></a>
 
 The client can create ___EnumValue___ variables from the ___EnumInfo___ as follows:
 
@@ -147,7 +147,7 @@ The following sections describe the validation process, option validators and th
 
 📌 ___When using the option validators, there is no need to use the `Cobra` flag set methods (eg cmd.Flags().StringVarP) directly to define he flags for the command. This is taken care of on the client's behalf___.
 
-### ✅ Validation Sequencing
+### ✅ Validation Sequencing<a name="validation-sequencing"></a>
 
 The following is a checklist of items that need to be performed:
 
@@ -268,6 +268,8 @@ Note, because we can't bind directly to the `native` member of WidgetParameterSe
 
 The validation process will fail on the first error encountered and return that error. Also note how we retrieve the parameter set previously registered from the cobra container using the ___Native___ method. Since ___Native___ returns ___any___, a type assertion has to be performed to get back the `native` type. It is not mandatory to register the parameter set this way, it is there to help minimise the number of package global variables.
 
+- 9️⃣ _invoke cross field validation_ (optional): see [Cross Field Validation](#cross-field-validation)
+
 ### 🎭 Alternative Flag Set
 
 By default, binding a flag is performed on the default flag set. This flag set is the one you get from calling ___command.Flags()___ (this is performed automatically by ___NewFlagInfo___). However, there are a few more options for defining flags in `Cobra`. There are multiple flag set methods on the `Cobra` command, eg ___command.PersistentFlags()___. To utilise an alternative flag set, the client should use ___NewFlagInfoOnFlagSet___ instead of ___NewFlagInfo___. ___NewFlagInfoOnFlagSet___ requires that an extra parameter be provided and that is the alternative flag set, which can be derived from calling the appropriate method on the `command`, eg:
@@ -356,5 +358,36 @@ Specialised for type:
 There are also `slice` versions of some of the validators, to allow an option value to be defined as a collection of values. An example of a `slice` version is ___'BindValidatedStringSlice'___.
 
 Our pseudo enums are a special case, because it is not possible to define generic versions of the binder methods where a generic parameter would be the client defined int based enum, there are no option validator helpers for `enum` types.
+
+### ⚔️ Cross Field Validation<a name="cross-field-validation"></a>
+
+When the client needs to perform cross field validation, then ___ParamSet.CrossValidate___ should be invoked. Cross field validation is meant for checking option values of different flags, so that cross field constraints can be imposed. Contrary to `option validators` and `validator helpers` which are based upon checking values compare favourably against static boundaries, `cross field validation` is concerned with checking the dynamic value of options of different flags. The reader should be aware this is not about enforcing that all flags in a group are present or not. Those kinds of checks are already enforceable via `Cobra's` group checks. It may be that 1 option value must constrain the range of another option value. This is where cross field validation can be utilised.
+
+The client should pass in a validator function, whose signature contains a pointer to the native parameterset, eg:
+
+```go
+  result := paramSet.CrossValidate(func(ps *WidgetParameterSet) error {
+    condition := (ps.Strike >= ps.Lower) && (ps.Strike <= ps.Higher)
+
+    if condition {
+      return nil
+    }
+    return fmt.Errorf("strike: '%v' is out of range", ps.Strike)
+  })
+```
+
+The native parameter set, should be in its 'finalised' state. This means that all parameters should be bound in. So in the case of pseudo enum types, they should have been populated from temporary placeholder enum values. Recall from step 7️⃣ _rebind enum values_ of [Validation Sequencing](#validation-sequencing), that enum members have to be rebound. Well this is what is meant by finalisation. Before cross field validation is invoked, make sure that the enum members are correctly set. This way, you can be sure that the cross field validator is working with the correct state of the native parameter set. The validator can work in the 'enum domain' as opposed to checking raw string values, eg:
+
+```go
+  result := paramSet.CrossValidate(func(ps *WidgetParameterSet) error {
+    condition := (ps.Format == XmlFormatEn)
+    if condition {
+      return nil
+    }
+    return fmt.Errorf("format: '%v' is invalid", ps.Format)
+  })
+```
+
+This is a rather contrived example, but the important part of it is use of the enum field ___ps.Format___.
 
 ## 🧰 Developer Info

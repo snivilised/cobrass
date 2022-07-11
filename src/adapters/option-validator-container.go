@@ -51,10 +51,10 @@ func (container ValidatorContainer) Get(flag string) OptionValidator {
 	return nil
 }
 
-// Run invokes all validators registered by calling their Vaildate method, which
+// run invokes all validators registered by calling their Validate method, which
 // in turn, invokes the client defined validator function.
 //
-func (container ValidatorContainer) Run() error {
+func (container ValidatorContainer) run() error {
 
 	for _, validator := range container.validators {
 		if err := validator.Validate(); err != nil {
