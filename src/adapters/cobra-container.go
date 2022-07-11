@@ -63,33 +63,28 @@ func (container *CobraContainer) insert(command *cobra.Command) error {
 //
 // - command: the Cobra command to register.
 //
-// Returns an error if the there is no command currently registered with the name of parent
+// panics if the there is no command currently registered with the name of parent
 //
-func (container *CobraContainer) RegisterCommand(parent string, command *cobra.Command) error {
+func (container *CobraContainer) RegisterCommand(parent string, command *cobra.Command) {
 
 	if pc := container.Command(parent); pc != nil {
 		if err := container.insert(command); err != nil {
-			return err
+			panic(err)
 		}
 		pc.AddCommand(command)
-
-		return nil
+	} else {
+		message := fmt.Sprintf("cobra container: parent command '%v' not registered", parent)
+		panic(message)
 	}
-	message := fmt.Sprintf("cobra container: parent command '%v' not registered", parent)
-	return errors.New(message)
 }
 
-func (container *CobraContainer) RegisterCommands(
-	parent string, specs ...*CobraCommandSpec,
-) error {
+// RegisterCommands invokes RegisterCommand for each command in the list
+//
+func (container *CobraContainer) RegisterCommands(parent string, specs ...*CobraCommandSpec) {
 
 	for _, spec := range specs {
-		if err := container.RegisterCommand(parent, spec.Command); err != nil {
-			return err
-		}
+		container.RegisterCommand(parent, spec.Command)
 	}
-
-	return nil
 }
 
 // RegisterRootedCommand stores a command inside the container as a direct descendent
@@ -97,13 +92,10 @@ func (container *CobraContainer) RegisterCommands(
 //
 // - command: the Cobra command to register.
 //
-// Returns an error if the command with the same name has already been registered.
+// panics if the command with the same name has already been registered.
 //
-func (container *CobraContainer) RegisterRootedCommand(
-	command *cobra.Command,
-) error {
-
-	return container.RegisterCommand(container.root.Name(), command)
+func (container *CobraContainer) RegisterRootedCommand(command *cobra.Command) {
+	container.RegisterCommand(container.root.Name(), command)
 }
 
 // IsPresent checks whether a command has been registered anywhere within the
@@ -144,6 +136,9 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 // RegisterParamSet stores the parameter set under the provided name. Used
 // to reduce the number of floating global variables that the client needs
 // to manage when using cobra.
+//
+// panics if param set already registered, or attempt to register with
+// an inappropriate type.
 //
 func (container *CobraContainer) RegisterParamSet(name string, ps any) {
 

@@ -44,6 +44,12 @@ Most of the functionality is defined in the _adapters_ package so import as:
 
 ### 🎁 Cobra Container
 
+The container serves as a repository for `Cobra` commands and `Cobrass` parameter sets. Commands in `Cobra` are related to each other via parent child relationships. The container, flattens this hierarchy so that a command can be queried for, simply by its name, as opposed to getting the commands by parent command, ie ___parentCommand.Commands()___.
+
+The methods on the container, should not fail. Any failures that occur are due to programming errors. For this reason, when an error scenario occurs, a panic is raised.
+
+Regsitering commands/parameter sets with the container, obviates the need to use specific `Cobra` api calls as they are handled on the clients behalf by the container. For parameter sets, the type specific methods on the various ___FlagSet___ definitions, such as ___Float32Var___, do not have to be called by the client. For commands, ___AddCommand___ does not have to be called explicitly either.
+
 ### 💎 Param Set
 
 The rationale behind the concept of a parameter set came from initial discovery of how the `Cobra` api worked. Capturing user defined command line input requires binding option values into disparate variables. Having to manage independently defined variables usually at a package level could lead to a scattering of these variables on an adhoc basis. Having to then pass all these items independently into the core of a client application could easily become disorganised.
