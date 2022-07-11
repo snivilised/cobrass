@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/pflag"
 )
 
-// FlagInfo collates together the paramters passed into the bind methods
+// FlagInfo collates together the parameters passed into the bind methods
 // The Bind methods are just a wrapper around invoking the type based methods
 // on the cobra flag set in order to define flags.
 //

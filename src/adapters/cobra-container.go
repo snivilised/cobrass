@@ -169,7 +169,7 @@ func (container *CobraContainer) Native(name string) any {
 
 	// Need to use reflection to get the Native property. The collection of
 	// parameter sets can't be defined as a generic, because collections
-	// of generics are homogenious, but we need a heterogenious collection of
+	// of generics are homogeneous, but we need a heterogenious collection of
 	// parameter sets. This is why we need to use reflection to get hold of
 	// the Native property.
 	//
