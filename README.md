@@ -63,9 +63,9 @@ The ___ParamSet___ also handles flag definition on each command. The client defi
 
 - 1️⃣ ___Bind\<Type>___ : where ___\<Type>___ represents the type, (eg ___BindString___), the client passes in '___info___', a ___FlagInfo___ object and '___to___' a pointer to a variable to which `Cobra` will bind the option value to.
 
-- 2️⃣ ___BindValidated\<Type>___: (eg BindValidatedString) same as 1️⃣, except the user can also pass in a function whose signature reflects the type of the option value to be bound to (See [Option Validators](#option-validators)).
+- 2️⃣ ___BindValidated\<Type>___: (eg BindValidatedString) same as 1️⃣, except the client can also pass in a function whose signature reflects the type of the option value to be bound to (See [Option Validators](#option-validators)).
 
-- 3️⃣ ___BindValidated\<Type>\<Op>___: (eg BindValidatedStringWithin) same as 2️⃣, except user passes in operation specific parameters (See [Validation Helpers](#validation-helpers)).
+- 3️⃣ ___BindValidated\<Type>\<Op>___: (eg BindValidatedStringWithin) same as 2️⃣, except client passes in operation specific parameters (See [Validation Helpers](#validation-helpers)).
 
 📌 The names of the ___BindValidated\<Type>\<Op>___ methods are not always strictly in this form as sometime it reads better with _Op_ and _Type_ are swapped around especially when one considers that there are _Not_ versions of some commands. The reader is invited to review the go package documentation to see the exact names.
 
@@ -415,6 +415,53 @@ The native parameter set, should be in its 'finalised' state. This means that al
   })
 ```
 
-This is a rather contrived example, but the important part of it is use of the enum field ___ps.Format___.
+This is a rather contrived example, but the important part of it is the use of the enum field ___ps.Format___.
 
 ## 🧰 Developer Info
+
+### 🥇 Task Runner
+
+<p align="left">
+  <a href="https://taskfile.dev/"><img src="https://taskfile.dev/img/logo.svg" width="50" /></a>
+</p>
+
+Uses [Taskfile](https://taskfile.dev/). A simple `Taskfile.yml` has been defined in the root dir of the repo and defines tasks that make building and running [Ginkgo](https://onsi.github.io/ginkgo/) commands easier to perform.
+
+### ✨ Code Generation
+
+Please see [Powershell Code Generation](CODE-GEN.md)
+
+### 🧪 Unit Testing
+
+<p align="left">
+  <a href="https://onsi.github.io/ginkgo/"><img src="https://onsi.github.io/ginkgo/images/ginkgo.png" width="100" /></a>
+  <a href="https://onsi.github.io/gomega/"><img src="https://onsi.github.io/gomega/images/gomega.png" width="100" /></a>
+</p>
+
+[Ginkgo](https://onsi.github.io/ginkgo/) is the bbd testing style of choice used in `Cobrass`. I have found it to be a total revelation to work work with, in all aspects except 1, which was discovered well after I had gone all in on `Ginkgo`. I am using the Ginkgo test explorer in `vscode` and while it is good at exploring tests, running them and even generating coverage with little fuss, the single fly in the ointment is that debuging test cases is currently difficult to achieve:
+
+```
+Starting: /home/plastikfan/go/bin/dlv dap --check-go-version=false --listen=127.0.0.1:40849 --log-dest=3 from /home/plastikfan/dev/github/go/snivilised/cobrass/src/adapters
+DAP server listening at: 127.0.0.1:40849
+Type 'dlv help' for list of commands.
+Running Suite: Adapters Suite - /home/plastikfan/dev/github/go/snivilised/cobrass/src/adapters
+==============================================================================================
+Random Seed: 1657619476
+
+Will run 0 of 504 specs
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+Ran 0 of 504 Specs in 0.016 seconds
+SUCCESS! -- 0 Passed | 0 Failed | 0 Pending | 504 Skipped
+You're using deprecated Ginkgo functionality:
+=============================================
+  --ginkgo.debug is deprecated
+  Learn more at: https://onsi.github.io/ginkgo/MIGRATING_TO_V2#removed--debug
+  --ginkgo.reportFile is deprecated, use --ginkgo.junit-report instead
+  Learn more at: https://onsi.github.io/ginkgo/MIGRATING_TO_V2#improved-reporting-infrastructure
+
+To silence deprecations that can be silenced set the following environment variable:
+  ACK_GINKGO_DEPRECATIONS=2.1.4
+```
+
+vscode, debugging is an issue
