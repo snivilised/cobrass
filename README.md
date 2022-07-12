@@ -4,6 +4,7 @@
 [![A B](https://img.shields.io/badge/merge-rebase-informational?style=flat)](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 [![Go Reference](https://pkg.go.dev/badge/github.com/snivilised/cobrass.svg)](https://pkg.go.dev/github.com/snivilised/cobrass)
 [![Go report](https://goreportcard.com/badge/github.com/snivilised/cobrass)](https://goreportcard.com/report/github.com/snivilised/cobrass)
+[![Coverage Status](https://coveralls.io/repos/github/snivilised/cobrass/badge.svg?branch=master)](https://coveralls.io/github/snivilised/cobrass?branch=master)
 
 <!-- MD013/Line Length -->
 <!-- MarkDownLint-disable MD013 -->
