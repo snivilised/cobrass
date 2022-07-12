@@ -16,7 +16,7 @@ $types = @{
     Equate             = "Equal"
     Validatable        = $true
     ForeignValidatorFn = $true # validation does occur but using a foreign type, ie string
-    GenerateSlice      = $false # 🔥🔥🔥 CHECK THIS
+    GenerateSlice      = $false # EnumSlice is implemented as StringSlice
     SliceFlagName      = "Formats"
     SliceShort         = "F"
     DefSliceVal        = "[]string{}"
@@ -58,9 +58,7 @@ $types = @{
     # performed in the string domain but it might make more sense to the use if
     # it was in the int domain. We don't want to commit to publish this particular
     # api, if it's not clear how this would be implemented, so that it makes sense.
-    #
-    # Comparable         = $true
-    #
+
     Containable        = $true
     #
     BhTests            = @{
@@ -859,8 +857,8 @@ Write-Host "🤖 Build-Validators(gen-ov) ✨ => option-validator-auto.go"
 Write-Host "🤖 Build-ParamSet(gen-ps) ✨ => param-set-auto.go"
 Write-Host "🤖 Build-PsTestEntry(gen-ps-t) ✨ => param-set-auto_test.go"
 Write-Host "🤖 Build-TestEntry(gen-ov-t) 🧪 => option-validator-auto_test.go"
-Write-Host "🤖 Build-Predefined(gen-help) 🎁 => paramset-binder-helpers-auto.go"
-Write-Host "🤖 Build-BinderHelperTests(gen-help-t) 🧪 => paramset-binder-helpers-auto_test.go"
+Write-Host "🤖 Build-BinderHelpers(gen-help) 🎁 => param-set-binder-helpers-auto.go"
+Write-Host "🤖 Build-BinderHelperTests(gen-help-t) 🧪 => param-set-binder-helpers-auto_test.go"
 
 function Build-Validators {
   # (option-validator-auto.go)
@@ -1095,29 +1093,6 @@ function Build-PsTestEntry {
         $defaultSlice = $spec.GenerateSlice ? $spec.DefSliceVal : [string]::IsNullOrEmpty
         $bindTo = [string]::IsNullOrEmpty($spec.BindTo) ? $("&paramSet.Native.$($spec.FlagName)") : $spec.BindTo
   
-        # x18, manual:
-  
-        <#
-  ===> SPEC: 'Bool' BindBool x2 (special case, positive and negative), BindBoolSlice
-  ===> SPEC: 'Duration' BindDuration
-  ===> SPEC: 'Enum'
-  ===> SPEC: 'Float32' BindFloat32, BindFloat32Slice
-  ===> SPEC: 'Float64' BindFloat64, BindFloat64Slice
-  ===> SPEC: 'Int' BindInt, BindIntSlice
-  ===> SPEC: 'Int16' BindInt16
-  ===> SPEC: 'Int32' BindInt32
-  ===> SPEC: 'Int64' BindInt64
-  ===> SPEC: 'Int8' BindInt8
-  ===> SPEC: 'IPMask' BindIPMask
-  ===> SPEC: 'IPNet' BindIPNet (possible problem here)
-  ===> SPEC: 'String' BindString, BindStringSlice
-  ===> SPEC: 'Uint16' BindUint16
-  ===> SPEC: 'Uint32' BindUint32
-  ===> SPEC: 'Uint64' BindUint64
-  ===> SPEC: 'Uint8' BindUint8
-  ===> SPEC: 'Uint' BindUint, BindUintSlice
-        #>
-  
         $sides = @(
           [PSCustomObject]@{
             Short             = $true
@@ -1192,7 +1167,6 @@ Entry(nil, TcEntry{
             }
 
             $sliceBindTo = $("&paramSet.Native.$($spec.SliceFlagName)")
-            # $sliceBindTo = [string]::IsNullOrEmpty($spec.BindTo) ? $("&paramSet.Native.$($spec.FlagName)") : $spec.BindTo
     
             @"
 Entry(nil, TcEntry{
@@ -1316,7 +1290,7 @@ Entry(nil, OvEntry{
 }
 
 function Build-BinderHelpers {
-  # (paramset-binder-helpers-auto.go)
+  # (param-set-binder-helpers-auto.go)
   #
   [Alias("gen-help")]
   [CmdletBinding()]
@@ -1433,13 +1407,13 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
     return $content
   }
   else {
-    Write-Host "🎯 Paste into ---> 'paramset-binder-helpers-auto.go'"
+    Write-Host "🎯 Paste into ---> 'param-set-binder-helpers-auto.go'"
     $content | Set-Clipboard  
   }
 }
 
 function Build-BinderHelperTests {
-  # (paramset-binder-helpers-auto_test.go)
+  # (param-set-binder-helpers-auto_test.go)
   #
   [Alias("gen-help-t")]
   [CmdletBinding()]
@@ -1719,7 +1693,7 @@ DescribeTable("BindValidated$($methodSubStmt)",
     return $content
   }
   else {
-    Write-Host "🎯 Paste into ---> 'paramset-binder-helpers-auto_test.go'"
+    Write-Host "🎯 Paste into ---> 'param-set-binder-helpers-auto_test.go'"
     $content | Set-Clipboard  
   }
 }
