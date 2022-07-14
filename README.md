@@ -170,15 +170,15 @@ var rootCommand = Container.Root()
 - 2️⃣ _register sub commands_: for each sub command directly decended from the root, on the ___Container___ instance, invoke ___RegisterRootedCommand___ eg:
 
 ```go
-  Container.RegisterRootedCommand(widgetCommand)
+  Container.MustRegisterRootedCommand(widgetCommand)
 ```
 
-If a command is a descendent of a command other than the root, then this command should be registered using ___RegisterCommand___ instead. eg:
+If a command is a descendent of a command other than the root, then this command should be registered using ___MustRegisterCommand___ instead. eg:
 
 assuming a command with the name "foo", has already been registered
 
 ```go
-  Container.RegisterCommand("foo", widgetCommand)
+  Container.MustRegisterCommand("foo", widgetCommand)
 ```
 
 📌 ___Note, when using the Cobra Container to register commands, you do not need to use Cobra's AddCommand. The container takes care of this for you.___
@@ -254,7 +254,7 @@ Note, because we can't bind directly to the `native` member of WidgetParameterSe
 ```go
   RunE: func(command *cobra.Command, args []string) error {
 
-    ps := container.ParamSet("widget-ps").(*adapters.ParamSet[WidgetParameterSet])
+    ps := container.MustGetParamSet("widget-ps").(*adapters.ParamSet[WidgetParameterSet])
 
     if err := ps.Validate(); err == nil {
       native = ps.Native
