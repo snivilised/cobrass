@@ -52,7 +52,7 @@ var _ = Describe("CobraContainer", func() {
 		When("command previously registered", func() {
 			It("🧪 should: return registered command", func() {
 				name := DummyCommand.Name()
-				Container.RegisterRootedCommand(DummyCommand)
+				Container.MustRegisterRootedCommand(DummyCommand)
 
 				message := fmt.Sprintf(
 					"❌ Container should contain previously added command '%v'",
@@ -74,15 +74,15 @@ var _ = Describe("CobraContainer", func() {
 		})
 	})
 
-	Context("RegisterRootedCommand", func() {
+	Context("MustRegisterRootedCommand", func() {
 		When("command previously registered", func() {
 			It("🧪 should: return error", func() {
 				defer func() {
 					recover()
 				}()
-				Container.RegisterRootedCommand(DummyCommand)
+				Container.MustRegisterRootedCommand(DummyCommand)
 				//
-				Container.RegisterRootedCommand(DummyCommand)
+				Container.MustRegisterRootedCommand(DummyCommand)
 
 				Fail("❌ expected panic due to command already registered")
 			})
@@ -90,13 +90,13 @@ var _ = Describe("CobraContainer", func() {
 
 		When("command NOT previously registered", func() {
 			It("🧪 should: register the command as child of root command", func() {
-				Container.RegisterRootedCommand(DummyCommand)
+				Container.MustRegisterRootedCommand(DummyCommand)
 				Expect(Container.Command(DummyCommand.Name())).ToNot(BeNil())
 			})
 		})
 	})
 
-	Context("RegisterCommand", func() {
+	Context("MustRegisterCommand", func() {
 		Context("parent previously registered", func() {
 			When("requested command previously registered", func() {
 				It("🧪 should: return requested command error", func() {
@@ -104,10 +104,10 @@ var _ = Describe("CobraContainer", func() {
 						recover()
 					}()
 					parent := ParentCommand.Name()
-					Container.RegisterRootedCommand(ParentCommand)
-					Container.RegisterCommand(parent, DummyCommand)
+					Container.MustRegisterRootedCommand(ParentCommand)
+					Container.MustRegisterCommand(parent, DummyCommand)
 					//
-					Container.RegisterCommand(parent, DummyCommand)
+					Container.MustRegisterCommand(parent, DummyCommand)
 
 					Fail("❌ expected panic due to command already registered")
 				})
@@ -117,9 +117,9 @@ var _ = Describe("CobraContainer", func() {
 				It("🧪 should: register requesyted command ok", func() {
 					name := DummyCommand.Name()
 					parent := ParentCommand.Name()
-					Container.RegisterRootedCommand(ParentCommand)
+					Container.MustRegisterRootedCommand(ParentCommand)
 					//
-					Container.RegisterCommand(parent, DummyCommand)
+					Container.MustRegisterCommand(parent, DummyCommand)
 
 					message := fmt.Sprintf("❌ parent of '%v' does not match actual parent: '%v'",
 						name, parent)
@@ -133,14 +133,14 @@ var _ = Describe("CobraContainer", func() {
 				defer func() {
 					recover()
 				}()
-				Container.RegisterCommand("foo", DummyCommand)
+				Container.MustRegisterCommand("foo", DummyCommand)
 
 				Fail("❌ expected panic due to parent not being regsitered")
 			})
 		})
 	})
 
-	Context("RegisterCommands", func() {
+	Context("MustRegisterCommands", func() {
 
 		const alphaName = "alpha"
 		const betaName = "beta"
@@ -178,11 +178,11 @@ var _ = Describe("CobraContainer", func() {
 
 		When("child commands NOT registered", func() {
 			It("🧪 should: register all requested commands ok", func() {
-				Container.RegisterRootedCommand(ParentCommand)
+				Container.MustRegisterRootedCommand(ParentCommand)
 				parent := ParentCommand.Name()
 
 				specs := []*adapters.CobraCommandSpec{alpha, beta, delta}
-				Container.RegisterCommands(parent, specs...)
+				Container.MustRegisterCommands(parent, specs...)
 
 				message := fmt.Sprintf("❌ parent command: '%v' should have child commands but doesn't",
 					parent)
@@ -203,11 +203,11 @@ var _ = Describe("CobraContainer", func() {
 				defer func() {
 					recover()
 				}()
-				Container.RegisterRootedCommand(ParentCommand)
+				Container.MustRegisterRootedCommand(ParentCommand)
 				parent := ParentCommand.Name()
 
 				specs := []*adapters.CobraCommandSpec{alpha, beta, beta}
-				Container.RegisterCommands(parent, specs...)
+				Container.MustRegisterCommands(parent, specs...)
 
 				Fail("❌ expected panic due to a command already being registered")
 			})

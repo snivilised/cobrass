@@ -10,7 +10,7 @@ import (
 )
 
 // CobraCommandSpec is a wrapper around the cobra command, require to register
-// multiple commands at he same time, see RegisterCommands.
+// multiple commands at he same time, see MustRegisterCommands.
 //
 type CobraCommandSpec struct {
 	// Command: a pointer to the underlying cobra command
@@ -55,7 +55,7 @@ func (container *CobraContainer) insert(command *cobra.Command) error {
 	return nil
 }
 
-// RegisterCommand stores a command inside the container. The client passes in the
+// MustRegisterCommand stores a command inside the container. The client passes in the
 // name of the parent command and the command is added to that parent.
 //
 // - parent: the name of the parent command. The name can be derived by calling the Name()
@@ -65,7 +65,7 @@ func (container *CobraContainer) insert(command *cobra.Command) error {
 //
 // panics if the there is no command currently registered with the name of parent
 //
-func (container *CobraContainer) RegisterCommand(parent string, command *cobra.Command) {
+func (container *CobraContainer) MustRegisterCommand(parent string, command *cobra.Command) {
 
 	if pc := container.Command(parent); pc != nil {
 		if err := container.insert(command); err != nil {
@@ -78,24 +78,24 @@ func (container *CobraContainer) RegisterCommand(parent string, command *cobra.C
 	}
 }
 
-// RegisterCommands invokes RegisterCommand for each command in the list
+// MustRegisterCommands invokes MustRegisterCommand for each command in the list
 //
-func (container *CobraContainer) RegisterCommands(parent string, specs ...*CobraCommandSpec) {
+func (container *CobraContainer) MustRegisterCommands(parent string, specs ...*CobraCommandSpec) {
 
 	for _, spec := range specs {
-		container.RegisterCommand(parent, spec.Command)
+		container.MustRegisterCommand(parent, spec.Command)
 	}
 }
 
-// RegisterRootedCommand stores a command inside the container as a direct descendent
+// MustRegisterRootedCommand stores a command inside the container as a direct descendent
 // of the root Cobra command and is added to the root command itself.
 //
 // - command: the Cobra command to register.
 //
 // panics if the command with the same name has already been registered.
 //
-func (container *CobraContainer) RegisterRootedCommand(command *cobra.Command) {
-	container.RegisterCommand(container.root.Name(), command)
+func (container *CobraContainer) MustRegisterRootedCommand(command *cobra.Command) {
+	container.MustRegisterCommand(container.root.Name(), command)
 }
 
 // IsPresent checks whether a command has been registered anywhere within the
@@ -133,14 +133,14 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 	return utils.TernaryIf(exists, command, nil)
 }
 
-// RegisterParamSet stores the parameter set under the provided name. Used
+// MustRegisterParamSet stores the parameter set under the provided name. Used
 // to reduce the number of floating global variables that the client needs
 // to manage when using cobra.
 //
 // panics if param set already registered, or attempt to register with
 // an inappropriate type.
 //
-func (container *CobraContainer) RegisterParamSet(name string, ps any) {
+func (container *CobraContainer) MustRegisterParamSet(name string, ps any) {
 
 	if _, exists := container.paramSets[name]; exists {
 		panic(fmt.Errorf("parameter set '%v' already registered", name))
@@ -182,12 +182,12 @@ func (container *CobraContainer) Native(name string) any {
 	}
 }
 
-// ParamSet like Native, except that it returns the parameter set
+// MustGetParamSet like Native, except that it returns the parameter set
 // wrapper. The client must perform a type assertion on the
 // returned pointer to translate it back into the native type,
-// ie ParamSet[N] (as opposed to N)
+// ie MustGetParamSet[N] (as opposed to N)
 //
-func (container *CobraContainer) ParamSet(name string) any {
+func (container *CobraContainer) MustGetParamSet(name string) any {
 	if paramSet, found := container.paramSets[name]; found {
 		return paramSet
 	} else {

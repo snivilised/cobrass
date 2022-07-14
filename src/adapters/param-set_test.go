@@ -61,7 +61,7 @@ var _ = Describe("ParamSet (manual)", func() {
 				},
 			}
 			container = adapters.NewCobraContainer(rootCommand)
-			container.RegisterRootedCommand(widgetCommand)
+			container.MustRegisterRootedCommand(widgetCommand)
 
 			paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
 			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
@@ -134,7 +134,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						adapters.NewFlagInfo("pattern", "p", "cakewalk"),
 						&paramSet.Native.Pattern,
 					)
-					container.RegisterParamSet(psname, paramSet)
+					container.MustRegisterParamSet(psname, paramSet)
 
 					commandLine := "--format xml --pattern cakewalk"
 					testhelpers.ExecuteCommand(
@@ -162,7 +162,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						adapters.NewFlagInfo("pattern", "p", "cakewalk"),
 						&paramSet.Native.Pattern,
 					)
-					container.RegisterParamSet(psname, paramSet)
+					container.MustRegisterParamSet(psname, paramSet)
 
 					commandLine := "--format xml --pattern cakewalk"
 					testhelpers.ExecuteCommand(
@@ -183,7 +183,7 @@ var _ = Describe("ParamSet (manual)", func() {
 		Context("Register ParamSet", func() {
 
 			It("🧪 should: be able get registered param set", func() {
-				container.RegisterParamSet(psname, paramSet)
+				container.MustRegisterParamSet(psname, paramSet)
 
 				testhelpers.ExecuteCommand(
 					rootCommand, cname, "/usr/fuse/home/cache",
@@ -202,8 +202,8 @@ var _ = Describe("ParamSet (manual)", func() {
 						recover()
 					}()
 
-					container.RegisterParamSet(psname, paramSet)
-					container.RegisterParamSet(psname, paramSet)
+					container.MustRegisterParamSet(psname, paramSet)
+					container.MustRegisterParamSet(psname, paramSet)
 					Fail("❌ expected panic due to attempt to register parameter that already exists")
 				})
 			})
@@ -214,7 +214,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						recover()
 					}()
 					const foo = "bar"
-					container.RegisterParamSet(psname, foo)
+					container.MustRegisterParamSet(psname, foo)
 					Fail("❌ expected panic due to attempt to register non pointer type")
 				})
 			})
@@ -225,7 +225,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						recover()
 					}()
 					foo := 42
-					container.RegisterParamSet(psname, &foo)
+					container.MustRegisterParamSet(psname, &foo)
 					Fail("❌ expected panic due to attempt to register pointer to non struct")
 				})
 			})
@@ -234,8 +234,8 @@ var _ = Describe("ParamSet (manual)", func() {
 				When("param set is registered", func() {
 					It("🧪 should: return the parameter wrapper", func() {
 
-						container.RegisterParamSet(psname, paramSet)
-						resultPS := container.ParamSet(psname).(*adapters.ParamSet[WidgetParameterSet])
+						container.MustRegisterParamSet(psname, paramSet)
+						resultPS := container.MustGetParamSet(psname).(*adapters.ParamSet[WidgetParameterSet])
 
 						Expect(resultPS).ToNot(BeNil())
 					})
@@ -246,7 +246,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						defer func() {
 							recover()
 						}()
-						_ = container.ParamSet("foo").(*adapters.ParamSet[WidgetParameterSet])
+						_ = container.MustGetParamSet("foo").(*adapters.ParamSet[WidgetParameterSet])
 
 						Fail("❌ expected panic due to parameter set not found")
 					})
