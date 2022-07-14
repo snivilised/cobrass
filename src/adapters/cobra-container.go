@@ -182,7 +182,7 @@ func (container *CobraContainer) Native(name string) any {
 	}
 }
 
-// ParamSet like Native, except that it returns the paramter set
+// ParamSet like Native, except that it returns the parameter set
 // wrapper. The client must perform a type assertion on the
 // returned pointer to translate it back into the native type,
 // ie ParamSet[N] (as opposed to N)
