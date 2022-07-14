@@ -21,13 +21,13 @@
 
 ## 🔰 Introduction
 
-_[Cobra](https://cobra.dev/) is an excellent framework for the development of command line applications, but there are few aspects that could do with being made easier to work with. This package aims to fullfil this purpose, especially in regards to creation of commands, encapulating commands into a container and providing an export mechanism to re-create cli data in a form that is free from cobra (and indeed cobrass) abstractions. The aim of this last aspect to to be able to inject data into the core of an application in a way that removes tight coupling to the cobra framework, which is achieved by representing data only in terms of client defined (native) abstractions. Currently, Cobra does not provide a mechanism for validating option values, this is also implemented by_ ___Cobrass___.
+_[Cobra](https://cobra.dev/) is an excellent framework for the development of command line applications, but is missing a few features that would make it a bit easier to work with. This package aims to fullfil this purpose, especially in regards to creation of commands, encapulating commands into a container and providing an export mechanism to re-create cli data in a form that is free from cobra (and indeed cobrass) abstractions. The aim of this last aspect to to be able to inject data into the core of an application in a way that removes tight coupling to the `Cobra` framework, which is achieved by representing data only in terms of client defined (native) abstractions. Currently, Cobra does not provide a mechanism for validating option values, this is also implemented by_ ___Cobrass___.
 
 ___Status___: 💤 not yet published
 
 ## 🔨 Usage
 
-To install _cobrass_ into an application:
+To install `Cobrass` into an application:
 
 > go get github.com/snivilised/cobrass@latest
 
@@ -68,7 +68,7 @@ The ___ParamSet___ also handles flag definition on each command. The client defi
 
 - 3️⃣ ___BindValidated\<Type>\<Op>___: (eg BindValidatedStringWithin) same as 2️⃣, except client passes in operation specific parameters (See [Validation Helpers](#validation-helpers)).
 
-📌 The names of the ___BindValidated\<Type>\<Op>___ methods are not always strictly in this form as sometime it reads better with _Op_ and _Type_ are swapped around especially when one considers that there are _Not_ versions of some commands. The reader is invited to review the go package documentation to see the exact names.
+📌 The names of the ___BindValidated\<Type>\<Op>___ methods are not always strictly in this form as sometimes it reads better with _Op_ and _Type_ being swapped around especially when one considers that there are _Not_ versions of some commands. The reader is invited to review the [Go](https://pkg.go.dev/github.com/snivilised/cobrass/) package documentation to see the exact names.
 
 ### 💠 Pseudo Enum
 
@@ -126,7 +126,7 @@ Points to note from the above:
 
 - As many enum values as needed in the client can be created
 
-- A string value can be checked to determine if it is a valid value (as defined by the acceptable values passed into ___NewEnumInfo___), to the ___IsValid___ method on the ___EnumInfo___  or we can simply call the same method on ___EnumValue___ without passing in a string value; in this case, the check is performed on it's member variable 'Source' which can be assigned at any time.
+- A string value can be checked to determine if it is a valid value (as defined by the acceptable values passed into ___NewEnumInfo___), by passing it to the ___IsValid___ method on the ___EnumInfo___  or we can simply call the same method on ___EnumValue___ without passing in a string value; in this case, the check is performed on it's member variable 'Source' which can be assigned at any time.
 
 - The ___EnumInfo___ struct contains a ___String___ method to support printing. It is provided because passing in the ___int___ form of the enum value to a printing function just results in the numeric value being displayed, which is not very useful. Instead, when there is a need to print an ___EnumValue___, it's custom ___String___ method should be invoked. Since that method retrieves the first acceptable value defined for the enum value, the user should specify a longer more expressive form as the first entry, followed by 1 or more shorter forms. Actually, to be clear, as long as the first item is expressive enough when displayed in isolation, it doesn't really matter if the first item is the longest or not. 
 
@@ -144,6 +144,8 @@ outputFormatSlice := OutputFormatEnumInfo.NewSlice()
 
 ___NewSlice___ contains various _collection_ methods equilavent to it's value based (___EnumValue___) counterpart.
 
+The ___Source___ member of ___EnumSlice___ is defined as a slice of ___string___.
+
 ## ☂️ Option Binding and Validation
 
 The following sections describe the validation process, option validators and the helpers.
@@ -152,7 +154,7 @@ The following sections describe the validation process, option validators and th
 
 ### ✅ Validation Sequencing<a name="validation-sequencing"></a>
 
-The following is a checklist of items that need to be performed:
+The following is a checklist of actions that need to be performed:
 
 - 1️⃣ _create cobra container_: typically in the same place where the root command is defined. The root command should then be passed into ___Container___ constructor function ___NewCobraContainer___ eg:
 
@@ -233,7 +235,7 @@ The members of an instance of this `native` param set will be used to `bind` to 
   )
 ```
 
-Note, because we can't bind directly to the `native` member of WidgetParameterSet, (that being ___Format___ in this case), since the user will be typing in a string value that is internally represented as an int based `enum`, we have to bind to ___Source___, a string member of an ___EnumValue___, ie ___&outputFormatEnum.Source___ in the above code snippet. Later on we'll simply copy the value over from ___outputFormatEnum.Source___ to where its supposed to be, ___paramSet.Native.Format___.
+Note, because we can't bind directly to the `native` member of WidgetParameterSet, (that being ___Format___ in this case), since the user will be typing in a string value that is internally represented as an int based `enum`, we have to bind to ___Source___, a string member of an ___EnumValue___, ie ___&outputFormatEnum.Source___ in the above code snippet. Later on (step 7️⃣) we'll simply copy the value over from ___outputFormatEnum.Source___ to where its supposed to be, ___paramSet.Native.Format___.
 
 - 6️⃣ _register param set_: this is optional, but doing do means that the param set can easily be retrieved at a later point. The param set is registered (typically after all the flags have been bound in) as follows:
 
@@ -290,7 +292,7 @@ The validation may occur in 2 stages depending on whether cross field valiation 
 
 Also note how we retrieve the parameter set previously registered from the cobra container using the ___Native___ method. Since ___Native___ returns ___any___, a type assertion has to be performed to get back the `native` type. If the param set you created using ___NewParamSet___ is in scope, then there is no need to query the container for it by name. It is just shown here this way, to illustrate how to proceed if parameter set was created in a local function/method and is therefore no longer in scope.
 
-Option validation occurs first (___ps.Validate()___), then rebinding of enum members, if any (___native.Format = outputFormatEnum.Value()___), then cross field validation (___xv := ps.CrossValidate___).
+Option validation occurs first (___ps.Validate()___), then rebinding of enum members, if any (___native.Format = outputFormatEnum.Value()___), then cross field validation (___xv := ps.CrossValidate___), see [Cross Field Validation](#cross-field-validation).
 
 If we have no errors at this point, we can enter the application, passing in the native parameters set.
 
@@ -351,7 +353,7 @@ To bind a flag without a short name, the client can either:
 
 or
 
-- not use the ___NewFlagInfo___ constructor function at all and pass in a literal struct without setting the ___Short___ member. Note in this case, make sure that the ___Name___ property is set properly, ie it should be the first word of ___Usage___ eg:
+- not use the ___NewFlagInfo___ constructor function at all and pass in a literal struct without setting the ___Short___ member. Note in this case, make sure that the ___Name___ property is set properly, ie it is usually the first word of ___Usage___ eg:
 
 ```go
   paramSet.BindValidatedEnum(
@@ -370,7 +372,7 @@ or
 
 ### 🛡️ Validator Helpers<a name="validation-helpers"></a>
 
-An alternative way of implementing option validation, the client can use the validation helpers defined based on type.
+As an alternative way of implementing option validation, the client can use the validation helpers defined based on type.
 
 The following are the categories of helpers that have been provided:
 
@@ -385,7 +387,7 @@ Specialised for type:
 
 There are also `slice` versions of some of the validators, to allow an option value to be defined as a collection of values. An example of a `slice` version is ___'BindValidatedStringSlice'___.
 
-Our pseudo enums are a special case, because it is not possible to define generic versions of the binder methods where a generic parameter would be the client defined int based enum, there are no option validator helpers for `enum` types.
+Our pseudo `enums` are a special case, because it is not possible to define generic versions of the binder methods where a generic parameter would be the client defined int based enum, there are no option validator helpers for `enum` types.
 
 ### ⚔️ Cross Field Validation<a name="cross-field-validation"></a>
 
@@ -465,4 +467,4 @@ To silence deprecations that can be silenced set the following environment varia
   ACK_GINKGO_DEPRECATIONS=2.1.4
 ```
 
-vscode, debugging is an issue
+So vscode, debugging remains an issue. (Please raise an issue, if you have a solution to this problem!)

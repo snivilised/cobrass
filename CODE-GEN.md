@@ -2,7 +2,7 @@
 
 Powershell is being used to generate go code and this article documents how this works.
 
-There are 6 main functions that perform code generation, 3 that generate source code and the remaining generating ginkgo/gomega based test suites. The reason why code generation was needed mainly stems from the `Cobra` api. Since, they are type based functions, in order to fully integrate with it, `Cobrass` must also provide a type based api. During the initial design of cobrass, functionality was built manually, with a lot of copy and pasting. When it was discovered how laborious is was just to build the initial binder functions, it was decided that another more automated approach would be desirable. This way, any future (non-breaking!) changes can be implemented relatively swiftly, without one having to tear ones hair out due to the monotony of code modifications and it's inherent vulnerability to cut and paste errors.
+There are 6 main functions that perform code generation, 3 that generate source code and the remaining generating ginkgo/gomega based test suites. The reason why code generation was needed mainly stems from the `Cobra` api. Since, they are type based functions, in order to fully integrate with it, `Cobrass` must also provide a type based api. During the initial design of cobrass, functionality was built manually, with a lot of copy and pasting. When it was discovered how laborious is was just to build the initial binder functions, it was decided that another more automated approach would be desirable. This way, any future (non-breaking!) changes can be implemented relatively swiftly, without one having to tear ones hair out due to the monotony of code modifications and it's inherent vulnerability to copy and paste errors.
 
 The 6 generator functions (aliases in brackets) are:
 
@@ -15,7 +15,7 @@ The 6 generator functions (aliases in brackets) are:
 
 The order of the above list is significant, as it reflects the order in which commands should be run (there are exceptions to this depending on the nature of the change being made).
 
-There are an additional 2 functions that have been built to protect against accidental api breaking changes, afterall _with great power comes great responsibility_, that is to say, with code generation in play, it could be easy to release a breaking change and the possibility of this has to be stamped out as much as possible.
+There are an additional 2 functions that have been built to protect against accidental api breaking changes, afterall _with great power comes great responsibility_, that is to say, with code generation in play, it could be easy to release a breaking change and the possibility of this has to be prohibited as much as it can be.
 
 These 2 commands are:
 
@@ -79,11 +79,9 @@ When a hash change occurs, the output will show both __THIS-HASH__ the new hash 
 
 At the highest level of abstraction, 2 collections of entites have been defined. 1 represents _Types_ and the other represents _Operations_. Conceptually, these are combined to form a matrix. However, due to some exceptions, not every element of this matrix is a valid code generation point, giving rise to exceptions where custom functionality is employed. An example of this is the _Bool_ type, which does not need a validator, because clearly there is little or practically nothing that can be validated for a true or false value. Another example is the pseudo _Enum_ type which performs its validation in the string domain therefore validating in a type different to its own.
 
-(sides concept)
-
 ### ⚜️ The Types
 
-Inserted into a map object keyed by a logical type name. This logical type name is not the underlying Go type, rather it is a a name similar to the go type but reflects the name used in the cobra api. Eg on the ___FlagSet___, there is a type based api ___BindInt64___, so there is a corresponding entry under ___Int64___.
+Inserted into a map object keyed by a logical type name. This logical type name is not the underlying Go type, rather it is a a name similar to the go type but reflects the name used in the `Cobra` api. Eg on the ___FlagSet___, there is a type based api ___BindInt64___, so there is a corresponding entry under ___Int64___.
 
 #### ☑️ Fields of note
 
@@ -135,7 +133,7 @@ Describes cross cutting concepts spanning different generators.
 
 #### 💪 Helper functions
 
-Some types are less straight forward to work with, eg `IPNet` and `IPMask`. To simply working with these types, helper functions have been defined (in `param-set-data_test.go`). This means the gory details are hidden away and don't have to be present in the generation process:
+Some types are less straight forward to work with, eg `IPNet` and `IPMask`. To simplify working with these types, helper functions have been defined (in `param-set-data_test.go`). This means the gory details are hidden away and don't have to be present in the generation process:
 
 - ipmask(v string) net.IPMask
 - ipnet(v string) net.IPNet
@@ -312,8 +310,8 @@ Entry(nil, "value is equal threshold", "return error", $($equalThresholdArgs)),
 Entry(nil, "value is above threshold", "NOT return error", $($aboveThresholdArgs)),
 ```
 
-`BhTests` (binder helper tests) is property that provides the test data for tests. It turns out that this test data can be shared among different types as long as values are chosen that work with all types. So there is only a single instance of `BhTests` that just so happens to have been defined in `Int`, but all other compatible types reference this via their ___BhParent___ property.
+`BhTests` (binder helper tests) is a property that provides the test data for validation helper tests. It turns out that this test data can be shared among different types as long as values are chosen that work with all types. So there is currently a single instance of `BhTests` that just so happens to have been defined in `Int`, and a separate one defined for `enum` but all other compatible types reference `Int` instance via their ___BhParent___ property.
 
 `BhEntry` is a dictionary object mapping the `Operator` name into a test data object (let's call this the test data source). All operations take either 1 or 2 validation arguments and these are represented by ___First___ and ___Second___. For those operations that require just a single argument, the second is considered a dummy and is not referenced, but provided to make code generation logic simpler.
 
-Test cases are generated into a `Gomega` test table structure. The ___Entry___ member of the test data source is another object that defines which defines which entries are inserted into the test table structure. The values inside these entries are the values to be validated according the the validation arguments as they appear in ___First___ and ___Second___. The other value in each entry describes whether nil is expected as a result of the validation operation.
+Test cases are generated into a `Gomega` test table structure. The ___Entry___ member of the test data source is another object that defines which entries are inserted into the test table structure. The values inside these entries are the values to be validated according the the validation arguments as they appear in ___First___ and ___Second___. The other value in each entry describes whether nil is expected as a result of the validation operation. The `Not` test cases reverse this logic using the inverse of ___expectNil___, ie ___!expectNil___.
