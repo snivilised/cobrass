@@ -441,7 +441,7 @@ Please see [Powershell Code Generation](CODE-GEN.md)
   <a href="https://onsi.github.io/gomega/"><img src="https://onsi.github.io/gomega/images/gomega.png" width="100" /></a>
 </p>
 
-[Ginkgo](https://onsi.github.io/ginkgo/) is the bbd testing style of choice used in `Cobrass`. I have found it to be a total revelation to work work with, in all aspects except 1, which was discovered well after I had gone all in on `Ginkgo`. I am using the Ginkgo test explorer in `vscode` and while it is good at exploring tests, running them and even generating coverage with little fuss, the single fly in the ointment is that debuging test cases is currently difficult to achieve:
+[Ginkgo](https://onsi.github.io/ginkgo/) is the bbd testing style of choice used in `Cobrass`. I have found it to be a total revelation to work with, in all aspects except 1, which was discovered well after I had gone all in on `Ginkgo`. I am using the Ginkgo test explorer in `vscode` and while it is good at exploring tests, running them and even generating coverage with little fuss, the single fly in the ointment is that debuging test cases is currently difficult to achieve:
 
 ```
 Starting: /home/plastikfan/go/bin/dlv dap --check-go-version=false --listen=127.0.0.1:40849 --log-dest=3 from /home/plastikfan/dev/github/go/snivilised/cobrass/src/adapters
