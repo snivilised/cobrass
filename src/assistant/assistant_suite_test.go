@@ -1,4 +1,4 @@
-package adapters_test
+package assistant_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestAdapters(t *testing.T) {
+func TestAssistant(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Adapters Suite")
+	RunSpecs(t, "Assistant Suite")
 }

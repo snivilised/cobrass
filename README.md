@@ -33,7 +33,7 @@ To install `Cobrass` into an application:
 
 Most of the functionality is defined in the _adapters_ package so import as:
 
-> import "github.com/snivilised/cobrass/src/adapters"
+> import "github.com/snivilised/cobrass/src/assistant"
 
 ## 🎀 Features
 
@@ -97,7 +97,7 @@ This is where the type ___EnumInfo___ comes into play. It allows us to provide a
 An ___EnumInfo___ instance for our psuedo enum type ___OutputFormatEnum___ can be created with ___NewEnumInfo___ as follows:
 
 ```go
-OutputFormatEnumInfo = adapters.NewEnumInfo(adapters.AcceptableEnumValues[OutputFormatEnum]{
+OutputFormatEnumInfo = assistant.NewEnumInfo(assistant.AcceptableEnumValues[OutputFormatEnum]{
   XmlFormatEn:      []string{"xml", "x"},
   JsonFormatEn:     []string{"json", "j"},
   TextFormatEn:     []string{"text", "tx"},
@@ -159,7 +159,7 @@ The following is a checklist of actions that need to be performed:
 - 1️⃣ _create cobra container_: typically in the same place where the root command is defined. The root command should then be passed into ___Container___ constructor function ___NewCobraContainer___ eg:
 
 ```go
-var Container = adapters.NewCobraContainer(&cobra.Command{
+var Container = assistant.NewCobraContainer(&cobra.Command{
 	Use:   "root",
 	Short: "foo bar",
 	Long: "This is the root command.",
@@ -197,7 +197,7 @@ type WidgetParameterSet struct {
 - 4️⃣ _create the ParamSet_: for each native parameter set using ___NewParamSet___ eg:
 
 ```go
-  paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
+  paramSet = assistant.NewParamSet[WidgetParameterSet](widgetCommand)
 ```
 
 The result of ___NewParamSet___ is an object that contains a member ___Native___. This `native` member is the type of the paramter set that was defined, in this case `WidgetParameterSet`.
@@ -208,7 +208,7 @@ The members of an instance of this `native` param set will be used to `bind` to 
 
 ```go
   paramSet.BindValidatedString(
-    adapters.NewFlagInfo("directory", "d", "/foo-bar"),
+    assistant.NewFlagInfo("directory", "d", "/foo-bar"),
     &paramSet.Native.Directory,
     func(value string) error {
       if _, err := os.Stat(value); err != nil {
@@ -226,7 +226,7 @@ The members of an instance of this `native` param set will be used to `bind` to 
 ```go
   outputFormatEnum := outputFormatEnumInfo.NewValue()
   paramSet.BindValidatedEnum(
-    adapters.NewFlagInfo("format", "f", "xml"),
+    assistant.NewFlagInfo("format", "f", "xml"),
     &outputFormatEnum.Source,
     func(value string) error {
       Expect(value).To(Equal("xml"))
@@ -256,7 +256,7 @@ Note, because we can't bind directly to the `native` member of WidgetParameterSe
 
 			var appErr error = nil
 
-			ps := Container.MustGetParamSet("widget-ps").(*adapters.ParamSet[WidgetParameterSet])
+			ps := Container.MustGetParamSet("widget-ps").(*assistant.ParamSet[WidgetParameterSet])
 
 			if err := ps.Validate(); err == nil {
 				native := ps.Native
@@ -307,7 +307,7 @@ By default, binding a flag is performed on the default flag set. This flag set i
 
 ```go
   paramSet.BindString(
-    adapters.NewFlagInfoOnFlagSet("pattern", "p", "default-pattern",
+    assistant.NewFlagInfoOnFlagSet("pattern", "p", "default-pattern",
       widgetCommand.PersistentFlags()), &paramSet.Native.Pattern,
   )
 ```
@@ -328,7 +328,7 @@ The following is an example of how to define an `enum` validator:
   outputFormatEnum := outputFormatEnumInfo.NewValue()
 
   wrapper := paramSet.BindValidatedEnum(
-    adapters.NewFlagInfo("format", "f", "xml"),
+    assistant.NewFlagInfo("format", "f", "xml"),
     &outputFormatEnum.Source,
     func(value string) error {
       return lo.Ternary(outputFormatEnumInfo.IsValid(value), nil,
@@ -349,7 +349,7 @@ To bind a flag without a short name, the client can either:
 - pass in an empty string for the ___Short___ parameter of ___NewFlagInfo___ eg:
 
 ```go
-  adapters.NewFlagInfo("format", "", "xml"),
+  assistant.NewFlagInfo("format", "", "xml"),
 ```
 
 or
@@ -358,7 +358,7 @@ or
 
 ```go
   paramSet.BindValidatedEnum(
-    &adapters.FlagInfo{
+    &assistant.FlagInfo{
       Name: "format",
       Usage: "format usage",
       Default: "xml",
@@ -447,10 +447,10 @@ Please see [Powershell Code Generation](CODE-GEN.md)
 [Ginkgo](https://onsi.github.io/ginkgo/) is the bbd testing style of choice used in `Cobrass`. I have found it to be a total revelation to work with, in all aspects except 1, which was discovered well after I had gone all in on `Ginkgo`. I am using the Ginkgo test explorer in `vscode` and while it is good at exploring tests, running them and even generating coverage with little fuss, the single fly in the ointment is that debuging test cases is currently difficult to achieve:
 
 ```
-Starting: /home/plastikfan/go/bin/dlv dap --check-go-version=false --listen=127.0.0.1:40849 --log-dest=3 from /home/plastikfan/dev/github/go/snivilised/cobrass/src/adapters
+Starting: /home/plastikfan/go/bin/dlv dap --check-go-version=false --listen=127.0.0.1:40849 --log-dest=3 from /home/plastikfan/dev/github/go/snivilised/cobrass/src/assistant
 DAP server listening at: 127.0.0.1:40849
 Type 'dlv help' for list of commands.
-Running Suite: Adapters Suite - /home/plastikfan/dev/github/go/snivilised/cobrass/src/adapters
+Running Suite: Adapters Suite - /home/plastikfan/dev/github/go/snivilised/cobrass/src/assistant
 ==============================================================================================
 Random Seed: 1657619476
 

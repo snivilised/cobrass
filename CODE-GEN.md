@@ -225,10 +225,10 @@ Entry(nil, OvEntry{
   Setup: func() {
     $($setup)
   },
-  Validator: func() adapters.OptionValidator {
+  Validator: func() assistant.OptionValidator {
     $($spec.Assign)
     return paramSet.BindValidated$($spec.TypeName)(
-      adapters.NewFlagInfo("$($lowerFlagName)", "$($spec.Short)", $default),
+      assistant.NewFlagInfo("$($lowerFlagName)", "$($spec.Short)", $default),
       $bindTo,
       func(value $($spec.GoType)) error {
         $($assert)
@@ -271,7 +271,7 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
 DescribeTable("BindValidated$($side.Method)",
   func(given, should string, value $($spec.GoType), expectNil bool, low, high $($spec.GoType)) {
     validator := paramSet.BindValidated$($side.Method)(
-      adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
+      assistant.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), low, high,
     )
     paramSet.Native.$($spec.FlagName) = value

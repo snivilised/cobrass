@@ -1,11 +1,11 @@
-package adapters_test
+package assistant_test
 
 import (
 	"fmt"
 	"net"
 	"time"
 
-	"github.com/snivilised/cobrass/src/adapters"
+	"github.com/snivilised/cobrass/src/assistant"
 )
 
 type OutputFormatEnum int
@@ -96,7 +96,7 @@ func ipnet(v string) net.IPNet {
 	return result
 }
 
-var AcceptableOutputFormats = adapters.AcceptableEnumValues[OutputFormatEnum]{
+var AcceptableOutputFormats = assistant.AcceptableEnumValues[OutputFormatEnum]{
 	XmlFormatEn:      []string{"xml", "x"},
 	JsonFormatEn:     []string{"json", "j"},
 	TextFormatEn:     []string{"text", "tx"},

@@ -1,4 +1,4 @@
-package adapters_test
+package assistant_test
 
 import (
 	"fmt"
@@ -9,17 +9,17 @@ import (
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 
-	"github.com/snivilised/cobrass/src/adapters"
+	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/testhelpers"
 )
 
 var _ = Describe("Enum", func() {
 	var rootCommand *cobra.Command
 	var widgetCommand *cobra.Command
-	var paramSet *adapters.ParamSet[WidgetParameterSet]
+	var paramSet *assistant.ParamSet[WidgetParameterSet]
 	Context("given: enum type", func() {
-		var outputFormatEnumInfo *adapters.EnumInfo[OutputFormatEnum]
-		var outputFormatEnumSlice adapters.EnumSlice[OutputFormatEnum]
+		var outputFormatEnumInfo *assistant.EnumInfo[OutputFormatEnum]
+		var outputFormatEnumSlice assistant.EnumSlice[OutputFormatEnum]
 
 		BeforeEach(func() {
 			rootCommand = &cobra.Command{
@@ -36,9 +36,9 @@ var _ = Describe("Enum", func() {
 				Args:    cobra.ExactArgs(1),
 			}
 			rootCommand.AddCommand(widgetCommand)
-			paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
+			paramSet = assistant.NewParamSet[WidgetParameterSet](widgetCommand)
 
-			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
+			outputFormatEnumInfo = assistant.NewEnumInfo(AcceptableOutputFormats)
 			outputFormatEnumSlice = outputFormatEnumInfo.NewSlice()
 		})
 
@@ -90,14 +90,14 @@ var _ = Describe("Enum", func() {
 						recover()
 					}()
 
-					invalidAcceptables := adapters.AcceptableEnumValues[OutputFormatEnum]{
+					invalidAcceptables := assistant.AcceptableEnumValues[OutputFormatEnum]{
 						XmlFormatEn:      []string{"xml", "x"},
 						JsonFormatEn:     []string{"json", "j"},
 						TextFormatEn:     []string{"text", "tx", "x"},
 						ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
 					}
 
-					adapters.NewEnumInfo(invalidAcceptables)
+					assistant.NewEnumInfo(invalidAcceptables)
 					Fail("❌ expected panic due to duplicate enum value 'x'")
 				})
 			})
@@ -189,7 +189,7 @@ var _ = Describe("Enum", func() {
 					outputFormatEnum := outputFormatEnumInfo.NewValue()
 
 					paramSet.BindEnum(
-						adapters.NewFlagInfo("format", "f", "text"),
+						assistant.NewFlagInfo("format", "f", "text"),
 						&outputFormatEnum.Source,
 					)
 
@@ -231,7 +231,7 @@ var _ = Describe("Enum", func() {
 				outputFormatEnum := outputFormatEnumInfo.NewValue()
 
 				wrapper := paramSet.BindValidatedEnum(
-					adapters.NewFlagInfo("format", "f", "xml"),
+					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
 					func(value string) error {
 						return lo.Ternary(outputFormatEnumInfo.IsValid(value), nil,
@@ -248,7 +248,7 @@ var _ = Describe("Enum", func() {
 				outputFormatEnum := outputFormatEnumInfo.NewValue()
 
 				wrapper := paramSet.BindValidatedEnum(
-					adapters.NewFlagInfo("format", "f", "xml"),
+					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
 					func(value string) error {
 						return lo.Ternary(outputFormatEnum.IsValid(), nil,

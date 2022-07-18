@@ -1,4 +1,4 @@
-package adapters_test
+package assistant_test
 
 import (
 	"fmt"
@@ -7,14 +7,13 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/spf13/cobra"
-
-	"github.com/snivilised/cobrass/src/adapters"
 )
 
 type OvEntry struct {
 	Message   string
-	Validator func() adapters.OptionValidator
+	Validator func() assistant.OptionValidator
 	Setup     func()
 }
 
@@ -22,11 +21,11 @@ var _ = Describe("OptionValidator", func() {
 
 	var rootCommand *cobra.Command
 	var widgetCommand *cobra.Command
-	var paramSet *adapters.ParamSet[WidgetParameterSet]
-	var outputFormatEnumInfo *adapters.EnumInfo[OutputFormatEnum]
+	var paramSet *assistant.ParamSet[WidgetParameterSet]
+	var outputFormatEnumInfo *assistant.EnumInfo[OutputFormatEnum]
 
 	BeforeEach(func() {
-		outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
+		outputFormatEnumInfo = assistant.NewEnumInfo(AcceptableOutputFormats)
 
 		rootCommand = &cobra.Command{
 			Use:   "poke",
@@ -50,7 +49,7 @@ var _ = Describe("OptionValidator", func() {
 		}
 		rootCommand.AddCommand(widgetCommand)
 
-		paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
+		paramSet = assistant.NewParamSet[WidgetParameterSet](widgetCommand)
 	})
 
 	DescribeTable("ParamSet with validation",
@@ -70,10 +69,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Latency = duration("300ms")
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedDuration(
-					adapters.NewFlagInfo("latency", "l", duration("0ms")),
+					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency,
 					func(value time.Duration) error {
 						expect := duration("300ms")
@@ -89,9 +88,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Latencies = []time.Duration{duration("1s"), duration("2s"), duration("3s")}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedDurationSlice(
-					adapters.NewFlagInfo("Latencies", "L", []time.Duration{}),
+					assistant.NewFlagInfo("Latencies", "L", []time.Duration{}),
 					&paramSet.Native.Latencies,
 					func(value []time.Duration) error {
 						Expect(value).To(BeEquivalentTo([]time.Duration{duration("1s"), duration("2s"), duration("3s")}))
@@ -106,10 +105,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Format = XmlFormatEn
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				outputFormatEnum := outputFormatEnumInfo.NewValue()
 				return paramSet.BindValidatedEnum(
-					adapters.NewFlagInfo("format", "f", "xml"),
+					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
 					func(value string) error {
 						Expect(value).To(Equal("xml"))
@@ -124,10 +123,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Gradientf32 = float32(float32(32.0))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedFloat32(
-					adapters.NewFlagInfo("gradientf32", "t", float32(0)),
+					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32,
 					func(value float32) error {
 						Expect(value).To(Equal(float32(float32(32.0))))
@@ -142,9 +141,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Gradientsf32 = []float32{3.0, 5.0, 7.0, 9.0}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedFloat32Slice(
-					adapters.NewFlagInfo("Gradientsf32", "G", []float32{}),
+					assistant.NewFlagInfo("Gradientsf32", "G", []float32{}),
 					&paramSet.Native.Gradientsf32,
 					func(value []float32) error {
 						Expect(value).To(Equal([]float32{3.0, 5.0, 7.0, 9.0}))
@@ -159,10 +158,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Gradientf64 = float64(float64(64.1234))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedFloat64(
-					adapters.NewFlagInfo("gradientf64", "t", float64(0)),
+					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64,
 					func(value float64) error {
 						Expect(value).To(Equal(float64(float64(64.1234))))
@@ -177,9 +176,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Gradientsf64 = []float64{4.0, 6.0, 8.0, 10.0}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedFloat64Slice(
-					adapters.NewFlagInfo("Gradientsf64", "G", []float64{}),
+					assistant.NewFlagInfo("Gradientsf64", "G", []float64{}),
 					&paramSet.Native.Gradientsf64,
 					func(value []float64) error {
 						Expect(value).To(Equal([]float64{4.0, 6.0, 8.0, 10.0}))
@@ -194,10 +193,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offset = -9
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedInt(
-					adapters.NewFlagInfo("offset", "o", -1),
+					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset,
 					func(value int) error {
 						Expect(value).To(Equal(-9))
@@ -212,9 +211,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offsets = []int{2, 4, 6, 8}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedIntSlice(
-					adapters.NewFlagInfo("Offsets", "D", []int{}),
+					assistant.NewFlagInfo("Offsets", "D", []int{}),
 					&paramSet.Native.Offsets,
 					func(value []int) error {
 						Expect(value).To(Equal([]int{2, 4, 6, 8}))
@@ -229,10 +228,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offset16 = int16(int16(-999))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedInt16(
-					adapters.NewFlagInfo("offset16", "o", int16(-1)),
+					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16,
 					func(value int16) error {
 						Expect(value).To(Equal(int16(int16(-999))))
@@ -247,10 +246,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offset32 = int32(int32(-9999))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedInt32(
-					adapters.NewFlagInfo("offset32", "o", int32(-1)),
+					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32,
 					func(value int32) error {
 						Expect(value).To(Equal(int32(int32(-9999))))
@@ -265,9 +264,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offsets32 = []int32{2, 4, 6, 8}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedInt32Slice(
-					adapters.NewFlagInfo("Offsets32", "O", []int32{}),
+					assistant.NewFlagInfo("Offsets32", "O", []int32{}),
 					&paramSet.Native.Offsets32,
 					func(value []int32) error {
 						Expect(value).To(Equal([]int32{2, 4, 6, 8}))
@@ -282,10 +281,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offset64 = int64(int64(-99999))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedInt64(
-					adapters.NewFlagInfo("offset64", "o", int64(-1)),
+					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64,
 					func(value int64) error {
 						Expect(value).To(Equal(int64(int64(-99999))))
@@ -300,9 +299,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offsets64 = []int64{2, 4, 6, 8}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedInt64Slice(
-					adapters.NewFlagInfo("Offsets64", "O", []int64{}),
+					assistant.NewFlagInfo("Offsets64", "O", []int64{}),
 					&paramSet.Native.Offsets64,
 					func(value []int64) error {
 						Expect(value).To(Equal([]int64{2, 4, 6, 8}))
@@ -317,10 +316,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Offset8 = int8(int8(-99))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedInt8(
-					adapters.NewFlagInfo("offset8", "o", int8(-1)),
+					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8,
 					func(value int8) error {
 						Expect(value).To(Equal(int8(int8(-99))))
@@ -335,10 +334,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.IpMask = ipmask("orion.net")
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedIPMask(
-					adapters.NewFlagInfo("ipmask", "m", ipmask("default")),
+					assistant.NewFlagInfo("ipmask", "m", ipmask("default")),
 					&paramSet.Native.IpMask,
 					func(value net.IPMask) error {
 						Expect(value).To(BeEquivalentTo(ipmask("orion.net")))
@@ -353,10 +352,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.IpAddress = ipnet("orion.net")
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedIPNet(
-					adapters.NewFlagInfo("ipaddress", "i", ipnet("default")),
+					assistant.NewFlagInfo("ipaddress", "i", ipnet("default")),
 					&paramSet.Native.IpAddress,
 					func(value net.IPNet) error {
 						Expect(value).To(BeEquivalentTo(ipnet("orion.net")))
@@ -371,10 +370,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Pattern = "*music.infex*"
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedString(
-					adapters.NewFlagInfo("pattern", "p", "default-pattern"),
+					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern,
 					func(value string) error {
 						Expect(value).To(Equal("*music.infex*"))
@@ -389,9 +388,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Directories = []string{"alpha", "beta", "delta"}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedStringSlice(
-					adapters.NewFlagInfo("Directories", "C", []string{}),
+					assistant.NewFlagInfo("Directories", "C", []string{}),
 					&paramSet.Native.Directories,
 					func(value []string) error {
 						Expect(value).To(Equal([]string{"alpha", "beta", "delta"}))
@@ -406,10 +405,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Count16 = uint16(uint16(333))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedUint16(
-					adapters.NewFlagInfo("count16", "c", uint16(0)),
+					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16,
 					func(value uint16) error {
 						Expect(value).To(Equal(uint16(uint16(333))))
@@ -424,10 +423,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Count32 = uint32(uint32(3333))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedUint32(
-					adapters.NewFlagInfo("count32", "c", uint32(0)),
+					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32,
 					func(value uint32) error {
 						Expect(value).To(Equal(uint32(uint32(3333))))
@@ -442,10 +441,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Count64 = uint64(uint64(33333))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedUint64(
-					adapters.NewFlagInfo("count64", "c", uint64(0)),
+					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64,
 					func(value uint64) error {
 						Expect(value).To(Equal(uint64(uint64(33333))))
@@ -460,10 +459,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Count8 = uint8(uint8(33))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedUint8(
-					adapters.NewFlagInfo("count8", "c", uint8(0)),
+					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8,
 					func(value uint8) error {
 						Expect(value).To(Equal(uint8(uint8(33))))
@@ -478,10 +477,10 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Count = uint(uint(99999))
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedUint(
-					adapters.NewFlagInfo("count", "c", uint(0)),
+					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count,
 					func(value uint) error {
 						Expect(value).To(Equal(uint(uint(99999))))
@@ -496,9 +495,9 @@ var _ = Describe("OptionValidator", func() {
 			Setup: func() {
 				paramSet.Native.Counts = []uint{2, 4, 6, 8}
 			},
-			Validator: func() adapters.OptionValidator {
+			Validator: func() assistant.OptionValidator {
 				return paramSet.BindValidatedUintSlice(
-					adapters.NewFlagInfo("Counts", "P", []uint{}),
+					assistant.NewFlagInfo("Counts", "P", []uint{}),
 					&paramSet.Native.Counts,
 					func(value []uint) error {
 						Expect(value).To(Equal([]uint{2, 4, 6, 8}))

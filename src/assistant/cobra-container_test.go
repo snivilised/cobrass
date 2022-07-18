@@ -1,21 +1,21 @@
-package adapters_test
+package assistant_test
 
 import (
 	"fmt"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/snivilised/cobrass/src/adapters"
+	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/spf13/cobra"
 )
 
 var _ = Describe("CobraContainer", func() {
-	var Container *adapters.CobraContainer
+	var Container *assistant.CobraContainer
 	var DummyCommand *cobra.Command
 	var ParentCommand *cobra.Command
 
 	BeforeEach(func() {
-		Container = adapters.NewCobraContainer(&cobra.Command{
+		Container = assistant.NewCobraContainer(&cobra.Command{
 			Use:   "root",
 			Short: "A root command",
 			Long:  "The root command for test case",
@@ -147,11 +147,11 @@ var _ = Describe("CobraContainer", func() {
 		const deltaName = "delta"
 
 		var (
-			alpha, beta, delta *adapters.CobraCommandSpec
+			alpha, beta, delta *assistant.CobraCommandSpec
 		)
 
 		BeforeEach(func() {
-			alpha = &adapters.CobraCommandSpec{
+			alpha = &assistant.CobraCommandSpec{
 				Command: &cobra.Command{
 					Use:   fmt.Sprintf("%v usage", alphaName),
 					Short: "Alpha command",
@@ -159,7 +159,7 @@ var _ = Describe("CobraContainer", func() {
 				},
 			}
 
-			beta = &adapters.CobraCommandSpec{
+			beta = &assistant.CobraCommandSpec{
 				Command: &cobra.Command{
 					Use:   fmt.Sprintf("%v usage", betaName),
 					Short: "Beta command",
@@ -167,7 +167,7 @@ var _ = Describe("CobraContainer", func() {
 				},
 			}
 
-			delta = &adapters.CobraCommandSpec{
+			delta = &assistant.CobraCommandSpec{
 				Command: &cobra.Command{
 					Use:   fmt.Sprintf("%v usage", deltaName),
 					Short: "Delta command",
@@ -181,7 +181,7 @@ var _ = Describe("CobraContainer", func() {
 				Container.MustRegisterRootedCommand(ParentCommand)
 				parent := ParentCommand.Name()
 
-				specs := []*adapters.CobraCommandSpec{alpha, beta, delta}
+				specs := []*assistant.CobraCommandSpec{alpha, beta, delta}
 				Container.MustRegisterCommands(parent, specs...)
 
 				message := fmt.Sprintf("❌ parent command: '%v' should have child commands but doesn't",
@@ -206,7 +206,7 @@ var _ = Describe("CobraContainer", func() {
 				Container.MustRegisterRootedCommand(ParentCommand)
 				parent := ParentCommand.Name()
 
-				specs := []*adapters.CobraCommandSpec{alpha, beta, beta}
+				specs := []*assistant.CobraCommandSpec{alpha, beta, beta}
 				Container.MustRegisterCommands(parent, specs...)
 
 				Fail("❌ expected panic due to a command already being registered")

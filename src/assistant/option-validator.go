@@ -1,4 +1,4 @@
-package adapters
+package assistant
 
 // OptionValidator wraps the user defined option validator function.
 // This is the instance that is returned from the validated binder
