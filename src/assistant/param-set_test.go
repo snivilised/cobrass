@@ -1,4 +1,4 @@
-package adapters_test
+package assistant_test
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 
-	"github.com/snivilised/cobrass/src/adapters"
+	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/testhelpers"
 )
 
@@ -25,10 +25,10 @@ var _ = Describe("ParamSet (manual)", func() {
 	When("Binding a flag (manual)", func() {
 		var rootCommand *cobra.Command
 		var widgetCommand *cobra.Command
-		var paramSet *adapters.ParamSet[WidgetParameterSet]
-		var outputFormatEnumInfo *adapters.EnumInfo[OutputFormatEnum]
-		var outputFormatEnum adapters.EnumValue[OutputFormatEnum]
-		var container *adapters.CobraContainer
+		var paramSet *assistant.ParamSet[WidgetParameterSet]
+		var outputFormatEnumInfo *assistant.EnumInfo[OutputFormatEnum]
+		var outputFormatEnum assistant.EnumValue[OutputFormatEnum]
+		var container *assistant.CobraContainer
 
 		const cname = "widget"
 		const psname = cname + "-ps"
@@ -60,11 +60,11 @@ var _ = Describe("ParamSet (manual)", func() {
 					GinkgoWriter.Printf("**** 🍒 POST-RUN\n")
 				},
 			}
-			container = adapters.NewCobraContainer(rootCommand)
+			container = assistant.NewCobraContainer(rootCommand)
 			container.MustRegisterRootedCommand(widgetCommand)
 
-			paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
-			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
+			paramSet = assistant.NewParamSet[WidgetParameterSet](widgetCommand)
+			outputFormatEnumInfo = assistant.NewEnumInfo(AcceptableOutputFormats)
 			outputFormatEnum = outputFormatEnumInfo.NewValue()
 		})
 
@@ -94,7 +94,7 @@ var _ = Describe("ParamSet (manual)", func() {
 				Message: "bool type flag is NOT present",
 				Binder: func() {
 					paramSet.BindBool(
-						adapters.NewFlagInfo("concise ensures that output is compressed", "c", false),
+						assistant.NewFlagInfo("concise ensures that output is compressed", "c", false),
 						&paramSet.Native.Concise,
 					)
 				},
@@ -109,7 +109,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					defer func() {
 						recover()
 					}()
-					adapters.NewParamSet[InvalidParameterSet](widgetCommand)
+					assistant.NewParamSet[InvalidParameterSet](widgetCommand)
 
 					Fail("❌ expected panic due to attempt to create a param set with a non struct")
 				})
@@ -126,12 +126,12 @@ var _ = Describe("ParamSet (manual)", func() {
 			When("given: a passing param set", func() {
 				It("🧪 should: return no error", func() {
 					paramSet.BindEnum(
-						adapters.NewFlagInfo("format", "f", "xml"),
+						assistant.NewFlagInfo("format", "f", "xml"),
 						&outputFormatEnum.Source,
 					)
 
 					paramSet.BindString(
-						adapters.NewFlagInfo("pattern", "p", "cakewalk"),
+						assistant.NewFlagInfo("pattern", "p", "cakewalk"),
 						&paramSet.Native.Pattern,
 					)
 					container.MustRegisterParamSet(psname, paramSet)
@@ -154,12 +154,12 @@ var _ = Describe("ParamSet (manual)", func() {
 			When("given: an invalid param set", func() {
 				It("🧪 should: return error", func() {
 					paramSet.BindEnum(
-						adapters.NewFlagInfo("format", "f", "xml"),
+						assistant.NewFlagInfo("format", "f", "xml"),
 						&outputFormatEnum.Source,
 					)
 
 					paramSet.BindString(
-						adapters.NewFlagInfo("pattern", "p", "cakewalk"),
+						assistant.NewFlagInfo("pattern", "p", "cakewalk"),
 						&paramSet.Native.Pattern,
 					)
 					container.MustRegisterParamSet(psname, paramSet)
@@ -235,7 +235,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					It("🧪 should: return the parameter wrapper", func() {
 
 						container.MustRegisterParamSet(psname, paramSet)
-						resultPS := container.MustGetParamSet(psname).(*adapters.ParamSet[WidgetParameterSet])
+						resultPS := container.MustGetParamSet(psname).(*assistant.ParamSet[WidgetParameterSet])
 
 						Expect(resultPS).ToNot(BeNil())
 					})
@@ -246,7 +246,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						defer func() {
 							recover()
 						}()
-						_ = container.MustGetParamSet("foo").(*adapters.ParamSet[WidgetParameterSet])
+						_ = container.MustGetParamSet("foo").(*assistant.ParamSet[WidgetParameterSet])
 
 						Fail("❌ expected panic due to parameter set not found")
 					})
@@ -257,7 +257,7 @@ var _ = Describe("ParamSet (manual)", func() {
 		Context("NewFlagInfoOnFlagSet", func() {
 			It("🧪 should: bind flag to alternative flag set", func() {
 				paramSet.BindString(
-					adapters.NewFlagInfoOnFlagSet("pattern", "p", "default-pattern",
+					assistant.NewFlagInfoOnFlagSet("pattern", "p", "default-pattern",
 						widgetCommand.PersistentFlags()), &paramSet.Native.Pattern,
 				)
 				commandLine := "--pattern=*music.infex*"

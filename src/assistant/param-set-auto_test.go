@@ -1,4 +1,4 @@
-package adapters_test
+package assistant_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/snivilised/cobrass/src/adapters"
+	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/testhelpers"
 	"github.com/spf13/cobra"
 )
@@ -18,9 +18,9 @@ var _ = Describe("ParamSet (auto)", func() {
 	When("Binding a flag (auto)", func() {
 		var rootCommand *cobra.Command
 		var widgetCommand *cobra.Command
-		var paramSet *adapters.ParamSet[WidgetParameterSet]
-		var outputFormatEnumInfo *adapters.EnumInfo[OutputFormatEnum]
-		var outputFormatEnum adapters.EnumValue[OutputFormatEnum]
+		var paramSet *assistant.ParamSet[WidgetParameterSet]
+		var outputFormatEnumInfo *assistant.EnumInfo[OutputFormatEnum]
+		var outputFormatEnum assistant.EnumValue[OutputFormatEnum]
 
 		BeforeEach(func() {
 			rootCommand = &cobra.Command{
@@ -51,9 +51,9 @@ var _ = Describe("ParamSet (auto)", func() {
 			}
 			rootCommand.AddCommand(widgetCommand)
 
-			paramSet = adapters.NewParamSet[WidgetParameterSet](widgetCommand)
+			paramSet = assistant.NewParamSet[WidgetParameterSet](widgetCommand)
 
-			outputFormatEnumInfo = adapters.NewEnumInfo(AcceptableOutputFormats)
+			outputFormatEnumInfo = assistant.NewEnumInfo(AcceptableOutputFormats)
 			outputFormatEnum = outputFormatEnumInfo.NewValue()
 		})
 
@@ -77,7 +77,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "bool type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindBool(
-						adapters.NewFlagInfo("concise", "c", false),
+						assistant.NewFlagInfo("concise", "c", false),
 						&paramSet.Native.Concise,
 					)
 				},
@@ -89,7 +89,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]bool slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindBoolSlice(
-						adapters.NewFlagInfo("switches", "S", []bool{}),
+						assistant.NewFlagInfo("switches", "S", []bool{}),
 						&paramSet.Native.Switches,
 					)
 				},
@@ -101,7 +101,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "bool type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindBool(
-						adapters.NewFlagInfo("concise", "", false),
+						assistant.NewFlagInfo("concise", "", false),
 						&paramSet.Native.Concise,
 					)
 				},
@@ -113,7 +113,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]bool slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindBoolSlice(
-						adapters.NewFlagInfo("switches", "", []bool{}),
+						assistant.NewFlagInfo("switches", "", []bool{}),
 						&paramSet.Native.Switches,
 					)
 				},
@@ -125,7 +125,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "time.Duration type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindDuration(
-						adapters.NewFlagInfo("latency", "l", duration("0ms")),
+						assistant.NewFlagInfo("latency", "l", duration("0ms")),
 						&paramSet.Native.Latency,
 					)
 				},
@@ -137,7 +137,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]time.Duration slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindDurationSlice(
-						adapters.NewFlagInfo("latencies", "L", []time.Duration{}),
+						assistant.NewFlagInfo("latencies", "L", []time.Duration{}),
 						&paramSet.Native.Latencies,
 					)
 				},
@@ -151,7 +151,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "time.Duration type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindDuration(
-						adapters.NewFlagInfo("latency", "", duration("0ms")),
+						assistant.NewFlagInfo("latency", "", duration("0ms")),
 						&paramSet.Native.Latency,
 					)
 				},
@@ -163,7 +163,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]time.Duration slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindDurationSlice(
-						adapters.NewFlagInfo("latencies", "", []time.Duration{}),
+						assistant.NewFlagInfo("latencies", "", []time.Duration{}),
 						&paramSet.Native.Latencies,
 					)
 				},
@@ -177,7 +177,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "enum type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindEnum(
-						adapters.NewFlagInfo("format", "f", "xml"),
+						assistant.NewFlagInfo("format", "f", "xml"),
 						&outputFormatEnum.Source,
 					)
 				},
@@ -189,7 +189,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "enum type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindEnum(
-						adapters.NewFlagInfo("format", "", "xml"),
+						assistant.NewFlagInfo("format", "", "xml"),
 						&outputFormatEnum.Source,
 					)
 				},
@@ -201,7 +201,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "float32 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat32(
-						adapters.NewFlagInfo("gradientf32", "t", float32(0)),
+						assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 						&paramSet.Native.Gradientf32,
 					)
 				},
@@ -213,7 +213,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]float32 slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat32Slice(
-						adapters.NewFlagInfo("gradientsf32", "G", []float32{}),
+						assistant.NewFlagInfo("gradientsf32", "G", []float32{}),
 						&paramSet.Native.Gradientsf32,
 					)
 				},
@@ -225,7 +225,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "float32 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat32(
-						adapters.NewFlagInfo("gradientf32", "", float32(0)),
+						assistant.NewFlagInfo("gradientf32", "", float32(0)),
 						&paramSet.Native.Gradientf32,
 					)
 				},
@@ -237,7 +237,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]float32 slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat32Slice(
-						adapters.NewFlagInfo("gradientsf32", "", []float32{}),
+						assistant.NewFlagInfo("gradientsf32", "", []float32{}),
 						&paramSet.Native.Gradientsf32,
 					)
 				},
@@ -249,7 +249,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "float64 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat64(
-						adapters.NewFlagInfo("gradientf64", "t", float64(0)),
+						assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 						&paramSet.Native.Gradientf64,
 					)
 				},
@@ -261,7 +261,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]float64 slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat64Slice(
-						adapters.NewFlagInfo("gradientsf64", "G", []float64{}),
+						assistant.NewFlagInfo("gradientsf64", "G", []float64{}),
 						&paramSet.Native.Gradientsf64,
 					)
 				},
@@ -273,7 +273,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "float64 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat64(
-						adapters.NewFlagInfo("gradientf64", "", float64(0)),
+						assistant.NewFlagInfo("gradientf64", "", float64(0)),
 						&paramSet.Native.Gradientf64,
 					)
 				},
@@ -285,7 +285,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]float64 slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindFloat64Slice(
-						adapters.NewFlagInfo("gradientsf64", "", []float64{}),
+						assistant.NewFlagInfo("gradientsf64", "", []float64{}),
 						&paramSet.Native.Gradientsf64,
 					)
 				},
@@ -297,7 +297,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt(
-						adapters.NewFlagInfo("offset", "o", -1),
+						assistant.NewFlagInfo("offset", "o", -1),
 						&paramSet.Native.Offset,
 					)
 				},
@@ -309,7 +309,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]int slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindIntSlice(
-						adapters.NewFlagInfo("offsets", "D", []int{}),
+						assistant.NewFlagInfo("offsets", "D", []int{}),
 						&paramSet.Native.Offsets,
 					)
 				},
@@ -321,7 +321,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt(
-						adapters.NewFlagInfo("offset", "", -1),
+						assistant.NewFlagInfo("offset", "", -1),
 						&paramSet.Native.Offset,
 					)
 				},
@@ -333,7 +333,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]int slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindIntSlice(
-						adapters.NewFlagInfo("offsets", "", []int{}),
+						assistant.NewFlagInfo("offsets", "", []int{}),
 						&paramSet.Native.Offsets,
 					)
 				},
@@ -345,7 +345,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int16 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt16(
-						adapters.NewFlagInfo("offset16", "o", int16(-1)),
+						assistant.NewFlagInfo("offset16", "o", int16(-1)),
 						&paramSet.Native.Offset16,
 					)
 				},
@@ -357,7 +357,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int16 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt16(
-						adapters.NewFlagInfo("offset16", "", int16(-1)),
+						assistant.NewFlagInfo("offset16", "", int16(-1)),
 						&paramSet.Native.Offset16,
 					)
 				},
@@ -369,7 +369,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int32 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt32(
-						adapters.NewFlagInfo("offset32", "o", int32(-1)),
+						assistant.NewFlagInfo("offset32", "o", int32(-1)),
 						&paramSet.Native.Offset32,
 					)
 				},
@@ -381,7 +381,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]int32 slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt32Slice(
-						adapters.NewFlagInfo("offsets32", "O", []int32{}),
+						assistant.NewFlagInfo("offsets32", "O", []int32{}),
 						&paramSet.Native.Offsets32,
 					)
 				},
@@ -393,7 +393,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int32 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt32(
-						adapters.NewFlagInfo("offset32", "", int32(-1)),
+						assistant.NewFlagInfo("offset32", "", int32(-1)),
 						&paramSet.Native.Offset32,
 					)
 				},
@@ -405,7 +405,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]int32 slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt32Slice(
-						adapters.NewFlagInfo("offsets32", "", []int32{}),
+						assistant.NewFlagInfo("offsets32", "", []int32{}),
 						&paramSet.Native.Offsets32,
 					)
 				},
@@ -417,7 +417,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int64 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt64(
-						adapters.NewFlagInfo("offset64", "o", int64(-1)),
+						assistant.NewFlagInfo("offset64", "o", int64(-1)),
 						&paramSet.Native.Offset64,
 					)
 				},
@@ -429,7 +429,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]int64 slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt64Slice(
-						adapters.NewFlagInfo("offsets64", "O", []int64{}),
+						assistant.NewFlagInfo("offsets64", "O", []int64{}),
 						&paramSet.Native.Offsets64,
 					)
 				},
@@ -441,7 +441,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int64 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt64(
-						adapters.NewFlagInfo("offset64", "", int64(-1)),
+						assistant.NewFlagInfo("offset64", "", int64(-1)),
 						&paramSet.Native.Offset64,
 					)
 				},
@@ -453,7 +453,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]int64 slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt64Slice(
-						adapters.NewFlagInfo("offsets64", "", []int64{}),
+						assistant.NewFlagInfo("offsets64", "", []int64{}),
 						&paramSet.Native.Offsets64,
 					)
 				},
@@ -465,7 +465,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int8 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt8(
-						adapters.NewFlagInfo("offset8", "o", int8(-1)),
+						assistant.NewFlagInfo("offset8", "o", int8(-1)),
 						&paramSet.Native.Offset8,
 					)
 				},
@@ -477,7 +477,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "int8 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindInt8(
-						adapters.NewFlagInfo("offset8", "", int8(-1)),
+						assistant.NewFlagInfo("offset8", "", int8(-1)),
 						&paramSet.Native.Offset8,
 					)
 				},
@@ -489,7 +489,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "net.IPMask type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindIPMask(
-						adapters.NewFlagInfo("ipmask", "m", ipmask("default")),
+						assistant.NewFlagInfo("ipmask", "m", ipmask("default")),
 						&paramSet.Native.IpMask,
 					)
 				},
@@ -501,7 +501,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "net.IPMask type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindIPMask(
-						adapters.NewFlagInfo("ipmask", "", ipmask("default")),
+						assistant.NewFlagInfo("ipmask", "", ipmask("default")),
 						&paramSet.Native.IpMask,
 					)
 				},
@@ -513,7 +513,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "net.IPNet type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindIPNet(
-						adapters.NewFlagInfo("ipaddress", "i", ipnet("default")),
+						assistant.NewFlagInfo("ipaddress", "i", ipnet("default")),
 						&paramSet.Native.IpAddress,
 					)
 				},
@@ -525,7 +525,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "net.IPNet type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindIPNet(
-						adapters.NewFlagInfo("ipaddress", "", ipnet("default")),
+						assistant.NewFlagInfo("ipaddress", "", ipnet("default")),
 						&paramSet.Native.IpAddress,
 					)
 				},
@@ -537,7 +537,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "string type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindString(
-						adapters.NewFlagInfo("pattern", "p", "default-pattern"),
+						assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 						&paramSet.Native.Pattern,
 					)
 				},
@@ -549,7 +549,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]string slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindStringSlice(
-						adapters.NewFlagInfo("directories", "C", []string{}),
+						assistant.NewFlagInfo("directories", "C", []string{}),
 						&paramSet.Native.Directories,
 					)
 				},
@@ -561,7 +561,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "string type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindString(
-						adapters.NewFlagInfo("pattern", "", "default-pattern"),
+						assistant.NewFlagInfo("pattern", "", "default-pattern"),
 						&paramSet.Native.Pattern,
 					)
 				},
@@ -573,7 +573,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]string slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindStringSlice(
-						adapters.NewFlagInfo("directories", "", []string{}),
+						assistant.NewFlagInfo("directories", "", []string{}),
 						&paramSet.Native.Directories,
 					)
 				},
@@ -585,7 +585,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint16 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint16(
-						adapters.NewFlagInfo("count16", "c", uint16(0)),
+						assistant.NewFlagInfo("count16", "c", uint16(0)),
 						&paramSet.Native.Count16,
 					)
 				},
@@ -597,7 +597,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint16 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint16(
-						adapters.NewFlagInfo("count16", "", uint16(0)),
+						assistant.NewFlagInfo("count16", "", uint16(0)),
 						&paramSet.Native.Count16,
 					)
 				},
@@ -609,7 +609,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint32 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint32(
-						adapters.NewFlagInfo("count32", "c", uint32(0)),
+						assistant.NewFlagInfo("count32", "c", uint32(0)),
 						&paramSet.Native.Count32,
 					)
 				},
@@ -621,7 +621,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint32 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint32(
-						adapters.NewFlagInfo("count32", "", uint32(0)),
+						assistant.NewFlagInfo("count32", "", uint32(0)),
 						&paramSet.Native.Count32,
 					)
 				},
@@ -633,7 +633,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint64 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint64(
-						adapters.NewFlagInfo("count64", "c", uint64(0)),
+						assistant.NewFlagInfo("count64", "c", uint64(0)),
 						&paramSet.Native.Count64,
 					)
 				},
@@ -645,7 +645,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint64 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint64(
-						adapters.NewFlagInfo("count64", "", uint64(0)),
+						assistant.NewFlagInfo("count64", "", uint64(0)),
 						&paramSet.Native.Count64,
 					)
 				},
@@ -657,7 +657,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint8 type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint8(
-						adapters.NewFlagInfo("count8", "c", uint8(0)),
+						assistant.NewFlagInfo("count8", "c", uint8(0)),
 						&paramSet.Native.Count8,
 					)
 				},
@@ -669,7 +669,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint8 type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint8(
-						adapters.NewFlagInfo("count8", "", uint8(0)),
+						assistant.NewFlagInfo("count8", "", uint8(0)),
 						&paramSet.Native.Count8,
 					)
 				},
@@ -681,7 +681,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint(
-						adapters.NewFlagInfo("count", "c", uint(0)),
+						assistant.NewFlagInfo("count", "c", uint(0)),
 						&paramSet.Native.Count,
 					)
 				},
@@ -693,7 +693,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]uint slice type, (with-short) (auto)",
 				Binder: func() {
 					paramSet.BindUintSlice(
-						adapters.NewFlagInfo("counts", "P", []uint{}),
+						assistant.NewFlagInfo("counts", "P", []uint{}),
 						&paramSet.Native.Counts,
 					)
 				},
@@ -705,7 +705,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "uint type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindUint(
-						adapters.NewFlagInfo("count", "", uint(0)),
+						assistant.NewFlagInfo("count", "", uint(0)),
 						&paramSet.Native.Count,
 					)
 				},
@@ -717,7 +717,7 @@ var _ = Describe("ParamSet (auto)", func() {
 				Message: "[]uint slice type, (without-short) (auto)",
 				Binder: func() {
 					paramSet.BindUintSlice(
-						adapters.NewFlagInfo("counts", "", []uint{}),
+						assistant.NewFlagInfo("counts", "", []uint{}),
 						&paramSet.Native.Counts,
 					)
 				},

@@ -1140,7 +1140,7 @@ function Build-PsTestEntry {
         $bindTo = [string]::IsNullOrEmpty($spec.BindTo) ? $("&paramSet.Native.$($spec.FlagName)") : $spec.BindTo
 
         foreach ($side in $sides) {
-          $constructFlagInfo = $("adapters.NewFlagInfo($($side.FlagInfoArgs))")
+          $constructFlagInfo = $("assistant.NewFlagInfo($($side.FlagInfoArgs))")
 
           @"
 Entry(nil, TcEntry{
@@ -1158,7 +1158,7 @@ Entry(nil, TcEntry{
 "@
           if ($spec.GenerateSlice) {
             $sliceCommandLine = "--$($lowerSliceFlagName)=$($spec.SliceValue)"
-            $constructSliceFlagInfo = $("adapters.NewFlagInfo($($side.SliceFlagInfoArgs))")
+            $constructSliceFlagInfo = $("assistant.NewFlagInfo($($side.SliceFlagInfoArgs))")
             $sliceAssertion = if (-not([string]::IsNullOrEmpty($spec.PsTcEntry.AssertSliceFn))) {
               $spec.PsTcEntry.AssertFn
             }
@@ -1234,10 +1234,10 @@ Entry(nil, OvEntry{
   Setup: func() {
     $($setup)
   },
-  Validator: func() adapters.OptionValidator {
+  Validator: func() assistant.OptionValidator {
     $($spec.Assign)
     return paramSet.BindValidated$($spec.TypeName)(
-      adapters.NewFlagInfo("$($lowerFlagName)", "$($spec.Short)", $default),
+      assistant.NewFlagInfo("$($lowerFlagName)", "$($spec.Short)", $default),
       $bindTo,
       func(value $($spec.GoType)) error {
         $($assert)
@@ -1263,9 +1263,9 @@ Entry(nil, OvEntry{
   Setup: func() {
     paramSet.Native.$($spec.SliceFlagName) = $($spec.ExpectSlice)
   },
-  Validator: func() adapters.OptionValidator {
+  Validator: func() assistant.OptionValidator {
     return paramSet.BindValidated$($sliceTypeName)(
-      adapters.NewFlagInfo("$($spec.SliceFlagName)", "$($spec.SliceShort)", $($spec.DefSliceVal)),
+      assistant.NewFlagInfo("$($spec.SliceFlagName)", "$($spec.SliceShort)", $($spec.DefSliceVal)),
       &paramSet.Native.$($spec.SliceFlagName),
       func(value $($sliceType)) error {
         Expect(value).To($($spec.Equate)($($spec.ExpectSlice)))
@@ -1523,7 +1523,7 @@ function Build-BinderHelperTests {
 DescribeTable("BindValidated$($side.Method)",
   func(given, should string, value $($spec.GoType), expectNil bool, low, high $($spec.GoType)) {
     validator := paramSet.BindValidated$($side.Method)(
-      adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
+      assistant.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), low, high,
     )
     paramSet.Native.$($spec.FlagName) = value
@@ -1575,7 +1575,7 @@ DescribeTable("BindValidated$($side.Method)",
 DescribeTable("BindValidated$($side.Method)",
   func(given, should string, value $($spec.GoType), expectNil bool, collection []$($spec.GoType), dummy $($spec.GoType)) {
     validator := paramSet.BindValidated$($side.Method)(
-      adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
+      assistant.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), collection,
     )
     $($assign)
@@ -1622,7 +1622,7 @@ DescribeTable("BindValidated$($side.Method)",
 DescribeTable("BindValidated$($side.Method)",
   func(given, should string, value $($spec.GoType), expectNil bool, pattern, $($spec.GoType) string) {
     validator := paramSet.BindValidated$($side.Method)(
-      adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
+      assistant.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), pattern,
     )
     paramSet.Native.$($spec.FlagName) = value
@@ -1661,7 +1661,7 @@ DescribeTable("BindValidated$($side.Method)",
 DescribeTable("BindValidated$($methodSubStmt)",
   func(given, should string, value $($spec.GoType), expectNil bool, threshold, dummy $($spec.GoType)) {
     validator := paramSet.BindValidated$($methodSubStmt)(
-      adapters.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
+      assistant.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), threshold,
     )
     paramSet.Native.$($spec.FlagName) = value
