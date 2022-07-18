@@ -167,7 +167,7 @@ var Container = adapters.NewCobraContainer(&cobra.Command{
 var rootCommand = Container.Root()
 ```
 
-- 2️⃣ _register sub commands_: for each sub command directly decended from the root, on the ___Container___ instance, invoke ___RegisterRootedCommand___ eg:
+- 2️⃣ _register sub commands_: for each sub command directly decended from the root, on the ___Container___ instance, invoke ___RegisterRootedCommand___ eg (typically inside the standard ___init___ function for the command):
 
 ```go
   Container.MustRegisterRootedCommand(widgetCommand)
@@ -235,12 +235,12 @@ The members of an instance of this `native` param set will be used to `bind` to 
   )
 ```
 
-Note, because we can't bind directly to the `native` member of WidgetParameterSet, (that being ___Format___ in this case), since the user will be typing in a string value that is internally represented as an int based `enum`, we have to bind to ___Source___, a string member of an ___EnumValue___, ie ___&outputFormatEnum.Source___ in the above code snippet. Later on (step 7️⃣) we'll simply copy the value over from ___outputFormatEnum.Source___ to where its supposed to be, ___paramSet.Native.Format___.
+Note, because we can't bind directly to the `native` member of WidgetParameterSet, (that being ___Format___ in this case), since the user will be typing in a string value that is internally represented as an int based `enum`, we have to bind to ___Source___, a string member of an ___EnumValue___, ie ___&outputFormatEnum.Source___ in the above code snippet. Later on (step 7️⃣) we'll simply copy the value over from ___outputFormatEnum.Source___ to where its supposed to be, ___paramSet.Native.Format___. Also, it should be noted that binding to ___outputFormatEnum.Source___ is just a convention, the client can bind to any other entity as long as its the correct type.
 
 - 6️⃣ _register param set_: this is optional, but doing do means that the param set can easily be retrieved at a later point. The param set is registered (typically after all the flags have been bound in) as follows:
 
 ```go
-  Container.RegisterParamSet("widget-ps", paramSet)
+  Container.MustRegisterParamSet("widget-ps", paramSet)
 ```
 
 - 7️⃣ _rebind enum values_: in the function defined as the Run/RunE member of the command, the entry point of application execution, we now need to 'rebind' the enum members. In the previous code snippet, we can see that a new ___EnumValue___ was created from the ___EnumInfo___, ie ___outputFormatEnum___. We can set the value of the enum to the appropriate `native` member, so in this case it would be:
@@ -254,37 +254,40 @@ Note, because we can't bind directly to the `native` member of WidgetParameterSe
 ```go
   RunE: func(command *cobra.Command, args []string) error {
 
-    ps := container.MustGetParamSet("widget-ps").(*adapters.ParamSet[WidgetParameterSet])
+			var appErr error = nil
 
-    if err := ps.Validate(); err == nil {
-      native = ps.Native
+			ps := Container.MustGetParamSet("widget-ps").(*adapters.ParamSet[WidgetParameterSet])
 
-      // rebind enum into native member
-      //
-      native.Format = outputFormatEnum.Value()
+			if err := ps.Validate(); err == nil {
+				native := ps.Native
 
-      // optionally invoke cross field validation
-      //
-      xv := ps.CrossValidate(func(ps *WidgetParameterSet) error {
-        condition := (ps.Format == XmlFormatEn)
-        if condition {
-          return nil
-        }
-        return fmt.Errorf("format: '%v' is invalid", ps.Format)
-      })
+				// rebind enum into native member
+				//
+				native.Format = OutputFormatEn.Value()
 
-      if (xv == nil) {
-        // ---> execute application core with the parameter set (native)
-        //
-        // runApplication(native)
-        //
-      } else {
-        return xv
-      }
+				// optionally invoke cross field validation
+				//
+				if xv := ps.CrossValidate(func(ps *WidgetParameterSet) error {
+					condition := (ps.Format == XmlFormatEn)
+					if condition {
+						return nil
+					}
+					return fmt.Errorf("format: '%v' is invalid", ps.Format)
+				}); xv == nil {
+					fmt.Printf("%v %v Running widget\n", AppEmoji, ApplicationName)
+					// ---> execute application core with the parameter set (native)
+					//
+					// appErr = runApplication(native)
+					//
 
-    } else {
-      return err
-    }
+				} else {
+					return xv
+				}
+			} else {
+				return err
+			}
+
+			return appErr
   },
 ```
 
@@ -297,8 +300,6 @@ Option validation occurs first (___ps.Validate()___), then rebinding of enum mem
 If we have no errors at this point, we can enter the application, passing in the native parameters set.
 
 The validation process will fail on the first error encountered and return that error. It is not mandatory to register the parameter set this way, it is there to help minimise the number of package global variables.
-
-- 9️⃣ _invoke cross field validation_ (optional): see [Cross Field Validation](#cross-field-validation)
 
 ### 🎭 Alternative Flag Set
 
@@ -421,6 +422,8 @@ The native parameter set, should be in its 'finalised' state. This means that al
 This is a rather contrived example, but the important part of it is the use of the enum field ___ps.Format___.
 
 ## 🧰 Developer Info
+
+For an example of how to use `Cobrass` with a `Cobra` cli, please see the template project [🦄 arcadia](https://github.com/snivilised/arcadia)
 
 ### 🥇 Task Runner
 
