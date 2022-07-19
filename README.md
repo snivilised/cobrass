@@ -31,7 +31,7 @@ To install `Cobrass` into an application:
 
 > go get github.com/snivilised/cobrass@latest
 
-Most of the functionality is defined in the _adapters_ package so import as:
+Most of the functionality is defined in the _assistant_ package so import as:
 
 > import "github.com/snivilised/cobrass/src/assistant"
 
