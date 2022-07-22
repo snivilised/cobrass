@@ -2,6 +2,8 @@
 
 Powershell is being used to generate go code and this article documents how this works.
 
+___Ideally, this would have been implemented using the 'go generate' tool chain but as I am new to Go development this is yet another barrier I was not willing to put up with, preferring instead to exploit existing skills, so that the job could just get done (at some point in the future, it is intended to replace the PowerShell script with the 'go generate' equivalent).___
+
 There are 6 main functions that perform code generation, 3 that generate source code and the remaining generating ginkgo/gomega based test suites. The reason why code generation was needed mainly stems from the `Cobra` api. Since, they are type based functions, in order to fully integrate with it, `Cobrass` must also provide a type based api. During the initial design of cobrass, functionality was built manually, with a lot of copy and pasting. When it was discovered how laborious is was just to build the initial binder functions, it was decided that another more automated approach would be desirable. This way, any future (non-breaking!) changes can be implemented relatively swiftly, without one having to tear ones hair out due to the monotony of code modifications and it's inherent vulnerability to copy and paste errors.
 
 The 6 generator functions (aliases in brackets) are:
