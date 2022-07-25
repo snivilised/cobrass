@@ -1,0 +1,52 @@
+{
+  "language-not-supported.cobrass": {
+    "description": "The language specified is not supported; no translations for this language.",
+    "hash": "sha1-fd33f3e597c158b9bbd614e98b3dbd7c4abda700",
+    "other": "language '{{.Language}}' not supported"
+  },
+  "ov-failed-at-least.cobrass": {
+    "description": "'AtLeast' Option validation has failed due to Value not being at least the threshold.",
+    "hash": "sha1-c0e19dbc1d2032c4463b85b6ce7f262a713e715c",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', not at least: [{{.Threshold}}]"
+  },
+  "ov-failed-at-most.cobrass": {
+    "description": "'AtMost' Option validation has failed due to Value not being at most the threshold.",
+    "hash": "sha1-b93e942d3b904c2b426c1afa77186ddb530e47ef",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', not at most: [{{.Threshold}}]"
+  },
+  "ov-failed-contains.cobrass": {
+    "description": "'Contains' Option validation has failed due to Value not being a member of collection.",
+    "hash": "sha1-7f3f474d961d1c987869ac95d1bd65daa8fdc21b",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', not a member of: [{{.Collection}}]"
+  },
+  "ov-failed-greater-than.cobrass": {
+    "description": "'GreaterThan' Option validation has failed due to Value not being greater than threshold.",
+    "hash": "sha1-7ef98c0f52ab5cd911d376cd0ab36ee34ccefa70",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', not greater than: [{{.Threshold}}]"
+  },
+  "ov-failed-less-than.cobrass": {
+    "description": "'LessThan' Option validation has failed due to Value not being less than the threshold.",
+    "hash": "sha1-fba8f1dc9d184ae6e4d857cc0b999126e6f6d9aa",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', not less than: [{{.Threshold}}]"
+  },
+  "ov-failed-not-contains.cobrass": {
+    "description": "'Contains' Option validation has failed due to Value being a member of collection.",
+    "hash": "sha1-bbc21f27c29ce79d1be8e8ffeca66f9ad605dac6",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', is a member of: [{{.Collection}}]"
+  },
+  "ov-failed-not-within.cobrass": {
+    "description": "'Within' Option validation has failed due to Value being inside of range.",
+    "hash": "sha1-b77634d58aeee3f539fdf12fecfe471b997a7595",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', is inside of range: [{{.Lo}}]..[{{.Hi}}]"
+  },
+  "ov-failed-within.cobrass": {
+    "description": "'Within' Option validation has failed due to Value being out of range.",
+    "hash": "sha1-ea049b19e965884f3411e9ecc7b8371555d64ec8",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', out of range: [{{.Lo}}]..[{{.Hi}}]"
+  },
+  "ps-object-must-be-struct.cobrass": {
+    "description": "The native Parameter Set object denoted, must be a struct.",
+    "hash": "sha1-23db7bfafc4eff76c969483286e91ecdd1ea863a",
+    "other": "the native param set object ('{{.Name}}') must be a struct"
+  }
+}
