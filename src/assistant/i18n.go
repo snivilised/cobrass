@@ -15,29 +15,32 @@ type LanguageInfo struct {
 	Territory string
 	Current   language.Tag
 	Supported []language.Tag
-	Printer   *message.Printer
 }
 
 var languages LanguageInfo
+var p *message.Printer
 
 func init() {
-	british := language.MustParse("en-GB")
-	us := language.MustParse("en-US")
-
 	detectedLang, err := jibberjabber.DetectLanguage()
 	territory, _ := jibberjabber.DetectTerritory()
 
 	detectedLangTag, _ := language.Parse(fmt.Sprintf("%v-%v", detectedLang, territory))
 
-	current := lo.Ternary(err == nil, detectedLangTag, british)
+	current := lo.Ternary(err == nil, detectedLangTag, language.BritishEnglish)
 	languages = LanguageInfo{
-		Default:   british,
+		Default:   language.BritishEnglish,
 		Detected:  detectedLangTag,
 		Territory: territory,
 		Current:   current,
-		Supported: []language.Tag{british, us},
-		Printer:   message.NewPrinter(current),
+		Supported: []language.Tag{language.BritishEnglish, language.AmericanEnglish},
 	}
+
+	p = message.NewPrinter(current)
+
+	message.SetString(language.AmericanEnglish,
+		"greetings '%v', welcome to internationalisation",
+		"greetings '%v', welcome to internationalization",
+	)
 }
 
 func UseTag(tag language.Tag) error {
@@ -47,7 +50,7 @@ func UseTag(tag language.Tag) error {
 
 	if found {
 		languages.Current = tag
-		languages.Printer = message.NewPrinter(tag)
+		p = message.NewPrinter(tag)
 	} else {
 		return fmt.Errorf("language '%v' not supported", tag)
 	}
