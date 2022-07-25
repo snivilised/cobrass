@@ -5,6 +5,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"golang.org/x/text/feature/plural"
@@ -13,6 +14,13 @@ import (
 
 	"github.com/snivilised/cobrass/src/assistant"
 )
+
+type OptValidationOutOfRangeTemplData struct {
+	Flag  string
+	Value any
+	Lo    any
+	Hi    any
+}
 
 func ShowDaysRemaining(p *message.Printer, days int) string {
 	return p.Sprintf("You have %d days remaining", days)
@@ -45,7 +53,7 @@ var _ = Describe("i18n", func() {
 	})
 
 	Context("different ways of creating equivalent language tags", func() {
-		It("should: be equal", func() {
+		It("🧪 should: be equal", func() {
 			// Just comprehension tests
 			//
 			Expect(language.MustParse("en-GB")).To(Equal(language.BritishEnglish))
@@ -53,7 +61,14 @@ var _ = Describe("i18n", func() {
 		})
 	})
 
-	Context("manually defined translation", func() {
+	Context("manually defined translation", Ordered, func() {
+		BeforeAll(func() {
+			message.SetString(language.AmericanEnglish,
+				"greetings '%v', welcome to internationalisation",
+				"greetings '%v', welcome to internationalization",
+			)
+		})
+
 		When("using default language", func() {
 			It("🧪 should: show un-translated text", func() {
 				printer = message.NewPrinter(language.BritishEnglish)
@@ -232,5 +247,49 @@ var _ = Describe("i18n", func() {
 			Entry(nil, "british", "There are 7 colours in this rainbow", language.BritishEnglish),
 			Entry(nil, "american", "There are 7 colors in this rainbow", language.AmericanEnglish),
 		)
+	})
+
+	Context("go-i18n", func() {
+		When("using map of any", func() {
+			It("🧪 should: translate", func() {
+				violationMsg := &i18n.Message{
+					ID:    "ov-failed-out-of-range",
+					Other: "({{.Flag}}): option validation failed, '{{.Value}}', out of range: [{{.Lo}}]..[{{.Hi}}]",
+				}
+
+				localised := assistant.Localiser.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: violationMsg,
+					TemplateData:   map[string]any{"Flag": "Strike", "Value": 999, "Lo": 1, "Hi": 99},
+				})
+				expected := "(Strike): option validation failed, '999', out of range: [1]..[99]"
+				Expect(localised).To(Equal(expected))
+			})
+		})
+
+		When("using template", func() {
+			It("🧪 should: translate", func() {
+				violationMsg := &i18n.Message{
+					ID:    "ov-failed-out-of-range",
+					Other: "({{.Flag}}): option validation failed, '{{.Value}}', out of range: [{{.Lo}}]..[{{.Hi}}]",
+				}
+
+				localised := assistant.Localiser.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: violationMsg,
+					TemplateData:   OptValidationOutOfRangeTemplData{"Strike", 999, 1, 99},
+				})
+				expected := "(Strike): option validation failed, '999', out of range: [1]..[99]"
+				Expect(localised).To(Equal(expected))
+			})
+		})
+
+		When("using translation", func() {
+			It("🧪 should: translate", func() {
+				localised := assistant.GetOutOfRangeErrorMessage("Strike", 999, 1, 99)
+				GinkgoWriter.Printf("===> localised: '%v'\n", localised)
+
+				expected := "(Strike): option validation failed, '999', out of range: [1]..[99]"
+				Expect(localised).To(Equal(expected))
+			})
+		})
 	})
 })
