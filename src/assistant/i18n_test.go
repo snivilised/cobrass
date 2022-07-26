@@ -284,6 +284,10 @@ var _ = Describe("i18n", func() {
 
 		When("using translation", func() {
 			It("🧪 should: translate", func() {
+				// GetOutOfRangeErrorMessage does not have to be explcitly tested
+				// so this test will eventually be removed and GetOutOfRangeErrorMessage
+				// renamed to be used internally only => getOutOfRangeErrorMessage
+				//
 				localised := assistant.GetOutOfRangeErrorMessage("Strike", 999, 1, 99)
 				GinkgoWriter.Printf("===> localised: '%v'\n", localised)
 
