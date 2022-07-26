@@ -9,6 +9,8 @@ import (
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 
+	"github.com/snivilised/cobrass/src/assistant/internal/l10n"
+
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
@@ -50,22 +52,22 @@ func init() {
 		Supported: []language.Tag{language.BritishEnglish, language.AmericanEnglish},
 	}
 
+	// TODO: printer is not used, delete this
+	//
 	p = message.NewPrinter(current)
 
-	// The bundle can have multiple languages associated with it. This is reflected
-	// by the bundle.LanguageTags function which:
-	// - "returns the list of language tags of all the translations loaded into the bundle"
-	//
 	bundle := i18n.NewBundle(languages.Default)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
 	bundle.MustLoadMessageFile("./internal/l10n/out/translate.en-US.json")
 
-	supported := lo.Map(languages.Supported, func(t language.Tag, i int) string {
+	supported := lo.Map(languages.Supported, func(t language.Tag, _ int) string {
 		return t.String()
 	})
 	Localiser = i18n.NewLocalizer(bundle, supported...)
 }
 
+// not necessry when using go-i18n
+//
 func UseTag(tag language.Tag) error {
 	_, found := lo.Find(languages.Supported, func(t language.Tag) bool {
 		return t == tag
@@ -90,11 +92,13 @@ func GetLanguageInfo() LanguageInfo {
 //
 func GetOutOfRangeErrorMessage(flag string, value, lo, hi any) string {
 
-	return Localiser.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{
-			ID:    "ov-failed-within.cobrass",
-			Other: "({{.Flag}}): option validation failed, '{{.Value}}', out of range: [{{.Lo}}]..[{{.Hi}}]",
+	data := l10n.WithinOptValidationTemplData{
+		OutOfRangeOV: l10n.OutOfRangeOV{
+			Flag: flag, Value: value, Lo: lo, Hi: hi,
 		},
-		TemplateData: map[string]any{"Flag": flag, "Value": value, "Lo": lo, "Hi": hi},
+	}
+	return Localiser.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: data.Message(),
+		TemplateData:   data,
 	})
 }
