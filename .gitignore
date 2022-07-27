@@ -23,3 +23,5 @@ dist/
 
 coverage
 ginkgo.report
+
+src/assistant/internal/l10n/out/translate.en-US.json
