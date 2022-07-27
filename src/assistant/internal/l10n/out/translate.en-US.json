@@ -29,10 +29,20 @@
     "hash": "sha1-fba8f1dc9d184ae6e4d857cc0b999126e6f6d9aa",
     "other": "({{.Flag}}): option validation failed, '{{.Value}}', not less than: [{{.Threshold}}]"
   },
+  "ov-failed-match.cobrass": {
+    "description": "'Match' Option validation has failed due to Value not matching the regex pattern.",
+    "hash": "sha1-52b0aa10108e3e3b911797a8498cb8dd52b035ea",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', does not match: [{{.Pattern}}]"
+  },
   "ov-failed-not-contains.cobrass": {
     "description": "'Contains' Option validation has failed due to Value being a member of collection.",
     "hash": "sha1-bbc21f27c29ce79d1be8e8ffeca66f9ad605dac6",
     "other": "({{.Flag}}): option validation failed, '{{.Value}}', is a member of: [{{.Collection}}]"
+  },
+  "ov-failed-not-match.cobrass": {
+    "description": "'Match' Option validation has failed due to Value matching the regex pattern.",
+    "hash": "sha1-f0ea14f3e75256393edda029aee8e65796b2d97a",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', matches: [{{.Pattern}}]"
   },
   "ov-failed-not-within.cobrass": {
     "description": "'Within' Option validation has failed due to Value being inside of range.",

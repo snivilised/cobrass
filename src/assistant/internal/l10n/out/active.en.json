@@ -23,9 +23,17 @@
     "description": "'LessThan' Option validation has failed due to Value not being less than the threshold.",
     "other": "({{.Flag}}): option validation failed, '{{.Value}}', not less than: [{{.Threshold}}]"
   },
+  "ov-failed-match.cobrass": {
+    "description": "'Match' Option validation has failed due to Value not matching the regex pattern.",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', does not match: [{{.Pattern}}]"
+  },
   "ov-failed-not-contains.cobrass": {
     "description": "'Contains' Option validation has failed due to Value being a member of collection.",
     "other": "({{.Flag}}): option validation failed, '{{.Value}}', is a member of: [{{.Collection}}]"
+  },
+  "ov-failed-not-match.cobrass": {
+    "description": "'Match' Option validation has failed due to Value matching the regex pattern.",
+    "other": "({{.Flag}}): option validation failed, '{{.Value}}', matches: [{{.Pattern}}]"
   },
   "ov-failed-not-within.cobrass": {
     "description": "'Within' Option validation has failed due to Value being inside of range.",
