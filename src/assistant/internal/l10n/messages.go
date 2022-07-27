@@ -4,6 +4,10 @@ import (
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
+type Localisable interface {
+	Message() *i18n.Message
+}
+
 // must be struct
 //
 type PsObjectMustBeStructTemplData struct {
@@ -36,7 +40,7 @@ func (td LanguageNotSupportedTemplData) Message() *i18n.Message {
 // The strings from i18n.Message{} are the values that are extracted for translation.
 //
 
-// --- Out Of Range
+// --- Within
 //
 type OutOfRangeOV struct {
 	Flag  string
@@ -71,17 +75,17 @@ func (td NotWithinOptValidationTemplData) Message() *i18n.Message {
 
 // --- ContainmentOV
 //
-type ContainmentOV struct {
+type ContainmentOV[T any] struct {
 	Flag       string
 	Value      any
-	Collection []any
+	Collection []T
 }
 
-type ContainsOptValidationTemplData struct {
-	ContainmentOV
+type ContainsOptValidationTemplData[T any] struct {
+	ContainmentOV[T]
 }
 
-func (td ContainsOptValidationTemplData) Message() *i18n.Message {
+func (td ContainsOptValidationTemplData[T]) Message() *i18n.Message {
 	return &i18n.Message{
 		ID:          "ov-failed-contains.cobrass",
 		Description: "'Contains' Option validation has failed due to Value not being a member of collection.",
@@ -89,15 +93,47 @@ func (td ContainsOptValidationTemplData) Message() *i18n.Message {
 	}
 }
 
-type NotContainsOptValidationTemplData struct {
-	ContainmentOV
+type NotContainsOptValidationTemplData[T any] struct {
+	ContainmentOV[T]
 }
 
-func (td NotContainsOptValidationTemplData) Message() *i18n.Message {
+func (td NotContainsOptValidationTemplData[T]) Message() *i18n.Message {
 	return &i18n.Message{
 		ID:          "ov-failed-not-contains.cobrass",
 		Description: "'Contains' Option validation has failed due to Value being a member of collection.",
 		Other:       "({{.Flag}}): option validation failed, '{{.Value}}', is a member of: [{{.Collection}}]",
+	}
+}
+
+// --- Match
+//
+type MatchOV struct {
+	Flag    string
+	Value   string
+	Pattern string
+}
+
+type MatchOptValidationTemplData struct {
+	MatchOV
+}
+
+func (td MatchOptValidationTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "ov-failed-match.cobrass",
+		Description: "'Match' Option validation has failed due to Value not matching the regex pattern.",
+		Other:       "({{.Flag}}): option validation failed, '{{.Value}}', does not match: [{{.Pattern}}]",
+	}
+}
+
+type NotMatchOptValidationTemplData struct {
+	MatchOV
+}
+
+func (td NotMatchOptValidationTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "ov-failed-not-match.cobrass",
+		Description: "'Match' Option validation has failed due to Value matching the regex pattern.",
+		Other:       "({{.Flag}}): option validation failed, '{{.Value}}', matches: [{{.Pattern}}]",
 	}
 }
 
@@ -119,13 +155,6 @@ func (td GreaterThanOptValidationTemplData) Message() *i18n.Message {
 		Description: "'GreaterThan' Option validation has failed due to Value not being greater than threshold.",
 		Other:       "({{.Flag}}): option validation failed, '{{.Value}}', not greater than: [{{.Threshold}}]",
 	}
-}
-
-// this is just an example of how to instantiate a struct literal
-// with embedded type
-//
-var GT = GreaterThanOptValidationTemplData{
-	RelationalOV: RelationalOV{"flag", 1, 2},
 }
 
 type AtLeastOptValidationTemplData struct {

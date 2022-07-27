@@ -748,6 +748,7 @@ $types = @{
     ErrorMessage       = "out of range"
     ArgsPlaceholder    = "[%v]..[%v]"
     ErrorArgs          = "lo, hi"
+    ErrorTempl         = "get{{Not}}WithinErrorMessage"
     Comment            = "option value must be within the range"
     #
     Negate             = $true
@@ -766,6 +767,7 @@ $types = @{
     ErrorMessage         = "not a member of"
     ArgsPlaceholder      = "[%v]"
     ErrorArgs            = "collection"
+    ErrorTempl           = "get{{Not}}ContainsErrorMessage"
     Comment              = "option value must be a member of collection"
     #
     Negate               = $true
@@ -784,6 +786,7 @@ $types = @{
     ErrorMessage         = "does not match"
     ArgsPlaceholder      = "[%v]"
     ErrorArgs            = "pattern"
+    ErrorTempl           = "get{{Not}}MatchErrorMessage"
     Comment              = "option value must match regex pattern"
     #
     Negate               = $true
@@ -801,6 +804,7 @@ $types = @{
     ErrorMessage    = "not greater than"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
+    ErrorTempl      = "getGreaterThanErrorMessage"
     Comment         = "option value must be greater than threshold"
     #
     # Relatable is the op equivalent of spec.Comparable. Operations that are relatable
@@ -818,6 +822,7 @@ $types = @{
     ErrorMessage    = "not at least"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
+    ErrorTempl      = "getAtLeastErrorMessage"
     Comment         = "option value must be greater than or equal to threshold"
     #
     Relatable       = $true
@@ -832,6 +837,7 @@ $types = @{
     ErrorMessage    = "not less than"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
+    ErrorTempl      = "getLessThanErrorMessage"
     Comment         = "option value must be less than threshold"
     #
     Relatable       = $true
@@ -846,6 +852,7 @@ $types = @{
     ErrorMessage    = "not at most"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
+    ErrorTempl      = "getAtMostErrorMessage"
     Comment         = "option value must be less than or equal to threshold"
     #
     Relatable       = $true
@@ -1330,7 +1337,8 @@ function Build-BinderHelpers {
           $("$($spec.TypeName)$($op.Name)")
         }
 
-        $errorMessage = "$($op.ErrorMessage): $($op.ArgsPlaceholder)"
+        $errorFn = $op.ErrorTempl.Replace("{{Not}}", [string]::Empty)
+        $errorF = "$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
 
         # generate BuildValidatedXXXXOp/BuildValidatedOpXXXX
         #
@@ -1347,9 +1355,7 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
       if $($op.Condition) {
         return nil
       }
-      return fmt.Errorf("(%v): option validation failed, '%v', $($errorMessage)",
-        info.FlagName(), value, $($op.ErrorArgs),
-      )
+      return fmt.Errorf($($errorF))
     },
     Value: to,
   }
@@ -1361,8 +1367,6 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
 
         if (-not($op.Relatable)) {
 
-          $negateErrorMessage = "$($op.NegateErrorMessage): $($op.ArgsPlaceholder)"
-
           $notMethodSubStmt = if (-not([string]::IsNullOrEmpty($op.NegateMethodTemplate))) {
             $op.NegateMethodTemplate.Replace("{{OpName}}", $op.Name).Replace("{{TypeName}}", $spec.TypeName)
           }
@@ -1372,6 +1376,9 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
             $("$($spec.TypeName)Not$($op.Name)")
           }
           $negatedCondition = $("!($($op.Condition))")
+
+          $errorFn = $op.ErrorTempl.Replace("{{Not}}", "Not")
+          $errorF = "$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
   
           # generate NOT method
           #
@@ -1388,9 +1395,7 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
       if $($negatedCondition) {
         return nil
       }
-      return fmt.Errorf("(%v): option validation failed, '%v', $($negateErrorMessage)",
-        info.FlagName(), value, $($op.ErrorArgs),
-      )
+      return fmt.Errorf($($errorF))
     },
     Value: to,
   }

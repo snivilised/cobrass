@@ -1,7 +1,6 @@
 package assistant_test
 
 import (
-	"fmt"
 	"strings"
 	"text/template"
 
@@ -13,14 +12,8 @@ import (
 	"golang.org/x/text/message"
 
 	"github.com/snivilised/cobrass/src/assistant"
+	"github.com/snivilised/cobrass/src/assistant/internal/l10n"
 )
-
-type OptValidationOutOfRangeTemplData struct {
-	Flag  string
-	Value any
-	Lo    any
-	Hi    any
-}
 
 func ShowDaysRemaining(p *message.Printer, days int) string {
 	return p.Sprintf("You have %d days remaining", days)
@@ -32,19 +25,32 @@ func ShowInternationalisation(p *message.Printer, to string) string {
 
 var _ = Describe("i18n", func() {
 
-	var languages assistant.LanguageInfo
+	var languages *assistant.LanguageInfo
 	var printer *message.Printer
 
 	Context("UseTag", func() {
 		When("given: tag is supported", func() {
 			It("🧪 should: not return error", func() {
-				us := language.MustParse("en-US")
+				us := language.AmericanEnglish
 				Expect(assistant.UseTag(us)).Error().To(BeNil())
 				Expect(assistant.GetLanguageInfo().Current).To(Equal(us))
 			})
+
+			It("🧪 should: localise in requested non default language", func() {
+				assistant.UseTag(language.AmericanEnglish)
+				data := l10n.LessThanOptValidationTemplData{
+					RelationalOV: l10n.RelationalOV{Flag: "flag", Value: 1, Threshold: 2},
+				}
+
+				_, tag, _ := assistant.GetLocaliser().LocalizeWithTag(&i18n.LocalizeConfig{
+					DefaultMessage: data.Message(),
+					TemplateData:   data,
+				})
+				Expect(tag.String()).To(Equal(language.AmericanEnglish.String()))
+			})
 		})
 
-		When("given: tag is supported", func() {
+		When("given: tag is NOT supported", func() {
 			It("🧪 should: return error", func() {
 				es := language.MustParse("es")
 				Expect(assistant.UseTag(es)).Error().ToNot(BeNil())
@@ -186,17 +192,6 @@ var _ = Describe("i18n", func() {
 			Days int
 		}
 
-		// This defintion is designed as a more generic version of DaysRemainingTemplData
-		// which means that it can be used as the backing data source for more templates
-		// and is probably the strategy that should be used going forward, to avoid having
-		// multiple frivolous definitions. The specificity should be in the parsed
-		// template and the template data should be as generic as possible to aid reuse
-		// and cut down on excessive definitions.
-		//
-		type SingleIntTemplData struct {
-			No int
-		}
-
 		It("🧪 should: get templated string", func() {
 			builder := strings.Builder{}
 			days := DaysRemainingTemplData{66}
@@ -213,40 +208,6 @@ var _ = Describe("i18n", func() {
 			expected := "You have 66 days remaining"
 			Expect(builder.String()).To(Equal(expected))
 		})
-
-		DescribeTable("with impractcal translation strategy (don't do this)",
-			func(variant, expected string, t language.Tag) {
-				builder := strings.Builder{}
-				colours := SingleIntTemplData{7}
-
-				templ, err := template.New("there-are-n-colours-in-this-rainbow").Parse("There are {{ .No}} colours in this rainbow")
-				if err != nil {
-					panic(err)
-				}
-
-				err = templ.Execute(&builder, colours)
-				if err != nil {
-					panic(err)
-				}
-				source := builder.String()
-
-				printer = message.NewPrinter(t)
-
-				// The reason for the impracticality here is that these tests only work because
-				// we have set the translation for explicit value of n (=7). The printer is not
-				// being presented with '%v' format field and therefore can't work. Clearly,
-				// this is not a solution, see "with fixed translation strategy" for
-				// solution.
-				//
-				translated := printer.Sprintf(source)
-				Expect(translated).To(Equal(expected))
-			},
-			func(variant, expected string, t language.Tag) string {
-				return fmt.Sprintf("🧪 should: get text in '%v' ", variant)
-			},
-			Entry(nil, "british", "There are 7 colours in this rainbow", language.BritishEnglish),
-			Entry(nil, "american", "There are 7 colors in this rainbow", language.AmericanEnglish),
-		)
 	})
 
 	Context("go-i18n", func() {
@@ -257,7 +218,10 @@ var _ = Describe("i18n", func() {
 					Other: "({{.Flag}}): option validation failed, '{{.Value}}', out of range: [{{.Lo}}]..[{{.Hi}}]",
 				}
 
-				localised := assistant.Localiser.MustLocalize(&i18n.LocalizeConfig{
+				// using map of any, is more concise, but not type safe. Any coding errors
+				// won't make themselves apparent until runtime.
+				//
+				localised := assistant.GetLocaliser().MustLocalize(&i18n.LocalizeConfig{
 					DefaultMessage: violationMsg,
 					TemplateData:   map[string]any{"Flag": "Strike", "Value": 999, "Lo": 1, "Hi": 99},
 				})
@@ -273,24 +237,15 @@ var _ = Describe("i18n", func() {
 					Other: "({{.Flag}}): option validation failed, '{{.Value}}', out of range: [{{.Lo}}]..[{{.Hi}}]",
 				}
 
-				localised := assistant.Localiser.MustLocalize(&i18n.LocalizeConfig{
-					DefaultMessage: violationMsg,
-					TemplateData:   OptValidationOutOfRangeTemplData{"Strike", 999, 1, 99},
-				})
-				expected := "(Strike): option validation failed, '999', out of range: [1]..[99]"
-				Expect(localised).To(Equal(expected))
-			})
-		})
-
-		When("using translation", func() {
-			It("🧪 should: translate", func() {
-				// GetOutOfRangeErrorMessage does not have to be explcitly tested
-				// so this test will eventually be removed and GetOutOfRangeErrorMessage
-				// renamed to be used internally only => getOutOfRangeErrorMessage
+				// using a template is not as concise as a map of any, but it is typesafe
+				// so is the much preferred solution.
 				//
-				localised := assistant.GetOutOfRangeErrorMessage("Strike", 999, 1, 99)
-				GinkgoWriter.Printf("===> localised: '%v'\n", localised)
-
+				localised := assistant.GetLocaliser().MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: violationMsg,
+					TemplateData: l10n.WithinOptValidationTemplData{
+						OutOfRangeOV: l10n.OutOfRangeOV{Flag: "Strike", Value: 999, Lo: 1, Hi: 99},
+					},
+				})
 				expected := "(Strike): option validation failed, '999', out of range: [1]..[99]"
 				Expect(localised).To(Equal(expected))
 			})
