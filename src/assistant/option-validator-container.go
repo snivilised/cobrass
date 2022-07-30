@@ -19,16 +19,23 @@ type ValidatorGroupOptions struct {
 	Size uint
 }
 
-// NewValidatorContainer creates an initialised ValidatorContainer instance. To
-// use defaults, pass in nil for options.
+type ValidatorContainerOption func(o *ValidatorGroupOptions)
+
+// NewValidatorContainer creates an initialised ValidatorContainer instance.
+// To use default behaviour, invoke with no parameters.
 //
-func NewValidatorContainer(options *ValidatorGroupOptions) *ValidatorContainer {
-	size := uint(1)
-	if options != nil && options.Size > 0 {
-		size = options.Size
+func NewValidatorContainer(options ...ValidatorContainerOption) *ValidatorContainer {
+
+	option := ValidatorGroupOptions{
+		Size: uint(1),
 	}
+
+	for _, functionalOption := range options {
+		functionalOption(&option)
+	}
+
 	return &ValidatorContainer{
-		validators: make(ValidatorCollection, size),
+		validators: make(ValidatorCollection, option.Size),
 	}
 }
 

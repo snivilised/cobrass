@@ -152,7 +152,7 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 		name := reflect.TypeOf(*ps.Native).Name()
 		panic(fmt.Sprintf("the native param set object ('%v') must be a structure", name))
 	}
-	ps.validators = NewValidatorContainer(nil)
+	ps.validators = NewValidatorContainer()
 	return ps
 }
 
