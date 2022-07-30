@@ -11,22 +11,25 @@ type ValidatorContainer struct {
 	validators ValidatorCollection
 }
 
-// ValidatorGroupOptions creation options
+// ValidatorContainerOptions creation options
 //
-type ValidatorGroupOptions struct {
+type ValidatorContainerOptions struct {
 	// Size internal collection is initialised to
 	//
 	Size uint
 }
 
-type ValidatorContainerOption func(o *ValidatorGroupOptions)
+// ValidatorContainerOptionFn definition ofa client defined function to
+// set ValidatorContainer options.
+//
+type ValidatorContainerOptionFn func(o *ValidatorContainerOptions)
 
 // NewValidatorContainer creates an initialised ValidatorContainer instance.
 // To use default behaviour, invoke with no parameters.
 //
-func NewValidatorContainer(options ...ValidatorContainerOption) *ValidatorContainer {
+func NewValidatorContainer(options ...ValidatorContainerOptionFn) *ValidatorContainer {
 
-	option := ValidatorGroupOptions{
+	option := ValidatorContainerOptions{
 		Size: uint(1),
 	}
 
