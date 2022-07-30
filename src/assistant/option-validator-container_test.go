@@ -17,17 +17,17 @@ var _ = Describe("ValidatorContainer", func() {
 	var paramSet *assistant.ParamSet[WidgetParameterSet]
 
 	Context("NewValidatorContainer", func() {
-		When("options set to nil", func() {
+		When("options not present", func() {
 			It("🧪 should: create ValidatorContainer with default options", func() {
-				validators = assistant.NewValidatorContainer(nil)
+				validators = assistant.NewValidatorContainer()
 				Expect(validators).ToNot(BeNil())
 			})
 		})
 
 		When("options specified", func() {
 			It("🧪 should: create ValidatorContainer", func() {
-				validators = assistant.NewValidatorContainer(&assistant.ValidatorGroupOptions{
-					Size: 10,
+				validators = assistant.NewValidatorContainer(func(o *assistant.ValidatorGroupOptions) {
+					o.Size = 10
 				})
 				Expect(validators).ToNot(BeNil())
 			})
@@ -36,7 +36,7 @@ var _ = Describe("ValidatorContainer", func() {
 
 	Context("ValidatorContainer", func() {
 		BeforeEach(func() {
-			validators = assistant.NewValidatorContainer(nil)
+			validators = assistant.NewValidatorContainer()
 
 			rootCommand = &cobra.Command{
 				Use:   "peek",
