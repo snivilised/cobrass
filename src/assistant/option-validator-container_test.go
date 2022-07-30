@@ -26,7 +26,7 @@ var _ = Describe("ValidatorContainer", func() {
 
 		When("options specified", func() {
 			It("🧪 should: create ValidatorContainer", func() {
-				validators = assistant.NewValidatorContainer(func(o *assistant.ValidatorGroupOptions) {
+				validators = assistant.NewValidatorContainer(func(o *assistant.ValidatorContainerOptions) {
 					o.Size = 10
 				})
 				Expect(validators).ToNot(BeNil())
