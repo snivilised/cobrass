@@ -2,7 +2,6 @@ package assistant
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 
 	"github.com/snivilised/cobrass/src/utils"
@@ -46,8 +45,8 @@ func NewCobraContainer(root *cobra.Command) *CobraContainer {
 func (container *CobraContainer) insert(command *cobra.Command) error {
 	name := command.Name()
 	if _, exists := container.commands[name]; exists {
-		message := fmt.Sprintf("cobra container: command '%v' already registered", name)
-		return errors.New(message)
+
+		return errors.New(getCommandAlreadyRegisteredErrorMessage(name))
 	}
 
 	container.commands[name] = command
@@ -73,8 +72,7 @@ func (container *CobraContainer) MustRegisterCommand(parent string, command *cob
 		}
 		pc.AddCommand(command)
 	} else {
-		message := fmt.Sprintf("cobra container: parent command '%v' not registered", parent)
-		panic(message)
+		panic(getParentCommandNotRegisteredErrorMessage(parent))
 	}
 }
 
@@ -143,21 +141,19 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 func (container *CobraContainer) MustRegisterParamSet(name string, ps any) {
 
 	if _, exists := container.paramSets[name]; exists {
-		panic(fmt.Errorf("parameter set '%v' already registered", name))
+		panic(getParamSetAlreadyRegisteredErrorMessage(name))
 	}
 
 	if reflect.TypeOf(ps).Kind() != reflect.Ptr {
 		typeOf := reflect.TypeOf(ps)
 
-		panic(fmt.Errorf("cant register parameter set '%v' with non pointer type: '%v'",
-			name, typeOf))
+		panic(getParamSetMustBePointerErrorMessage(name, typeOf.String()))
 	}
 
 	if reflect.TypeOf(ps).Elem().Kind() != reflect.Struct {
 		typeOf := reflect.TypeOf(ps)
 
-		panic(fmt.Errorf("cant register parameter set '%v' with non struct type: '%v'",
-			name, typeOf))
+		panic(getParamSetMustBeStructErrorMessage(name, typeOf.String()))
 	}
 
 	container.paramSets[name] = ps
@@ -178,7 +174,7 @@ func (container *CobraContainer) Native(name string) any {
 
 		return paramSetStruct.FieldByName("Native").Interface()
 	} else {
-		panic(fmt.Errorf("parameter set '%v' not found", name))
+		panic(getParamSetNotFoundErrorMessage(name))
 	}
 }
 
@@ -191,6 +187,6 @@ func (container *CobraContainer) MustGetParamSet(name string) any {
 	if paramSet, found := container.paramSets[name]; found {
 		return paramSet
 	} else {
-		panic(fmt.Errorf("parameter set '%v' not found", name))
+		panic(getParamSetNotFoundErrorMessage(name))
 	}
 }
