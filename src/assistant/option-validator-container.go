@@ -48,8 +48,8 @@ func NewValidatorContainer(options ...ValidatorContainerOptionFn) *ValidatorCont
 //
 func (container ValidatorContainer) Add(flag string, validator OptionValidator) {
 	if _, found := container.validators[flag]; found {
-		message := fmt.Errorf("failed to add validator for flag: '%v', because it already exists",
-			flag)
+
+		message := fmt.Errorf(getFailedToGetValidatorForFlagAlreadyExistsErrorMessage(flag))
 		panic(message)
 	}
 	container.validators[flag] = validator

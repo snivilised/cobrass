@@ -1,7 +1,6 @@
 package assistant
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 
@@ -149,8 +148,9 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 	ps.Native = new(N)
 
 	if reflect.TypeOf(*ps.Native).Kind() != reflect.Struct {
-		name := reflect.TypeOf(*ps.Native).Name()
-		panic(fmt.Sprintf("the native param set object ('%v') must be a structure", name))
+		typeName := reflect.TypeOf(*ps.Native).Name()
+
+		panic(getParamSetMustBeStructErrorMessage(command.Name(), typeName))
 	}
 	ps.validators = NewValidatorContainer()
 	return ps

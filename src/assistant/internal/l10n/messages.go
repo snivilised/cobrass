@@ -8,21 +8,11 @@ type Localisable interface {
 	Message() *i18n.Message
 }
 
-// must be struct
+// This file will be scanned by goi18n extract in order to create translations file(s)
+// The strings from i18n.Message{} are the values that are extracted for translation.
 //
-type PsObjectMustBeStructTemplData struct {
-	Name string
-}
 
-func (td PsObjectMustBeStructTemplData) Message() *i18n.Message {
-	return &i18n.Message{
-		ID:          "ps-object-must-be-struct.cobrass",
-		Description: "The native Parameter Set object denoted, must be a struct.",
-		Other:       "the native param set object ('{{.Name}}') must be a struct",
-	}
-}
-
-// language not supported
+// --- language not supported
 //
 type LanguageNotSupportedTemplData struct {
 	Language string
@@ -36,9 +26,136 @@ func (td LanguageNotSupportedTemplData) Message() *i18n.Message {
 	}
 }
 
-// This file will be scanned by goi18n extract in order to create translations file(s)
-// The strings from i18n.Message{} are the values that are extracted for translation.
+// --- already exists, invalid enum info specified
 //
+type EnumValueValueAlreadyExistsTemplData struct {
+	Number int
+	Value  string
+}
+
+func (td EnumValueValueAlreadyExistsTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "enum-value-already-exists.cobrass",
+		Description: "Invalid enum value",
+		Other:       "'{{.Value}} ({{.Number}})' already exists, invalid enum info specified",
+	}
+}
+
+// --- is not a valid enum value
+//
+
+type IsNotValidEnumValueTemplData struct {
+	Source string
+}
+
+func (td IsNotValidEnumValueTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "is-not-valid-enum-value.cobrass",
+		Description: "Not a valid enum value",
+		Other:       "'{{.Source}}' is not a valid enum value",
+	}
+}
+
+// --- failed to add validator for flag, because it already exists
+//
+type FailedToAddValidatorAlreadyExistsTemplData struct {
+	Flag string
+}
+
+func (td FailedToAddValidatorAlreadyExistsTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "failed-to-add-validator-already-exists.cobrass",
+		Description: "Failed to add validator for flag because it already exists",
+		Other:       "failed to add validator for flag: '{{.Flag}}', because it already exists",
+	}
+}
+
+// --- command already registered
+//
+type CommandAlreadyRegisteredTemplData struct {
+	Name string
+}
+
+func (td CommandAlreadyRegisteredTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "command-already-registered.cobrass",
+		Description: "Cobra command already registered in container",
+		Other:       "'cobra container: command '{{.Name}}' already registered",
+	}
+}
+
+// --- parent command not registered
+//
+
+type ParentCommandNotRegisteredTemplData struct {
+	Parent string
+}
+
+func (td ParentCommandNotRegisteredTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "parent-command-not-registered.cobrass",
+		Description: "Parent Cobra command not registered in container",
+		Other:       "cobra container: parent command '{{.Parent}}' not registered",
+	}
+}
+
+// --- param set already registered
+//
+type ParamSetAlreadyRegisteredTemplData struct {
+	Name string
+}
+
+func (td ParamSetAlreadyRegisteredTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "param-set-already-registered.cobrass",
+		Description: "Param set already registered in container",
+		Other:       "parameter set '{{.Name}}' already registered",
+	}
+}
+
+// --- param set must be struct
+//
+type ParamSetObjectMustBeStructTemplData struct {
+	Name string
+	Type string
+}
+
+func (td ParamSetObjectMustBeStructTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "param-set-object-must-be-struct.cobrass",
+		Description: "The native Parameter Set object denoted, must be a struct.",
+		Other:       "the native param set object ('{{.Name}}') must be a struct, actual type: '{{.Type}}'",
+	}
+}
+
+// --- param set must be pointer
+//
+type ParamSetObjectMustBePointerTemplData struct {
+	Name string
+	Type string
+}
+
+func (td ParamSetObjectMustBePointerTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "param-set-object-must-be-pointer.cobrass",
+		Description: "The native Parameter Set object denoted, must be a pointer.",
+		Other:       "the native param set object ('{{.Name}}') must be a pointer, actual type: '{{.Type}}'",
+	}
+}
+
+// --- param set not found
+//
+type ParamSetNotFoundTemplData struct {
+	Name string
+}
+
+func (td ParamSetNotFoundTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "param-set-not-found.cobrass",
+		Description: "The parameter set not found.",
+		Other:       "parameter set '{{.Name}}' not found",
+	}
+}
 
 // --- Within
 //

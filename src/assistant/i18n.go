@@ -154,9 +154,105 @@ func localise(data l10n.Localisable) string {
 	})
 }
 
+// --- language not supported
+
 func getLanguageNotSupportedErrorMessage(tag language.Tag) string {
 	data := l10n.LanguageNotSupportedTemplData{
 		Language: tag.String(),
+	}
+	return localise(data)
+}
+
+// --- already exists, invalid enum info specified
+
+func getEnumValueAlreadyExistsErrorMessage(value string, number int) string {
+
+	data := l10n.EnumValueValueAlreadyExistsTemplData{
+		Value:  value,
+		Number: number,
+	}
+	return localise(data)
+}
+
+// --- is not a valid enum value
+
+func getIsNotValidEnumValueErrorMessage(source string) string {
+
+	data := l10n.IsNotValidEnumValueTemplData{
+		Source: source,
+	}
+	return localise(data)
+}
+
+// --- failed to add validator for flag, because it already exists
+
+func getFailedToGetValidatorForFlagAlreadyExistsErrorMessage(flag string) string {
+
+	data := l10n.FailedToAddValidatorAlreadyExistsTemplData{
+		Flag: flag,
+	}
+	return localise(data)
+}
+
+// --- command already registered
+
+func getCommandAlreadyRegisteredErrorMessage(name string) string {
+	data := l10n.CommandAlreadyRegisteredTemplData{
+		Name: name,
+	}
+	return localise(data)
+}
+
+// --- parent command not registered
+
+func getParentCommandNotRegisteredErrorMessage(parent string) string {
+
+	data := l10n.CommandAlreadyRegisteredTemplData{
+		Name: parent,
+	}
+	return localise(data)
+}
+
+// !!!!???
+
+// --- param set already registered
+
+func getParamSetAlreadyRegisteredErrorMessage(name string) string {
+
+	data := l10n.ParamSetAlreadyRegisteredTemplData{
+		Name: name,
+	}
+	return localise(data)
+}
+
+// --- param set must be struct
+
+func getParamSetMustBeStructErrorMessage(name string, actualType string) string {
+
+	data := l10n.ParamSetObjectMustBeStructTemplData{
+		Name: name,
+		Type: actualType,
+	}
+	return localise(data)
+}
+
+// !!! --- param set must be pointer
+
+func getParamSetMustBePointerErrorMessage(name, actualType string) string {
+
+	data := l10n.ParamSetObjectMustBePointerTemplData{
+		Name: name,
+		Type: actualType,
+	}
+	return localise(data)
+}
+
+// --- param set not found
+
+func getParamSetNotFoundErrorMessage(name string) string {
+
+	data := l10n.ParamSetNotFoundTemplData{
+		Name: name,
 	}
 	return localise(data)
 }
