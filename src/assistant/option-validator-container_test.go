@@ -74,7 +74,7 @@ var _ = Describe("ValidatorContainer", func() {
 				validators.Add(flag, validator)
 				{
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 					validators.Add(flag, validator)
 					Fail("❌ Expected a panic")

@@ -78,7 +78,7 @@ var _ = Describe("CobraContainer", func() {
 		When("command previously registered", func() {
 			It("🧪 should: return error", func() {
 				defer func() {
-					recover()
+					_ = recover()
 				}()
 				Container.MustRegisterRootedCommand(DummyCommand)
 				//
@@ -101,7 +101,7 @@ var _ = Describe("CobraContainer", func() {
 			When("requested command previously registered", func() {
 				It("🧪 should: return requested command error", func() {
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 					parent := ParentCommand.Name()
 					Container.MustRegisterRootedCommand(ParentCommand)
@@ -131,7 +131,7 @@ var _ = Describe("CobraContainer", func() {
 		Context("parent NOT previously registered", func() {
 			It("🧪 should: return requested command error", func() {
 				defer func() {
-					recover()
+					_ = recover()
 				}()
 				Container.MustRegisterCommand("foo", DummyCommand)
 
@@ -201,7 +201,7 @@ var _ = Describe("CobraContainer", func() {
 		When("when 1 of the commands is already registered", func() {
 			It("🧪 should: return err", func() {
 				defer func() {
-					recover()
+					_ = recover()
 				}()
 				Container.MustRegisterRootedCommand(ParentCommand)
 				parent := ParentCommand.Name()
@@ -224,7 +224,7 @@ var _ = Describe("CobraContainer", func() {
 		When("given: a parameter set name not previously registered", func() {
 			It("🧪 should: panic", func() {
 				defer func() {
-					recover()
+					_ = recover()
 				}()
 				Container.Native("foo-bar")
 				Fail("❌ expected panic")
