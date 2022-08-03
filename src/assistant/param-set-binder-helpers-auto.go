@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/samber/lo"
+	"github.com/spf13/pflag"
 )
 
 // ----> auto generated(Build-Predefined/gen-help)
@@ -18,13 +19,14 @@ func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -38,13 +40,14 @@ func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *ti
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -58,13 +61,14 @@ func (params *ParamSet[N]) BindValidatedContainsDuration(info *FlagInfo, to *tim
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -78,13 +82,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsDuration(info *FlagInfo, to *
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -98,13 +103,14 @@ func (params *ParamSet[N]) BindValidatedDurationGreaterThan(info *FlagInfo, to *
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -118,13 +124,14 @@ func (params *ParamSet[N]) BindValidatedDurationAtLeast(info *FlagInfo, to *time
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -138,13 +145,14 @@ func (params *ParamSet[N]) BindValidatedDurationLessThan(info *FlagInfo, to *tim
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -158,13 +166,14 @@ func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.
 
 	params.BindDuration(info, to)
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
-		Fn: func(value time.Duration) error {
+		Fn: func(value time.Duration, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -178,13 +187,14 @@ func (params *ParamSet[N]) BindValidatedContainsEnum(info *FlagInfo, to *string,
 
 	params.BindEnum(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -198,13 +208,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsEnum(info *FlagInfo, to *stri
 
 	params.BindEnum(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -218,13 +229,14 @@ func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float3
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -238,13 +250,14 @@ func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *flo
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -258,13 +271,14 @@ func (params *ParamSet[N]) BindValidatedContainsFloat32(info *FlagInfo, to *floa
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -278,13 +292,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat32(info *FlagInfo, to *f
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -298,13 +313,14 @@ func (params *ParamSet[N]) BindValidatedFloat32GreaterThan(info *FlagInfo, to *f
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -318,13 +334,14 @@ func (params *ParamSet[N]) BindValidatedFloat32AtLeast(info *FlagInfo, to *float
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -338,13 +355,14 @@ func (params *ParamSet[N]) BindValidatedFloat32LessThan(info *FlagInfo, to *floa
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -358,13 +376,14 @@ func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float3
 
 	params.BindFloat32(info, to)
 	wrapper := GenericOptionValidatorWrapper[float32]{
-		Fn: func(value float32) error {
+		Fn: func(value float32, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -378,13 +397,14 @@ func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float6
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -398,13 +418,14 @@ func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *flo
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -418,13 +439,14 @@ func (params *ParamSet[N]) BindValidatedContainsFloat64(info *FlagInfo, to *floa
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -438,13 +460,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat64(info *FlagInfo, to *f
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -458,13 +481,14 @@ func (params *ParamSet[N]) BindValidatedFloat64GreaterThan(info *FlagInfo, to *f
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -478,13 +502,14 @@ func (params *ParamSet[N]) BindValidatedFloat64AtLeast(info *FlagInfo, to *float
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -498,13 +523,14 @@ func (params *ParamSet[N]) BindValidatedFloat64LessThan(info *FlagInfo, to *floa
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -518,13 +544,14 @@ func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float6
 
 	params.BindFloat64(info, to)
 	wrapper := GenericOptionValidatorWrapper[float64]{
-		Fn: func(value float64) error {
+		Fn: func(value float64, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -538,13 +565,14 @@ func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, lo, h
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -558,13 +586,14 @@ func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -578,13 +607,14 @@ func (params *ParamSet[N]) BindValidatedContainsInt(info *FlagInfo, to *int, col
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -598,13 +628,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt(info *FlagInfo, to *int, 
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -618,13 +649,14 @@ func (params *ParamSet[N]) BindValidatedIntGreaterThan(info *FlagInfo, to *int, 
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -638,13 +670,14 @@ func (params *ParamSet[N]) BindValidatedIntAtLeast(info *FlagInfo, to *int, thre
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -658,13 +691,14 @@ func (params *ParamSet[N]) BindValidatedIntLessThan(info *FlagInfo, to *int, thr
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -678,13 +712,14 @@ func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, thres
 
 	params.BindInt(info, to)
 	wrapper := GenericOptionValidatorWrapper[int]{
-		Fn: func(value int) error {
+		Fn: func(value int, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -698,13 +733,14 @@ func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, l
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -718,13 +754,14 @@ func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -738,13 +775,14 @@ func (params *ParamSet[N]) BindValidatedContainsInt16(info *FlagInfo, to *int16,
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -758,13 +796,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt16(info *FlagInfo, to *int
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -778,13 +817,14 @@ func (params *ParamSet[N]) BindValidatedInt16GreaterThan(info *FlagInfo, to *int
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -798,13 +838,14 @@ func (params *ParamSet[N]) BindValidatedInt16AtLeast(info *FlagInfo, to *int16, 
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -818,13 +859,14 @@ func (params *ParamSet[N]) BindValidatedInt16LessThan(info *FlagInfo, to *int16,
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -838,13 +880,14 @@ func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, t
 
 	params.BindInt16(info, to)
 	wrapper := GenericOptionValidatorWrapper[int16]{
-		Fn: func(value int16) error {
+		Fn: func(value int16, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -858,13 +901,14 @@ func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, l
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -878,13 +922,14 @@ func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -898,13 +943,14 @@ func (params *ParamSet[N]) BindValidatedContainsInt32(info *FlagInfo, to *int32,
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -918,13 +964,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt32(info *FlagInfo, to *int
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -938,13 +985,14 @@ func (params *ParamSet[N]) BindValidatedInt32GreaterThan(info *FlagInfo, to *int
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -958,13 +1006,14 @@ func (params *ParamSet[N]) BindValidatedInt32AtLeast(info *FlagInfo, to *int32, 
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -978,13 +1027,14 @@ func (params *ParamSet[N]) BindValidatedInt32LessThan(info *FlagInfo, to *int32,
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -998,13 +1048,14 @@ func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, t
 
 	params.BindInt32(info, to)
 	wrapper := GenericOptionValidatorWrapper[int32]{
-		Fn: func(value int32) error {
+		Fn: func(value int32, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1018,13 +1069,14 @@ func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, l
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1038,13 +1090,14 @@ func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1058,13 +1111,14 @@ func (params *ParamSet[N]) BindValidatedContainsInt64(info *FlagInfo, to *int64,
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1078,13 +1132,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt64(info *FlagInfo, to *int
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1098,13 +1153,14 @@ func (params *ParamSet[N]) BindValidatedInt64GreaterThan(info *FlagInfo, to *int
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1118,13 +1174,14 @@ func (params *ParamSet[N]) BindValidatedInt64AtLeast(info *FlagInfo, to *int64, 
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1138,13 +1195,14 @@ func (params *ParamSet[N]) BindValidatedInt64LessThan(info *FlagInfo, to *int64,
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1158,13 +1216,14 @@ func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, t
 
 	params.BindInt64(info, to)
 	wrapper := GenericOptionValidatorWrapper[int64]{
-		Fn: func(value int64) error {
+		Fn: func(value int64, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1178,13 +1237,14 @@ func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, lo,
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1198,13 +1258,14 @@ func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, 
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1218,13 +1279,14 @@ func (params *ParamSet[N]) BindValidatedContainsInt8(info *FlagInfo, to *int8, c
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1238,13 +1300,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt8(info *FlagInfo, to *int8
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1258,13 +1321,14 @@ func (params *ParamSet[N]) BindValidatedInt8GreaterThan(info *FlagInfo, to *int8
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1278,13 +1342,14 @@ func (params *ParamSet[N]) BindValidatedInt8AtLeast(info *FlagInfo, to *int8, th
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1298,13 +1363,14 @@ func (params *ParamSet[N]) BindValidatedInt8LessThan(info *FlagInfo, to *int8, t
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1318,13 +1384,14 @@ func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, thr
 
 	params.BindInt8(info, to)
 	wrapper := GenericOptionValidatorWrapper[int8]{
-		Fn: func(value int8) error {
+		Fn: func(value int8, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1338,13 +1405,14 @@ func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string,
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1358,13 +1426,14 @@ func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *stri
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1378,13 +1447,14 @@ func (params *ParamSet[N]) BindValidatedContainsString(info *FlagInfo, to *strin
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1398,13 +1468,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsString(info *FlagInfo, to *st
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1418,13 +1489,14 @@ func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if regexp.MustCompile(pattern).Match([]byte(value)) {
 				return nil
 			}
 			return fmt.Errorf(getMatchErrorMessage(info.FlagName(), value, pattern))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1438,13 +1510,14 @@ func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *str
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if !(regexp.MustCompile(pattern).Match([]byte(value))) {
 				return nil
 			}
 			return fmt.Errorf(getNotMatchErrorMessage(info.FlagName(), value, pattern))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1458,13 +1531,14 @@ func (params *ParamSet[N]) BindValidatedStringGreaterThan(info *FlagInfo, to *st
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1478,13 +1552,14 @@ func (params *ParamSet[N]) BindValidatedStringAtLeast(info *FlagInfo, to *string
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1498,13 +1573,14 @@ func (params *ParamSet[N]) BindValidatedStringLessThan(info *FlagInfo, to *strin
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1518,13 +1594,14 @@ func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string,
 
 	params.BindString(info, to)
 	wrapper := GenericOptionValidatorWrapper[string]{
-		Fn: func(value string) error {
+		Fn: func(value string, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1538,13 +1615,14 @@ func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16,
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1558,13 +1636,14 @@ func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1578,13 +1657,14 @@ func (params *ParamSet[N]) BindValidatedContainsUint16(info *FlagInfo, to *uint1
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1598,13 +1678,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint16(info *FlagInfo, to *ui
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1618,13 +1699,14 @@ func (params *ParamSet[N]) BindValidatedUint16GreaterThan(info *FlagInfo, to *ui
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1638,13 +1720,14 @@ func (params *ParamSet[N]) BindValidatedUint16AtLeast(info *FlagInfo, to *uint16
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1658,13 +1741,14 @@ func (params *ParamSet[N]) BindValidatedUint16LessThan(info *FlagInfo, to *uint1
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1678,13 +1762,14 @@ func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16,
 
 	params.BindUint16(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint16]{
-		Fn: func(value uint16) error {
+		Fn: func(value uint16, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1698,13 +1783,14 @@ func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32,
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1718,13 +1804,14 @@ func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1738,13 +1825,14 @@ func (params *ParamSet[N]) BindValidatedContainsUint32(info *FlagInfo, to *uint3
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1758,13 +1846,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint32(info *FlagInfo, to *ui
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1778,13 +1867,14 @@ func (params *ParamSet[N]) BindValidatedUint32GreaterThan(info *FlagInfo, to *ui
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1798,13 +1888,14 @@ func (params *ParamSet[N]) BindValidatedUint32AtLeast(info *FlagInfo, to *uint32
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1818,13 +1909,14 @@ func (params *ParamSet[N]) BindValidatedUint32LessThan(info *FlagInfo, to *uint3
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1838,13 +1930,14 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 
 	params.BindUint32(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint32]{
-		Fn: func(value uint32) error {
+		Fn: func(value uint32, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1858,13 +1951,14 @@ func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64,
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1878,13 +1972,14 @@ func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1898,13 +1993,14 @@ func (params *ParamSet[N]) BindValidatedContainsUint64(info *FlagInfo, to *uint6
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1918,13 +2014,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint64(info *FlagInfo, to *ui
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1938,13 +2035,14 @@ func (params *ParamSet[N]) BindValidatedUint64GreaterThan(info *FlagInfo, to *ui
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1958,13 +2056,14 @@ func (params *ParamSet[N]) BindValidatedUint64AtLeast(info *FlagInfo, to *uint64
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1978,13 +2077,14 @@ func (params *ParamSet[N]) BindValidatedUint64LessThan(info *FlagInfo, to *uint6
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -1998,13 +2098,14 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 
 	params.BindUint64(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint64]{
-		Fn: func(value uint64) error {
+		Fn: func(value uint64, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2018,13 +2119,14 @@ func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, l
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2038,13 +2140,14 @@ func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2058,13 +2161,14 @@ func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8,
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2078,13 +2182,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint8(info *FlagInfo, to *uin
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2098,13 +2203,14 @@ func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uin
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2118,13 +2224,14 @@ func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, 
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2138,13 +2245,14 @@ func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8,
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2158,13 +2266,14 @@ func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, t
 
 	params.BindUint8(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint8]{
-		Fn: func(value uint8) error {
+		Fn: func(value uint8, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2178,13 +2287,14 @@ func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, lo,
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if value >= lo && value <= hi {
 				return nil
 			}
 			return fmt.Errorf(getWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2198,13 +2308,14 @@ func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, 
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
 			return fmt.Errorf(getNotWithinErrorMessage(info.FlagName(), value, lo, hi))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2218,13 +2329,14 @@ func (params *ParamSet[N]) BindValidatedContainsUint(info *FlagInfo, to *uint, c
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
 			return fmt.Errorf(getContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2238,13 +2350,14 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint(info *FlagInfo, to *uint
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
 			return fmt.Errorf(getNotContainsErrorMessage(info.FlagName(), value, collection))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2258,13 +2371,14 @@ func (params *ParamSet[N]) BindValidatedUintGreaterThan(info *FlagInfo, to *uint
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if value > threshold {
 				return nil
 			}
 			return fmt.Errorf(getGreaterThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2278,13 +2392,14 @@ func (params *ParamSet[N]) BindValidatedUintAtLeast(info *FlagInfo, to *uint, th
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if value >= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtLeastErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2298,13 +2413,14 @@ func (params *ParamSet[N]) BindValidatedUintLessThan(info *FlagInfo, to *uint, t
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if value < threshold {
 				return nil
 			}
 			return fmt.Errorf(getLessThanErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -2318,13 +2434,14 @@ func (params *ParamSet[N]) BindValidatedUintAtMost(info *FlagInfo, to *uint, thr
 
 	params.BindUint(info, to)
 	wrapper := GenericOptionValidatorWrapper[uint]{
-		Fn: func(value uint) error {
+		Fn: func(value uint, flag *pflag.Flag) error {
 			if value <= threshold {
 				return nil
 			}
 			return fmt.Errorf(getAtMostErrorMessage(info.FlagName(), value, threshold))
 		},
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper

@@ -8,6 +8,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/testhelpers"
@@ -233,7 +234,7 @@ var _ = Describe("Enum", func() {
 				wrapper := paramSet.BindValidatedEnum(
 					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
-					func(value string) error {
+					func(value string, flag *pflag.Flag) error {
 						return lo.Ternary(outputFormatEnumInfo.IsValid(value), nil,
 							fmt.Errorf("Enum value: '%v' is not valid", value))
 					},
@@ -250,7 +251,7 @@ var _ = Describe("Enum", func() {
 				wrapper := paramSet.BindValidatedEnum(
 					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
-					func(value string) error {
+					func(value string, flag *pflag.Flag) error {
 						return lo.Ternary(outputFormatEnum.IsValid(), nil,
 							fmt.Errorf("Enum value: '%v' is not valid", value))
 					},

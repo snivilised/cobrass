@@ -6,6 +6,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 
 	"github.com/snivilised/cobrass/src/assistant"
 )
@@ -66,7 +67,7 @@ var _ = Describe("ValidatorContainer", func() {
 				validator := paramSet.BindValidatedString(
 					assistant.NewFlagInfo(flag, "p", "default-pattern"),
 					&paramSet.Native.Pattern,
-					func(value string) error {
+					func(value string, flag *pflag.Flag) error {
 						return nil
 					},
 				)
@@ -85,7 +86,7 @@ var _ = Describe("ValidatorContainer", func() {
 			When("a validator fails", func() {
 				It("🧪 should: return error", func() {
 					wrapper := assistant.StringOptionValidator{
-						Fn: func(value string) error {
+						Fn: func(value string, flag *pflag.Flag) error {
 							return fmt.Errorf("directory does not exist")
 						},
 						Value: &paramSet.Native.Directory,
@@ -97,7 +98,7 @@ var _ = Describe("ValidatorContainer", func() {
 					validators.Add("Directory", paramSet.BindValidatedString(
 						assistant.NewFlagInfo("directory", "d", "/foo-bar"),
 						&paramSet.Native.Directory,
-						func(value string) error {
+						func(value string, flag *pflag.Flag) error {
 							return fmt.Errorf("directory does not exist")
 						},
 					))
@@ -108,13 +109,13 @@ var _ = Describe("ValidatorContainer", func() {
 			When("all validators pass", func() {
 				It("🧪 should: return nil", func() {
 					validators.Add("Directory", assistant.StringOptionValidator{
-						Fn: func(value string) error {
+						Fn: func(value string, flag *pflag.Flag) error {
 							return nil
 						},
 						Value: &paramSet.Native.Directory,
 					})
 					validators.Add("Count", assistant.UintOptionValidator{
-						Fn: func(value uint) error {
+						Fn: func(value uint, flag *pflag.Flag) error {
 							return nil
 						},
 						Value: &paramSet.Native.Count,
@@ -125,14 +126,14 @@ var _ = Describe("ValidatorContainer", func() {
 					validators.Add("Directory", paramSet.BindValidatedString(
 						assistant.NewFlagInfo("directory", "d", "/foo-bar"),
 						&paramSet.Native.Directory,
-						func(value string) error {
+						func(value string, flag *pflag.Flag) error {
 							return nil
 						},
 					))
 					validators.Add("Count", paramSet.BindValidatedUint(
 						assistant.NewFlagInfo("count", "c", uint(0)),
 						&paramSet.Native.Count,
-						func(value uint) error {
+						func(value uint, flag *pflag.Flag) error {
 							return nil
 						},
 					))
@@ -153,7 +154,7 @@ var _ = Describe("ValidatorContainer", func() {
 					validators.Add("Directory", paramSet.BindValidatedString(
 						assistant.NewFlagInfo("directory", "d", "/foo-bar"),
 						&paramSet.Native.Directory,
-						func(value string) error {
+						func(value string, flag *pflag.Flag) error {
 							return nil
 						},
 					))
