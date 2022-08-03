@@ -61,7 +61,7 @@ var _ = Describe("ParamSet (auto)", func() {
 			func(entry TcEntry) {
 				entry.Binder()
 
-				testhelpers.ExecuteCommand(
+				_, _ = testhelpers.ExecuteCommand(
 					rootCommand, "widget", "/usr/fuse/home/music", entry.CommandLine,
 				)
 				entry.Assert()

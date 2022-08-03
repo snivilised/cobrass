@@ -56,7 +56,7 @@ var _ = Describe("OptionValidator", func() {
 		func(entry OvEntry) {
 			validator := entry.Validator()
 			entry.Setup()
-			validator.Validate()
+			_ = validator.Validate()
 		},
 		func(entry OvEntry) string {
 			return fmt.Sprintf("🧪 --> 🍒 given: flag type is '%v'", entry.Message)

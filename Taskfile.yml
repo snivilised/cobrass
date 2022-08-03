@@ -50,6 +50,10 @@ tasks:
     cmds:
       - ginkgo generate {{.CLI_ARGS}}
 
+  lint:
+    cmds:
+      - golangci-lint run
+
   cover:
     cmds:
       - goveralls -repotoken {{.COVERALLS_TOKEN}}

@@ -76,7 +76,7 @@ var _ = Describe("ParamSet (manual)", func() {
 				entry.Binder()
 
 				GinkgoWriter.Printf("🍧🍧🍧 ABOUT TO RUN ...\n")
-				testhelpers.ExecuteCommand(
+				_, _ = testhelpers.ExecuteCommand(
 					rootCommand, "widget", "/usr/fuse/home/music", entry.CommandLine,
 				)
 				GinkgoWriter.Printf("🍧🍧🍧 AFTER RUN\n")
@@ -107,7 +107,7 @@ var _ = Describe("ParamSet (manual)", func() {
 			When("given: non struct native param set type", func() {
 				It("🧪 should: panic", func() {
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 					assistant.NewParamSet[InvalidParameterSet](widgetCommand)
 
@@ -137,7 +137,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					container.MustRegisterParamSet(psname, paramSet)
 
 					commandLine := "--format xml --pattern cakewalk"
-					testhelpers.ExecuteCommand(
+					_, _ = testhelpers.ExecuteCommand(
 						rootCommand, "widget", "/usr/fuse/home/music", commandLine,
 					)
 					paramSet.Native.Format = outputFormatEnum.Value()
@@ -165,7 +165,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					container.MustRegisterParamSet(psname, paramSet)
 
 					commandLine := "--format xml --pattern cakewalk"
-					testhelpers.ExecuteCommand(
+					_, _ = testhelpers.ExecuteCommand(
 						rootCommand, "widget", "/usr/fuse/home/music", commandLine,
 					)
 					paramSet.Native.Format = outputFormatEnum.Value()
@@ -185,7 +185,7 @@ var _ = Describe("ParamSet (manual)", func() {
 			It("🧪 should: be able get registered param set", func() {
 				container.MustRegisterParamSet(psname, paramSet)
 
-				testhelpers.ExecuteCommand(
+				_, _ = testhelpers.ExecuteCommand(
 					rootCommand, cname, "/usr/fuse/home/cache",
 				)
 
@@ -199,7 +199,7 @@ var _ = Describe("ParamSet (manual)", func() {
 			When("parameter set exists", func() {
 				It("🧪 should: panic", func() {
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 
 					container.MustRegisterParamSet(psname, paramSet)
@@ -211,7 +211,7 @@ var _ = Describe("ParamSet (manual)", func() {
 			When("parameter set registered with non pointer type", func() {
 				It("🧪 should: panic", func() {
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 					const foo = "bar"
 					container.MustRegisterParamSet(psname, foo)
@@ -222,7 +222,7 @@ var _ = Describe("ParamSet (manual)", func() {
 			When("parameter set registered with non struct", func() {
 				It("🧪 should: panic", func() {
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 					foo := 42
 					container.MustRegisterParamSet(psname, &foo)
@@ -244,7 +244,7 @@ var _ = Describe("ParamSet (manual)", func() {
 				When("param set is NOT registered", func() {
 					It("🧪 should: panic", func() {
 						defer func() {
-							recover()
+							_ = recover()
 						}()
 						_ = container.MustGetParamSet("foo").(*assistant.ParamSet[WidgetParameterSet])
 
@@ -261,7 +261,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						widgetCommand.PersistentFlags()), &paramSet.Native.Pattern,
 				)
 				commandLine := "--pattern=*music.infex*"
-				testhelpers.ExecuteCommand(
+				_, _ = testhelpers.ExecuteCommand(
 					rootCommand, "widget", "/usr/fuse/home/music", commandLine,
 				)
 				Expect(paramSet.Native.Pattern).To(Equal("*music.infex*"))

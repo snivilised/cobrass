@@ -37,7 +37,7 @@ var _ = Describe("i18n", func() {
 			})
 
 			It("🧪 should: localise in requested non default language", func() {
-				assistant.UseTag(language.AmericanEnglish)
+				_ = assistant.UseTag(language.AmericanEnglish)
 				data := l10n.LessThanOptValidationTemplData{
 					RelationalOV: l10n.RelationalOV{Flag: "flag", Value: 1, Threshold: 2},
 				}
@@ -69,7 +69,7 @@ var _ = Describe("i18n", func() {
 
 	Context("manually defined translation", Ordered, func() {
 		BeforeAll(func() {
-			message.SetString(language.AmericanEnglish,
+			_ = message.SetString(language.AmericanEnglish,
 				"greetings '%v', welcome to internationalisation",
 				"greetings '%v', welcome to internationalization",
 			)
@@ -89,7 +89,7 @@ var _ = Describe("i18n", func() {
 			It("🧪 should: show translated text", func() {
 				printer = message.NewPrinter(language.AmericanEnglish)
 
-				assistant.UseTag(language.AmericanEnglish)
+				_ = assistant.UseTag(language.AmericanEnglish)
 				msg := ShowInternationalisation(printer, "earthlings")
 				const expected = "greetings 'earthlings', welcome to internationalization"
 				Expect(msg).To(Equal(expected))
@@ -108,7 +108,7 @@ var _ = Describe("i18n", func() {
 			// what is the 1 here and what does %[1]d mean?
 			// and, >100 / <10 don't seem to work here
 			//
-			message.Set(languages.Default, "You have %d days remaining", plural.Selectf(1, "%d",
+			_ = message.Set(languages.Default, "You have %d days remaining", plural.Selectf(1, "%d",
 				"one", "You have %d day remaining",
 				"other", "You have %[1]d days remaining",
 				">100", "You have %d days remaining, over the maximum",
@@ -122,7 +122,7 @@ var _ = Describe("i18n", func() {
 			GinkgoWriter.Println(ShowDaysRemaining(printer, 1))
 			GinkgoWriter.Println(ShowDaysRemaining(printer, 22))
 
-			assistant.UseTag(language.AmericanEnglish)
+			_ = assistant.UseTag(language.AmericanEnglish)
 			GinkgoWriter.Println(ShowDaysRemaining(printer, 333))
 		})
 	})
@@ -142,7 +142,7 @@ var _ = Describe("i18n", func() {
 			// is not aware of the variable. It will only work when it
 			// is presented with a format string with place holders.
 			//
-			message.SetString(language.AmericanEnglish,
+			_ = message.SetString(language.AmericanEnglish,
 				"There are %d colours in this rainbow", // <-- key
 				"There are %d colors in this rainbow",  // <-- message
 			)
@@ -154,7 +154,7 @@ var _ = Describe("i18n", func() {
 			// Clearly, we can't do this. The printer has to be aware of the variable
 			// substitution. We need to improve the way we we do this.
 			//
-			message.SetString(language.AmericanEnglish,
+			_ = message.SetString(language.AmericanEnglish,
 				"There are 7 colours in this rainbow",
 				"There are 7 colors in this rainbow",
 			)

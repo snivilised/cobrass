@@ -87,7 +87,7 @@ var _ = Describe("Enum", func() {
 			When("given: duplicated enum values in acceptables", func() {
 				It("🧪 should: panic", func() {
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 
 					invalidAcceptables := assistant.AcceptableEnumValues[OutputFormatEnum]{
@@ -193,7 +193,7 @@ var _ = Describe("Enum", func() {
 						&outputFormatEnum.Source,
 					)
 
-					testhelpers.ExecuteCommand(
+					_, _ = testhelpers.ExecuteCommand(
 						rootCommand, "widget", "/usr/fuse/home/music", "--format=xml",
 					)
 
@@ -215,7 +215,7 @@ var _ = Describe("Enum", func() {
 			When("given: Source set to an invalid value", func() {
 				It("🧪 should: panic", func() {
 					defer func() {
-						recover()
+						_ = recover()
 					}()
 
 					outputFormatEnum := outputFormatEnumInfo.NewValue()
