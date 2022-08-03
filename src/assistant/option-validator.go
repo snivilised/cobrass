@@ -1,5 +1,7 @@
 package assistant
 
+import "github.com/spf13/pflag"
+
 // OptionValidator wraps the user defined option validator function.
 // This is the instance that is returned from the validated binder
 // methods on the ParamSet.
@@ -12,8 +14,9 @@ type OptionValidator interface {
 // of objects that would be required for the ValidatorContainer
 //
 type GenericOptionValidatorWrapper[T any] struct {
-	Fn    func(value T) error
+	Fn    func(T, *pflag.Flag) error
 	Value *T
+	Flag  *pflag.Flag
 }
 
 func (validator GenericOptionValidatorWrapper[T]) Validate() error {
@@ -21,7 +24,7 @@ func (validator GenericOptionValidatorWrapper[T]) Validate() error {
 	// resulting in every type having to define it with same implementation
 	// itself, defeating the point of generics!
 	//
-	return validator.Fn(*validator.Value)
+	return validator.Fn(*validator.Value, validator.Flag)
 }
 
 // CrossFieldValidator is a client function that is the callback passed into

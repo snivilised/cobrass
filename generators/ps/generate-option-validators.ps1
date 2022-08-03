@@ -895,7 +895,7 @@ function Build-Validators {
         @"
 // $($validatorFn) defines the validator function for $($displayType) type.
 //
-type $($validatorFn) func(value $($spec.GoType)) error
+type $($validatorFn) func($($spec.GoType), *pflag.Flag) error
 
 // $($validatorStruct) defines the struct that wraps the client defined validator function
 // $($validatorFn) for $($displayType) type. This is the instance that is returned by
@@ -909,7 +909,7 @@ type $($validatorStruct) GenericOptionValidatorWrapper[$($spec.GoType)]
 // Validate invokes the client defined validator function for $($displayType) type.
 //
 func (validator $($validatorStruct)) Validate() error {
-  return validator.Fn(*validator.Value)
+  return validator.Fn(*validator.Value, validator.Flag)
 }
 
 "@
@@ -929,7 +929,7 @@ func (validator $($validatorStruct)) Validate() error {
           @"
 // $($typeName) defines the validator function for $($sliceTypeName) type.
 //
-type $($sliceValidatorFn) func(value $($sliceType)) error
+type $($sliceValidatorFn) func($($sliceType), *pflag.Flag) error
 
 // $($sliceValidatorStruct) wraps the client defined validator function for type $($sliceType).
 //
@@ -938,7 +938,7 @@ type $($sliceValidatorStruct) GenericOptionValidatorWrapper[$($sliceType)]
 // Validate invokes the client defined validator function for $($sliceType) type.
 //
 func (validator $($sliceValidatorStruct)) Validate() error {
-return validator.Fn(*validator.Value)
+return validator.Fn(*validator.Value, validator.Flag)
 }
 
 "@
@@ -1008,6 +1008,7 @@ func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$(
   wrapper := $($actualTypeName)OptionValidator{
     Fn:    validator,
     Value: to,
+    Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
   return wrapper
@@ -1059,6 +1060,7 @@ func (params *ParamSet[N]) BindValidated$($sliceTypeName)(info *FlagInfo, to *$(
   wrapper := $($sliceTypeName)OptionValidator{
     Fn:    validator,
     Value: to,
+    Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
   return wrapper
@@ -1246,7 +1248,7 @@ Entry(nil, OvEntry{
     return paramSet.BindValidated$($spec.TypeName)(
       assistant.NewFlagInfo("$($lowerFlagName)", "$($spec.Short)", $default),
       $bindTo,
-      func(value $($spec.GoType)) error {
+      func(value $($spec.GoType), flag *pflag.Flag) error {
         $($assert)
         return nil
       },
@@ -1274,7 +1276,7 @@ Entry(nil, OvEntry{
     return paramSet.BindValidated$($sliceTypeName)(
       assistant.NewFlagInfo("$($spec.SliceFlagName)", "$($spec.SliceShort)", $($spec.DefSliceVal)),
       &paramSet.Native.$($spec.SliceFlagName),
-      func(value $($sliceType)) error {
+      func(value $($sliceType), flag *pflag.Flag) error {
         Expect(value).To($($spec.Equate)($($spec.ExpectSlice)))
         return nil
       },
@@ -1351,13 +1353,14 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
 
   params.Bind$($spec.TypeName)(info, to)
   wrapper := GenericOptionValidatorWrapper[$($spec.GoType)]{
-    Fn: func(value $($spec.GoType)) error {
+    Fn: func(value $($spec.GoType), flag *pflag.Flag) error {
       if $($op.Condition) {
         return nil
       }
       return fmt.Errorf($($errorF))
     },
     Value: to,
+    Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
   return wrapper
@@ -1391,13 +1394,14 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
 
   params.Bind$($spec.TypeName)(info, to)
   wrapper := GenericOptionValidatorWrapper[$($spec.GoType)]{
-    Fn: func(value $($spec.GoType)) error {
+    Fn: func(value $($spec.GoType), flag *pflag.Flag) error {
       if $($negatedCondition) {
         return nil
       }
       return fmt.Errorf($($errorF))
     },
     Value: to,
+    Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
   return wrapper

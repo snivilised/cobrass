@@ -59,6 +59,7 @@ func (params *ParamSet[N]) BindValidatedDuration(info *FlagInfo, to *time.Durati
 	wrapper := DurationOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -88,6 +89,7 @@ func (params *ParamSet[N]) BindValidatedDurationSlice(info *FlagInfo, to *[]time
 	wrapper := DurationSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -134,6 +136,7 @@ func (params *ParamSet[N]) BindValidatedEnum(info *FlagInfo, to *string, validat
 	wrapper := StringOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -163,6 +166,7 @@ func (params *ParamSet[N]) BindValidatedFloat32(info *FlagInfo, to *float32, val
 	wrapper := Float32OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -192,6 +196,7 @@ func (params *ParamSet[N]) BindValidatedFloat32Slice(info *FlagInfo, to *[]float
 	wrapper := Float32SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -221,6 +226,7 @@ func (params *ParamSet[N]) BindValidatedFloat64(info *FlagInfo, to *float64, val
 	wrapper := Float64OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -250,6 +256,7 @@ func (params *ParamSet[N]) BindValidatedFloat64Slice(info *FlagInfo, to *[]float
 	wrapper := Float64SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -279,6 +286,7 @@ func (params *ParamSet[N]) BindValidatedInt(info *FlagInfo, to *int, validator I
 	wrapper := IntOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -308,6 +316,7 @@ func (params *ParamSet[N]) BindValidatedIntSlice(info *FlagInfo, to *[]int, vali
 	wrapper := IntSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -337,6 +346,7 @@ func (params *ParamSet[N]) BindValidatedInt16(info *FlagInfo, to *int16, validat
 	wrapper := Int16OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -366,6 +376,7 @@ func (params *ParamSet[N]) BindValidatedInt32(info *FlagInfo, to *int32, validat
 	wrapper := Int32OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -395,6 +406,7 @@ func (params *ParamSet[N]) BindValidatedInt32Slice(info *FlagInfo, to *[]int32, 
 	wrapper := Int32SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -424,6 +436,7 @@ func (params *ParamSet[N]) BindValidatedInt64(info *FlagInfo, to *int64, validat
 	wrapper := Int64OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -453,6 +466,7 @@ func (params *ParamSet[N]) BindValidatedInt64Slice(info *FlagInfo, to *[]int64, 
 	wrapper := Int64SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -482,6 +496,7 @@ func (params *ParamSet[N]) BindValidatedInt8(info *FlagInfo, to *int8, validator
 	wrapper := Int8OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -511,6 +526,7 @@ func (params *ParamSet[N]) BindValidatedIPMask(info *FlagInfo, to *net.IPMask, v
 	wrapper := IPMaskOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -540,6 +556,7 @@ func (params *ParamSet[N]) BindValidatedIPNet(info *FlagInfo, to *net.IPNet, val
 	wrapper := IPNetOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -569,6 +586,7 @@ func (params *ParamSet[N]) BindValidatedString(info *FlagInfo, to *string, valid
 	wrapper := StringOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -598,6 +616,7 @@ func (params *ParamSet[N]) BindValidatedStringSlice(info *FlagInfo, to *[]string
 	wrapper := StringSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -627,6 +646,7 @@ func (params *ParamSet[N]) BindValidatedUint16(info *FlagInfo, to *uint16, valid
 	wrapper := Uint16OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -656,6 +676,7 @@ func (params *ParamSet[N]) BindValidatedUint32(info *FlagInfo, to *uint32, valid
 	wrapper := Uint32OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -685,6 +706,7 @@ func (params *ParamSet[N]) BindValidatedUint64(info *FlagInfo, to *uint64, valid
 	wrapper := Uint64OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -714,6 +736,7 @@ func (params *ParamSet[N]) BindValidatedUint8(info *FlagInfo, to *uint8, validat
 	wrapper := Uint8OptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -743,6 +766,7 @@ func (params *ParamSet[N]) BindValidatedUint(info *FlagInfo, to *uint, validator
 	wrapper := UintOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
@@ -772,6 +796,7 @@ func (params *ParamSet[N]) BindValidatedUintSlice(info *FlagInfo, to *[]uint, va
 	wrapper := UintSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
+		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
 	return wrapper
