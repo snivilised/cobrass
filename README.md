@@ -5,6 +5,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/snivilised/cobrass.svg)](https://pkg.go.dev/github.com/snivilised/cobrass)
 [![Go report](https://goreportcard.com/badge/github.com/snivilised/cobrass)](https://goreportcard.com/report/github.com/snivilised/cobrass)
 [![Coverage Status](https://coveralls.io/repos/github/snivilised/cobrass/badge.svg?branch=master)](https://coveralls.io/github/snivilised/cobrass?branch=master&kill_cache=1)
+[![Cobrass Continuous Integration](https://github.com/snivilised/cobrass/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/snivilised/cobrass/actions/workflows/ci-workflow.yml)
 
 <!-- MD013/Line Length -->
 <!-- MarkDownLint-disable MD013 -->
