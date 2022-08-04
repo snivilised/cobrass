@@ -11,7 +11,7 @@ type OptionValidator interface {
 }
 
 // Needed because its not possible to create a type safe hetrogenious collection
-// of objects that would be required for the ValidatorContainer
+// of objects that would be required for the ValidatorContainer.
 //
 type GenericOptionValidatorWrapper[T any] struct {
 	Fn    func(T, *pflag.Flag) error
@@ -29,6 +29,6 @@ func (validator GenericOptionValidatorWrapper[T]) Validate() error {
 
 // CrossFieldValidator is a client function that is the callback passed into
 // ParamSet.CrossValidate. Should be done after all parsed values have been bound
-// and individually validated
+// and individually validated.
 //
 type CrossFieldValidator[N any] func(native *N) error

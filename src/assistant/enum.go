@@ -1,3 +1,4 @@
+//nolint:revive // receiver naming hint doesn't make sense
 package assistant
 
 import (
@@ -59,7 +60,7 @@ type lookupEnumValue[E ~int] map[string]E
 // https://medium.com/trendyol-tech/contributing-the-go-compiler-adding-new-tilde-operator-f66d0c6cff7
 //
 
-// EnumInfo represents the meta data for a pseduo int based enum type
+// EnumInfo represents the meta data for a pseduo int based enum type.
 //
 type EnumInfo[E ~int] struct {
 	// (this should probably go into a different module as it's use goes beyond
@@ -90,10 +91,9 @@ type EnumInfo[E ~int] struct {
 //
 // ... the user should define an EnumInfo for it as:
 //
-// EnumInfo[OutputFormatEnum]
+// EnumInfo[OutputFormatEnum].
 //
 func NewEnumInfo[E ~int](acceptables AcceptableEnumValues[E]) *EnumInfo[E] {
-
 	info := new(EnumInfo[E])
 	info.acceptables = acceptables
 	info.reverseLookup = make(lookupEnumValue[E])
@@ -115,13 +115,13 @@ func NewEnumInfo[E ~int](acceptables AcceptableEnumValues[E]) *EnumInfo[E] {
 	return info
 }
 
-// NewValue creates a new EnumValue associated with this EnumInfo
+// NewValue creates a new EnumValue associated with this EnumInfo.
 //
 func (info *EnumInfo[E]) NewValue() EnumValue[E] {
 	return EnumValue[E]{Info: info}
 }
 
-// NewSlice creates a new EnumSlice associated with this EnumInfo
+// NewSlice creates a new EnumSlice associated with this EnumInfo.
 //
 func (info *EnumInfo[E]) NewSlice() EnumSlice[E] {
 	return EnumSlice[E]{Info: info, Source: []string{}}
@@ -131,7 +131,7 @@ func (info *EnumInfo[E]) NewSlice() EnumSlice[E] {
 // string value as defined by the Acceptables.
 //
 func (info *EnumInfo[E]) En(value string) E {
-	return E(info.reverseLookup[value])
+	return info.reverseLookup[value]
 }
 
 // IsValid returns true if the string is an acceptable value for this enum
@@ -151,6 +151,7 @@ func (info *EnumInfo[E]) IsValidOrEmpty(value string) bool {
 	}
 
 	_, found := info.reverseLookup[value]
+
 	return found
 }
 
@@ -161,6 +162,7 @@ func (info *EnumInfo[E]) String() string {
 	var builder strings.Builder
 
 	fmt.Fprintf(&builder, "=== (TYPE: %T) ===\n", info)
+
 	for k, v := range info.reverseLookup {
 		fmt.Fprintf(&builder, "--- [%v] => [%v] (%v) ---\n", k, info.NameOf(v), v)
 	}
@@ -198,7 +200,7 @@ type EnumValue[E ~int] struct {
 // captured from the command line.
 //
 func (ev *EnumValue[E]) Value() E {
-	return E(ev.Info.reverseLookup[ev.Source])
+	return ev.Info.reverseLookup[ev.Source]
 }
 
 // IsValid returns true if the string is an acceptable value for this enum
@@ -246,12 +248,11 @@ type EnumSlice[E ~int] struct {
 }
 
 // Values, returns an an array of int based enum values replicating the slice of
-// string values stored in Source
+// string values stored in Source.
 //
 func (es *EnumSlice[E]) Values() []E {
-
 	return lo.Map(es.Source, func(v string, _ int) E {
-		return E(es.Info.reverseLookup[v])
+		return es.Info.reverseLookup[v]
 	})
 }
 
@@ -259,7 +260,6 @@ func (es *EnumSlice[E]) Values() []E {
 // this enum false otherwise.
 //
 func (es *EnumSlice[E]) AllAreValid() bool {
-
 	return lo.EveryBy(es.Source, func(v string) bool {
 		return es.Info.IsValid(v)
 	})
@@ -269,7 +269,6 @@ func (es *EnumSlice[E]) AllAreValid() bool {
 // for this enum or the empty string false otherwise.
 //
 func (es *EnumSlice[E]) AllAreValidOrEmpty() bool {
-
 	return lo.EveryBy(es.Source, func(v string) bool {
 		return es.Info.IsValidOrEmpty(v)
 	})

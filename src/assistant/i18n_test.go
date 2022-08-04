@@ -172,7 +172,7 @@ var _ = Describe("i18n", func() {
 		// - create an instance of the template data
 		// - create a template string containing embedded variables that map to member(s) of our Templ
 		// - create a parsed template with a kebak-case name, from a template body string (the body
-		// conatins the body of the text with place holders that match the template data members)
+		// contains the body of the text with place holders that match the template data members)
 		// - execute the parsed template passing in the string builder
 		// - check the execute result
 		// - access the builder content, and use at will

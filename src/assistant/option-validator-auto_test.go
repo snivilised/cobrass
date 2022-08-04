@@ -7,9 +7,10 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+
+	"github.com/snivilised/cobrass/src/assistant"
 )
 
 type OvEntry struct {
@@ -104,7 +105,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "string type (auto)",
 			Setup: func() {
-				paramSet.Native.Format = XmlFormatEn
+				paramSet.Native.Format = XMLFormatEn
 			},
 			Validator: func() assistant.OptionValidator {
 				outputFormatEnum := outputFormatEnumInfo.NewValue()
@@ -122,7 +123,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "float32 type (auto)",
 			Setup: func() {
-				paramSet.Native.Gradientf32 = float32(float32(32.0))
+				paramSet.Native.Gradientf32 = float32(32.0)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -130,7 +131,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32,
 					func(value float32, flag *pflag.Flag) error {
-						Expect(value).To(Equal(float32(float32(32.0))))
+						Expect(value).To(Equal(float32(32.0)))
 						return nil
 					},
 				)
@@ -157,7 +158,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "float64 type (auto)",
 			Setup: func() {
-				paramSet.Native.Gradientf64 = float64(float64(64.1234))
+				paramSet.Native.Gradientf64 = float64(64.1234)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -165,7 +166,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64,
 					func(value float64, flag *pflag.Flag) error {
-						Expect(value).To(Equal(float64(float64(64.1234))))
+						Expect(value).To(Equal(float64(64.1234)))
 						return nil
 					},
 				)
@@ -227,7 +228,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "int16 type (auto)",
 			Setup: func() {
-				paramSet.Native.Offset16 = int16(int16(-999))
+				paramSet.Native.Offset16 = int16(-999)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -235,7 +236,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16,
 					func(value int16, flag *pflag.Flag) error {
-						Expect(value).To(Equal(int16(int16(-999))))
+						Expect(value).To(Equal(int16(-999)))
 						return nil
 					},
 				)
@@ -245,7 +246,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "int32 type (auto)",
 			Setup: func() {
-				paramSet.Native.Offset32 = int32(int32(-9999))
+				paramSet.Native.Offset32 = int32(-9999)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -253,7 +254,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32,
 					func(value int32, flag *pflag.Flag) error {
-						Expect(value).To(Equal(int32(int32(-9999))))
+						Expect(value).To(Equal(int32(-9999)))
 						return nil
 					},
 				)
@@ -280,7 +281,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "int64 type (auto)",
 			Setup: func() {
-				paramSet.Native.Offset64 = int64(int64(-99999))
+				paramSet.Native.Offset64 = int64(-99999)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -288,7 +289,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64,
 					func(value int64, flag *pflag.Flag) error {
-						Expect(value).To(Equal(int64(int64(-99999))))
+						Expect(value).To(Equal(int64(-99999)))
 						return nil
 					},
 				)
@@ -315,7 +316,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "int8 type (auto)",
 			Setup: func() {
-				paramSet.Native.Offset8 = int8(int8(-99))
+				paramSet.Native.Offset8 = int8(-99)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -323,7 +324,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8,
 					func(value int8, flag *pflag.Flag) error {
-						Expect(value).To(Equal(int8(int8(-99))))
+						Expect(value).To(Equal(int8(-99)))
 						return nil
 					},
 				)
@@ -333,13 +334,13 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "net.IPMask type (auto)",
 			Setup: func() {
-				paramSet.Native.IpMask = ipmask("orion.net")
+				paramSet.Native.IPMask = ipmask("orion.net")
 			},
 			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedIPMask(
 					assistant.NewFlagInfo("ipmask", "m", ipmask("default")),
-					&paramSet.Native.IpMask,
+					&paramSet.Native.IPMask,
 					func(value net.IPMask, flag *pflag.Flag) error {
 						Expect(value).To(BeEquivalentTo(ipmask("orion.net")))
 						return nil
@@ -351,13 +352,13 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "net.IPNet type (auto)",
 			Setup: func() {
-				paramSet.Native.IpAddress = ipnet("orion.net")
+				paramSet.Native.IPAddress = ipnet("orion.net")
 			},
 			Validator: func() assistant.OptionValidator {
 
 				return paramSet.BindValidatedIPNet(
 					assistant.NewFlagInfo("ipaddress", "i", ipnet("default")),
-					&paramSet.Native.IpAddress,
+					&paramSet.Native.IPAddress,
 					func(value net.IPNet, flag *pflag.Flag) error {
 						Expect(value).To(BeEquivalentTo(ipnet("orion.net")))
 						return nil
@@ -404,7 +405,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "uint16 type (auto)",
 			Setup: func() {
-				paramSet.Native.Count16 = uint16(uint16(333))
+				paramSet.Native.Count16 = uint16(333)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -412,7 +413,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16,
 					func(value uint16, flag *pflag.Flag) error {
-						Expect(value).To(Equal(uint16(uint16(333))))
+						Expect(value).To(Equal(uint16(333)))
 						return nil
 					},
 				)
@@ -422,7 +423,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "uint32 type (auto)",
 			Setup: func() {
-				paramSet.Native.Count32 = uint32(uint32(3333))
+				paramSet.Native.Count32 = uint32(3333)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -430,7 +431,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32,
 					func(value uint32, flag *pflag.Flag) error {
-						Expect(value).To(Equal(uint32(uint32(3333))))
+						Expect(value).To(Equal(uint32(3333)))
 						return nil
 					},
 				)
@@ -440,7 +441,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "uint64 type (auto)",
 			Setup: func() {
-				paramSet.Native.Count64 = uint64(uint64(33333))
+				paramSet.Native.Count64 = uint64(33333)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -448,7 +449,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64,
 					func(value uint64, flag *pflag.Flag) error {
-						Expect(value).To(Equal(uint64(uint64(33333))))
+						Expect(value).To(Equal(uint64(33333)))
 						return nil
 					},
 				)
@@ -458,7 +459,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "uint8 type (auto)",
 			Setup: func() {
-				paramSet.Native.Count8 = uint8(uint8(33))
+				paramSet.Native.Count8 = uint8(33)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -466,7 +467,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8,
 					func(value uint8, flag *pflag.Flag) error {
-						Expect(value).To(Equal(uint8(uint8(33))))
+						Expect(value).To(Equal(uint8(33)))
 						return nil
 					},
 				)
@@ -476,7 +477,7 @@ var _ = Describe("OptionValidator", func() {
 		Entry(nil, OvEntry{
 			Message: "uint type (auto)",
 			Setup: func() {
-				paramSet.Native.Count = uint(uint(99999))
+				paramSet.Native.Count = uint(99999)
 			},
 			Validator: func() assistant.OptionValidator {
 
@@ -484,7 +485,7 @@ var _ = Describe("OptionValidator", func() {
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count,
 					func(value uint, flag *pflag.Flag) error {
-						Expect(value).To(Equal(uint(uint(99999))))
+						Expect(value).To(Equal(uint(99999)))
 						return nil
 					},
 				)

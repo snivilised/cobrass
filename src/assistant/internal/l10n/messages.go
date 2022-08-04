@@ -12,7 +12,7 @@ type Localisable interface {
 // The strings from i18n.Message{} are the values that are extracted for translation.
 //
 
-// --- language not supported
+// --- language not supported.
 //
 type LanguageNotSupportedTemplData struct {
 	Language string
@@ -26,7 +26,7 @@ func (td LanguageNotSupportedTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- already exists, invalid enum info specified
+// --- already exists, invalid enum info specified.
 //
 type EnumValueValueAlreadyExistsTemplData struct {
 	Number int
@@ -56,7 +56,7 @@ func (td IsNotValidEnumValueTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- failed to add validator for flag, because it already exists
+// --- failed to add validator for flag, because it already exists.
 //
 type FailedToAddValidatorAlreadyExistsTemplData struct {
 	Flag string
@@ -70,7 +70,7 @@ func (td FailedToAddValidatorAlreadyExistsTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- command already registered
+// --- command already registered.
 //
 type CommandAlreadyRegisteredTemplData struct {
 	Name string
@@ -99,7 +99,7 @@ func (td ParentCommandNotRegisteredTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- param set already registered
+// --- param set already registered.
 //
 type ParamSetAlreadyRegisteredTemplData struct {
 	Name string
@@ -113,7 +113,7 @@ func (td ParamSetAlreadyRegisteredTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- param set must be struct
+// --- param set must be struct.
 //
 type ParamSetObjectMustBeStructTemplData struct {
 	Name string
@@ -128,7 +128,7 @@ func (td ParamSetObjectMustBeStructTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- param set must be pointer
+// --- param set must be pointer.
 //
 type ParamSetObjectMustBePointerTemplData struct {
 	Name string
@@ -143,7 +143,7 @@ func (td ParamSetObjectMustBePointerTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- param set not found
+// --- param set not found.
 //
 type ParamSetNotFoundTemplData struct {
 	Name string
@@ -157,7 +157,7 @@ func (td ParamSetNotFoundTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- Within
+// --- Within.
 //
 type OutOfRangeOV struct {
 	Flag  string
@@ -190,7 +190,7 @@ func (td NotWithinOptValidationTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- ContainmentOV
+// --- ContainmentOV.
 //
 type ContainmentOV[T any] struct {
 	Flag       string
@@ -222,7 +222,7 @@ func (td NotContainsOptValidationTemplData[T]) Message() *i18n.Message {
 	}
 }
 
-// --- Match
+// --- Match.
 //
 type MatchOV struct {
 	Flag    string
@@ -254,7 +254,7 @@ func (td NotMatchOptValidationTemplData) Message() *i18n.Message {
 	}
 }
 
-// --- Relational
+// --- Relational.
 //
 type RelationalOV struct {
 	Flag      string

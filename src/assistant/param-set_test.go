@@ -143,7 +143,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					paramSet.Native.Format = outputFormatEnum.Value()
 
 					result := paramSet.CrossValidate(func(ps *WidgetParameterSet) error {
-						condition := (ps.Format == XmlFormatEn) && strings.Contains(ps.Pattern, "walk")
+						condition := (ps.Format == XMLFormatEn) && strings.Contains(ps.Pattern, "walk")
 						return lo.Ternary(condition, nil,
 							fmt.Errorf("invalid combination, pattern: '%v'", ps.Pattern))
 					})
@@ -171,7 +171,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					paramSet.Native.Format = outputFormatEnum.Value()
 
 					result := paramSet.CrossValidate(func(ps *WidgetParameterSet) error {
-						condition := (ps.Format == XmlFormatEn) && strings.Contains(ps.Pattern, "foobar")
+						condition := (ps.Format == XMLFormatEn) && strings.Contains(ps.Pattern, "foobar")
 						return lo.Ternary(condition, nil,
 							fmt.Errorf("invalid combination, pattern: '%v'", ps.Pattern))
 					})

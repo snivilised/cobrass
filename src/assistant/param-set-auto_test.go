@@ -6,9 +6,10 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/spf13/cobra"
+
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/testhelpers"
-	"github.com/spf13/cobra"
 )
 
 // the auto version of param-set_test.go
@@ -490,11 +491,11 @@ var _ = Describe("ParamSet (auto)", func() {
 				Binder: func() {
 					paramSet.BindIPMask(
 						assistant.NewFlagInfo("ipmask", "m", ipmask("default")),
-						&paramSet.Native.IpMask,
+						&paramSet.Native.IPMask,
 					)
 				},
 				CommandLine: "--ipmask=255.255.255.0",
-				Assert:      func() { Expect(paramSet.Native.IpMask).To(BeEquivalentTo(ipmask("orion.net"))) },
+				Assert:      func() { Expect(paramSet.Native.IPMask).To(BeEquivalentTo(ipmask("orion.net"))) },
 			}),
 
 			Entry(nil, TcEntry{
@@ -502,11 +503,11 @@ var _ = Describe("ParamSet (auto)", func() {
 				Binder: func() {
 					paramSet.BindIPMask(
 						assistant.NewFlagInfo("ipmask", "", ipmask("default")),
-						&paramSet.Native.IpMask,
+						&paramSet.Native.IPMask,
 					)
 				},
 				CommandLine: "--ipmask=255.255.255.0",
-				Assert:      func() { Expect(paramSet.Native.IpMask).To(BeEquivalentTo(ipmask("orion.net"))) },
+				Assert:      func() { Expect(paramSet.Native.IPMask).To(BeEquivalentTo(ipmask("orion.net"))) },
 			}),
 
 			Entry(nil, TcEntry{
@@ -514,11 +515,11 @@ var _ = Describe("ParamSet (auto)", func() {
 				Binder: func() {
 					paramSet.BindIPNet(
 						assistant.NewFlagInfo("ipaddress", "i", ipnet("default")),
-						&paramSet.Native.IpAddress,
+						&paramSet.Native.IPAddress,
 					)
 				},
 				CommandLine: "--ipaddress=172.16.0.0",
-				Assert:      func() { Expect(paramSet.Native.IpAddress).ToNot(BeNil()) },
+				Assert:      func() { Expect(paramSet.Native.IPAddress).ToNot(BeNil()) },
 			}),
 
 			Entry(nil, TcEntry{
@@ -526,11 +527,11 @@ var _ = Describe("ParamSet (auto)", func() {
 				Binder: func() {
 					paramSet.BindIPNet(
 						assistant.NewFlagInfo("ipaddress", "", ipnet("default")),
-						&paramSet.Native.IpAddress,
+						&paramSet.Native.IPAddress,
 					)
 				},
 				CommandLine: "--ipaddress=172.16.0.0",
-				Assert:      func() { Expect(paramSet.Native.IpAddress).ToNot(BeNil()) },
+				Assert:      func() { Expect(paramSet.Native.IPAddress).ToNot(BeNil()) },
 			}),
 
 			Entry(nil, TcEntry{

@@ -44,13 +44,13 @@ var _ = Describe("Enum", func() {
 		})
 
 		It("🧪 should: create enum info", func() {
-			Expect(outputFormatEnumInfo.En("x")).To(Equal(XmlFormatEn))
-			Expect(outputFormatEnumInfo.En("xml")).To(Equal(XmlFormatEn))
+			Expect(outputFormatEnumInfo.En("x")).To(Equal(XMLFormatEn))
+			Expect(outputFormatEnumInfo.En("xml")).To(Equal(XMLFormatEn))
 
-			Expect(outputFormatEnumInfo.En("j")).To(Equal(JsonFormatEn))
-			Expect(outputFormatEnumInfo.En("json")).To(Equal(JsonFormatEn))
+			Expect(outputFormatEnumInfo.En("j")).To(Equal(JSONFormatEn))
+			Expect(outputFormatEnumInfo.En("json")).To(Equal(JSONFormatEn))
 
-			Expect(outputFormatEnumInfo.NameOf(XmlFormatEn)).To(Equal("xml"))
+			Expect(outputFormatEnumInfo.NameOf(XMLFormatEn)).To(Equal("xml"))
 		})
 
 		Context("EnumInfo", func() {
@@ -92,8 +92,8 @@ var _ = Describe("Enum", func() {
 					}()
 
 					invalidAcceptables := assistant.AcceptableEnumValues[OutputFormatEnum]{
-						XmlFormatEn:      []string{"xml", "x"},
-						JsonFormatEn:     []string{"json", "j"},
+						XMLFormatEn:      []string{"xml", "x"},
+						JSONFormatEn:     []string{"json", "j"},
 						TextFormatEn:     []string{"text", "tx", "x"},
 						ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
 					}
@@ -119,15 +119,15 @@ var _ = Describe("Enum", func() {
 				},
 				Entry(
 					nil, "all valid unique values", "return int enum slice",
-					[]string{"json", "text", "xml"}, []OutputFormatEnum{JsonFormatEn, TextFormatEn, XmlFormatEn},
+					[]string{"json", "text", "xml"}, []OutputFormatEnum{JSONFormatEn, TextFormatEn, XMLFormatEn},
 				),
 				Entry(
 					nil, "all valid same values", "return int enum slice",
-					[]string{"json", "json", "json"}, []OutputFormatEnum{JsonFormatEn, JsonFormatEn, JsonFormatEn},
+					[]string{"json", "json", "json"}, []OutputFormatEnum{JSONFormatEn, JSONFormatEn, JSONFormatEn},
 				),
 				Entry(
 					nil, "at least 1 entry invalid", "return int enum slice",
-					[]string{"blah", "json", "json"}, []OutputFormatEnum{OutputFormatEnum(0), JsonFormatEn, JsonFormatEn},
+					[]string{"blah", "json", "json"}, []OutputFormatEnum{OutputFormatEnum(0), JSONFormatEn, JSONFormatEn},
 				),
 			)
 
@@ -207,7 +207,7 @@ var _ = Describe("Enum", func() {
 					// The documentation of BindEnum does in fact instruct the reader to do so.
 					//
 					paramSet.Native.Format = outputFormatEnum.Value()
-					Expect(paramSet.Native.Format).To(Equal(XmlFormatEn))
+					Expect(paramSet.Native.Format).To(Equal(XMLFormatEn))
 					Expect(outputFormatEnum.String()).To(Equal("xml"))
 					Expect(outputFormatEnum.IsValid()).To(BeTrue())
 				})

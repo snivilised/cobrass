@@ -54,14 +54,15 @@ func (params *ParamSet[N]) BindDuration(info *FlagInfo, to *time.Duration) *Para
 // function to validate option values of time.Duration type.
 //
 func (params *ParamSet[N]) BindValidatedDuration(info *FlagInfo, to *time.Duration, validator DurationValidatorFn) OptionValidator {
-
 	params.BindDuration(info, to)
+
 	wrapper := DurationOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -84,14 +85,15 @@ func (params *ParamSet[N]) BindDurationSlice(info *FlagInfo, to *[]time.Duration
 // function to validate option values of []time.Duration type.
 //
 func (params *ParamSet[N]) BindValidatedDurationSlice(info *FlagInfo, to *[]time.Duration, validator DurationSliceValidatorFn) OptionValidator {
-
 	params.BindDurationSlice(info, to)
+
 	wrapper := DurationSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -131,14 +133,15 @@ func (params *ParamSet[N]) BindEnum(info *FlagInfo, to *string) *ParamSet[N] {
 // Please see the readme for more details.
 //
 func (params *ParamSet[N]) BindValidatedEnum(info *FlagInfo, to *string, validator EnumValidatorFn) OptionValidator {
-
 	params.BindEnum(info, to)
+
 	wrapper := StringOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -161,14 +164,15 @@ func (params *ParamSet[N]) BindFloat32(info *FlagInfo, to *float32) *ParamSet[N]
 // function to validate option values of float32 type.
 //
 func (params *ParamSet[N]) BindValidatedFloat32(info *FlagInfo, to *float32, validator Float32ValidatorFn) OptionValidator {
-
 	params.BindFloat32(info, to)
+
 	wrapper := Float32OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -191,14 +195,15 @@ func (params *ParamSet[N]) BindFloat32Slice(info *FlagInfo, to *[]float32) *Para
 // function to validate option values of []float32 type.
 //
 func (params *ParamSet[N]) BindValidatedFloat32Slice(info *FlagInfo, to *[]float32, validator Float32SliceValidatorFn) OptionValidator {
-
 	params.BindFloat32Slice(info, to)
+
 	wrapper := Float32SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -221,14 +226,15 @@ func (params *ParamSet[N]) BindFloat64(info *FlagInfo, to *float64) *ParamSet[N]
 // function to validate option values of float64 type.
 //
 func (params *ParamSet[N]) BindValidatedFloat64(info *FlagInfo, to *float64, validator Float64ValidatorFn) OptionValidator {
-
 	params.BindFloat64(info, to)
+
 	wrapper := Float64OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -251,14 +257,15 @@ func (params *ParamSet[N]) BindFloat64Slice(info *FlagInfo, to *[]float64) *Para
 // function to validate option values of []float64 type.
 //
 func (params *ParamSet[N]) BindValidatedFloat64Slice(info *FlagInfo, to *[]float64, validator Float64SliceValidatorFn) OptionValidator {
-
 	params.BindFloat64Slice(info, to)
+
 	wrapper := Float64SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -281,14 +288,15 @@ func (params *ParamSet[N]) BindInt(info *FlagInfo, to *int) *ParamSet[N] {
 // function to validate option values of int type.
 //
 func (params *ParamSet[N]) BindValidatedInt(info *FlagInfo, to *int, validator IntValidatorFn) OptionValidator {
-
 	params.BindInt(info, to)
+
 	wrapper := IntOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -311,14 +319,15 @@ func (params *ParamSet[N]) BindIntSlice(info *FlagInfo, to *[]int) *ParamSet[N] 
 // function to validate option values of []int type.
 //
 func (params *ParamSet[N]) BindValidatedIntSlice(info *FlagInfo, to *[]int, validator IntSliceValidatorFn) OptionValidator {
-
 	params.BindIntSlice(info, to)
+
 	wrapper := IntSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -341,14 +350,15 @@ func (params *ParamSet[N]) BindInt16(info *FlagInfo, to *int16) *ParamSet[N] {
 // function to validate option values of int16 type.
 //
 func (params *ParamSet[N]) BindValidatedInt16(info *FlagInfo, to *int16, validator Int16ValidatorFn) OptionValidator {
-
 	params.BindInt16(info, to)
+
 	wrapper := Int16OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -371,14 +381,15 @@ func (params *ParamSet[N]) BindInt32(info *FlagInfo, to *int32) *ParamSet[N] {
 // function to validate option values of int32 type.
 //
 func (params *ParamSet[N]) BindValidatedInt32(info *FlagInfo, to *int32, validator Int32ValidatorFn) OptionValidator {
-
 	params.BindInt32(info, to)
+
 	wrapper := Int32OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -401,14 +412,15 @@ func (params *ParamSet[N]) BindInt32Slice(info *FlagInfo, to *[]int32) *ParamSet
 // function to validate option values of []int32 type.
 //
 func (params *ParamSet[N]) BindValidatedInt32Slice(info *FlagInfo, to *[]int32, validator Int32SliceValidatorFn) OptionValidator {
-
 	params.BindInt32Slice(info, to)
+
 	wrapper := Int32SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -431,14 +443,15 @@ func (params *ParamSet[N]) BindInt64(info *FlagInfo, to *int64) *ParamSet[N] {
 // function to validate option values of int64 type.
 //
 func (params *ParamSet[N]) BindValidatedInt64(info *FlagInfo, to *int64, validator Int64ValidatorFn) OptionValidator {
-
 	params.BindInt64(info, to)
+
 	wrapper := Int64OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -461,14 +474,15 @@ func (params *ParamSet[N]) BindInt64Slice(info *FlagInfo, to *[]int64) *ParamSet
 // function to validate option values of []int64 type.
 //
 func (params *ParamSet[N]) BindValidatedInt64Slice(info *FlagInfo, to *[]int64, validator Int64SliceValidatorFn) OptionValidator {
-
 	params.BindInt64Slice(info, to)
+
 	wrapper := Int64SliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -491,14 +505,15 @@ func (params *ParamSet[N]) BindInt8(info *FlagInfo, to *int8) *ParamSet[N] {
 // function to validate option values of int8 type.
 //
 func (params *ParamSet[N]) BindValidatedInt8(info *FlagInfo, to *int8, validator Int8ValidatorFn) OptionValidator {
-
 	params.BindInt8(info, to)
+
 	wrapper := Int8OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -521,14 +536,15 @@ func (params *ParamSet[N]) BindIPMask(info *FlagInfo, to *net.IPMask) *ParamSet[
 // function to validate option values of net.IPMask type.
 //
 func (params *ParamSet[N]) BindValidatedIPMask(info *FlagInfo, to *net.IPMask, validator IPMaskValidatorFn) OptionValidator {
-
 	params.BindIPMask(info, to)
+
 	wrapper := IPMaskOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -551,14 +567,15 @@ func (params *ParamSet[N]) BindIPNet(info *FlagInfo, to *net.IPNet) *ParamSet[N]
 // function to validate option values of net.IPNet type.
 //
 func (params *ParamSet[N]) BindValidatedIPNet(info *FlagInfo, to *net.IPNet, validator IPNetValidatorFn) OptionValidator {
-
 	params.BindIPNet(info, to)
+
 	wrapper := IPNetOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -581,14 +598,15 @@ func (params *ParamSet[N]) BindString(info *FlagInfo, to *string) *ParamSet[N] {
 // function to validate option values of string type.
 //
 func (params *ParamSet[N]) BindValidatedString(info *FlagInfo, to *string, validator StringValidatorFn) OptionValidator {
-
 	params.BindString(info, to)
+
 	wrapper := StringOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -611,14 +629,15 @@ func (params *ParamSet[N]) BindStringSlice(info *FlagInfo, to *[]string) *ParamS
 // function to validate option values of []string type.
 //
 func (params *ParamSet[N]) BindValidatedStringSlice(info *FlagInfo, to *[]string, validator StringSliceValidatorFn) OptionValidator {
-
 	params.BindStringSlice(info, to)
+
 	wrapper := StringSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -641,14 +660,15 @@ func (params *ParamSet[N]) BindUint16(info *FlagInfo, to *uint16) *ParamSet[N] {
 // function to validate option values of uint16 type.
 //
 func (params *ParamSet[N]) BindValidatedUint16(info *FlagInfo, to *uint16, validator Uint16ValidatorFn) OptionValidator {
-
 	params.BindUint16(info, to)
+
 	wrapper := Uint16OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -671,14 +691,15 @@ func (params *ParamSet[N]) BindUint32(info *FlagInfo, to *uint32) *ParamSet[N] {
 // function to validate option values of uint32 type.
 //
 func (params *ParamSet[N]) BindValidatedUint32(info *FlagInfo, to *uint32, validator Uint32ValidatorFn) OptionValidator {
-
 	params.BindUint32(info, to)
+
 	wrapper := Uint32OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -701,14 +722,15 @@ func (params *ParamSet[N]) BindUint64(info *FlagInfo, to *uint64) *ParamSet[N] {
 // function to validate option values of uint64 type.
 //
 func (params *ParamSet[N]) BindValidatedUint64(info *FlagInfo, to *uint64, validator Uint64ValidatorFn) OptionValidator {
-
 	params.BindUint64(info, to)
+
 	wrapper := Uint64OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -731,14 +753,15 @@ func (params *ParamSet[N]) BindUint8(info *FlagInfo, to *uint8) *ParamSet[N] {
 // function to validate option values of uint8 type.
 //
 func (params *ParamSet[N]) BindValidatedUint8(info *FlagInfo, to *uint8, validator Uint8ValidatorFn) OptionValidator {
-
 	params.BindUint8(info, to)
+
 	wrapper := Uint8OptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -761,14 +784,15 @@ func (params *ParamSet[N]) BindUint(info *FlagInfo, to *uint) *ParamSet[N] {
 // function to validate option values of uint type.
 //
 func (params *ParamSet[N]) BindValidatedUint(info *FlagInfo, to *uint, validator UintValidatorFn) OptionValidator {
-
 	params.BindUint(info, to)
+
 	wrapper := UintOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 
@@ -791,14 +815,15 @@ func (params *ParamSet[N]) BindUintSlice(info *FlagInfo, to *[]uint) *ParamSet[N
 // function to validate option values of []uint type.
 //
 func (params *ParamSet[N]) BindValidatedUintSlice(info *FlagInfo, to *[]uint, validator UintSliceValidatorFn) OptionValidator {
-
 	params.BindUintSlice(info, to)
+
 	wrapper := UintSliceOptionValidator{
 		Fn:    validator,
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
 	}
 	params.validators.Add(info.FlagName(), wrapper)
+
 	return wrapper
 }
 

@@ -9,7 +9,7 @@ $types = @{
     Short              = "f"
     Def                = "xml"
     Assign             = "outputFormatEnum := outputFormatEnumInfo.NewValue()"
-    Setup              = "paramSet.Native.Format = XmlFormatEn"
+    Setup              = "paramSet.Native.Format = XMLFormatEn"
     BindTo             = "&outputFormatEnum.Source"
     Assert             = "Expect(value).To(Equal(""xml""))"
     QuoteExpect        = $true
@@ -293,8 +293,8 @@ $types = @{
     FlagName       = "Offset8"
     Short          = "o"
     Def            = "int8(-1)"
-    Setup          = "paramSet.Native.Offset8 = int8({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(int8({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Offset8 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "-99"
@@ -316,8 +316,8 @@ $types = @{
     FlagName       = "Offset16"
     Short          = "o"
     Def            = "int16(-1)"
-    Setup          = "paramSet.Native.Offset16 = int16({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(int16({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Offset16 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "-999"
@@ -339,8 +339,8 @@ $types = @{
     FlagName       = "Offset32"
     Short          = "o"
     Def            = "int32(-1)"
-    Setup          = "paramSet.Native.Offset32 = int32({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(int32({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Offset32 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "-9999"
@@ -369,8 +369,8 @@ $types = @{
     FlagName       = "Offset64"
     Short          = "o"
     Def            = "int64(-1)"
-    Setup          = "paramSet.Native.Offset64 = int64({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(int64({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Offset64 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "-99999"
@@ -399,8 +399,8 @@ $types = @{
     FlagName       = "Count"
     Short          = "c"
     Def            = "uint(0)"
-    Setup          = "paramSet.Native.Count = uint({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(uint({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Count = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "99999"
@@ -428,8 +428,8 @@ $types = @{
     FlagName       = "Count8"
     Short          = "c"
     Def            = "uint8(0)"
-    Setup          = "paramSet.Native.Count8 = uint8({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(uint8({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Count8 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "33"
@@ -451,8 +451,8 @@ $types = @{
     FlagName       = "Count16"
     Short          = "c"
     Def            = "uint16(0)"
-    Setup          = "paramSet.Native.Count16 = uint16({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(uint16({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Count16 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "333"
@@ -474,8 +474,8 @@ $types = @{
     FlagName       = "Count32"
     Short          = "c"
     Def            = "uint32(0)"
-    Setup          = "paramSet.Native.Count32 = uint32({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(uint32({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Count32 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "3333"
@@ -497,8 +497,8 @@ $types = @{
     FlagName       = "Count64"
     Short          = "c"
     Def            = "uint64(0)"
-    Setup          = "paramSet.Native.Count64 = uint64({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(uint64({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Count64 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "33333"
@@ -520,8 +520,8 @@ $types = @{
     FlagName       = "Gradientf32"
     Short          = "t"
     Def            = "float32(0)"
-    Setup          = "paramSet.Native.Gradientf32 = float32({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(float32({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Gradientf32 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "32.0"
@@ -550,8 +550,8 @@ $types = @{
     FlagName       = "Gradientf64"
     Short          = "t"
     Def            = "float64(0)"
-    Setup          = "paramSet.Native.Gradientf64 = float64({{OPTION-VALUE}})"
-    Assert         = "Expect(value).To(Equal(float64({{OPTION-VALUE}})))"
+    Setup          = "paramSet.Native.Gradientf64 = {{OPTION-VALUE}}"
+    Assert         = "Expect(value).To(Equal({{OPTION-VALUE}}))"
     Equate         = "Equal"
     Validatable    = $true
     OptionValue    = "64.1234"
@@ -706,10 +706,10 @@ $types = @{
   "IPNet"    = [PSCustomObject]@{
     TypeName         = "IPNet"
     GoType           = "net.IPNet"
-    FlagName         = "IpAddress"
+    FlagName         = "IPAddress"
     Short            = "i"
     Def              = "ipnet(""default"")"
-    Setup            = "paramSet.Native.IpAddress = {{OPTION-VALUE}}"
+    Setup            = "paramSet.Native.IPAddress = {{OPTION-VALUE}}"
     Assert           = "Expect(value).To(BeEquivalentTo({{OPTION-VALUE}}))"
     Equate           = "BeEquivalentTo"
     Validatable      = $true
@@ -717,17 +717,17 @@ $types = @{
     CommandLineValue = "172.16.0.0"
     #
     PsTcEntry        = [PSCustomObject]@{
-      AssertFn = "func() { Expect(paramSet.Native.IpAddress).ToNot(BeNil()) }"
+      AssertFn = "func() { Expect(paramSet.Native.IPAddress).ToNot(BeNil()) }"
     }
   }
 
   "IPMask"   = [PSCustomObject]@{
     TypeName         = "IPMask"
     GoType           = "net.IPMask"
-    FlagName         = "IpMask"
+    FlagName         = "IPMask"
     Short            = "m"
     Def              = "ipmask(""default"")"
-    Setup            = "paramSet.Native.IpMask = {{OPTION-VALUE}}"
+    Setup            = "paramSet.Native.IPMask = {{OPTION-VALUE}}"
     Assert           = "Expect(value).To(BeEquivalentTo({{OPTION-VALUE}}))"
     Equate           = "BeEquivalentTo"
     Validatable      = $true
@@ -1003,14 +1003,15 @@ func (params *ParamSet[N]) Bind$($spec.TypeName)(info *FlagInfo, to *$($spec.GoT
 // function to validate option values of $($displayType) type.
 //$($spec.BindValidatedDoc)
 func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$($spec.GoType), validator $($validatorFn)) OptionValidator {
-
   params.Bind$($spec.TypeName)(info, to)
+
   wrapper := $($actualTypeName)OptionValidator{
     Fn:    validator,
     Value: to,
     Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
+
   return wrapper
 }
 
@@ -1055,14 +1056,15 @@ func (params *ParamSet[N]) Bind$($sliceTypeName)(info *FlagInfo, to *$($sliceTyp
 // function to validate option values of $sliceType type.
 //
 func (params *ParamSet[N]) BindValidated$($sliceTypeName)(info *FlagInfo, to *$($sliceType), validator $($sliceValidatorFn)) OptionValidator {
-
   params.Bind$($sliceTypeName)(info, to)
+
   wrapper := $($sliceTypeName)OptionValidator{
     Fn:    validator,
     Value: to,
     Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
+
   return wrapper
 }
 
@@ -1350,8 +1352,8 @@ function Build-BinderHelpers {
 // This method $($op.Documentation).
 // 
 func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$($spec.GoType), $($argumentsStmt)) OptionValidator {
-
   params.Bind$($spec.TypeName)(info, to)
+
   wrapper := GenericOptionValidatorWrapper[$($spec.GoType)]{
     Fn: func(value $($spec.GoType), flag *pflag.Flag) error {
       if $($op.Condition) {
@@ -1363,6 +1365,7 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
     Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
+
   return wrapper
 }
 
@@ -1391,8 +1394,8 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
 // This method performs the inverse of 'BindValidated$($methodSubStmt)'.
 //
 func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to *$($spec.GoType), $($argumentsStmt)) OptionValidator {
-
   params.Bind$($spec.TypeName)(info, to)
+
   wrapper := GenericOptionValidatorWrapper[$($spec.GoType)]{
     Fn: func(value $($spec.GoType), flag *pflag.Flag) error {
       if $($negatedCondition) {
@@ -1404,6 +1407,7 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
     Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
   }
   params.validators.Add(info.FlagName(), wrapper)
+
   return wrapper
 }
 
@@ -1629,7 +1633,7 @@ DescribeTable("BindValidated$($side.Method)",
 
             $testTable = @"
 DescribeTable("BindValidated$($side.Method)",
-  func(given, should string, value $($spec.GoType), expectNil bool, pattern, $($spec.GoType) string) {
+  func(given, should string, value $($spec.GoType), expectNil bool, pattern, dummy $($spec.GoType)) {
     validator := paramSet.BindValidated$($side.Method)(
       assistant.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), pattern,
