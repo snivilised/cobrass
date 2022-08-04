@@ -50,6 +50,7 @@ func extractNameFromUsage(usage string) string {
 	if i >= 0 {
 		name = name[:i]
 	}
+
 	return name
 }
 
@@ -57,7 +58,6 @@ func extractNameFromUsage(usage string) string {
 // is to be defined on the default flag set, ie the one on command.Flags().
 //
 func NewFlagInfo(usage string, short string, def any) *FlagInfo {
-
 	return &FlagInfo{
 		Name:    extractNameFromUsage(usage),
 		Usage:   usage,
@@ -71,7 +71,6 @@ func NewFlagInfo(usage string, short string, def any) *FlagInfo {
 // other than that of command.Flags(), eg command.PersistentFlags().
 //
 func NewFlagInfoOnFlagSet(usage string, short string, def any, alternativeFlagSet *pflag.FlagSet) *FlagInfo {
-
 	return &FlagInfo{
 		Name:               extractNameFromUsage(usage),
 		Usage:              usage,
@@ -81,7 +80,7 @@ func NewFlagInfoOnFlagSet(usage string, short string, def any, alternativeFlagSe
 	}
 }
 
-// FlagName returns the name of the flag derived from the Usage
+// FlagName returns the name of the flag derived from the Usage.
 //
 func (info *FlagInfo) FlagName() string {
 	return info.Name
@@ -117,7 +116,7 @@ func (info *FlagInfo) FlagName() string {
 // ... is known as the 'native' parameter set for a 'widget' command which
 // would be used to instantiate ParamSet in a declaration as follows:
 //
-// var paramSet *ParamSet[WidgetParameterSet]
+// var paramSet *ParamSet[WidgetParameterSet].
 //
 type ParamSet[N any] struct {
 	validators *ValidatorContainer
@@ -152,7 +151,9 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 
 		panic(getParamSetMustBeStructErrorMessage(command.Name(), typeName))
 	}
+
 	ps.validators = NewValidatorContainer()
+
 	return ps
 }
 

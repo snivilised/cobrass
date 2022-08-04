@@ -4,8 +4,9 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/snivilised/cobrass/src/utils"
 	"github.com/spf13/cobra"
+
+	"github.com/snivilised/cobrass/src/utils"
 )
 
 // CobraCommandSpec is a wrapper around the cobra command, require to register
@@ -45,7 +46,6 @@ func NewCobraContainer(root *cobra.Command) *CobraContainer {
 func (container *CobraContainer) insert(command *cobra.Command) error {
 	name := command.Name()
 	if _, exists := container.commands[name]; exists {
-
 		return errors.New(getCommandAlreadyRegisteredErrorMessage(name))
 	}
 
@@ -62,24 +62,23 @@ func (container *CobraContainer) insert(command *cobra.Command) error {
 //
 // - command: the Cobra command to register.
 //
-// panics if the there is no command currently registered with the name of parent
+// panics if the there is no command currently registered with the name of parent.
 //
 func (container *CobraContainer) MustRegisterCommand(parent string, command *cobra.Command) {
-
 	if pc := container.Command(parent); pc != nil {
 		if err := container.insert(command); err != nil {
 			panic(err)
 		}
+
 		pc.AddCommand(command)
 	} else {
 		panic(getParentCommandNotRegisteredErrorMessage(parent))
 	}
 }
 
-// MustRegisterCommands invokes MustRegisterCommand for each command in the list
+// MustRegisterCommands invokes MustRegisterCommand for each command in the list.
 //
 func (container *CobraContainer) MustRegisterCommands(parent string, specs ...*CobraCommandSpec) {
-
 	for _, spec := range specs {
 		container.MustRegisterCommand(parent, spec.Command)
 	}
@@ -102,14 +101,14 @@ func (container *CobraContainer) MustRegisterRootedCommand(command *cobra.Comman
 //
 // - name: the name of the command to check.
 //
-// Returns true if present, false otherwise
+// Returns true if present, false otherwise.
 //
 func (container *CobraContainer) IsPresent(name string) bool {
 	_, exists := container.commands[name]
 	return exists
 }
 
-// Root returns the root command
+// Root returns the root command.
 //
 func (container *CobraContainer) Root() *cobra.Command {
 	return container.root
@@ -120,12 +119,13 @@ func (container *CobraContainer) Root() *cobra.Command {
 // - name: the name of the Cobra command to check. The name can be derived by
 // calling the Name() function on the cobra command.
 //
-// Returns the command identified by the name, nil if the command does not exist
+// Returns the command identified by the name, nil if the command does not exist.
 //
 func (container *CobraContainer) Command(name string) *cobra.Command {
 	if name == container.root.Name() {
 		return container.Root()
 	}
+
 	command, exists := container.commands[name]
 
 	return utils.TernaryIf(exists, command, nil)
@@ -139,7 +139,6 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 // an inappropriate type.
 //
 func (container *CobraContainer) MustRegisterParamSet(name string, ps any) {
-
 	if _, exists := container.paramSets[name]; exists {
 		panic(getParamSetAlreadyRegisteredErrorMessage(name))
 	}
@@ -159,10 +158,9 @@ func (container *CobraContainer) MustRegisterParamSet(name string, ps any) {
 	container.paramSets[name] = ps
 }
 
-// Native retrieves the Native parameter set that was previously registered
+// Native retrieves the Native parameter set that was previously registered.
 //
 func (container *CobraContainer) Native(name string) any {
-
 	// Need to use reflection to get the Native property. The collection of
 	// parameter sets can't be defined as a generic, because collections
 	// of generics are homogeneous, but we need a heterogeneous collection of
@@ -173,20 +171,20 @@ func (container *CobraContainer) Native(name string) any {
 		paramSetStruct := reflect.ValueOf(paramSet).Elem()
 
 		return paramSetStruct.FieldByName("Native").Interface()
-	} else {
-		panic(getParamSetNotFoundErrorMessage(name))
 	}
+
+	panic(getParamSetNotFoundErrorMessage(name))
 }
 
 // MustGetParamSet like Native, except that it returns the parameter set
 // wrapper. The client must perform a type assertion on the
 // returned pointer to translate it back into the native type,
-// ie MustGetParamSet[N] (as opposed to N)
+// ie MustGetParamSet[N] (as opposed to N).
 //
 func (container *CobraContainer) MustGetParamSet(name string) any {
 	if paramSet, found := container.paramSets[name]; found {
 		return paramSet
-	} else {
-		panic(getParamSetNotFoundErrorMessage(name))
 	}
+
+	panic(getParamSetNotFoundErrorMessage(name))
 }

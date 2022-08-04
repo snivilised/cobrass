@@ -11,8 +11,8 @@ import (
 type OutputFormatEnum int
 
 const (
-	XmlFormatEn OutputFormatEnum = iota + 1
-	JsonFormatEn
+	XMLFormatEn OutputFormatEnum = iota + 1
+	JSONFormatEn
 	TextFormatEn
 	ScribbleFormatEn
 )
@@ -38,8 +38,8 @@ type WidgetParameterSet struct {
 	Gradientf32 float32
 	Gradientf64 float64
 	Latency     time.Duration
-	IpAddress   net.IPNet
-	IpMask      net.IPMask
+	IPAddress   net.IPNet
+	IPMask      net.IPMask
 	//
 	// some slice types are missing eg, Offsets16, because that slice type is not
 	// supported by pflag; ie there is no Int16SliceVar/Int16SliceVarP
@@ -66,6 +66,7 @@ func duration(d string) time.Duration {
 
 func ipmask(v string) net.IPMask {
 	var result net.IPMask
+
 	switch v {
 	case "default":
 		result = net.IPMask([]byte{0, 0, 0, 0})
@@ -82,6 +83,7 @@ func ipmask(v string) net.IPMask {
 
 func ipnet(v string) net.IPNet {
 	var result net.IPNet
+
 	switch v {
 	case "default":
 		result = net.IPNet{IP: net.IPv4(0, 0, 0, 0), Mask: ipmask(v)}
@@ -97,8 +99,8 @@ func ipnet(v string) net.IPNet {
 }
 
 var AcceptableOutputFormats = assistant.AcceptableEnumValues[OutputFormatEnum]{
-	XmlFormatEn:      []string{"xml", "x"},
-	JsonFormatEn:     []string{"json", "j"},
+	XMLFormatEn:      []string{"xml", "x"},
+	JSONFormatEn:     []string{"json", "j"},
 	TextFormatEn:     []string{"text", "tx"},
 	ScribbleFormatEn: []string{"scribble", "scribbler", "scr"},
 }

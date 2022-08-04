@@ -5,8 +5,9 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/spf13/cobra"
+
+	"github.com/snivilised/cobrass/src/assistant"
 )
 
 var _ = Describe("CobraContainer", func() {

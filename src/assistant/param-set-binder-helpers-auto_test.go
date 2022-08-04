@@ -6,8 +6,9 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/spf13/cobra"
+
+	"github.com/snivilised/cobrass/src/assistant"
 )
 
 var _ = Describe("ParamSetBinderHelpers", func() {
@@ -1672,7 +1673,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringIsMatch",
-			func(given, should string, value string, expectNil bool, pattern, string string) {
+			func(given, should string, value string, expectNil bool, pattern, dummy string) {
 				validator := paramSet.BindValidatedStringIsMatch(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, pattern,
@@ -1694,7 +1695,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringIsNotMatch",
-			func(given, should string, value string, expectNil bool, pattern, string string) {
+			func(given, should string, value string, expectNil bool, pattern, dummy string) {
 				validator := paramSet.BindValidatedStringIsNotMatch(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, pattern,

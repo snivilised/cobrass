@@ -75,13 +75,13 @@ func UseTag(tag language.Tag) error {
 	return nil
 }
 
-// GetLanguageInfo gets LanguageInfo
+// GetLanguageInfo gets LanguageInfo.
 //
 func GetLanguageInfo() *LanguageInfo {
 	return languages
 }
 
-// GetLocaliser gets the current go-i18n localizer instance
+// GetLocaliser gets the current go-i18n localizer instance.
 //
 func GetLocaliser() *i18n.Localizer {
 	return localiser
@@ -125,7 +125,6 @@ func createInitialLanguageInfo() *LanguageInfo {
 }
 
 func createIncrementalLanguageInfo(requested language.Tag, existing *LanguageInfo) *LanguageInfo {
-
 	return &LanguageInfo{
 		Default:   language.BritishEnglish,
 		Detected:  existing.Detected,
@@ -136,11 +135,11 @@ func createIncrementalLanguageInfo(requested language.Tag, existing *LanguageInf
 }
 
 func createLocaliser(li *LanguageInfo) *i18n.Localizer {
-	bundle := i18n.NewBundle(languages.Current)
+	bundle := i18n.NewBundle(li.Current)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
 	bundle.MustLoadMessageFile("./internal/l10n/out/active.en-US.json")
 
-	supported := lo.Map(languages.Supported, func(t language.Tag, _ int) string {
+	supported := lo.Map(li.Supported, func(t language.Tag, _ int) string {
 		return t.String()
 	})
 
@@ -160,37 +159,38 @@ func getLanguageNotSupportedErrorMessage(tag language.Tag) string {
 	data := l10n.LanguageNotSupportedTemplData{
 		Language: tag.String(),
 	}
+
 	return localise(data)
 }
 
 // --- already exists, invalid enum info specified
 
 func getEnumValueAlreadyExistsErrorMessage(value string, number int) string {
-
 	data := l10n.EnumValueValueAlreadyExistsTemplData{
 		Value:  value,
 		Number: number,
 	}
+
 	return localise(data)
 }
 
 // --- is not a valid enum value
 
 func getIsNotValidEnumValueErrorMessage(source string) string {
-
 	data := l10n.IsNotValidEnumValueTemplData{
 		Source: source,
 	}
+
 	return localise(data)
 }
 
 // --- failed to add validator for flag, because it already exists
 
 func getFailedToGetValidatorForFlagAlreadyExistsErrorMessage(flag string) string {
-
 	data := l10n.FailedToAddValidatorAlreadyExistsTemplData{
 		Flag: flag,
 	}
+
 	return localise(data)
 }
 
@@ -200,167 +200,166 @@ func getCommandAlreadyRegisteredErrorMessage(name string) string {
 	data := l10n.CommandAlreadyRegisteredTemplData{
 		Name: name,
 	}
+
 	return localise(data)
 }
 
 // --- parent command not registered
 
 func getParentCommandNotRegisteredErrorMessage(parent string) string {
-
 	data := l10n.CommandAlreadyRegisteredTemplData{
 		Name: parent,
 	}
+
 	return localise(data)
 }
-
-// !!!!???
 
 // --- param set already registered
 
 func getParamSetAlreadyRegisteredErrorMessage(name string) string {
-
 	data := l10n.ParamSetAlreadyRegisteredTemplData{
 		Name: name,
 	}
+
 	return localise(data)
 }
 
 // --- param set must be struct
 
 func getParamSetMustBeStructErrorMessage(name string, actualType string) string {
-
 	data := l10n.ParamSetObjectMustBeStructTemplData{
 		Name: name,
 		Type: actualType,
 	}
+
 	return localise(data)
 }
 
-// !!! --- param set must be pointer
+// --- param set must be pointer
 
 func getParamSetMustBePointerErrorMessage(name, actualType string) string {
-
 	data := l10n.ParamSetObjectMustBePointerTemplData{
 		Name: name,
 		Type: actualType,
 	}
+
 	return localise(data)
 }
 
 // --- param set not found
 
 func getParamSetNotFoundErrorMessage(name string) string {
-
 	data := l10n.ParamSetNotFoundTemplData{
 		Name: name,
 	}
+
 	return localise(data)
 }
 
 // --- Within
 
 func getWithinErrorMessage(flag string, value, lo, hi any) string {
-
 	data := l10n.WithinOptValidationTemplData{
 		OutOfRangeOV: l10n.OutOfRangeOV{
 			Flag: flag, Value: value, Lo: lo, Hi: hi,
 		},
 	}
+
 	return localise(data)
 }
 
 func getNotWithinErrorMessage(flag string, value, lo, hi any) string {
-
 	data := l10n.NotWithinOptValidationTemplData{
 		OutOfRangeOV: l10n.OutOfRangeOV{
 			Flag: flag, Value: value, Lo: lo, Hi: hi,
 		},
 	}
+
 	return localise(data)
 }
 
 // --- Containment
 
 func getContainsErrorMessage[T any](flag string, value T, collection []T) string {
-
 	data := l10n.ContainsOptValidationTemplData[T]{
 		ContainmentOV: l10n.ContainmentOV[T]{
 			Flag: flag, Value: value, Collection: collection,
 		},
 	}
+
 	return localise(data)
 }
 
 func getNotContainsErrorMessage[T any](flag string, value T, collection []T) string {
-
 	data := l10n.NotContainsOptValidationTemplData[T]{
 		ContainmentOV: l10n.ContainmentOV[T]{
 			Flag: flag, Value: value, Collection: collection,
 		},
 	}
+
 	return localise(data)
 }
 
 // --- Match
 
 func getMatchErrorMessage(flag string, value string, pattern string) string {
-
 	data := l10n.MatchOptValidationTemplData{
 		MatchOV: l10n.MatchOV{
 			Flag: flag, Value: value, Pattern: pattern,
 		},
 	}
+
 	return localise(data)
 }
 
 func getNotMatchErrorMessage(flag string, value string, pattern string) string {
-
 	data := l10n.NotMatchOptValidationTemplData{
 		MatchOV: l10n.MatchOV{
 			Flag: flag, Value: value, Pattern: pattern,
 		},
 	}
+
 	return localise(data)
 }
 
 // --- Relational
 
 func getGreaterThanErrorMessage(flag string, value, threshold any) string {
-
 	data := l10n.GreaterThanOptValidationTemplData{
 		RelationalOV: l10n.RelationalOV{
 			Flag: flag, Value: value, Threshold: threshold,
 		},
 	}
+
 	return localise(data)
 }
 
 func getAtLeastErrorMessage(flag string, value, threshold any) string {
-
 	data := l10n.AtLeastOptValidationTemplData{
 		RelationalOV: l10n.RelationalOV{
 			Flag: flag, Value: value, Threshold: threshold,
 		},
 	}
+
 	return localise(data)
 }
 
 func getLessThanErrorMessage(flag string, value, threshold any) string {
-
 	data := l10n.LessThanOptValidationTemplData{
 		RelationalOV: l10n.RelationalOV{
 			Flag: flag, Value: value, Threshold: threshold,
 		},
 	}
+
 	return localise(data)
 }
 
 func getAtMostErrorMessage(flag string, value, threshold any) string {
-
 	data := l10n.AtMostOptValidationTemplData{
 		RelationalOV: l10n.RelationalOV{
 			Flag: flag, Value: value, Threshold: threshold,
 		},
 	}
+
 	return localise(data)
 }

@@ -7,8 +7,9 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/snivilised/cobrass/src/testhelpers"
 	"github.com/spf13/cobra"
+
+	"github.com/snivilised/cobrass/src/testhelpers"
 )
 
 func emptyRun(*cobra.Command, []string) {}

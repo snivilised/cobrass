@@ -11,7 +11,7 @@ type ValidatorContainer struct {
 	validators ValidatorCollection
 }
 
-// ValidatorContainerOptions creation options
+// ValidatorContainerOptions creation options.
 //
 type ValidatorContainerOptions struct {
 	// Size internal collection is initialised to
@@ -28,7 +28,6 @@ type ValidatorContainerOptionFn func(o *ValidatorContainerOptions)
 // To use default behaviour, invoke with no parameters.
 //
 func NewValidatorContainer(options ...ValidatorContainerOptionFn) *ValidatorContainer {
-
 	option := ValidatorContainerOptions{
 		Size: uint(1),
 	}
@@ -48,10 +47,10 @@ func NewValidatorContainer(options ...ValidatorContainerOptionFn) *ValidatorCont
 //
 func (container ValidatorContainer) Add(flag string, validator OptionValidator) {
 	if _, found := container.validators[flag]; found {
-
 		message := fmt.Errorf(getFailedToGetValidatorForFlagAlreadyExistsErrorMessage(flag))
 		panic(message)
 	}
+
 	container.validators[flag] = validator
 }
 
@@ -62,6 +61,7 @@ func (container ValidatorContainer) Get(flag string) OptionValidator {
 	if validator, found := container.validators[flag]; found {
 		return validator
 	}
+
 	return nil
 }
 
@@ -69,7 +69,6 @@ func (container ValidatorContainer) Get(flag string) OptionValidator {
 // in turn, invokes the client defined validator function.
 //
 func (container ValidatorContainer) run() error {
-
 	for _, validator := range container.validators {
 		if err := validator.Validate(); err != nil {
 			return err
