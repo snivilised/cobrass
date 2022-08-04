@@ -6,6 +6,7 @@
 [![Go report](https://goreportcard.com/badge/github.com/snivilised/cobrass)](https://goreportcard.com/report/github.com/snivilised/cobrass)
 [![Coverage Status](https://coveralls.io/repos/github/snivilised/cobrass/badge.svg?branch=master)](https://coveralls.io/github/snivilised/cobrass?branch=master&kill_cache=1)
 [![Cobrass Continuous Integration](https://github.com/snivilised/cobrass/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/snivilised/cobrass/actions/workflows/ci-workflow.yml)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 <!-- MD013/Line Length -->
 <!-- MarkDownLint-disable MD013 -->
