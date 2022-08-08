@@ -1,4 +1,4 @@
-package l10n
+package translate
 
 import (
 	"github.com/nicksnyder/go-i18n/v2/i18n"

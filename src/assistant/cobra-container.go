@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/snivilised/cobrass/src/assistant/translate"
 	"github.com/snivilised/cobrass/src/utils"
 )
 
@@ -46,7 +47,7 @@ func NewCobraContainer(root *cobra.Command) *CobraContainer {
 func (container *CobraContainer) insert(command *cobra.Command) error {
 	name := command.Name()
 	if _, exists := container.commands[name]; exists {
-		return errors.New(getCommandAlreadyRegisteredErrorMessage(name))
+		return errors.New(translate.GetCommandAlreadyRegisteredErrorMessage(name))
 	}
 
 	container.commands[name] = command
@@ -72,7 +73,7 @@ func (container *CobraContainer) MustRegisterCommand(parent string, command *cob
 
 		pc.AddCommand(command)
 	} else {
-		panic(getParentCommandNotRegisteredErrorMessage(parent))
+		panic(translate.GetParentCommandNotRegisteredErrorMessage(parent))
 	}
 }
 
@@ -140,19 +141,19 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 //
 func (container *CobraContainer) MustRegisterParamSet(name string, ps any) {
 	if _, exists := container.paramSets[name]; exists {
-		panic(getParamSetAlreadyRegisteredErrorMessage(name))
+		panic(translate.GetParamSetAlreadyRegisteredErrorMessage(name))
 	}
 
 	if reflect.TypeOf(ps).Kind() != reflect.Ptr {
 		typeOf := reflect.TypeOf(ps)
 
-		panic(getParamSetMustBePointerErrorMessage(name, typeOf.String()))
+		panic(translate.GetParamSetMustBePointerErrorMessage(name, typeOf.String()))
 	}
 
 	if reflect.TypeOf(ps).Elem().Kind() != reflect.Struct {
 		typeOf := reflect.TypeOf(ps)
 
-		panic(getParamSetMustBeStructErrorMessage(name, typeOf.String()))
+		panic(translate.GetParamSetMustBeStructErrorMessage(name, typeOf.String()))
 	}
 
 	container.paramSets[name] = ps
@@ -173,7 +174,7 @@ func (container *CobraContainer) Native(name string) any {
 		return paramSetStruct.FieldByName("Native").Interface()
 	}
 
-	panic(getParamSetNotFoundErrorMessage(name))
+	panic(translate.GetParamSetNotFoundErrorMessage(name))
 }
 
 // MustGetParamSet like Native, except that it returns the parameter set
@@ -186,5 +187,5 @@ func (container *CobraContainer) MustGetParamSet(name string) any {
 		return paramSet
 	}
 
-	panic(getParamSetNotFoundErrorMessage(name))
+	panic(translate.GetParamSetNotFoundErrorMessage(name))
 }
