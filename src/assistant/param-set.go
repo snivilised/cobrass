@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/src/assistant/translate"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -149,7 +150,7 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 	if reflect.TypeOf(*ps.Native).Kind() != reflect.Struct {
 		typeName := reflect.TypeOf(*ps.Native).Name()
 
-		panic(getParamSetMustBeStructErrorMessage(command.Name(), typeName))
+		panic(translate.GetParamSetMustBeStructErrorMessage(command.Name(), typeName))
 	}
 
 	ps.validators = NewValidatorContainer()

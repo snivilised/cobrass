@@ -1,4 +1,4 @@
-package assistant_test
+package translate_test
 
 import (
 	"strings"
@@ -11,8 +11,8 @@ import (
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 
-	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/internal/l10n"
+	"github.com/snivilised/cobrass/src/assistant/translate"
 )
 
 func ShowDaysRemaining(p *message.Printer, days int) string {
@@ -25,24 +25,24 @@ func ShowInternationalisation(p *message.Printer, to string) string {
 
 var _ = Describe("i18n", func() {
 
-	var languages *assistant.LanguageInfo
+	var languages *translate.LanguageInfo
 	var printer *message.Printer
 
 	Context("UseTag", func() {
 		When("given: tag is supported", func() {
 			It("🧪 should: not return error", func() {
 				us := language.AmericanEnglish
-				Expect(assistant.UseTag(us)).Error().To(BeNil())
-				Expect(assistant.GetLanguageInfo().Current).To(Equal(us))
+				Expect(translate.UseTag(us)).Error().To(BeNil())
+				Expect(translate.GetLanguageInfo().Current).To(Equal(us))
 			})
 
 			It("🧪 should: localise in requested non default language", func() {
-				_ = assistant.UseTag(language.AmericanEnglish)
+				_ = translate.UseTag(language.AmericanEnglish)
 				data := l10n.LessThanOptValidationTemplData{
 					RelationalOV: l10n.RelationalOV{Flag: "flag", Value: 1, Threshold: 2},
 				}
 
-				_, tag, _ := assistant.GetLocaliser().LocalizeWithTag(&i18n.LocalizeConfig{
+				_, tag, _ := translate.GetLocaliser().LocalizeWithTag(&i18n.LocalizeConfig{
 					DefaultMessage: data.Message(),
 					TemplateData:   data,
 				})
@@ -53,7 +53,7 @@ var _ = Describe("i18n", func() {
 		When("given: tag is NOT supported", func() {
 			It("🧪 should: return error", func() {
 				es := language.MustParse("es")
-				Expect(assistant.UseTag(es)).Error().ToNot(BeNil())
+				Expect(translate.UseTag(es)).Error().ToNot(BeNil())
 			})
 		})
 	})
@@ -89,7 +89,7 @@ var _ = Describe("i18n", func() {
 			It("🧪 should: show translated text", func() {
 				printer = message.NewPrinter(language.AmericanEnglish)
 
-				_ = assistant.UseTag(language.AmericanEnglish)
+				_ = translate.UseTag(language.AmericanEnglish)
 				msg := ShowInternationalisation(printer, "earthlings")
 				const expected = "greetings 'earthlings', welcome to internationalization"
 				Expect(msg).To(Equal(expected))
@@ -99,7 +99,7 @@ var _ = Describe("i18n", func() {
 
 	Describe("pluralisation example", Ordered, func() {
 		BeforeAll(func() {
-			languages = assistant.GetLanguageInfo()
+			languages = translate.GetLanguageInfo()
 
 			// "one"/ "other" are known as selectors
 			// "You have %d day remaining" is the message
@@ -122,7 +122,7 @@ var _ = Describe("i18n", func() {
 			GinkgoWriter.Println(ShowDaysRemaining(printer, 1))
 			GinkgoWriter.Println(ShowDaysRemaining(printer, 22))
 
-			_ = assistant.UseTag(language.AmericanEnglish)
+			_ = translate.UseTag(language.AmericanEnglish)
 			GinkgoWriter.Println(ShowDaysRemaining(printer, 333))
 		})
 	})
@@ -221,7 +221,7 @@ var _ = Describe("i18n", func() {
 				// using map of any, is more concise, but not type safe. Any coding errors
 				// won't make themselves apparent until runtime.
 				//
-				localised := assistant.GetLocaliser().MustLocalize(&i18n.LocalizeConfig{
+				localised := translate.GetLocaliser().MustLocalize(&i18n.LocalizeConfig{
 					DefaultMessage: violationMsg,
 					TemplateData:   map[string]any{"Flag": "Strike", "Value": 999, "Lo": 1, "Hi": 99},
 				})
@@ -240,7 +240,7 @@ var _ = Describe("i18n", func() {
 				// using a template is not as concise as a map of any, but it is typesafe
 				// so is the much preferred solution.
 				//
-				localised := assistant.GetLocaliser().MustLocalize(&i18n.LocalizeConfig{
+				localised := translate.GetLocaliser().MustLocalize(&i18n.LocalizeConfig{
 					DefaultMessage: violationMsg,
 					TemplateData: l10n.WithinOptValidationTemplData{
 						OutOfRangeOV: l10n.OutOfRangeOV{Flag: "Strike", Value: 999, Lo: 1, Hi: 99},

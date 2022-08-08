@@ -748,7 +748,7 @@ $types = @{
     ErrorMessage       = "out of range"
     ArgsPlaceholder    = "[%v]..[%v]"
     ErrorArgs          = "lo, hi"
-    ErrorTempl         = "get{{Not}}WithinErrorMessage"
+    ErrorTempl         = "Get{{Not}}WithinErrorMessage"
     Comment            = "option value must be within the range"
     #
     Negate             = $true
@@ -767,7 +767,7 @@ $types = @{
     ErrorMessage         = "not a member of"
     ArgsPlaceholder      = "[%v]"
     ErrorArgs            = "collection"
-    ErrorTempl           = "get{{Not}}ContainsErrorMessage"
+    ErrorTempl           = "Get{{Not}}ContainsErrorMessage"
     Comment              = "option value must be a member of collection"
     #
     Negate               = $true
@@ -786,7 +786,7 @@ $types = @{
     ErrorMessage         = "does not match"
     ArgsPlaceholder      = "[%v]"
     ErrorArgs            = "pattern"
-    ErrorTempl           = "get{{Not}}MatchErrorMessage"
+    ErrorTempl           = "Get{{Not}}MatchErrorMessage"
     Comment              = "option value must match regex pattern"
     #
     Negate               = $true
@@ -804,7 +804,7 @@ $types = @{
     ErrorMessage    = "not greater than"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "getGreaterThanErrorMessage"
+    ErrorTempl      = "GetGreaterThanErrorMessage"
     Comment         = "option value must be greater than threshold"
     #
     # Relatable is the op equivalent of spec.Comparable. Operations that are relatable
@@ -822,7 +822,7 @@ $types = @{
     ErrorMessage    = "not at least"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "getAtLeastErrorMessage"
+    ErrorTempl      = "GetAtLeastErrorMessage"
     Comment         = "option value must be greater than or equal to threshold"
     #
     Relatable       = $true
@@ -837,7 +837,7 @@ $types = @{
     ErrorMessage    = "not less than"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "getLessThanErrorMessage"
+    ErrorTempl      = "GetLessThanErrorMessage"
     Comment         = "option value must be less than threshold"
     #
     Relatable       = $true
@@ -852,7 +852,7 @@ $types = @{
     ErrorMessage    = "not at most"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "getAtMostErrorMessage"
+    ErrorTempl      = "GetAtMostErrorMessage"
     Comment         = "option value must be less than or equal to threshold"
     #
     Relatable       = $true
@@ -1384,7 +1384,7 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
           $negatedCondition = $("!($($op.Condition))")
 
           $errorFn = $op.ErrorTempl.Replace("{{Not}}", "Not")
-          $errorF = "$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
+          $errorF = "translate.$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
   
           # generate NOT method
           #

@@ -1,6 +1,10 @@
 package assistant
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/snivilised/cobrass/src/assistant/translate"
+)
 
 type ValidatorCollection map[string]OptionValidator
 
@@ -47,7 +51,7 @@ func NewValidatorContainer(options ...ValidatorContainerOptionFn) *ValidatorCont
 //
 func (container ValidatorContainer) Add(flag string, validator OptionValidator) {
 	if _, found := container.validators[flag]; found {
-		message := fmt.Errorf(getFailedToGetValidatorForFlagAlreadyExistsErrorMessage(flag))
+		message := fmt.Errorf(translate.GetFailedToGetValidatorForFlagAlreadyExistsErrorMessage(flag))
 		panic(message)
 	}
 
