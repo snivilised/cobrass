@@ -1,6 +1,7 @@
 package translate_test
 
 import (
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -11,6 +12,7 @@ import (
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 
+	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/internal/l10n"
 	"github.com/snivilised/cobrass/src/assistant/translate"
 )
@@ -27,6 +29,18 @@ var _ = Describe("i18n", func() {
 
 	var languages *translate.LanguageInfo
 	var printer *message.Printer
+
+	BeforeEach(func() {
+		directory, _ := filepath.Abs("../../assistant/internal/l10n/out")
+		bootstrap := assistant.Bootstrap{}
+		bootstrap.Execute(func(detector assistant.LocaleDetector) {
+			translate.Initialise(func(o *translate.LanguageInitOptions) {
+				o.Detected = language.BritishEnglish
+				o.Path = directory
+				o.TranslationFilename = "active.en-US.json"
+			})
+		})
+	})
 
 	Context("UseTag", func() {
 		When("given: tag is supported", func() {

@@ -3,9 +3,9 @@ package translate
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"path/filepath"
 
-	"github.com/cubiest/jibberjabber"
 	"github.com/samber/lo"
 	"golang.org/x/text/language"
 
@@ -13,6 +13,39 @@ import (
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
+
+var languages *LanguageInfo
+var localiser *i18n.Localizer
+
+type LanguageInitOptions struct {
+	// TranslationFilename overrides the default filename to load for a language
+	// When not set, the default filename is active.<ietf language>.json
+	//
+	TranslationFilename string
+
+	// Path denoting install location
+	//
+	Path string
+
+	// Detected language tag
+	//
+	Detected language.Tag
+}
+
+// ValidatorContainerOptionFn definition of a client defined function to
+// set ValidatorContainer options.
+//
+type LanguageInitOptionFn func(*LanguageInitOptions)
+
+func Initialise(options ...LanguageInitOptionFn) {
+	o := LanguageInitOptions{}
+	for _, fo := range options {
+		fo(&o)
+	}
+
+	languages = createInitialLanguageInfo(o)
+	localiser = createLocaliser(languages)
+}
 
 // the active file should be in the same directory at the item that is
 // loading the bundle
@@ -32,6 +65,15 @@ import (
 // details.
 //
 type LanguageInfo struct {
+	// TranslationFilename overrides the default filename to load for a language
+	// When not set, the default filename is active.<ietf language>.json
+	//
+	TranslationFilename string
+
+	// Path denoting where to load language file from
+	//
+	Path string
+
 	// Default language reflects the base language. If all else fails, messages will
 	// be in this language. It is fixed at BritishEnglish reflecting the language this
 	// package is written in.
@@ -88,77 +130,55 @@ func GetLocaliser() *i18n.Localizer {
 	return localiser
 }
 
-type detectInfo struct {
-	tag       language.Tag
-	territory string
-}
-
-var languages *LanguageInfo
-var localiser *i18n.Localizer
-
-// get rid of this init, replace with bootstrap
-//
-func init() {
-	languages = createInitialLanguageInfo()
-	localiser = createLocaliser(languages)
-}
-
-func detect() *detectInfo {
-	detectedLang, _ := jibberjabber.DetectLanguage()
-	territory, _ := jibberjabber.DetectTerritory()
-
-	detectedLangTag, _ := language.Parse(fmt.Sprintf("%v-%v", detectedLang, territory))
-
-	return &detectInfo{
-		tag:       detectedLangTag,
-		territory: territory,
-	}
-}
-
-func createInitialLanguageInfo() *LanguageInfo {
-	dInfo := detect()
-
+func createInitialLanguageInfo(options LanguageInitOptions) *LanguageInfo {
 	return &LanguageInfo{
-		Default:   language.BritishEnglish,
-		Detected:  dInfo.tag,
-		Territory: dInfo.territory,
-		Current:   dInfo.tag,
+		TranslationFilename: options.TranslationFilename,
+		Path:                options.Path,
+		Default:             language.BritishEnglish,
+		Detected:            options.Detected,
+		Current:             options.Detected,
+
+		// TODO: this has to be read in from config
+		//
 		Supported: []language.Tag{language.BritishEnglish, language.AmericanEnglish},
 	}
 }
 
 func createIncrementalLanguageInfo(requested language.Tag, existing *LanguageInfo) *LanguageInfo {
 	return &LanguageInfo{
-		Default:   language.BritishEnglish,
-		Detected:  existing.Detected,
-		Territory: existing.Territory,
-		Current:   requested,
-		Supported: []language.Tag{language.BritishEnglish, language.AmericanEnglish},
+		TranslationFilename: existing.TranslationFilename, // ???
+		Path:                existing.Path,
+		Default:             language.BritishEnglish,
+		Detected:            existing.Detected,
+		Current:             requested,
+		Supported:           existing.Supported,
 	}
 }
 
-// ===> 💎💎💎 parent: '/home/plastikfan/dev/github/go/snivilised/cobrass/src/assistant'
-//
 func createLocaliser(li *LanguageInfo) *i18n.Localizer {
 	bundle := i18n.NewBundle(li.Current)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
-	// cwd, _ := os.Getwd()
-	parent, _ := filepath.Abs("../")
-	// fmt.Printf("===> 💎💎💎 parent: '%v'\n", parent)
+	const Prefix = "cobrass."
 
-	// C: /home/plastikfan/dev/github/go/snivilised/cobrass/src/assistant/translate
-	// *: \home\plastikfan\dev\github\go\snivilised\cobrass\src\assistant\internal\l10n/out/active.en-US.json
-	// X: /home/plastikfan/dev/github/go/snivilised/cobrass/src/assistant/translate/internal/l10n/out/active.en-US.json
-	//
-	// WARNING: this is wrong. Path must be passed in or a property on LanguageInfo
-	//
-	fullpath := filepath.Join(parent, "internal", "l10n", "out", "active.en-US.json")
+	if li.Current != li.Default {
+		filename := lo.Ternary(li.TranslationFilename != "",
+			li.TranslationFilename, fmt.Sprintf("%vactive.%v.json", Prefix, li.Current))
 
-	// internal/l10n/out/active.en-US.json
+		exe, _ := os.Executable()
+		resolved, _ := filepath.Abs(li.Path)
+		directory := lo.Ternary(li.Path != "", resolved, filepath.Dir(exe))
+		path := filepath.Join(directory, filename)
 
-	// bundle.MustLoadMessageFile(fullpath)
+		_, err := bundle.LoadMessageFile(path)
 
-	_, _ = bundle.LoadMessageFile(fullpath)
+		if err != nil {
+			// Since, translations failed to load, we will ever be in a situation where
+			// this error message is able to be generated in translated form, so
+			// we are force to generated an error message in the default language.
+			//
+			panic(fmt.Errorf("could not load translations for '%v', from: '%v'", li.Current, path))
+		}
+	}
 
 	supported := lo.Map(li.Supported, func(t language.Tag, _ int) string {
 		return t.String()

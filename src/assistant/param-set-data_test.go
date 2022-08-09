@@ -6,7 +6,15 @@ import (
 	"time"
 
 	"github.com/snivilised/cobrass/src/assistant"
+	"golang.org/x/text/language"
 )
+
+type USFake struct {
+}
+
+func (j *USFake) Scan() language.Tag {
+	return language.AmericanEnglish
+}
 
 type OutputFormatEnum int
 
