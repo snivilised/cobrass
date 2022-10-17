@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/onsi/ginkgo/v2 v2.2.0
 	github.com/onsi/gomega v1.20.2
-	github.com/spf13/cobra v1.5.0
+	github.com/spf13/cobra v1.6.0
 	github.com/spf13/pflag v1.0.5
 )
 
@@ -18,7 +18,7 @@ require (
 
 require (
 	github.com/cubiest/jibberjabber v1.0.1
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.2.0
 	github.com/samber/lo v1.29.0
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
