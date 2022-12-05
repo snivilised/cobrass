@@ -23,5 +23,5 @@ require (
 	github.com/samber/lo v1.29.0
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
 	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
-	golang.org/x/text v0.3.7
+	golang.org/x/text v0.5.0
 )
