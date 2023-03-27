@@ -24,7 +24,7 @@ require (
 	github.com/cubiest/jibberjabber v1.0.1
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
-	github.com/samber/lo v1.37.0
+	github.com/samber/lo v1.38.1
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0
