@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/pflag"
 
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/testhelpers"
+	"github.com/snivilised/cobrass/src/internal/helpers"
 )
 
 var _ = Describe("Enum", func() {
@@ -194,7 +194,7 @@ var _ = Describe("Enum", func() {
 						&outputFormatEnum.Source,
 					)
 
-					_, _ = testhelpers.ExecuteCommand(
+					_, _ = helpers.ExecuteCommand(
 						rootCommand, "widget", "/usr/fuse/home/music", "--format=xml",
 					)
 

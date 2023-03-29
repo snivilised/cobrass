@@ -126,7 +126,7 @@ var _ = Describe("i18n", func() {
 				"one", "You have %d day remaining",
 				"other", "You have %[1]d days remaining",
 				">100", "You have %d days remaining, over the maximum",
-				"<10", "You have %d days remaining, less than the minium",
+				"<10", "You have %d days remaining, less than the minimum",
 			))
 		})
 
@@ -149,7 +149,7 @@ var _ = Describe("i18n", func() {
 			// dependent code is using templates, should still work?
 			//
 			// This does NOT work, in the test table:
-			// "with impractcal translation strategy (don't do this)"
+			// "with impractical translation strategy (don't do this)"
 			//
 			// because the printer is being passed
 			// a fully created literal string created from a template and
@@ -162,7 +162,7 @@ var _ = Describe("i18n", func() {
 			)
 
 			// This works in test table:
-			// "with impractcal translation strategy (don't do this)"
+			// "with impractical translation strategy (don't do this)"
 			// but is not practical. Just included here for illustration
 			//
 			// Clearly, we can't do this. The printer has to be aware of the variable
@@ -177,7 +177,7 @@ var _ = Describe("i18n", func() {
 		// https://appdividend.com/2019/11/27/golang-template-example-package-template-in-golang/
 		//
 		// So to templatise strings we need the following components for each individual string/message
-		// * a struct defining the variable entities. By our own covention, we'll define the struct
+		// * a struct defining the variable entities. By our own convention, we'll define the struct
 		// with a TemplData suffix
 		// * a string builder instance
 		//
@@ -185,12 +185,12 @@ var _ = Describe("i18n", func() {
 		//
 		// - create an instance of the template data
 		// - create a template string containing embedded variables that map to member(s) of our Templ
-		// - create a parsed template with a kebak-case name, from a template body string (the body
+		// - create a parsed template with a kebab-case name, from a template body string (the body
 		// contains the body of the text with place holders that match the template data members)
 		// - execute the parsed template passing in the string builder
 		// - check the execute result
 		// - access the builder content, and use at will
-		// - nb, this workfow does not include translation, but the result of the template execution
+		// - nb, this work-fow does not include translation, but the result of the template execution
 		// can be printed in language context using a printer
 		//
 		// All of the above should be wrapped up into am author object which contains the
@@ -251,7 +251,7 @@ var _ = Describe("i18n", func() {
 					Other: "({{.Flag}}): option validation failed, '{{.Value}}', out of range: [{{.Lo}}]..[{{.Hi}}]",
 				}
 
-				// using a template is not as concise as a map of any, but it is typesafe
+				// using a template is not as concise as a map of any, but it is type-safe
 				// so is the much preferred solution.
 				//
 				localised := translate.GetLocaliser().MustLocalize(&i18n.LocalizeConfig{

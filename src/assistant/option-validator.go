@@ -5,14 +5,12 @@ import "github.com/spf13/pflag"
 // OptionValidator wraps the user defined option validator function.
 // This is the instance that is returned from the validated binder
 // methods on the ParamSet.
-//
 type OptionValidator interface {
 	Validate() error
 }
 
-// Needed because its not possible to create a type safe hetrogenious collection
+// Needed because its not possible to create a type safe heterogeneous collection
 // of objects that would be required for the ValidatorContainer.
-//
 type GenericOptionValidatorWrapper[T any] struct {
 	Fn    func(T, *pflag.Flag) error
 	Value *T
@@ -30,5 +28,4 @@ func (validator GenericOptionValidatorWrapper[T]) Validate() error {
 // CrossFieldValidator is a client function that is the callback passed into
 // ParamSet.CrossValidate. Should be done after all parsed values have been bound
 // and individually validated.
-//
 type CrossFieldValidator[N any] func(native *N) error
