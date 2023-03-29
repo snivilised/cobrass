@@ -7,6 +7,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/snivilised/cobrass/badge.svg?branch=master)](https://coveralls.io/github/snivilised/cobrass?branch=master&kill_cache=1)
 [![Cobrass Continuous Integration](https://github.com/snivilised/cobrass/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/snivilised/cobrass/actions/workflows/ci-workflow.yml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![A B](https://img.shields.io/badge/commit-conventional-commits?style=flat)](https://www.conventionalcommits.org/)
 
 <!-- MD013/Line Length -->
 <!-- MarkDownLint-disable MD013 -->
@@ -23,7 +24,7 @@
 
 ## 🔰 Introduction
 
-_[Cobra](https://cobra.dev/) is an excellent framework for the development of command line applications, but is missing a few features that would make it a bit easier to work with. This package aims to fullfil this purpose, especially in regards to creation of commands, encapulating commands into a container and providing an export mechanism to re-create cli data in a form that is free from cobra (and indeed cobrass) abstractions. The aim of this last aspect to to be able to inject data into the core of an application in a way that removes tight coupling to the `Cobra` framework, which is achieved by representing data only in terms of client defined (native) abstractions. Currently, Cobra does not provide a mechanism for validating option values, this is also implemented by_ ___Cobrass___.
+_[Cobra](https://cobra.dev/) is an excellent framework for the development of command line applications, but is missing a few features that would make it a bit easier to work with. This package aims to fulfil this purpose, especially in regards to creation of commands, encapsulating commands into a container and providing an export mechanism to re-create cli data in a form that is free from cobra (and indeed cobrass) abstractions. The aim of this last aspect to to be able to inject data into the core of an application in a way that removes tight coupling to the `Cobra` framework, which is achieved by representing data only in terms of client defined (native) abstractions. Currently, Cobra does not provide a mechanism for validating option values, this is also implemented by_ ___Cobrass___.
 
 ___Status___: 💤 not yet published
 
@@ -41,10 +42,9 @@ Most of the functionality is defined in the _assistant_ package so import as:
 
 - Cobra container; collection of cobra commands that can be independently referenced by name as opposed to via child/parent relationship. The container also takes care of adding commands to the root or any other as required.
 - A `parameter set` groups together all the flag option values, so that they don't have to be handled separately. A single entity (the ___ParamSet___) can be created and passed into the core of the client application.
-- Pseudo int based enum; provides a mapping between user specifed enum string values and the their internal int based representation.
+- Pseudo int based enum; provides a mapping between user specified enum string values and the their internal int based representation.
 - Option value validation; a user defined function can be provided for each option value to be validated
 - Option validator helpers; as an alternative to providing a function to perform option validation, the client can invoke any of the predefined validator helpers for various types.
-
 
 ### 🎁 Cobra Container
 
@@ -52,13 +52,13 @@ The container serves as a repository for `Cobra` commands and `Cobrass` paramete
 
 The methods on the container, should not fail. Any failures that occur are due to programming errors. For this reason, when an error scenario occurs, a panic is raised.
 
-Regsitering commands/parameter sets with the container, obviates the need to use specific `Cobra` api calls as they are handled on the clients behalf by the container. For parameter sets, the type specific methods on the various ___FlagSet___ definitions, such as ___Float32Var___, do not have to be called by the client. For commands, ___AddCommand___ does not have to be called explicitly either.
+Registering commands/parameter sets with the container, obviates the need to use specific `Cobra` api calls as they are handled on the clients behalf by the container. For parameter sets, the type specific methods on the various ___FlagSet___ definitions, such as ___Float32Var___, do not have to be called by the client. For commands, ___AddCommand___ does not have to be called explicitly either.
 
 ### 💎 Param Set
 
 The rationale behind the concept of a parameter set came from initial discovery of how the `Cobra` api worked. Capturing user defined command line input requires binding option values into disparate variables. Having to manage independently defined variables usually at a package level could lead to a scattering of these variables on an adhoc basis. Having to then pass all these items independently into the core of a client application could easily become disorganised.
 
-To manage this, the concept of a `parameter set` was introduced to bring about a consistency of design to the implemenation of multiple cli applications. The aim of this is to reduce the number package level global variables that have to be managed. Instead of handling multiple option variables independently, the client can group them together into a parameter set.
+To manage this, the concept of a `parameter set` was introduced to bring about a consistency of design to the implementation of multiple cli applications. The aim of this is to reduce the number package level global variables that have to be managed. Instead of handling multiple option variables independently, the client can group them together into a parameter set.
 
 Each `Cobra` command can define multiple parameter sets which reflects the different ways that a particular command can be invoked by the user. However, to reduce complexity, it's probably best to stick with a single parameter set per command. Option values not defined by the user can already be defaulted by the `Cobra` api itself, but it may be, that distinguishing the way that a command is invoked (ie what combination of flags/options appear on the command line) may be significant to the application, in which case the client can define multiple parameter sets.
 
@@ -83,10 +83,10 @@ type OutputFormatEnum int
 
 const (
   _ OutputFormatEnum = iota
-	XmlFormatEn
-	JsonFormatEn
-	TextFormatEn
-	ScribbleFormatEn
+  XmlFormatEn
+  JsonFormatEn
+  TextFormatEn
+  ScribbleFormatEn
 )
 ```
 
@@ -94,9 +94,9 @@ const (
 
 This is where the type ___EnumInfo___ comes into play. It allows us to provide a mapping between what the user would type in and how this value is represented internally.
 
-####  🍑 Enum Info
+#### 🍑 Enum Info
 
-An ___EnumInfo___ instance for our psuedo enum type ___OutputFormatEnum___ can be created with ___NewEnumInfo___ as follows:
+An ___EnumInfo___ instance for our pseudo enum type ___OutputFormatEnum___ can be created with ___NewEnumInfo___ as follows:
 
 ```go
 OutputFormatEnumInfo = assistant.NewEnumInfo(assistant.AcceptableEnumValues[OutputFormatEnum]{
@@ -113,8 +113,7 @@ Points to note from the above:
 
 - The return value of ___NewEnumInfo___ is an instance that represents the `meta` data for the pseudo enum type.
 
-- Each application need only create a single instance of ___EnumInfo___ for each enum entity so logically this should be treated as a singleton, although it hasnt been enforced as a singleton in code.
-
+- Each application need only create a single instance of ___EnumInfo___ for each enum entity so logically this should be treated as a singleton, although it hasn't been enforced as a singleton in code.
 
 #### 🍉 Enum Value<a name="enum-value"></a>
 
@@ -130,7 +129,7 @@ Points to note from the above:
 
 - A string value can be checked to determine if it is a valid value (as defined by the acceptable values passed into ___NewEnumInfo___), by passing it to the ___IsValid___ method on the ___EnumInfo___  or we can simply call the same method on ___EnumValue___ without passing in a string value; in this case, the check is performed on it's member variable 'Source' which can be assigned at any time.
 
-- The ___EnumInfo___ struct contains a ___String___ method to support printing. It is provided because passing in the ___int___ form of the enum value to a printing function just results in the numeric value being displayed, which is not very useful. Instead, when there is a need to print an ___EnumValue___, it's custom ___String___ method should be invoked. Since that method retrieves the first acceptable value defined for the enum value, the user should specify a longer more expressive form as the first entry, followed by 1 or more shorter forms. Actually, to be clear, as long as the first item is expressive enough when displayed in isolation, it doesn't really matter if the first item is the longest or not. 
+- The ___EnumInfo___ struct contains a ___String___ method to support printing. It is provided because passing in the ___int___ form of the enum value to a printing function just results in the numeric value being displayed, which is not very useful. Instead, when there is a need to print an ___EnumValue___, it's custom ___String___ method should be invoked. Since that method retrieves the first acceptable value defined for the enum value, the user should specify a longer more expressive form as the first entry, followed by 1 or more shorter forms. Actually, to be clear, as long as the first item is expressive enough when displayed in isolation, it doesn't really matter if the first item is the longest or not.
 
 #### 🍈 Enum Slice
 
@@ -144,7 +143,7 @@ In the same way an ___EnumValue___ can be created off the ___EnumInfo___, an ___
 outputFormatSlice := OutputFormatEnumInfo.NewSlice()
 ```
 
-___NewSlice___ contains various _collection_ methods equilavent to it's value based (___EnumValue___) counterpart.
+___NewSlice___ contains various _collection_ methods equivalent to it's value based (___EnumValue___) counterpart.
 
 The ___Source___ member of ___EnumSlice___ is defined as a slice of ___string___.
 
@@ -162,14 +161,14 @@ The following is a checklist of actions that need to be performed:
 
 ```go
 var Container = assistant.NewCobraContainer(&cobra.Command{
-	Use:   "root",
-	Short: "foo bar",
-	Long: "This is the root command.",
+  Use:   "root",
+  Short: "foo bar",
+  Long: "This is the root command.",
 })
 var rootCommand = Container.Root()
 ```
 
-- 2️⃣ _register sub commands_: for each sub command directly decended from the root, on the ___Container___ instance, invoke ___RegisterRootedCommand___ eg (typically inside the standard ___init___ function for the command):
+- 2️⃣ _register sub commands_: for each sub command directly descended from the root, on the ___Container___ instance, invoke ___RegisterRootedCommand___ eg (typically inside the standard ___init___ function for the command):
 
 ```go
   Container.MustRegisterRootedCommand(widgetCommand)
@@ -189,10 +188,10 @@ assuming a command with the name "foo", has already been registered
 
 ```go
 type WidgetParameterSet struct {
-	Directory string
-	Format    OutputFormatEnum
-	Concise   bool
-	Pattern   string
+  Directory string
+  Format    OutputFormatEnum
+  Concise   bool
+  Pattern   string
 }
 ```
 
@@ -202,7 +201,7 @@ type WidgetParameterSet struct {
   paramSet = assistant.NewParamSet[WidgetParameterSet](widgetCommand)
 ```
 
-The result of ___NewParamSet___ is an object that contains a member ___Native___. This `native` member is the type of the paramter set that was defined, in this case `WidgetParameterSet`.
+The result of ___NewParamSet___ is an object that contains a member ___Native___. This `native` member is the type of the parameter set that was defined, in this case `WidgetParameterSet`.
 
 - 5️⃣ _define the flags_: use the `binder` methods on the _ParamSet_ to declare the commands flags.
 
@@ -256,44 +255,43 @@ Note, because we can't bind directly to the `native` member of WidgetParameterSe
 ```go
   RunE: func(command *cobra.Command, args []string) error {
 
-			var appErr error = nil
+    var appErr error = nil
 
-			ps := Container.MustGetParamSet("widget-ps").(*assistant.ParamSet[WidgetParameterSet])
+    ps := Container.MustGetParamSet("widget-ps").(*assistant.ParamSet[WidgetParameterSet])
 
-			if err := ps.Validate(); err == nil {
-				native := ps.Native
+    if err := ps.Validate(); err == nil {
+      native := ps.Native
 
-				// rebind enum into native member
-				//
-				native.Format = OutputFormatEn.Value()
+      // rebind enum into native member
+      //
+      native.Format = OutputFormatEn.Value()
 
-				// optionally invoke cross field validation
-				//
-				if xv := ps.CrossValidate(func(ps *WidgetParameterSet) error {
-					condition := (ps.Format == XmlFormatEn)
-					if condition {
-						return nil
-					}
-					return fmt.Errorf("format: '%v' is invalid", ps.Format)
-				}); xv == nil {
-					fmt.Printf("%v %v Running widget\n", AppEmoji, ApplicationName)
-					// ---> execute application core with the parameter set (native)
-					//
-					// appErr = runApplication(native)
-					//
+      // optionally invoke cross field validation
+      //
+      if xv := ps.CrossValidate(func(ps *WidgetParameterSet) error {
+        condition := (ps.Format == XmlFormatEn)
+        if condition {
+          return nil
+        }
+        return fmt.Errorf("format: '%v' is invalid", ps.Format)
+      }); xv == nil {
+      fmt.Printf("%v %v Running widget\n", AppEmoji, ApplicationName)
+      // ---> execute application core with the parameter set (native)
+      //
+      // appErr = runApplication(native)
+      //
+      } else {
+        return xv
+      }
+    } else {
+      return err
+    }
 
-				} else {
-					return xv
-				}
-			} else {
-				return err
-			}
-
-			return appErr
+    return appErr
   },
 ```
 
-The validation may occur in 2 stages depending on whether cross field valiation is required. To proceed, we need to obtain both the wrapper parameter set (ie ___container.ParamSet___ in this example) and the native parameter set ___native = ps.Native___).
+The validation may occur in 2 stages depending on whether cross field validation is required. To proceed, we need to obtain both the wrapper parameter set (ie ___container.ParamSet___ in this example) and the native parameter set ___native = ps.Native___).
 
 Also note how we retrieve the parameter set previously registered from the cobra container using the ___Native___ method. Since ___Native___ returns ___any___, a type assertion has to be performed to get back the `native` type. If the param set you created using ___NewParamSet___ is in scope, then there is no need to query the container for it by name. It is just shown here this way, to illustrate how to proceed if parameter set was created in a local function/method and is therefore no longer in scope.
 
@@ -343,7 +341,7 @@ The following is an example of how to define an `enum` validator:
 The following points should be noted:
 
 - validation is implemented using the ___EnumInfo___ instance. This could easily have been implemented using an ___EnumValue___ instance instead.
-- the manual assignment of __'outputFormatEnum.Source'___ is a synthetic operation just done for the purposes of illustration. When used within the context of a cobra cli, it's cobra that would perform this assignment as it parses the command line, assuming the corresponding flag has been bound in as is peformed here using ___BindValidatedEnum___.
+- the manual assignment of __'outputFormatEnum.Source'___ is a synthetic operation just done for the purposes of illustration. When used within the context of a cobra cli, it's cobra that would perform this assignment as it parses the command line, assuming the corresponding flag has been bound in as is performed here using ___BindValidatedEnum___.
 - the client would convert this string to the enum type and set on the appropriate native member (ie ___paramSet.Native.Format = outputFormatEnum.Value()___)
 
 To bind a flag without a short name, the client can either:
@@ -364,7 +362,7 @@ or
       Name: "format",
       Usage: "format usage",
       Default: "xml",
-		},
+  },
     &outputFormatEnum.Source,
     func(value string) error {
       return lo.Ternary(outputFormatEnumInfo.IsValid(value), nil,
@@ -384,9 +382,10 @@ The following are the categories of helpers that have been provided:
 - _collection(collection)_: ___Contains(is member of collection)___
 
 Specialised for type:
+
 - _string_: ___'BindValidatedStringIsMatch'___
 
-`Not` versions of most methods have also been provided, so for example to get string not match, use ___'BindValidatedStringIsNotMatch'___. The `Not` functions that have been omitted are the ones which can easily be implemented by using the opposite operator. There are no `Not` versions of the _comparison_ helpers, eg there is no ___'BindValidatedIntNotGreaterThan'___ because that can be easily acheieved using ___'BindValidatedIntAtMost'___.
+`Not` versions of most methods have also been provided, so for example to get string not match, use ___'BindValidatedStringIsNotMatch'___. The `Not` functions that have been omitted are the ones which can easily be implemented by using the opposite operator. There are no `Not` versions of the _comparison_ helpers, eg there is no ___'BindValidatedIntNotGreaterThan'___ because that can be easily achieved using ___'BindValidatedIntAtMost'___.
 
 There are also `slice` versions of some of the validators, to allow an option value to be defined as a collection of values. An example of a `slice` version is ___'BindValidatedStringSlice'___.
 
@@ -396,7 +395,7 @@ Our pseudo `enums` are a special case, because it is not possible to define gene
 
 When the client needs to perform cross field validation, then ___ParamSet.CrossValidate___ should be invoked. Cross field validation is meant for checking option values of different flags, so that cross field constraints can be imposed. Contrary to `option validators` and `validator helpers` which are based upon checking values compare favourably against static boundaries, `cross field validation` is concerned with checking the dynamic value of options of different flags. The reader should be aware this is not about enforcing that all flags in a group are present or not. Those kinds of checks are already enforceable via `Cobra's` group checks. It may be that 1 option value must constrain the range of another option value. This is where cross field validation can be utilised.
 
-The client should pass in a validator function, whose signature contains a pointer to the native parameterset, eg:
+The client should pass in a validator function, whose signature contains a pointer to the native parameter set, eg:
 
 ```go
   result := paramSet.CrossValidate(func(ps *WidgetParameterSet) error {
@@ -446,7 +445,7 @@ Please see [Powershell Code Generation](CODE-GEN.md)
   <a href="https://onsi.github.io/gomega/"><img src="https://onsi.github.io/gomega/images/gomega.png" width="100" /></a>
 </p>
 
-[Ginkgo](https://onsi.github.io/ginkgo/) is the bbd testing style of choice used in `Cobrass`. I have found it to be a total revelation to work with, in all aspects except 1, which was discovered well after I had gone all in on `Ginkgo`. I am using the Ginkgo test explorer in `vscode` and while it is good at exploring tests, running them and even generating coverage with little fuss, the single fly in the ointment is that debuging test cases is currently difficult to achieve:
+[Ginkgo](https://onsi.github.io/ginkgo/) is the bbd testing style of choice used in `Cobrass`. I have found it to be a total revelation to work with, in all aspects except 1, which was discovered well after I had gone all in on `Ginkgo`. I am using the Ginkgo test explorer in `vscode` and while it is good at exploring tests, running them and even generating coverage with little fuss, the single fly in the ointment is that debugging test cases is currently difficult to achieve:
 
 ```
 Starting: /home/plastikfan/go/bin/dlv dap --check-go-version=false --listen=127.0.0.1:40849 --log-dest=3 from /home/plastikfan/dev/github/go/snivilised/cobrass/src/assistant
