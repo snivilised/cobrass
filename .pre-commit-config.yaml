@@ -1,6 +1,11 @@
 repos:
-- repo: https://github.com/tekwizely/pre-commit-golang
+  - repo: https://github.com/tekwizely/pre-commit-golang
+    rev: v1.0.0-rc.1
+    hooks:
+      - id: golangci-lint
 
-  rev: v0.8.3 # change this to the latest version
-  hooks:
-    - id: golangci-lint
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: no-commit-to-branch
+        args: ["--branch", "master", "--branch", "main"]
