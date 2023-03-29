@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/testhelpers"
+	"github.com/snivilised/cobrass/src/internal/helpers"
 )
 
 // the auto version of param-set_test.go
@@ -62,7 +62,7 @@ var _ = Describe("ParamSet (auto)", func() {
 			func(entry TcEntry) {
 				entry.Binder()
 
-				_, _ = testhelpers.ExecuteCommand(
+				_, _ = helpers.ExecuteCommand(
 					rootCommand, "widget", "/usr/fuse/home/music", entry.CommandLine,
 				)
 				entry.Assert()

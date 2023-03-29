@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/testhelpers"
+	"github.com/snivilised/cobrass/src/internal/helpers"
 )
 
 type TcEntry struct {
@@ -76,7 +76,7 @@ var _ = Describe("ParamSet (manual)", func() {
 				entry.Binder()
 
 				GinkgoWriter.Printf("🍧🍧🍧 ABOUT TO RUN ...\n")
-				_, _ = testhelpers.ExecuteCommand(
+				_, _ = helpers.ExecuteCommand(
 					rootCommand, "widget", "/usr/fuse/home/music", entry.CommandLine,
 				)
 				GinkgoWriter.Printf("🍧🍧🍧 AFTER RUN\n")
@@ -137,7 +137,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					container.MustRegisterParamSet(psname, paramSet)
 
 					commandLine := "--format xml --pattern cakewalk"
-					_, _ = testhelpers.ExecuteCommand(
+					_, _ = helpers.ExecuteCommand(
 						rootCommand, "widget", "/usr/fuse/home/music", commandLine,
 					)
 					paramSet.Native.Format = outputFormatEnum.Value()
@@ -165,7 +165,7 @@ var _ = Describe("ParamSet (manual)", func() {
 					container.MustRegisterParamSet(psname, paramSet)
 
 					commandLine := "--format xml --pattern cakewalk"
-					_, _ = testhelpers.ExecuteCommand(
+					_, _ = helpers.ExecuteCommand(
 						rootCommand, "widget", "/usr/fuse/home/music", commandLine,
 					)
 					paramSet.Native.Format = outputFormatEnum.Value()
@@ -185,7 +185,7 @@ var _ = Describe("ParamSet (manual)", func() {
 			It("🧪 should: be able get registered param set", func() {
 				container.MustRegisterParamSet(psname, paramSet)
 
-				_, _ = testhelpers.ExecuteCommand(
+				_, _ = helpers.ExecuteCommand(
 					rootCommand, cname, "/usr/fuse/home/cache",
 				)
 
@@ -261,7 +261,7 @@ var _ = Describe("ParamSet (manual)", func() {
 						widgetCommand.PersistentFlags()), &paramSet.Native.Pattern,
 				)
 				commandLine := "--pattern=*music.infex*"
-				_, _ = testhelpers.ExecuteCommand(
+				_, _ = helpers.ExecuteCommand(
 					rootCommand, "widget", "/usr/fuse/home/music", commandLine,
 				)
 				Expect(paramSet.Native.Pattern).To(Equal("*music.infex*"))

@@ -1,21 +1,24 @@
 package assistant
 
 import (
-	"fmt"
 	"regexp"
 	"time"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/src/assistant/translate"
+	"github.com/snivilised/cobrass/src/assistant/i18n"
+
+	// . "github.com/snivilised/cobrass/src/assistant/translate"
 	"github.com/spf13/pflag"
 )
+
+// TODO: fix up duplicate import od translate
+// "github.com/snivilised/cobrass/src/assistant/i18n"
 
 // ----> auto generated(Build-Predefined/gen-help)
 
 // BindValidatedDurationWithin is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.Duration, lo, hi time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -24,7 +27,7 @@ func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -37,7 +40,6 @@ func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.
 // BindValidatedDurationNotWithin is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedDurationWithin'.
-//
 func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *time.Duration, lo, hi time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -46,7 +48,7 @@ func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *ti
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -59,7 +61,6 @@ func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *ti
 // BindValidatedContainsDuration is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsDuration(info *FlagInfo, to *time.Duration, collection []time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -68,7 +69,7 @@ func (params *ParamSet[N]) BindValidatedContainsDuration(info *FlagInfo, to *tim
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -81,7 +82,6 @@ func (params *ParamSet[N]) BindValidatedContainsDuration(info *FlagInfo, to *tim
 // BindValidatedNotContainsDuration is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsDuration'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsDuration(info *FlagInfo, to *time.Duration, collection []time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -90,7 +90,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsDuration(info *FlagInfo, to *
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -103,7 +103,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsDuration(info *FlagInfo, to *
 // BindValidatedDurationGreaterThan is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedDurationGreaterThan(info *FlagInfo, to *time.Duration, threshold time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -112,7 +111,7 @@ func (params *ParamSet[N]) BindValidatedDurationGreaterThan(info *FlagInfo, to *
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -125,7 +124,6 @@ func (params *ParamSet[N]) BindValidatedDurationGreaterThan(info *FlagInfo, to *
 // BindValidatedDurationAtLeast is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedDurationAtLeast(info *FlagInfo, to *time.Duration, threshold time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -134,7 +132,7 @@ func (params *ParamSet[N]) BindValidatedDurationAtLeast(info *FlagInfo, to *time
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -147,7 +145,6 @@ func (params *ParamSet[N]) BindValidatedDurationAtLeast(info *FlagInfo, to *time
 // BindValidatedDurationLessThan is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedDurationLessThan(info *FlagInfo, to *time.Duration, threshold time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -156,7 +153,7 @@ func (params *ParamSet[N]) BindValidatedDurationLessThan(info *FlagInfo, to *tim
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -169,7 +166,6 @@ func (params *ParamSet[N]) BindValidatedDurationLessThan(info *FlagInfo, to *tim
 // BindValidatedDurationAtMost is an alternative to using BindValidatedDuration. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.Duration, threshold time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
@@ -178,7 +174,7 @@ func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -191,7 +187,6 @@ func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.
 // BindValidatedContainsEnum is an alternative to using BindValidatedEnum. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsEnum(info *FlagInfo, to *string, collection []string) OptionValidator {
 	params.BindEnum(info, to)
 
@@ -200,7 +195,7 @@ func (params *ParamSet[N]) BindValidatedContainsEnum(info *FlagInfo, to *string,
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -213,7 +208,6 @@ func (params *ParamSet[N]) BindValidatedContainsEnum(info *FlagInfo, to *string,
 // BindValidatedNotContainsEnum is an alternative to using BindValidatedEnum. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsEnum'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsEnum(info *FlagInfo, to *string, collection []string) OptionValidator {
 	params.BindEnum(info, to)
 
@@ -222,7 +216,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsEnum(info *FlagInfo, to *stri
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -235,7 +229,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsEnum(info *FlagInfo, to *stri
 // BindValidatedFloat32Within is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float32, lo, hi float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -244,7 +237,7 @@ func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float3
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -257,7 +250,6 @@ func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float3
 // BindValidatedFloat32NotWithin is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedFloat32Within'.
-//
 func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *float32, lo, hi float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -266,7 +258,7 @@ func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *flo
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -279,7 +271,6 @@ func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *flo
 // BindValidatedContainsFloat32 is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsFloat32(info *FlagInfo, to *float32, collection []float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -288,7 +279,7 @@ func (params *ParamSet[N]) BindValidatedContainsFloat32(info *FlagInfo, to *floa
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -301,7 +292,6 @@ func (params *ParamSet[N]) BindValidatedContainsFloat32(info *FlagInfo, to *floa
 // BindValidatedNotContainsFloat32 is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsFloat32'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsFloat32(info *FlagInfo, to *float32, collection []float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -310,7 +300,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat32(info *FlagInfo, to *f
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -323,7 +313,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat32(info *FlagInfo, to *f
 // BindValidatedFloat32GreaterThan is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat32GreaterThan(info *FlagInfo, to *float32, threshold float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -332,7 +321,7 @@ func (params *ParamSet[N]) BindValidatedFloat32GreaterThan(info *FlagInfo, to *f
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -345,7 +334,6 @@ func (params *ParamSet[N]) BindValidatedFloat32GreaterThan(info *FlagInfo, to *f
 // BindValidatedFloat32AtLeast is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat32AtLeast(info *FlagInfo, to *float32, threshold float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -354,7 +342,7 @@ func (params *ParamSet[N]) BindValidatedFloat32AtLeast(info *FlagInfo, to *float
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -367,7 +355,6 @@ func (params *ParamSet[N]) BindValidatedFloat32AtLeast(info *FlagInfo, to *float
 // BindValidatedFloat32LessThan is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat32LessThan(info *FlagInfo, to *float32, threshold float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -376,7 +363,7 @@ func (params *ParamSet[N]) BindValidatedFloat32LessThan(info *FlagInfo, to *floa
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -389,7 +376,6 @@ func (params *ParamSet[N]) BindValidatedFloat32LessThan(info *FlagInfo, to *floa
 // BindValidatedFloat32AtMost is an alternative to using BindValidatedFloat32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float32, threshold float32) OptionValidator {
 	params.BindFloat32(info, to)
 
@@ -398,7 +384,7 @@ func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float3
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -411,7 +397,6 @@ func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float3
 // BindValidatedFloat64Within is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float64, lo, hi float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -420,7 +405,7 @@ func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float6
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -433,7 +418,6 @@ func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float6
 // BindValidatedFloat64NotWithin is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedFloat64Within'.
-//
 func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *float64, lo, hi float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -442,7 +426,7 @@ func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *flo
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -455,7 +439,6 @@ func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *flo
 // BindValidatedContainsFloat64 is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsFloat64(info *FlagInfo, to *float64, collection []float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -464,7 +447,7 @@ func (params *ParamSet[N]) BindValidatedContainsFloat64(info *FlagInfo, to *floa
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -477,7 +460,6 @@ func (params *ParamSet[N]) BindValidatedContainsFloat64(info *FlagInfo, to *floa
 // BindValidatedNotContainsFloat64 is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsFloat64'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsFloat64(info *FlagInfo, to *float64, collection []float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -486,7 +468,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat64(info *FlagInfo, to *f
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -499,7 +481,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat64(info *FlagInfo, to *f
 // BindValidatedFloat64GreaterThan is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat64GreaterThan(info *FlagInfo, to *float64, threshold float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -508,7 +489,7 @@ func (params *ParamSet[N]) BindValidatedFloat64GreaterThan(info *FlagInfo, to *f
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -521,7 +502,6 @@ func (params *ParamSet[N]) BindValidatedFloat64GreaterThan(info *FlagInfo, to *f
 // BindValidatedFloat64AtLeast is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat64AtLeast(info *FlagInfo, to *float64, threshold float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -530,7 +510,7 @@ func (params *ParamSet[N]) BindValidatedFloat64AtLeast(info *FlagInfo, to *float
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -543,7 +523,6 @@ func (params *ParamSet[N]) BindValidatedFloat64AtLeast(info *FlagInfo, to *float
 // BindValidatedFloat64LessThan is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat64LessThan(info *FlagInfo, to *float64, threshold float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -552,7 +531,7 @@ func (params *ParamSet[N]) BindValidatedFloat64LessThan(info *FlagInfo, to *floa
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -565,7 +544,6 @@ func (params *ParamSet[N]) BindValidatedFloat64LessThan(info *FlagInfo, to *floa
 // BindValidatedFloat64AtMost is an alternative to using BindValidatedFloat64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float64, threshold float64) OptionValidator {
 	params.BindFloat64(info, to)
 
@@ -574,7 +552,7 @@ func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float6
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -587,7 +565,6 @@ func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float6
 // BindValidatedIntWithin is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, lo, hi int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -596,7 +573,7 @@ func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, lo, h
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -609,7 +586,6 @@ func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, lo, h
 // BindValidatedIntNotWithin is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedIntWithin'.
-//
 func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo, hi int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -618,7 +594,7 @@ func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -631,7 +607,6 @@ func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo
 // BindValidatedContainsInt is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsInt(info *FlagInfo, to *int, collection []int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -640,7 +615,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt(info *FlagInfo, to *int, col
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -653,7 +628,6 @@ func (params *ParamSet[N]) BindValidatedContainsInt(info *FlagInfo, to *int, col
 // BindValidatedNotContainsInt is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsInt'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsInt(info *FlagInfo, to *int, collection []int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -662,7 +636,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt(info *FlagInfo, to *int, 
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -675,7 +649,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt(info *FlagInfo, to *int, 
 // BindValidatedIntGreaterThan is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedIntGreaterThan(info *FlagInfo, to *int, threshold int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -684,7 +657,7 @@ func (params *ParamSet[N]) BindValidatedIntGreaterThan(info *FlagInfo, to *int, 
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -697,7 +670,6 @@ func (params *ParamSet[N]) BindValidatedIntGreaterThan(info *FlagInfo, to *int, 
 // BindValidatedIntAtLeast is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedIntAtLeast(info *FlagInfo, to *int, threshold int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -706,7 +678,7 @@ func (params *ParamSet[N]) BindValidatedIntAtLeast(info *FlagInfo, to *int, thre
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -719,7 +691,6 @@ func (params *ParamSet[N]) BindValidatedIntAtLeast(info *FlagInfo, to *int, thre
 // BindValidatedIntLessThan is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedIntLessThan(info *FlagInfo, to *int, threshold int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -728,7 +699,7 @@ func (params *ParamSet[N]) BindValidatedIntLessThan(info *FlagInfo, to *int, thr
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -741,7 +712,6 @@ func (params *ParamSet[N]) BindValidatedIntLessThan(info *FlagInfo, to *int, thr
 // BindValidatedIntAtMost is an alternative to using BindValidatedInt. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, threshold int) OptionValidator {
 	params.BindInt(info, to)
 
@@ -750,7 +720,7 @@ func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, thres
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -763,7 +733,6 @@ func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, thres
 // BindValidatedInt16Within is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, lo, hi int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -772,7 +741,7 @@ func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, l
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -785,7 +754,6 @@ func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, l
 // BindValidatedInt16NotWithin is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt16Within'.
-//
 func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16, lo, hi int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -794,7 +762,7 @@ func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -807,7 +775,6 @@ func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16
 // BindValidatedContainsInt16 is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsInt16(info *FlagInfo, to *int16, collection []int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -816,7 +783,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt16(info *FlagInfo, to *int16,
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -829,7 +796,6 @@ func (params *ParamSet[N]) BindValidatedContainsInt16(info *FlagInfo, to *int16,
 // BindValidatedNotContainsInt16 is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsInt16'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsInt16(info *FlagInfo, to *int16, collection []int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -838,7 +804,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt16(info *FlagInfo, to *int
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -851,7 +817,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt16(info *FlagInfo, to *int
 // BindValidatedInt16GreaterThan is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt16GreaterThan(info *FlagInfo, to *int16, threshold int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -860,7 +825,7 @@ func (params *ParamSet[N]) BindValidatedInt16GreaterThan(info *FlagInfo, to *int
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -873,7 +838,6 @@ func (params *ParamSet[N]) BindValidatedInt16GreaterThan(info *FlagInfo, to *int
 // BindValidatedInt16AtLeast is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt16AtLeast(info *FlagInfo, to *int16, threshold int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -882,7 +846,7 @@ func (params *ParamSet[N]) BindValidatedInt16AtLeast(info *FlagInfo, to *int16, 
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -895,7 +859,6 @@ func (params *ParamSet[N]) BindValidatedInt16AtLeast(info *FlagInfo, to *int16, 
 // BindValidatedInt16LessThan is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt16LessThan(info *FlagInfo, to *int16, threshold int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -904,7 +867,7 @@ func (params *ParamSet[N]) BindValidatedInt16LessThan(info *FlagInfo, to *int16,
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -917,7 +880,6 @@ func (params *ParamSet[N]) BindValidatedInt16LessThan(info *FlagInfo, to *int16,
 // BindValidatedInt16AtMost is an alternative to using BindValidatedInt16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, threshold int16) OptionValidator {
 	params.BindInt16(info, to)
 
@@ -926,7 +888,7 @@ func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, t
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -939,7 +901,6 @@ func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, t
 // BindValidatedInt32Within is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, lo, hi int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -948,7 +909,7 @@ func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, l
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -961,7 +922,6 @@ func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, l
 // BindValidatedInt32NotWithin is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt32Within'.
-//
 func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32, lo, hi int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -970,7 +930,7 @@ func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -983,7 +943,6 @@ func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32
 // BindValidatedContainsInt32 is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsInt32(info *FlagInfo, to *int32, collection []int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -992,7 +951,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt32(info *FlagInfo, to *int32,
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1005,7 +964,6 @@ func (params *ParamSet[N]) BindValidatedContainsInt32(info *FlagInfo, to *int32,
 // BindValidatedNotContainsInt32 is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsInt32'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsInt32(info *FlagInfo, to *int32, collection []int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -1014,7 +972,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt32(info *FlagInfo, to *int
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1027,7 +985,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt32(info *FlagInfo, to *int
 // BindValidatedInt32GreaterThan is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt32GreaterThan(info *FlagInfo, to *int32, threshold int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -1036,7 +993,7 @@ func (params *ParamSet[N]) BindValidatedInt32GreaterThan(info *FlagInfo, to *int
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1049,7 +1006,6 @@ func (params *ParamSet[N]) BindValidatedInt32GreaterThan(info *FlagInfo, to *int
 // BindValidatedInt32AtLeast is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt32AtLeast(info *FlagInfo, to *int32, threshold int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -1058,7 +1014,7 @@ func (params *ParamSet[N]) BindValidatedInt32AtLeast(info *FlagInfo, to *int32, 
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1071,7 +1027,6 @@ func (params *ParamSet[N]) BindValidatedInt32AtLeast(info *FlagInfo, to *int32, 
 // BindValidatedInt32LessThan is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt32LessThan(info *FlagInfo, to *int32, threshold int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -1080,7 +1035,7 @@ func (params *ParamSet[N]) BindValidatedInt32LessThan(info *FlagInfo, to *int32,
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1093,7 +1048,6 @@ func (params *ParamSet[N]) BindValidatedInt32LessThan(info *FlagInfo, to *int32,
 // BindValidatedInt32AtMost is an alternative to using BindValidatedInt32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, threshold int32) OptionValidator {
 	params.BindInt32(info, to)
 
@@ -1102,7 +1056,7 @@ func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, t
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1115,7 +1069,6 @@ func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, t
 // BindValidatedInt64Within is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, lo, hi int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1124,7 +1077,7 @@ func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, l
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1137,7 +1090,6 @@ func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, l
 // BindValidatedInt64NotWithin is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt64Within'.
-//
 func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64, lo, hi int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1146,7 +1098,7 @@ func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1159,7 +1111,6 @@ func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64
 // BindValidatedContainsInt64 is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsInt64(info *FlagInfo, to *int64, collection []int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1168,7 +1119,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt64(info *FlagInfo, to *int64,
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1181,7 +1132,6 @@ func (params *ParamSet[N]) BindValidatedContainsInt64(info *FlagInfo, to *int64,
 // BindValidatedNotContainsInt64 is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsInt64'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsInt64(info *FlagInfo, to *int64, collection []int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1190,7 +1140,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt64(info *FlagInfo, to *int
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1203,7 +1153,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt64(info *FlagInfo, to *int
 // BindValidatedInt64GreaterThan is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt64GreaterThan(info *FlagInfo, to *int64, threshold int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1212,7 +1161,7 @@ func (params *ParamSet[N]) BindValidatedInt64GreaterThan(info *FlagInfo, to *int
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1225,7 +1174,6 @@ func (params *ParamSet[N]) BindValidatedInt64GreaterThan(info *FlagInfo, to *int
 // BindValidatedInt64AtLeast is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt64AtLeast(info *FlagInfo, to *int64, threshold int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1234,7 +1182,7 @@ func (params *ParamSet[N]) BindValidatedInt64AtLeast(info *FlagInfo, to *int64, 
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1247,7 +1195,6 @@ func (params *ParamSet[N]) BindValidatedInt64AtLeast(info *FlagInfo, to *int64, 
 // BindValidatedInt64LessThan is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt64LessThan(info *FlagInfo, to *int64, threshold int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1256,7 +1203,7 @@ func (params *ParamSet[N]) BindValidatedInt64LessThan(info *FlagInfo, to *int64,
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1269,7 +1216,6 @@ func (params *ParamSet[N]) BindValidatedInt64LessThan(info *FlagInfo, to *int64,
 // BindValidatedInt64AtMost is an alternative to using BindValidatedInt64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, threshold int64) OptionValidator {
 	params.BindInt64(info, to)
 
@@ -1278,7 +1224,7 @@ func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, t
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1291,7 +1237,6 @@ func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, t
 // BindValidatedInt8Within is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, lo, hi int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1300,7 +1245,7 @@ func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, lo,
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1313,7 +1258,6 @@ func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, lo,
 // BindValidatedInt8NotWithin is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt8Within'.
-//
 func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, lo, hi int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1322,7 +1266,7 @@ func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, 
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1335,7 +1279,6 @@ func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, 
 // BindValidatedContainsInt8 is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsInt8(info *FlagInfo, to *int8, collection []int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1344,7 +1287,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt8(info *FlagInfo, to *int8, c
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1357,7 +1300,6 @@ func (params *ParamSet[N]) BindValidatedContainsInt8(info *FlagInfo, to *int8, c
 // BindValidatedNotContainsInt8 is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsInt8'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsInt8(info *FlagInfo, to *int8, collection []int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1366,7 +1308,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt8(info *FlagInfo, to *int8
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1379,7 +1321,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt8(info *FlagInfo, to *int8
 // BindValidatedInt8GreaterThan is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt8GreaterThan(info *FlagInfo, to *int8, threshold int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1388,7 +1329,7 @@ func (params *ParamSet[N]) BindValidatedInt8GreaterThan(info *FlagInfo, to *int8
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1401,7 +1342,6 @@ func (params *ParamSet[N]) BindValidatedInt8GreaterThan(info *FlagInfo, to *int8
 // BindValidatedInt8AtLeast is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt8AtLeast(info *FlagInfo, to *int8, threshold int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1410,7 +1350,7 @@ func (params *ParamSet[N]) BindValidatedInt8AtLeast(info *FlagInfo, to *int8, th
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1423,7 +1363,6 @@ func (params *ParamSet[N]) BindValidatedInt8AtLeast(info *FlagInfo, to *int8, th
 // BindValidatedInt8LessThan is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt8LessThan(info *FlagInfo, to *int8, threshold int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1432,7 +1371,7 @@ func (params *ParamSet[N]) BindValidatedInt8LessThan(info *FlagInfo, to *int8, t
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1445,7 +1384,6 @@ func (params *ParamSet[N]) BindValidatedInt8LessThan(info *FlagInfo, to *int8, t
 // BindValidatedInt8AtMost is an alternative to using BindValidatedInt8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, threshold int8) OptionValidator {
 	params.BindInt8(info, to)
 
@@ -1454,7 +1392,7 @@ func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, thr
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1467,7 +1405,6 @@ func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, thr
 // BindValidatedStringWithin is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string, lo, hi string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1476,7 +1413,7 @@ func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string,
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1489,7 +1426,6 @@ func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string,
 // BindValidatedStringNotWithin is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedStringWithin'.
-//
 func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *string, lo, hi string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1498,7 +1434,7 @@ func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *stri
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1511,7 +1447,6 @@ func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *stri
 // BindValidatedContainsString is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsString(info *FlagInfo, to *string, collection []string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1520,7 +1455,7 @@ func (params *ParamSet[N]) BindValidatedContainsString(info *FlagInfo, to *strin
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1533,7 +1468,6 @@ func (params *ParamSet[N]) BindValidatedContainsString(info *FlagInfo, to *strin
 // BindValidatedNotContainsString is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsString'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsString(info *FlagInfo, to *string, collection []string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1542,7 +1476,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsString(info *FlagInfo, to *st
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1555,7 +1489,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsString(info *FlagInfo, to *st
 // BindValidatedStringIsMatch is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'pattern' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not match the regular expression denoted by 'pattern'.
-//
 func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string, pattern string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1564,7 +1497,7 @@ func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string
 			if regexp.MustCompile(pattern).Match([]byte(value)) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetMatchErrorMessage(info.FlagName(), value, pattern))
+			return i18n.NewMatchOptValidationError(info.FlagName(), value, pattern)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1577,7 +1510,6 @@ func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string
 // BindValidatedStringIsNotMatch is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'pattern' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedStringIsMatch'.
-//
 func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *string, pattern string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1586,7 +1518,7 @@ func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *str
 			if !(regexp.MustCompile(pattern).Match([]byte(value))) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotMatchErrorMessage(info.FlagName(), value, pattern))
+			return i18n.NewNotMatchOptValidationError(info.FlagName(), value, pattern)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1599,7 +1531,6 @@ func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *str
 // BindValidatedStringGreaterThan is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedStringGreaterThan(info *FlagInfo, to *string, threshold string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1608,7 +1539,7 @@ func (params *ParamSet[N]) BindValidatedStringGreaterThan(info *FlagInfo, to *st
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1621,7 +1552,6 @@ func (params *ParamSet[N]) BindValidatedStringGreaterThan(info *FlagInfo, to *st
 // BindValidatedStringAtLeast is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedStringAtLeast(info *FlagInfo, to *string, threshold string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1630,7 +1560,7 @@ func (params *ParamSet[N]) BindValidatedStringAtLeast(info *FlagInfo, to *string
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1643,7 +1573,6 @@ func (params *ParamSet[N]) BindValidatedStringAtLeast(info *FlagInfo, to *string
 // BindValidatedStringLessThan is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedStringLessThan(info *FlagInfo, to *string, threshold string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1652,7 +1581,7 @@ func (params *ParamSet[N]) BindValidatedStringLessThan(info *FlagInfo, to *strin
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1665,7 +1594,6 @@ func (params *ParamSet[N]) BindValidatedStringLessThan(info *FlagInfo, to *strin
 // BindValidatedStringAtMost is an alternative to using BindValidatedString. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string, threshold string) OptionValidator {
 	params.BindString(info, to)
 
@@ -1674,7 +1602,7 @@ func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string,
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1687,7 +1615,6 @@ func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string,
 // BindValidatedUint16Within is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16, lo, hi uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1696,7 +1623,7 @@ func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16,
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1709,7 +1636,6 @@ func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16,
 // BindValidatedUint16NotWithin is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint16Within'.
-//
 func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint16, lo, hi uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1718,7 +1644,7 @@ func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1731,7 +1657,6 @@ func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint
 // BindValidatedContainsUint16 is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsUint16(info *FlagInfo, to *uint16, collection []uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1740,7 +1665,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint16(info *FlagInfo, to *uint1
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1753,7 +1678,6 @@ func (params *ParamSet[N]) BindValidatedContainsUint16(info *FlagInfo, to *uint1
 // BindValidatedNotContainsUint16 is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsUint16'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsUint16(info *FlagInfo, to *uint16, collection []uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1762,7 +1686,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint16(info *FlagInfo, to *ui
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1775,7 +1699,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint16(info *FlagInfo, to *ui
 // BindValidatedUint16GreaterThan is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint16GreaterThan(info *FlagInfo, to *uint16, threshold uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1784,7 +1707,7 @@ func (params *ParamSet[N]) BindValidatedUint16GreaterThan(info *FlagInfo, to *ui
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1797,7 +1720,6 @@ func (params *ParamSet[N]) BindValidatedUint16GreaterThan(info *FlagInfo, to *ui
 // BindValidatedUint16AtLeast is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint16AtLeast(info *FlagInfo, to *uint16, threshold uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1806,7 +1728,7 @@ func (params *ParamSet[N]) BindValidatedUint16AtLeast(info *FlagInfo, to *uint16
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1819,7 +1741,6 @@ func (params *ParamSet[N]) BindValidatedUint16AtLeast(info *FlagInfo, to *uint16
 // BindValidatedUint16LessThan is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint16LessThan(info *FlagInfo, to *uint16, threshold uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1828,7 +1749,7 @@ func (params *ParamSet[N]) BindValidatedUint16LessThan(info *FlagInfo, to *uint1
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1841,7 +1762,6 @@ func (params *ParamSet[N]) BindValidatedUint16LessThan(info *FlagInfo, to *uint1
 // BindValidatedUint16AtMost is an alternative to using BindValidatedUint16. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16, threshold uint16) OptionValidator {
 	params.BindUint16(info, to)
 
@@ -1850,7 +1770,7 @@ func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16,
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1863,7 +1783,6 @@ func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16,
 // BindValidatedUint32Within is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32, lo, hi uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -1872,7 +1791,7 @@ func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32,
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1885,7 +1804,6 @@ func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32,
 // BindValidatedUint32NotWithin is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint32Within'.
-//
 func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint32, lo, hi uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -1894,7 +1812,7 @@ func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1907,7 +1825,6 @@ func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint
 // BindValidatedContainsUint32 is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsUint32(info *FlagInfo, to *uint32, collection []uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -1916,7 +1833,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint32(info *FlagInfo, to *uint3
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1929,7 +1846,6 @@ func (params *ParamSet[N]) BindValidatedContainsUint32(info *FlagInfo, to *uint3
 // BindValidatedNotContainsUint32 is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsUint32'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsUint32(info *FlagInfo, to *uint32, collection []uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -1938,7 +1854,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint32(info *FlagInfo, to *ui
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1951,7 +1867,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint32(info *FlagInfo, to *ui
 // BindValidatedUint32GreaterThan is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint32GreaterThan(info *FlagInfo, to *uint32, threshold uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -1960,7 +1875,7 @@ func (params *ParamSet[N]) BindValidatedUint32GreaterThan(info *FlagInfo, to *ui
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1973,7 +1888,6 @@ func (params *ParamSet[N]) BindValidatedUint32GreaterThan(info *FlagInfo, to *ui
 // BindValidatedUint32AtLeast is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint32AtLeast(info *FlagInfo, to *uint32, threshold uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -1982,7 +1896,7 @@ func (params *ParamSet[N]) BindValidatedUint32AtLeast(info *FlagInfo, to *uint32
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1995,7 +1909,6 @@ func (params *ParamSet[N]) BindValidatedUint32AtLeast(info *FlagInfo, to *uint32
 // BindValidatedUint32LessThan is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint32LessThan(info *FlagInfo, to *uint32, threshold uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -2004,7 +1917,7 @@ func (params *ParamSet[N]) BindValidatedUint32LessThan(info *FlagInfo, to *uint3
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2017,7 +1930,6 @@ func (params *ParamSet[N]) BindValidatedUint32LessThan(info *FlagInfo, to *uint3
 // BindValidatedUint32AtMost is an alternative to using BindValidatedUint32. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32, threshold uint32) OptionValidator {
 	params.BindUint32(info, to)
 
@@ -2026,7 +1938,7 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2039,7 +1951,6 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 // BindValidatedUint64Within is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64, lo, hi uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2048,7 +1959,7 @@ func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64,
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2061,7 +1972,6 @@ func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64,
 // BindValidatedUint64NotWithin is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint64Within'.
-//
 func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint64, lo, hi uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2070,7 +1980,7 @@ func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2083,7 +1993,6 @@ func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint
 // BindValidatedContainsUint64 is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsUint64(info *FlagInfo, to *uint64, collection []uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2092,7 +2001,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint64(info *FlagInfo, to *uint6
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2105,7 +2014,6 @@ func (params *ParamSet[N]) BindValidatedContainsUint64(info *FlagInfo, to *uint6
 // BindValidatedNotContainsUint64 is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsUint64'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsUint64(info *FlagInfo, to *uint64, collection []uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2114,7 +2022,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint64(info *FlagInfo, to *ui
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2127,7 +2035,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint64(info *FlagInfo, to *ui
 // BindValidatedUint64GreaterThan is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint64GreaterThan(info *FlagInfo, to *uint64, threshold uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2136,7 +2043,7 @@ func (params *ParamSet[N]) BindValidatedUint64GreaterThan(info *FlagInfo, to *ui
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2149,7 +2056,6 @@ func (params *ParamSet[N]) BindValidatedUint64GreaterThan(info *FlagInfo, to *ui
 // BindValidatedUint64AtLeast is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint64AtLeast(info *FlagInfo, to *uint64, threshold uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2158,7 +2064,7 @@ func (params *ParamSet[N]) BindValidatedUint64AtLeast(info *FlagInfo, to *uint64
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2171,7 +2077,6 @@ func (params *ParamSet[N]) BindValidatedUint64AtLeast(info *FlagInfo, to *uint64
 // BindValidatedUint64LessThan is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint64LessThan(info *FlagInfo, to *uint64, threshold uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2180,7 +2085,7 @@ func (params *ParamSet[N]) BindValidatedUint64LessThan(info *FlagInfo, to *uint6
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2193,7 +2098,6 @@ func (params *ParamSet[N]) BindValidatedUint64LessThan(info *FlagInfo, to *uint6
 // BindValidatedUint64AtMost is an alternative to using BindValidatedUint64. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64, threshold uint64) OptionValidator {
 	params.BindUint64(info, to)
 
@@ -2202,7 +2106,7 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2215,7 +2119,6 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 // BindValidatedUint8Within is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2224,7 +2127,7 @@ func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, l
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2237,7 +2140,6 @@ func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, l
 // BindValidatedUint8NotWithin is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint8Within'.
-//
 func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2246,7 +2148,7 @@ func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2259,7 +2161,6 @@ func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8
 // BindValidatedContainsUint8 is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8, collection []uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2268,7 +2169,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8,
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2281,7 +2182,6 @@ func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8,
 // BindValidatedNotContainsUint8 is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsUint8'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsUint8(info *FlagInfo, to *uint8, collection []uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2290,7 +2190,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint8(info *FlagInfo, to *uin
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2303,7 +2203,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint8(info *FlagInfo, to *uin
 // BindValidatedUint8GreaterThan is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2312,7 +2211,7 @@ func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uin
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2325,7 +2224,6 @@ func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uin
 // BindValidatedUint8AtLeast is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2334,7 +2232,7 @@ func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, 
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2347,7 +2245,6 @@ func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, 
 // BindValidatedUint8LessThan is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2356,7 +2253,7 @@ func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8,
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2369,7 +2266,6 @@ func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8,
 // BindValidatedUint8AtMost is an alternative to using BindValidatedUint8. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, threshold uint8) OptionValidator {
 	params.BindUint8(info, to)
 
@@ -2378,7 +2274,7 @@ func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, t
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2391,7 +2287,6 @@ func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, t
 // BindValidatedUintWithin is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-//
 func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, lo, hi uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2400,7 +2295,7 @@ func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, lo,
 			if value >= lo && value <= hi {
 				return nil
 			}
-			return fmt.Errorf(translate.GetWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2413,7 +2308,6 @@ func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, lo,
 // BindValidatedUintNotWithin is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUintWithin'.
-//
 func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, lo, hi uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2422,7 +2316,7 @@ func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, 
 			if !(value >= lo && value <= hi) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotWithinErrorMessage(info.FlagName(), value, lo, hi))
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2435,7 +2329,6 @@ func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, 
 // BindValidatedContainsUint is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not a member of the 'collection' slice.
-//
 func (params *ParamSet[N]) BindValidatedContainsUint(info *FlagInfo, to *uint, collection []uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2444,7 +2337,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint(info *FlagInfo, to *uint, c
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
-			return fmt.Errorf(translate.GetContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2457,7 +2350,6 @@ func (params *ParamSet[N]) BindValidatedContainsUint(info *FlagInfo, to *uint, c
 // BindValidatedNotContainsUint is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'collection' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedContainsUint'.
-//
 func (params *ParamSet[N]) BindValidatedNotContainsUint(info *FlagInfo, to *uint, collection []uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2466,7 +2358,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint(info *FlagInfo, to *uint
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
-			return fmt.Errorf(translate.GetNotContainsErrorMessage(info.FlagName(), value, collection))
+			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2479,7 +2371,6 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint(info *FlagInfo, to *uint
 // BindValidatedUintGreaterThan is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUintGreaterThan(info *FlagInfo, to *uint, threshold uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2488,7 +2379,7 @@ func (params *ParamSet[N]) BindValidatedUintGreaterThan(info *FlagInfo, to *uint
 			if value > threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetGreaterThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2501,7 +2392,6 @@ func (params *ParamSet[N]) BindValidatedUintGreaterThan(info *FlagInfo, to *uint
 // BindValidatedUintAtLeast is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably greater than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUintAtLeast(info *FlagInfo, to *uint, threshold uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2510,7 +2400,7 @@ func (params *ParamSet[N]) BindValidatedUintAtLeast(info *FlagInfo, to *uint, th
 			if value >= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtLeastErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2523,7 +2413,6 @@ func (params *ParamSet[N]) BindValidatedUintAtLeast(info *FlagInfo, to *uint, th
 // BindValidatedUintLessThan is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUintLessThan(info *FlagInfo, to *uint, threshold uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2532,7 +2421,7 @@ func (params *ParamSet[N]) BindValidatedUintLessThan(info *FlagInfo, to *uint, t
 			if value < threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetLessThanErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2545,7 +2434,6 @@ func (params *ParamSet[N]) BindValidatedUintLessThan(info *FlagInfo, to *uint, t
 // BindValidatedUintAtMost is an alternative to using BindValidatedUint. Instead of providing
 // a function, the client passes in argument(s): 'threshold' to utilise predefined functionality as a helper.
 // This method fails validation if the option value is not comparably less than or equal to 'threshold'.
-//
 func (params *ParamSet[N]) BindValidatedUintAtMost(info *FlagInfo, to *uint, threshold uint) OptionValidator {
 	params.BindUint(info, to)
 
@@ -2554,7 +2442,7 @@ func (params *ParamSet[N]) BindValidatedUintAtMost(info *FlagInfo, to *uint, thr
 			if value <= threshold {
 				return nil
 			}
-			return fmt.Errorf(translate.GetAtMostErrorMessage(info.FlagName(), value, threshold))
+			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),

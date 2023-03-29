@@ -41,7 +41,6 @@ $types = @{
 // The best place to put this would be inside the PreRun/PreRunE function, assuming the
 // param set and the enum info are both in scope. Actually, every int based enum
 // flag, would need to have this assignment performed.
-//
 "@
 
     BindValidatedDoc   = @"
@@ -50,7 +49,6 @@ $types = @{
 // The client can utilise this method inside a custom function passed into 'BindValidatedEnum'.
 // The implementation would simply call this method, either on the EnumInfo or the EnumValue.
 // Please see the readme for more details.
-//
 "@
 
     #
@@ -748,7 +746,7 @@ $types = @{
     ErrorMessage       = "out of range"
     ArgsPlaceholder    = "[%v]..[%v]"
     ErrorArgs          = "lo, hi"
-    ErrorTempl         = "Get{{Not}}WithinErrorMessage"
+    ErrorTempl         = "New{{Not}}WithinOptValidationError"
     Comment            = "option value must be within the range"
     #
     Negate             = $true
@@ -767,7 +765,7 @@ $types = @{
     ErrorMessage         = "not a member of"
     ArgsPlaceholder      = "[%v]"
     ErrorArgs            = "collection"
-    ErrorTempl           = "Get{{Not}}ContainsErrorMessage"
+    ErrorTempl           = "New{{Not}}ContainsOptValidationError"
     Comment              = "option value must be a member of collection"
     #
     Negate               = $true
@@ -786,7 +784,7 @@ $types = @{
     ErrorMessage         = "does not match"
     ArgsPlaceholder      = "[%v]"
     ErrorArgs            = "pattern"
-    ErrorTempl           = "Get{{Not}}MatchErrorMessage"
+    ErrorTempl           = "New{{Not}}MatchOptValidationError"
     Comment              = "option value must match regex pattern"
     #
     Negate               = $true
@@ -804,7 +802,7 @@ $types = @{
     ErrorMessage    = "not greater than"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "GetGreaterThanErrorMessage"
+    ErrorTempl      = "NewGreaterThanOptValidationError"
     Comment         = "option value must be greater than threshold"
     #
     # Relatable is the op equivalent of spec.Comparable. Operations that are relatable
@@ -819,10 +817,10 @@ $types = @{
     Documentation   = "fails validation if the option value is not comparably greater than or equal to 'threshold'"
     Args            = "threshold"
     Condition       = "value >= threshold"
-    ErrorMessage    = "not at least"
+    ErrorMessage    = "at least"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "GetAtLeastErrorMessage"
+    ErrorTempl      = "NewAtLeastOptValidationError"
     Comment         = "option value must be greater than or equal to threshold"
     #
     Relatable       = $true
@@ -837,7 +835,7 @@ $types = @{
     ErrorMessage    = "not less than"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "GetLessThanErrorMessage"
+    ErrorTempl      = "NewLessThanOptValidationError"
     Comment         = "option value must be less than threshold"
     #
     Relatable       = $true
@@ -852,7 +850,7 @@ $types = @{
     ErrorMessage    = "not at most"
     ArgsPlaceholder = "[%v]"
     ErrorArgs       = "threshold"
-    ErrorTempl      = "GetAtMostErrorMessage"
+    ErrorTempl      = "NewAtMostOptValidationError"
     Comment         = "option value must be less than or equal to threshold"
     #
     Relatable       = $true
@@ -894,20 +892,17 @@ function Build-Validators {
       if ($spec.Validatable) {
         @"
 // $($validatorFn) defines the validator function for $($displayType) type.
-//
 type $($validatorFn) func($($spec.GoType), *pflag.Flag) error
 
 // $($validatorStruct) defines the struct that wraps the client defined validator function
 // $($validatorFn) for $($displayType) type. This is the instance that is returned by
 // validated binder function BindValidated$($spec.TypeName).
-//
 type $($validatorStruct) GenericOptionValidatorWrapper[$($spec.GoType)]
         
 "@
         if (-not($spec.ForeignValidatorFn)) {
           @"
 // Validate invokes the client defined validator function for $($displayType) type.
-//
 func (validator $($validatorStruct)) Validate() error {
   return validator.Fn(*validator.Value, validator.Flag)
 }
@@ -928,15 +923,12 @@ func (validator $($validatorStruct)) Validate() error {
           $sliceValidatorFn = $("$($spec.TypeName)SliceValidatorFn")
           @"
 // $($typeName) defines the validator function for $($sliceTypeName) type.
-//
 type $($sliceValidatorFn) func($($sliceType), *pflag.Flag) error
 
 // $($sliceValidatorStruct) wraps the client defined validator function for type $($sliceType).
-//
 type $($sliceValidatorStruct) GenericOptionValidatorWrapper[$($sliceType)]
 
 // Validate invokes the client defined validator function for $($sliceType) type.
-//
 func (validator $($sliceValidatorStruct)) Validate() error {
 return validator.Fn(*validator.Value, validator.Flag)
 }
@@ -1028,7 +1020,6 @@ func (params *ParamSet[N]) BindValidated$($spec.TypeName)(info *FlagInfo, to *$(
         @"
 // Bind$($sliceTypeName) binds $($sliceType) slice flag with a shorthand if 'info.Short' has been set
 // otherwise binds without a short name.
-//
 func (params *ParamSet[N]) Bind$($sliceTypeName)(info *FlagInfo, to *$($sliceType)) *ParamSet[N] {
   flagSet := params.ResolveFlagSet(info)
   if info.Short == "" {
@@ -1054,7 +1045,6 @@ func (params *ParamSet[N]) Bind$($sliceTypeName)(info *FlagInfo, to *$($sliceTyp
 // BindValidated$($sliceTypeName) binds $($sliceType) slice flag with a shorthand if
 // 'info.Short' has been set otherwise binds without a short name.  Client can provide a
 // function to validate option values of $sliceType type.
-//
 func (params *ParamSet[N]) BindValidated$($sliceTypeName)(info *FlagInfo, to *$($sliceType), validator $($sliceValidatorFn)) OptionValidator {
   params.Bind$($sliceTypeName)(info, to)
 
@@ -1342,7 +1332,7 @@ function Build-BinderHelpers {
         }
 
         $errorFn = $op.ErrorTempl.Replace("{{Not}}", [string]::Empty)
-        $errorF = "$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
+        $errorF = "i18n.$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
 
         # generate BuildValidatedXXXXOp/BuildValidatedOpXXXX
         #
@@ -1350,7 +1340,6 @@ function Build-BinderHelpers {
 // BindValidated$($methodSubStmt) is an alternative to using BindValidated$($spec.TypeName). Instead of providing
 // a function, the client passes in argument(s): '$($op.Args)' to utilise predefined functionality as a helper.
 // This method $($op.Documentation).
-// 
 func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$($spec.GoType), $($argumentsStmt)) OptionValidator {
   params.Bind$($spec.TypeName)(info, to)
 
@@ -1359,7 +1348,7 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
       if $($op.Condition) {
         return nil
       }
-      return fmt.Errorf($($errorF))
+      return $($errorF)
     },
     Value: to,
     Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1384,7 +1373,7 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
           $negatedCondition = $("!($($op.Condition))")
 
           $errorFn = $op.ErrorTempl.Replace("{{Not}}", "Not")
-          $errorF = "translate.$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
+          $errorF = "i18n.$($errorFn)(info.FlagName(), value, $($op.ErrorArgs))"
   
           # generate NOT method
           #
@@ -1392,7 +1381,6 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
 // BindValidated$($notMethodSubStmt) is an alternative to using BindValidated$($spec.TypeName). Instead of providing
 // a function, the client passes in argument(s): '$($op.Args)' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidated$($methodSubStmt)'.
-//
 func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to *$($spec.GoType), $($argumentsStmt)) OptionValidator {
   params.Bind$($spec.TypeName)(info, to)
 
@@ -1401,7 +1389,7 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
       if $($negatedCondition) {
         return nil
       }
-      return fmt.Errorf($($errorF))
+      return $($errorF)
     },
     Value: to,
     Flag:  params.ResolveFlagSet(info).Lookup(info.Name),

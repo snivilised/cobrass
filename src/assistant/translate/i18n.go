@@ -9,7 +9,7 @@ import (
 	"github.com/samber/lo"
 	"golang.org/x/text/language"
 
-	"github.com/snivilised/cobrass/src/assistant/internal/l10n"
+	xi18n "github.com/snivilised/extendio/i18n"
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
@@ -34,7 +34,6 @@ type LanguageInitOptions struct {
 
 // ValidatorContainerOptionFn definition of a client defined function to
 // set ValidatorContainer options.
-//
 type LanguageInitOptionFn func(*LanguageInitOptions)
 
 func Initialise(options ...LanguageInitOptionFn) {
@@ -63,7 +62,6 @@ func Initialise(options ...LanguageInitOptionFn) {
 
 // LanguageInfo indicates information relating to current language. See members for
 // details.
-//
 type LanguageInfo struct {
 	// TranslationFilename overrides the default filename to load for a language
 	// When not set, the default filename is active.<ietf language>.json
@@ -101,9 +99,11 @@ type LanguageInfo struct {
 }
 
 // UseTag allows the client to change the language currently in use to a language
-// othr than the one automatically detected.
-//
+// other than the one automatically detected.
+// TODO: rename to just Use
 func UseTag(tag language.Tag) error {
+	// TODO: delegate to extendio.Use
+	//
 	_, found := lo.Find(languages.Supported, func(t language.Tag) bool {
 		return t == tag
 	})
@@ -112,20 +112,18 @@ func UseTag(tag language.Tag) error {
 		languages = createIncrementalLanguageInfo(tag, languages)
 		localiser = createLocaliser(languages)
 	} else {
-		return fmt.Errorf(GetLanguageNotSupportedErrorMessage(tag))
+		return xi18n.NewLanguageNotAvailableNativeError(tag)
 	}
 
 	return nil
 }
 
 // GetLanguageInfo gets LanguageInfo.
-//
 func GetLanguageInfo() *LanguageInfo {
 	return languages
 }
 
 // GetLocaliser gets the current go-i18n localizer instance.
-//
 func GetLocaliser() *i18n.Localizer {
 	return localiser
 }
@@ -185,222 +183,4 @@ func createLocaliser(li *LanguageInfo) *i18n.Localizer {
 	})
 
 	return i18n.NewLocalizer(bundle, supported...)
-}
-
-func localise(data l10n.Localisable) string {
-	return localiser.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: data.Message(),
-		TemplateData:   data,
-	})
-}
-
-// --- language not supported
-
-func GetLanguageNotSupportedErrorMessage(tag language.Tag) string {
-	data := l10n.LanguageNotSupportedTemplData{
-		Language: tag.String(),
-	}
-
-	return localise(data)
-}
-
-// --- already exists, invalid enum info specified
-
-func GetEnumValueAlreadyExistsErrorMessage(value string, number int) string {
-	data := l10n.EnumValueValueAlreadyExistsTemplData{
-		Value:  value,
-		Number: number,
-	}
-
-	return localise(data)
-}
-
-// --- is not a valid enum value
-
-func GetIsNotValidEnumValueErrorMessage(source string) string {
-	data := l10n.IsNotValidEnumValueTemplData{
-		Source: source,
-	}
-
-	return localise(data)
-}
-
-// --- failed to add validator for flag, because it already exists
-
-func GetFailedToGetValidatorForFlagAlreadyExistsErrorMessage(flag string) string {
-	data := l10n.FailedToAddValidatorAlreadyExistsTemplData{
-		Flag: flag,
-	}
-
-	return localise(data)
-}
-
-// --- command already registered
-
-func GetCommandAlreadyRegisteredErrorMessage(name string) string {
-	data := l10n.CommandAlreadyRegisteredTemplData{
-		Name: name,
-	}
-
-	return localise(data)
-}
-
-// --- parent command not registered
-
-func GetParentCommandNotRegisteredErrorMessage(parent string) string {
-	data := l10n.CommandAlreadyRegisteredTemplData{
-		Name: parent,
-	}
-
-	return localise(data)
-}
-
-// --- param set already registered
-
-func GetParamSetAlreadyRegisteredErrorMessage(name string) string {
-	data := l10n.ParamSetAlreadyRegisteredTemplData{
-		Name: name,
-	}
-
-	return localise(data)
-}
-
-// --- param set must be struct
-
-func GetParamSetMustBeStructErrorMessage(name string, actualType string) string {
-	data := l10n.ParamSetObjectMustBeStructTemplData{
-		Name: name,
-		Type: actualType,
-	}
-
-	return localise(data)
-}
-
-// --- param set must be pointer
-
-func GetParamSetMustBePointerErrorMessage(name, actualType string) string {
-	data := l10n.ParamSetObjectMustBePointerTemplData{
-		Name: name,
-		Type: actualType,
-	}
-
-	return localise(data)
-}
-
-// --- param set not found
-
-func GetParamSetNotFoundErrorMessage(name string) string {
-	data := l10n.ParamSetNotFoundTemplData{
-		Name: name,
-	}
-
-	return localise(data)
-}
-
-// --- Within
-
-func GetWithinErrorMessage(flag string, value, lo, hi any) string {
-	data := l10n.WithinOptValidationTemplData{
-		OutOfRangeOV: l10n.OutOfRangeOV{
-			Flag: flag, Value: value, Lo: lo, Hi: hi,
-		},
-	}
-
-	return localise(data)
-}
-
-func GetNotWithinErrorMessage(flag string, value, lo, hi any) string {
-	data := l10n.NotWithinOptValidationTemplData{
-		OutOfRangeOV: l10n.OutOfRangeOV{
-			Flag: flag, Value: value, Lo: lo, Hi: hi,
-		},
-	}
-
-	return localise(data)
-}
-
-// --- Containment
-
-func GetContainsErrorMessage[T any](flag string, value T, collection []T) string {
-	data := l10n.ContainsOptValidationTemplData[T]{
-		ContainmentOV: l10n.ContainmentOV[T]{
-			Flag: flag, Value: value, Collection: collection,
-		},
-	}
-
-	return localise(data)
-}
-
-func GetNotContainsErrorMessage[T any](flag string, value T, collection []T) string {
-	data := l10n.NotContainsOptValidationTemplData[T]{
-		ContainmentOV: l10n.ContainmentOV[T]{
-			Flag: flag, Value: value, Collection: collection,
-		},
-	}
-
-	return localise(data)
-}
-
-// --- Match
-
-func GetMatchErrorMessage(flag string, value string, pattern string) string {
-	data := l10n.MatchOptValidationTemplData{
-		MatchOV: l10n.MatchOV{
-			Flag: flag, Value: value, Pattern: pattern,
-		},
-	}
-
-	return localise(data)
-}
-
-func GetNotMatchErrorMessage(flag string, value string, pattern string) string {
-	data := l10n.NotMatchOptValidationTemplData{
-		MatchOV: l10n.MatchOV{
-			Flag: flag, Value: value, Pattern: pattern,
-		},
-	}
-
-	return localise(data)
-}
-
-// --- Relational
-
-func GetGreaterThanErrorMessage(flag string, value, threshold any) string {
-	data := l10n.GreaterThanOptValidationTemplData{
-		RelationalOV: l10n.RelationalOV{
-			Flag: flag, Value: value, Threshold: threshold,
-		},
-	}
-
-	return localise(data)
-}
-
-func GetAtLeastErrorMessage(flag string, value, threshold any) string {
-	data := l10n.AtLeastOptValidationTemplData{
-		RelationalOV: l10n.RelationalOV{
-			Flag: flag, Value: value, Threshold: threshold,
-		},
-	}
-
-	return localise(data)
-}
-
-func GetLessThanErrorMessage(flag string, value, threshold any) string {
-	data := l10n.LessThanOptValidationTemplData{
-		RelationalOV: l10n.RelationalOV{
-			Flag: flag, Value: value, Threshold: threshold,
-		},
-	}
-
-	return localise(data)
-}
-
-func GetAtMostErrorMessage(flag string, value, threshold any) string {
-	data := l10n.AtMostOptValidationTemplData{
-		RelationalOV: l10n.RelationalOV{
-			Flag: flag, Value: value, Threshold: threshold,
-		},
-	}
-
-	return localise(data)
 }
