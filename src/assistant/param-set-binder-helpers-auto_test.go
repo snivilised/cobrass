@@ -7,10 +7,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/spf13/cobra"
-	"golang.org/x/text/language"
 
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/translate"
 )
 
 var _ = Describe("ParamSetBinderHelpers", func() {
@@ -19,15 +17,6 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 	var paramSet *assistant.ParamSet[WidgetParameterSet]
 	var outputFormatEnumInfo *assistant.EnumInfo[OutputFormatEnum]
 	var outputFormatEnum assistant.EnumValue[OutputFormatEnum]
-
-	BeforeEach(func() {
-		bootstrap := assistant.Bootstrap{}
-		bootstrap.Execute(func(detector assistant.LocaleDetector) {
-			translate.Initialise(func(o *translate.LanguageInitOptions) {
-				o.Detected = language.BritishEnglish
-			})
-		})
-	})
 
 	Context("Comparables", func() {
 		BeforeEach(func() {

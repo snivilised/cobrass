@@ -424,17 +424,17 @@ type AtMostOptValidationBehaviourQuery interface {
 	IsAtMost() bool
 }
 
-type AtMostThanOptValidation struct {
+type AtMostOptValidation struct {
 	xi18n.LocalisableError
 }
 
-func (e AtMostThanOptValidation) IsAtMost() bool {
+func (e AtMostOptValidation) IsAtMost() bool {
 	return true
 }
 
 func NewAtMostOptValidationError(flag string, value, threshold any) AtMostOptValidationBehaviourQuery {
 
-	return &AtMostThanOptValidation{
+	return &AtMostOptValidation{
 		LocalisableError: xi18n.LocalisableError{
 			Data: AtMostOptValidationTemplData{
 				RelationalOV: RelationalOV{

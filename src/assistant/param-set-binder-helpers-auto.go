@@ -7,12 +7,8 @@ import (
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/assistant/i18n"
 
-	// . "github.com/snivilised/cobrass/src/assistant/translate"
 	"github.com/spf13/pflag"
 )
-
-// TODO: fix up duplicate import od translate
-// "github.com/snivilised/cobrass/src/assistant/i18n"
 
 // ----> auto generated(Build-Predefined/gen-help)
 
