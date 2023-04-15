@@ -235,7 +235,8 @@ var _ = Describe("ParamSet (manual)", func() {
 					It("🧪 should: return the parameter wrapper", func() {
 
 						container.MustRegisterParamSet(psname, paramSet)
-						resultPS := container.MustGetParamSet(psname).(*assistant.ParamSet[WidgetParameterSet])
+						resultPS := container.MustGetParamSet( //nolint:errcheck // passed into Expect
+							psname).(*assistant.ParamSet[WidgetParameterSet])
 
 						Expect(resultPS).ToNot(BeNil())
 					})
@@ -246,7 +247,8 @@ var _ = Describe("ParamSet (manual)", func() {
 						defer func() {
 							_ = recover()
 						}()
-						_ = container.MustGetParamSet("foo").(*assistant.ParamSet[WidgetParameterSet])
+						_ = container.MustGetParamSet( //nolint:errcheck // check not required
+							"foo").(*assistant.ParamSet[WidgetParameterSet])
 
 						Fail("❌ expected panic due to parameter set not found")
 					})

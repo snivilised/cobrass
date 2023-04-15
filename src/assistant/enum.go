@@ -1,4 +1,3 @@
-//nolint:revive // receiver naming hint doesn't make sense
 package assistant
 
 import (

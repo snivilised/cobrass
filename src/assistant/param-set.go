@@ -56,7 +56,7 @@ func extractNameFromUsage(usage string) string {
 
 // NewFlagInfo factory function for FlagInfo. Use this function if the flag
 // is to be defined on the default flag set, ie the one on command.Flags().
-func NewFlagInfo(usage string, short string, def any) *FlagInfo {
+func NewFlagInfo(usage, short string, def any) *FlagInfo {
 	return &FlagInfo{
 		Name:    extractNameFromUsage(usage),
 		Usage:   usage,
@@ -68,7 +68,7 @@ func NewFlagInfo(usage string, short string, def any) *FlagInfo {
 // NewFlagInfoOnFlagSet factory function for FlagInfo, with an alternative flag set.
 // This function need only be usd to enable defining flags on the flag set
 // other than that of command.Flags(), eg command.PersistentFlags().
-func NewFlagInfoOnFlagSet(usage string, short string, def any, alternativeFlagSet *pflag.FlagSet) *FlagInfo {
+func NewFlagInfoOnFlagSet(usage, short string, def any, alternativeFlagSet *pflag.FlagSet) *FlagInfo {
 	return &FlagInfo{
 		Name:               extractNameFromUsage(usage),
 		Usage:              usage,

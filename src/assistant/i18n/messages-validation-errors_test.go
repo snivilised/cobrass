@@ -34,7 +34,7 @@ var _ = Describe("MessagesValidationErrors", Ordered, func() {
 		from = xi18n.LoadFrom{
 			Path: l10nPath,
 			Sources: xi18n.TranslationFiles{
-				i18n.SOURCE_ID: xi18n.TranslationSource{Name: "test"},
+				i18n.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
 			},
 		}
 
