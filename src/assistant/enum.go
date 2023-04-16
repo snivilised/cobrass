@@ -1,4 +1,3 @@
-//nolint:revive // receiver naming hint doesn't make sense
 package assistant
 
 import (
@@ -214,9 +213,9 @@ func (ev *EnumValue[E]) IsValidOrEmpty() bool {
 func (ev *EnumValue[E]) String() string {
 	if _, found := ev.Info.reverseLookup[ev.Source]; !found {
 		panic(i18n.NewIsNotValidEnumValueNativeError(ev.Source))
-	} else {
-		return ev.Source
 	}
+
+	return ev.Source
 }
 
 // EnumSlice represents a collection of EnumValues. Note that this abstraction is

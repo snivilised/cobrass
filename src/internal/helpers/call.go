@@ -14,12 +14,14 @@ func CallE(fn any, args []any) error {
 	name := segments[len(segments)-1]
 
 	// create a slice of reflect values for the arguments
-	var reflectArgs []reflect.Value
+	const initialSize = 0
+
+	var reflectArgs = make([]reflect.Value, initialSize, len(args))
+
 	for _, arg := range args {
 		reflectArgs = append(reflectArgs, reflect.ValueOf(arg))
 	}
 
-	// call the function indirectly using the reflect package
 	result := reflFunc.Call(reflectArgs)
 
 	err, ok := (result[0].Interface()).(error)
@@ -31,5 +33,6 @@ func CallE(fn any, args []any) error {
 			),
 		)
 	}
+
 	return err
 }
