@@ -12,6 +12,6 @@ func Path(parent, relative string) string {
 }
 
 func Repo(relative string) string {
-	_, filename, _, _ := runtime.Caller(0)
+	_, filename, _, _ := runtime.Caller(0) //nolint:dogsled // use of 3 _ is out of our control
 	return Path(filepath.Dir(filename), relative)
 }

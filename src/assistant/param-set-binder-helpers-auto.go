@@ -13,17 +13,17 @@ import (
 // ----> auto generated(Build-Predefined/gen-help)
 
 // BindValidatedDurationWithin is an alternative to using BindValidatedDuration. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.Duration, lo, hi time.Duration) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.Duration, low, high time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -34,17 +34,17 @@ func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.
 }
 
 // BindValidatedDurationNotWithin is an alternative to using BindValidatedDuration. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedDurationWithin'.
-func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *time.Duration, lo, hi time.Duration) OptionValidator {
+func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *time.Duration, low, high time.Duration) OptionValidator {
 	params.BindDuration(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -223,17 +223,17 @@ func (params *ParamSet[N]) BindValidatedNotContainsEnum(info *FlagInfo, to *stri
 }
 
 // BindValidatedFloat32Within is an alternative to using BindValidatedFloat32. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float32, lo, hi float32) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float32, low, high float32) OptionValidator {
 	params.BindFloat32(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -244,17 +244,17 @@ func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float3
 }
 
 // BindValidatedFloat32NotWithin is an alternative to using BindValidatedFloat32. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedFloat32Within'.
-func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *float32, lo, hi float32) OptionValidator {
+func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *float32, low, high float32) OptionValidator {
 	params.BindFloat32(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -391,17 +391,17 @@ func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float3
 }
 
 // BindValidatedFloat64Within is an alternative to using BindValidatedFloat64. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float64, lo, hi float64) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float64, low, high float64) OptionValidator {
 	params.BindFloat64(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -412,17 +412,17 @@ func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float6
 }
 
 // BindValidatedFloat64NotWithin is an alternative to using BindValidatedFloat64. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedFloat64Within'.
-func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *float64, lo, hi float64) OptionValidator {
+func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *float64, low, high float64) OptionValidator {
 	params.BindFloat64(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -559,17 +559,17 @@ func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float6
 }
 
 // BindValidatedIntWithin is an alternative to using BindValidatedInt. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, lo, hi int) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, low, high int) OptionValidator {
 	params.BindInt(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -580,17 +580,17 @@ func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, lo, h
 }
 
 // BindValidatedIntNotWithin is an alternative to using BindValidatedInt. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedIntWithin'.
-func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo, hi int) OptionValidator {
+func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, low, high int) OptionValidator {
 	params.BindInt(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -727,17 +727,17 @@ func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, thres
 }
 
 // BindValidatedInt16Within is an alternative to using BindValidatedInt16. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, lo, hi int16) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, low, high int16) OptionValidator {
 	params.BindInt16(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -748,17 +748,17 @@ func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, l
 }
 
 // BindValidatedInt16NotWithin is an alternative to using BindValidatedInt16. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt16Within'.
-func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16, lo, hi int16) OptionValidator {
+func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16, low, high int16) OptionValidator {
 	params.BindInt16(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -895,17 +895,17 @@ func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, t
 }
 
 // BindValidatedInt32Within is an alternative to using BindValidatedInt32. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, lo, hi int32) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, low, high int32) OptionValidator {
 	params.BindInt32(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -916,17 +916,17 @@ func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, l
 }
 
 // BindValidatedInt32NotWithin is an alternative to using BindValidatedInt32. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt32Within'.
-func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32, lo, hi int32) OptionValidator {
+func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32, low, high int32) OptionValidator {
 	params.BindInt32(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1063,17 +1063,17 @@ func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, t
 }
 
 // BindValidatedInt64Within is an alternative to using BindValidatedInt64. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, lo, hi int64) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, low, high int64) OptionValidator {
 	params.BindInt64(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1084,17 +1084,17 @@ func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, l
 }
 
 // BindValidatedInt64NotWithin is an alternative to using BindValidatedInt64. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt64Within'.
-func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64, lo, hi int64) OptionValidator {
+func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64, low, high int64) OptionValidator {
 	params.BindInt64(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1231,17 +1231,17 @@ func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, t
 }
 
 // BindValidatedInt8Within is an alternative to using BindValidatedInt8. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, lo, hi int8) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, low, high int8) OptionValidator {
 	params.BindInt8(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1252,17 +1252,17 @@ func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, lo,
 }
 
 // BindValidatedInt8NotWithin is an alternative to using BindValidatedInt8. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedInt8Within'.
-func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, lo, hi int8) OptionValidator {
+func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, low, high int8) OptionValidator {
 	params.BindInt8(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1399,17 +1399,17 @@ func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, thr
 }
 
 // BindValidatedStringWithin is an alternative to using BindValidatedString. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string, lo, hi string) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string, low, high string) OptionValidator {
 	params.BindString(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1420,17 +1420,17 @@ func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string,
 }
 
 // BindValidatedStringNotWithin is an alternative to using BindValidatedString. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedStringWithin'.
-func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *string, lo, hi string) OptionValidator {
+func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *string, low, high string) OptionValidator {
 	params.BindString(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1490,7 +1490,7 @@ func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
-			if regexp.MustCompile(pattern).Match([]byte(value)) {
+			if regexp.MustCompile(pattern).Match([]byte(value)) { //nolint:gocritic // solution unknown
 				return nil
 			}
 			return i18n.NewMatchOptValidationError(info.FlagName(), value, pattern)
@@ -1511,7 +1511,7 @@ func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *str
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
-			if !(regexp.MustCompile(pattern).Match([]byte(value))) {
+			if !(regexp.MustCompile(pattern).Match([]byte(value))) { //nolint:gocritic // solution unknown
 				return nil
 			}
 			return i18n.NewNotMatchOptValidationError(info.FlagName(), value, pattern)
@@ -1609,17 +1609,17 @@ func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string,
 }
 
 // BindValidatedUint16Within is an alternative to using BindValidatedUint16. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16, lo, hi uint16) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16, low, high uint16) OptionValidator {
 	params.BindUint16(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1630,17 +1630,17 @@ func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16,
 }
 
 // BindValidatedUint16NotWithin is an alternative to using BindValidatedUint16. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint16Within'.
-func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint16, lo, hi uint16) OptionValidator {
+func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint16, low, high uint16) OptionValidator {
 	params.BindUint16(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1777,17 +1777,17 @@ func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16,
 }
 
 // BindValidatedUint32Within is an alternative to using BindValidatedUint32. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32, lo, hi uint32) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32, low, high uint32) OptionValidator {
 	params.BindUint32(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1798,17 +1798,17 @@ func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32,
 }
 
 // BindValidatedUint32NotWithin is an alternative to using BindValidatedUint32. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint32Within'.
-func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint32, lo, hi uint32) OptionValidator {
+func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint32, low, high uint32) OptionValidator {
 	params.BindUint32(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1945,17 +1945,17 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 }
 
 // BindValidatedUint64Within is an alternative to using BindValidatedUint64. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64, lo, hi uint64) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64, low, high uint64) OptionValidator {
 	params.BindUint64(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1966,17 +1966,17 @@ func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64,
 }
 
 // BindValidatedUint64NotWithin is an alternative to using BindValidatedUint64. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint64Within'.
-func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint64, lo, hi uint64) OptionValidator {
+func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint64, low, high uint64) OptionValidator {
 	params.BindUint64(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2113,17 +2113,17 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 }
 
 // BindValidatedUint8Within is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, low, high uint8) OptionValidator {
 	params.BindUint8(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2134,17 +2134,17 @@ func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, l
 }
 
 // BindValidatedUint8NotWithin is an alternative to using BindValidatedUint8. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUint8Within'.
-func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8, lo, hi uint8) OptionValidator {
+func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8, low, high uint8) OptionValidator {
 	params.BindUint8(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2281,17 +2281,17 @@ func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, t
 }
 
 // BindValidatedUintWithin is an alternative to using BindValidatedUint. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
-// This method fails validation if the option value does not lie within 'lo' and 'hi' (inclusive).
-func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, lo, hi uint) OptionValidator {
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
+// This method fails validation if the option value does not lie within 'low' and 'high' (inclusive).
+func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, low, high uint) OptionValidator {
 	params.BindUint(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
-			if value >= lo && value <= hi {
+			if value >= low && value <= high {
 				return nil
 			}
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2302,17 +2302,17 @@ func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, lo,
 }
 
 // BindValidatedUintNotWithin is an alternative to using BindValidatedUint. Instead of providing
-// a function, the client passes in argument(s): 'lo, hi' to utilise predefined functionality as a helper.
+// a function, the client passes in argument(s): 'low, high' to utilise predefined functionality as a helper.
 // This method performs the inverse of 'BindValidatedUintWithin'.
-func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, lo, hi uint) OptionValidator {
+func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, low, high uint) OptionValidator {
 	params.BindUint(info, to)
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
-			if !(value >= lo && value <= hi) {
+			if !(value >= low && value <= high) {
 				return nil
 			}
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, lo, hi)
+			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),

@@ -739,13 +739,13 @@ $types = @{
 [array]$operators = @(
   [PSCustomObject]@{
     Name               = "Within"
-    Documentation      = "fails validation if the option value does not lie within 'lo' and 'hi' (inclusive)"
+    Documentation      = "fails validation if the option value does not lie within 'low' and 'high' (inclusive)"
     Dual               = $true
-    Args               = "lo, hi"
-    Condition          = "value >= lo && value <= hi"
+    Args               = "low, high"
+    Condition          = "value >= low && value <= high"
     ErrorMessage       = "out of range"
     ArgsPlaceholder    = "[%v]..[%v]"
-    ErrorArgs          = "lo, hi"
+    ErrorArgs          = "low, high"
     ErrorTempl         = "New{{Not}}WithinOptValidationError"
     Comment            = "option value must be within the range"
     #
@@ -1495,7 +1495,7 @@ function Build-BinderHelperTests {
         )
 
         if ($op.Dual) {
-          # dual means we need hi and lo
+          # dual means we need high and low
           #
           if ([string]::IsNullOrEmpty($cast)) {
             $belowEntryArgs = $("$($testOp.Entry.Below[$ValueIndex]), $($testOp.Entry.Below[$ExpectNilIndex]), $($testOp.First), $($testOp.Second)")
