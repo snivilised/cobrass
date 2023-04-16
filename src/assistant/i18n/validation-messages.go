@@ -223,7 +223,7 @@ func (e MatchOptValidation) IsMatch() bool {
 	return true
 }
 
-func NewMatchOptValidationError(flag string, value, pattern string) MatchOptValidationBehaviourQuery {
+func NewMatchOptValidationError(flag, value, pattern string) MatchOptValidationBehaviourQuery {
 	return &MatchOptValidation{
 		LocalisableError: xi18n.LocalisableError{
 			Data: MatchOptValidationTemplData{
@@ -263,7 +263,7 @@ func (e NotMatchOptValidation) IsNotMatch() bool {
 	return true
 }
 
-func NewNotMatchOptValidationError(flag string, value, pattern string) NotMatchOptValidationBehaviourQuery {
+func NewNotMatchOptValidationError(flag, value, pattern string) NotMatchOptValidationBehaviourQuery {
 	return &NotMatchOptValidation{
 		LocalisableError: xi18n.LocalisableError{
 			Data: NotMatchOptValidationTemplData{
@@ -392,7 +392,6 @@ func (e LessThanOptValidation) IsLessThan() bool {
 }
 
 func NewLessThanOptValidationError(flag string, value, threshold any) LessThanOptValidationBehaviourQuery {
-
 	return &LessThanOptValidation{
 		LocalisableError: xi18n.LocalisableError{
 			Data: AtLeastOptValidationTemplData{
@@ -433,7 +432,6 @@ func (e AtMostOptValidation) IsAtMost() bool {
 }
 
 func NewAtMostOptValidationError(flag string, value, threshold any) AtMostOptValidationBehaviourQuery {
-
 	return &AtMostOptValidation{
 		LocalisableError: xi18n.LocalisableError{
 			Data: AtMostOptValidationTemplData{

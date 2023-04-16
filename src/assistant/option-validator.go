@@ -1,6 +1,8 @@
 package assistant
 
-import "github.com/spf13/pflag"
+import (
+	"github.com/spf13/pflag"
+)
 
 // OptionValidator wraps the user defined option validator function.
 // This is the instance that is returned from the validated binder

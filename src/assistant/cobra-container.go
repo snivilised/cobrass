@@ -3,10 +3,10 @@ package assistant
 import (
 	"reflect"
 
+	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant/i18n"
-	"github.com/snivilised/cobrass/src/utils"
 )
 
 // CobraCommandSpec is a wrapper around the cobra command, require to register
@@ -119,7 +119,7 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 
 	command, exists := container.commands[name]
 
-	return utils.TernaryIf(exists, command, nil)
+	return lo.Ternary(exists, command, nil)
 }
 
 // MustRegisterParamSet stores the parameter set under the provided name. Used
