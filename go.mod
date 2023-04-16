@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/onsi/ginkgo/v2 v2.9.2
 	github.com/onsi/gomega v1.27.6
-	github.com/spf13/cobra v1.6.1
+	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 )
 
@@ -21,7 +21,7 @@ require (
 )
 
 require (
-	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
 	github.com/samber/lo v1.38.1
 	github.com/snivilised/extendio v0.1.13
