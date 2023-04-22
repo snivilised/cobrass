@@ -260,5 +260,41 @@ var _ = Describe("Enum", func() {
 				Expect(wrapper.Validate()).Error().NotTo(BeNil())
 			})
 		})
+
+		Context("Case Sensitivity", func() {
+			Context("EnumInfo.IsValid", func() {
+				Context("given: string differs in case from acceptables", func() {
+					It("should: 🧪 validate ok", func() {
+						Expect(outputFormatEnumInfo.IsValid("XML")).To(BeTrue())
+					})
+				})
+			})
+
+			Context("EnumInfo.En", func() {
+				Context("given: string differs in case from acceptables", func() {
+					It("should: 🧪 validate ok", func() {
+						Expect(outputFormatEnumInfo.En("XML")).To(Equal(XMLFormatEn))
+					})
+				})
+			})
+
+			Context("EnumInfo.IsValidOrEmpty", func() {
+				Context("given: string differs in case from acceptables", func() {
+					It("should: 🧪 validate ok", func() {
+						Expect(outputFormatEnumInfo.IsValidOrEmpty("XML")).To(BeTrue())
+					})
+				})
+			})
+
+			Context("EnumValue", func() {
+				Context("given: string differs in case from acceptables", func() {
+					It("should: 🧪 validate ok", func() {
+						outputFormatEnum := outputFormatEnumInfo.NewValue()
+						outputFormatEnum.Source = "Scribble"
+						Expect(outputFormatEnum.IsValid()).To(BeTrue())
+					})
+				})
+			})
+		})
 	})
 })

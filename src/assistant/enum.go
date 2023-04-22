@@ -108,7 +108,7 @@ func NewEnumInfo[E ~int](acceptables AcceptableEnumValues[E]) *EnumInfo[E] {
 				)
 			}
 
-			info.reverseLookup[acc] = enum
+			info.reverseLookup[strings.ToLower(acc)] = enum
 		}
 	}
 
@@ -128,13 +128,13 @@ func (info *EnumInfo[E]) NewSlice() EnumSlice[E] {
 // En, returns the underlying int based enum associated with the provided
 // string value as defined by the Acceptables.
 func (info *EnumInfo[E]) En(value string) E {
-	return info.reverseLookup[value]
+	return info.reverseLookup[strings.ToLower(value)]
 }
 
 // IsValid returns true if the string is an acceptable value for this enum
 // false otherwise.
 func (info *EnumInfo[E]) IsValid(value string) bool {
-	_, found := info.reverseLookup[value]
+	_, found := info.reverseLookup[strings.ToLower(value)]
 	return found
 }
 
@@ -145,7 +145,7 @@ func (info *EnumInfo[E]) IsValidOrEmpty(value string) bool {
 		return true
 	}
 
-	_, found := info.reverseLookup[value]
+	_, found := info.reverseLookup[strings.ToLower(value)]
 
 	return found
 }
