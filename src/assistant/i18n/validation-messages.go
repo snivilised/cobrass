@@ -1,8 +1,7 @@
 package i18n
 
 import (
-	"github.com/nicksnyder/go-i18n/v2/i18n"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/extendio/i18n"
 )
 
 // These are user facing errors messages that occur due to
@@ -20,6 +19,8 @@ type OutOfRangeOV struct {
 }
 
 // ❌ WithinOptValidationTemplData
+
+// WithinOptValidationTemplData
 type WithinOptValidationTemplData struct {
 	OutOfRangeOV
 }
@@ -38,7 +39,7 @@ type WithinOptValidationBehaviourQuery interface {
 }
 
 type WithinOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e WithinOptValidation) IsOutOfRange() bool {
@@ -47,7 +48,7 @@ func (e WithinOptValidation) IsOutOfRange() bool {
 
 func NewWithinOptValidationError(flag string, value, low, high any) WithinOptValidationBehaviourQuery {
 	return &WithinOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: WithinOptValidationTemplData{
 				OutOfRangeOV: OutOfRangeOV{
 					Flag:  flag,
@@ -61,6 +62,8 @@ func NewWithinOptValidationError(flag string, value, low, high any) WithinOptVal
 }
 
 // ❌ NotWithinOptValidationTemplData
+
+// NotWithinOptValidationTemplData
 type NotWithinOptValidationTemplData struct {
 	OutOfRangeOV
 }
@@ -79,7 +82,7 @@ type NotWithinOptValidationBehaviourQuery interface {
 }
 
 type NotWithinOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e NotWithinOptValidation) IsInsideOfRange() bool {
@@ -88,7 +91,7 @@ func (e NotWithinOptValidation) IsInsideOfRange() bool {
 
 func NewNotWithinOptValidationError(flag string, value, low, high any) NotWithinOptValidationBehaviourQuery {
 	return &NotWithinOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: NotWithinOptValidationTemplData{
 				OutOfRangeOV: OutOfRangeOV{
 					Flag:  flag,
@@ -102,6 +105,8 @@ func NewNotWithinOptValidationError(flag string, value, low, high any) NotWithin
 }
 
 // 💧 ContainmentOV
+
+// ContainmentOV
 type ContainmentOV[T any] struct {
 	CobrassTemplData
 	Flag       string
@@ -110,6 +115,8 @@ type ContainmentOV[T any] struct {
 }
 
 // ❌ ContainsOptValidationTemplData
+
+// ContainsOptValidationTemplData
 type ContainsOptValidationTemplData[T any] struct {
 	ContainmentOV[T]
 }
@@ -128,7 +135,7 @@ type ContainsOptValidationBehaviourQuery[T any] interface {
 }
 
 type ContainsOptValidation[T any] struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e ContainsOptValidation[T]) IsAMemberOf() bool {
@@ -137,7 +144,7 @@ func (e ContainsOptValidation[T]) IsAMemberOf() bool {
 
 func NewContainsOptValidationError[T any](flag string, value any, collection []T) ContainsOptValidationBehaviourQuery[T] {
 	return &ContainsOptValidation[T]{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: ContainsOptValidationTemplData[T]{
 				ContainmentOV: ContainmentOV[T]{
 					Flag:       flag,
@@ -150,6 +157,8 @@ func NewContainsOptValidationError[T any](flag string, value any, collection []T
 }
 
 // ❌ NotContainsOptValidationTemplData
+
+// NotContainsOptValidationTemplData
 type NotContainsOptValidationTemplData[T any] struct {
 	ContainmentOV[T]
 }
@@ -168,7 +177,7 @@ type NotContainsOptValidationBehaviourQuery[T any] interface {
 }
 
 type NotContainsOptValidation[T any] struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e NotContainsOptValidation[T]) IsNotAMemberOf() bool {
@@ -177,7 +186,7 @@ func (e NotContainsOptValidation[T]) IsNotAMemberOf() bool {
 
 func NewNotContainsOptValidationError[T any](flag string, value any, collection []T) NotContainsOptValidationBehaviourQuery[T] {
 	return &NotContainsOptValidation[T]{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: NotContainsOptValidationTemplData[T]{
 				ContainmentOV: ContainmentOV[T]{
 					Flag:       flag,
@@ -189,7 +198,9 @@ func NewNotContainsOptValidationError[T any](flag string, value any, collection 
 	}
 }
 
-// 💧 Match.
+// 💧 Match
+
+// MatchOV
 type MatchOV struct {
 	CobrassTemplData
 	Flag    string
@@ -198,6 +209,8 @@ type MatchOV struct {
 }
 
 // ❌ MatchOptValidationTemplData
+
+// MatchOptValidationTemplData
 type MatchOptValidationTemplData struct {
 	MatchOV
 }
@@ -216,7 +229,7 @@ type MatchOptValidationBehaviourQuery interface {
 }
 
 type MatchOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e MatchOptValidation) IsMatch() bool {
@@ -225,7 +238,7 @@ func (e MatchOptValidation) IsMatch() bool {
 
 func NewMatchOptValidationError(flag, value, pattern string) MatchOptValidationBehaviourQuery {
 	return &MatchOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: MatchOptValidationTemplData{
 				MatchOV: MatchOV{
 					Flag:    flag,
@@ -238,6 +251,8 @@ func NewMatchOptValidationError(flag, value, pattern string) MatchOptValidationB
 }
 
 // ❌ NotMatchOptValidationTemplData
+
+// NotMatchOptValidationTemplData
 type NotMatchOptValidationTemplData struct {
 	MatchOV
 }
@@ -256,7 +271,7 @@ type NotMatchOptValidationBehaviourQuery interface {
 }
 
 type NotMatchOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e NotMatchOptValidation) IsNotMatch() bool {
@@ -265,7 +280,7 @@ func (e NotMatchOptValidation) IsNotMatch() bool {
 
 func NewNotMatchOptValidationError(flag, value, pattern string) NotMatchOptValidationBehaviourQuery {
 	return &NotMatchOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: NotMatchOptValidationTemplData{
 				MatchOV: MatchOV{
 					Flag:    flag,
@@ -286,6 +301,8 @@ type RelationalOV struct {
 }
 
 // ❌ GreaterThanOptValidationTemplData
+
+// GreaterThanOptValidationTemplData
 type GreaterThanOptValidationTemplData struct {
 	RelationalOV
 }
@@ -304,7 +321,7 @@ type GreaterThanOptValidationBehaviourQuery interface {
 }
 
 type GreaterThanOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e GreaterThanOptValidation) IsGreaterThan() bool {
@@ -313,7 +330,7 @@ func (e GreaterThanOptValidation) IsGreaterThan() bool {
 
 func NewGreaterThanOptValidationError(flag string, value, threshold any) GreaterThanOptValidationBehaviourQuery {
 	return &GreaterThanOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: GreaterThanOptValidationTemplData{
 				RelationalOV: RelationalOV{
 					Flag:      flag,
@@ -326,6 +343,8 @@ func NewGreaterThanOptValidationError(flag string, value, threshold any) Greater
 }
 
 // ❌ AtLeastOptValidationTemplData
+
+// AtLeastOptValidationTemplData
 type AtLeastOptValidationTemplData struct {
 	RelationalOV
 }
@@ -344,7 +363,7 @@ type AtLeastOptValidationBehaviourQuery interface {
 }
 
 type AtLeastOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e AtLeastOptValidation) IsAtLeast() bool {
@@ -353,7 +372,7 @@ func (e AtLeastOptValidation) IsAtLeast() bool {
 
 func NewAtLeastOptValidationError(flag string, value, threshold any) AtLeastOptValidationBehaviourQuery {
 	return &AtLeastOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: AtLeastOptValidationTemplData{
 				RelationalOV: RelationalOV{
 					Flag:      flag,
@@ -366,6 +385,8 @@ func NewAtLeastOptValidationError(flag string, value, threshold any) AtLeastOptV
 }
 
 // ❌ LessThanOptValidationTemplData
+
+// LessThanOptValidationTemplData
 type LessThanOptValidationTemplData struct {
 	RelationalOV
 }
@@ -384,7 +405,7 @@ type LessThanOptValidationBehaviourQuery interface {
 }
 
 type LessThanOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e LessThanOptValidation) IsLessThan() bool {
@@ -393,7 +414,7 @@ func (e LessThanOptValidation) IsLessThan() bool {
 
 func NewLessThanOptValidationError(flag string, value, threshold any) LessThanOptValidationBehaviourQuery {
 	return &LessThanOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: AtLeastOptValidationTemplData{
 				RelationalOV: RelationalOV{
 					Flag:      flag,
@@ -406,6 +427,8 @@ func NewLessThanOptValidationError(flag string, value, threshold any) LessThanOp
 }
 
 // ❌ AtMostOptValidationTemplData
+
+// AtMostOptValidationTemplData
 type AtMostOptValidationTemplData struct {
 	RelationalOV
 }
@@ -424,7 +447,7 @@ type AtMostOptValidationBehaviourQuery interface {
 }
 
 type AtMostOptValidation struct {
-	xi18n.LocalisableError
+	i18n.LocalisableError
 }
 
 func (e AtMostOptValidation) IsAtMost() bool {
@@ -433,7 +456,7 @@ func (e AtMostOptValidation) IsAtMost() bool {
 
 func NewAtMostOptValidationError(flag string, value, threshold any) AtMostOptValidationBehaviourQuery {
 	return &AtMostOptValidation{
-		LocalisableError: xi18n.LocalisableError{
+		LocalisableError: i18n.LocalisableError{
 			Data: AtMostOptValidationTemplData{
 				RelationalOV: RelationalOV{
 					Flag:      flag,

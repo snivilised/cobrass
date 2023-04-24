@@ -20,42 +20,54 @@ func NewEnumValueValueAlreadyExistsNativeError(value string, number int) error {
 	)
 }
 
-// ❌ NewIsNotValidEnumValueNativeError, is not a valid enum value
+// ❌ NewIsNotValidEnumValueNativeError
+
+// NewIsNotValidEnumValueNativeError, is not a valid enum value
 func NewIsNotValidEnumValueNativeError(value string) error {
 	return fmt.Errorf(
 		"'%v' is not a valid enum value", value,
 	)
 }
 
-// ❌ failed to add validator for flag, because it already exists.
+// ❌ failed to add validator
+
+// failed to add validator for flag, because it already exists.
 func NewFailedToAddValidatorAlreadyExistsNativeError(flag string) error {
 	return fmt.Errorf(
 		"failed to add validator for flag: '%v', because it already exists", flag,
 	)
 }
 
-// ❌ NewCommandAlreadyRegisteredNativeError, command already registered
+// ❌ NewCommandAlreadyRegisteredNativeError
+
+// NewCommandAlreadyRegisteredNativeError, command already registered
 func NewCommandAlreadyRegisteredNativeError(name string) error {
 	return fmt.Errorf(
 		"cobra container: command '%v' already registered", name,
 	)
 }
 
-// ❌ NewParentCommandNotRegisteredNativeError, parent command not registered
+// ❌ NewParentCommandNotRegisteredNativeError
+
+// NewParentCommandNotRegisteredNativeError, parent command not registered
 func NewParentCommandNotRegisteredNativeError(parent string) error {
 	return fmt.Errorf(
 		"cobra container: parent command '%v' not registered", parent,
 	)
 }
 
-// ❌ NewParamSetAlreadyRegisteredNativeError, param set already registered.
+// ❌ NewParamSetAlreadyRegisteredNativeError
+
+// NewParamSetAlreadyRegisteredNativeError, param set already registered.
 func NewParamSetAlreadyRegisteredNativeError(name string) error {
 	return fmt.Errorf(
 		"parameter set '%v' already registered", name,
 	)
 }
 
-// ❌ NewParamSetObjectMustBeStructNativeError, param set must be struct.
+// ❌ NewParamSetObjectMustBeStructNativeError
+
+// NewParamSetObjectMustBeStructNativeError, param set must be struct.
 func NewParamSetObjectMustBeStructNativeError(name, typ string) error {
 	return fmt.Errorf(
 		"the native param set object ('%v') must be a struct, actual type: '%v'",
@@ -63,7 +75,9 @@ func NewParamSetObjectMustBeStructNativeError(name, typ string) error {
 	)
 }
 
-// ❌ NewParamSetObjectMustBePointerNativeError, param set must be pointer.
+// ❌ NewParamSetObjectMustBePointerNativeError
+
+// NewParamSetObjectMustBePointerNativeError, param set must be pointer.
 func NewParamSetObjectMustBePointerNativeError(name, typ string) error {
 	return fmt.Errorf(
 		"the native param set object ('%v') must be a pointer, actual type: '%v'",
@@ -71,7 +85,9 @@ func NewParamSetObjectMustBePointerNativeError(name, typ string) error {
 	)
 }
 
-// ❌ NewParamSetNotFoundNativeError, param set not found.
+// ❌ NewParamSetNotFoundNativeError
+
+// NewParamSetNotFoundNativeError, param set not found.
 func NewParamSetNotFoundNativeError(name string) error {
 	return fmt.Errorf(
 		"parameter set '%v' not found", name,
