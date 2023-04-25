@@ -38,6 +38,8 @@ github.com/snivilised/extendio v0.1.14 h1:Is47jRy2WeV21EM5dq1FiTBxAn2SP9GC5Pv0ck
 github.com/snivilised/extendio v0.1.14/go.mod h1:SO4udqtdfNl/KTLG9GF8kHxoMiIhnvN/9xlqkCCC6VY=
 github.com/snivilised/extendio v0.1.15 h1:blfskgPAkHnQCkR3XJyUl8ldFElmO3P/QQ9KETbqA8E=
 github.com/snivilised/extendio v0.1.15/go.mod h1:SO4udqtdfNl/KTLG9GF8kHxoMiIhnvN/9xlqkCCC6VY=
+github.com/snivilised/extendio v0.1.16 h1:pMu1ZFKDZwRl/DB2QHL9jH02JaZMm0ax+ZZ3AZxLUUU=
+github.com/snivilised/extendio v0.1.16/go.mod h1:SO4udqtdfNl/KTLG9GF8kHxoMiIhnvN/9xlqkCCC6VY=
 github.com/spf13/cobra v1.7.0 h1:hyqWnYt1ZQShIddO5kBpj3vu05/++x6tJ6dg8EC572I=
 github.com/spf13/cobra v1.7.0/go.mod h1:uLxZILRyS/50WlhOIKD7W6V5bgeIt+4sICxh6uRMrb0=
 github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
