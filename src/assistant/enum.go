@@ -259,3 +259,29 @@ func (es *EnumSlice[E]) AllAreValidOrEmpty() bool {
 		return es.Info.IsValidOrEmpty(v)
 	})
 }
+
+// NewEnumProvider creates an enum info provider. The provider aims to
+// reduce the boilerplate required when defining enums.
+func NewEnumProvider[E ~int](acceptables map[E][]string) *EnumProvider[E] {
+	return &EnumProvider[E]{
+		Info: NewEnumInfo(acceptables),
+	}
+}
+
+// EnumProvider helper class for creating new enum values
+type EnumProvider[E ~int] struct {
+	Info *EnumInfo[E]
+}
+
+// NewValue creates new un-set enum value
+func (ep *EnumProvider[E]) NewValue() EnumValue[E] {
+	return ep.Info.NewValue()
+}
+
+// NewValue creates new enum value initialised with the provided string value
+func (ep *EnumProvider[E]) NewWith(value string) EnumValue[E] {
+	enum := ep.Info.NewValue()
+	enum.Source = value
+
+	return enum
+}

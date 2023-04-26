@@ -264,7 +264,7 @@ var _ = Describe("Enum", func() {
 		Context("Case Sensitivity", func() {
 			Context("EnumInfo.IsValid", func() {
 				Context("given: string differs in case from acceptables", func() {
-					It("should: 🧪 validate ok", func() {
+					It("🧪 should:  validate ok", func() {
 						Expect(outputFormatEnumInfo.IsValid("XML")).To(BeTrue())
 					})
 				})
@@ -272,7 +272,7 @@ var _ = Describe("Enum", func() {
 
 			Context("EnumInfo.En", func() {
 				Context("given: string differs in case from acceptables", func() {
-					It("should: 🧪 validate ok", func() {
+					It("🧪 should:  validate ok", func() {
 						Expect(outputFormatEnumInfo.En("XML")).To(Equal(XMLFormatEn))
 					})
 				})
@@ -280,7 +280,7 @@ var _ = Describe("Enum", func() {
 
 			Context("EnumInfo.IsValidOrEmpty", func() {
 				Context("given: string differs in case from acceptables", func() {
-					It("should: 🧪 validate ok", func() {
+					It("🧪 should:  validate ok", func() {
 						Expect(outputFormatEnumInfo.IsValidOrEmpty("XML")).To(BeTrue())
 					})
 				})
@@ -288,12 +288,30 @@ var _ = Describe("Enum", func() {
 
 			Context("EnumValue", func() {
 				Context("given: string differs in case from acceptables", func() {
-					It("should: 🧪 validate ok", func() {
+					It("🧪 should:  validate ok", func() {
 						outputFormatEnum := outputFormatEnumInfo.NewValue()
 						outputFormatEnum.Source = "Scribble"
 						Expect(outputFormatEnum.IsValid()).To(BeTrue())
 					})
 				})
+			})
+		})
+	})
+
+	Context("Provider", func() {
+		Context("NewValue", func() {
+			It("🧪 should: create a new un-initialised enum value", func() {
+				provider := assistant.NewEnumProvider(AcceptableOutputFormats)
+				enum := provider.NewValue()
+				Expect(enum.Source).To(BeEmpty())
+			})
+		})
+
+		Context("NewWith", func() {
+			It("🧪 should: create a new initialised enum value", func() {
+				provider := assistant.NewEnumProvider(AcceptableOutputFormats)
+				enum := provider.NewWith("json")
+				Expect(enum.Value()).To(Equal(JSONFormatEn))
 			})
 		})
 	})
