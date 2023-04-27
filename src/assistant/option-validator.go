@@ -9,6 +9,7 @@ import (
 // methods on the ParamSet.
 type OptionValidator interface {
 	Validate() error
+	GetFlag() *pflag.Flag
 }
 
 // Needed because its not possible to create a type safe heterogeneous collection
@@ -25,6 +26,10 @@ func (validator GenericOptionValidatorWrapper[T]) Validate() error {
 	// itself, defeating the point of generics!
 	//
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+func (validator GenericOptionValidatorWrapper[T]) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // CrossFieldValidator is a client function that is the callback passed into

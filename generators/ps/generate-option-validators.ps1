@@ -888,6 +888,7 @@ function Build-Validators {
       # - type XXXXValidatorFn
       # - type XXXXOptionValidator
       # - func (validator XXXXOptionValidator) Validate()
+      # - func (validator XXXXOptionValidator) GetFlag() *pflag.Flag
       #
       if ($spec.Validatable) {
         @"
@@ -907,6 +908,11 @@ func (validator $($validatorStruct)) Validate() error {
   return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for $($displayType) type.
+func (validator $($validatorStruct)) GetFlag() *pflag.Flag {
+  return validator.Flag
+}
+
 "@
         }
 
@@ -915,6 +921,7 @@ func (validator $($validatorStruct)) Validate() error {
           # - type XXXXSliceValidatorFn
           # - type XXXXSliceOptionValidator
           # - func (validator XXXXSliceOptionValidator) Validate()
+          # - func (validator XXXXSliceOptionValidator) GetFlag() *pflag.Flag
           #
           $sliceTypeName = "$($spec.TypeName)Slice"
           $typeName = "$($sliceTypeName)OptionValidator"
@@ -931,6 +938,11 @@ type $($sliceValidatorStruct) GenericOptionValidatorWrapper[$($sliceType)]
 // Validate invokes the client defined validator function for $($sliceType) type.
 func (validator $($sliceValidatorStruct)) Validate() error {
 return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for $($sliceType) type.
+func (validator $($sliceValidatorStruct)) GetFlag() *pflag.Flag {
+  return validator.Flag
 }
 
 "@
@@ -1345,9 +1357,13 @@ func (params *ParamSet[N]) BindValidated$($methodSubStmt)(info *FlagInfo, to *$(
 
   wrapper := GenericOptionValidatorWrapper[$($spec.GoType)]{
     Fn: func(value $($spec.GoType), flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
       if $($op.Condition) {
         return nil
       }
+
       return $($errorF)
     },
     Value: to,
@@ -1386,9 +1402,13 @@ func (params *ParamSet[N]) BindValidated$($notMethodSubStmt)(info *FlagInfo, to 
 
   wrapper := GenericOptionValidatorWrapper[$($spec.GoType)]{
     Fn: func(value $($spec.GoType), flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
       if $($negatedCondition) {
         return nil
       }
+
       return $($errorF)
     },
     Value: to,
@@ -1527,12 +1547,16 @@ DescribeTable("BindValidated$($side.Method)",
       assistant.NewFlagInfo("$($spec.FlagName.ToLower())", "$($spec.Short)", $($default)),
       $($bindTo), low, high,
     )
+    decorator := validatorDecorator{
+      Decorated: validator,
+    }
+
     paramSet.Native.$($spec.FlagName) = value
 
     if $($side.Expectation) {
-      Expect(validator.Validate()).Error().To(BeNil())
+      Expect(decorator.Validate()).Error().To(BeNil())
     } else {
-      Expect(validator.Validate()).Error().ToNot(BeNil())
+      Expect(decorator.Validate()).Error().ToNot(BeNil())
     }
   },
   func(given, should string, value $($spec.GoType), expectNil bool, low, high $($spec.GoType)) string {
@@ -1580,11 +1604,14 @@ DescribeTable("BindValidated$($side.Method)",
       $($bindTo), collection,
     )
     $($assign)
+    decorator := validatorDecorator{
+      Decorated: validator,
+    }
 
     if $($side.Expectation) {
-      Expect(validator.Validate()).Error().To(BeNil())
+      Expect(decorator.Validate()).Error().To(BeNil())
     } else {
-      Expect(validator.Validate()).Error().ToNot(BeNil())
+      Expect(decorator.Validate()).Error().ToNot(BeNil())
     }
   },
   func(given, should string, value $($spec.GoType), expectNil bool, collection []$($spec.GoType), dummy $($spec.GoType)) string {
@@ -1627,11 +1654,14 @@ DescribeTable("BindValidated$($side.Method)",
       $($bindTo), pattern,
     )
     paramSet.Native.$($spec.FlagName) = value
+    decorator := validatorDecorator{
+      Decorated: validator,
+    }
 
     if $($side.Expectation) {
-      Expect(validator.Validate()).Error().To(BeNil())
+      Expect(decorator.Validate()).Error().To(BeNil())
     } else {
-      Expect(validator.Validate()).Error().ToNot(BeNil())
+      Expect(decorator.Validate()).Error().ToNot(BeNil())
     }
   },
   func(given, should string, value $($spec.GoType), expectNil bool, pattern, dummy $($spec.GoType)) string {
@@ -1666,11 +1696,14 @@ DescribeTable("BindValidated$($methodSubStmt)",
       $($bindTo), threshold,
     )
     paramSet.Native.$($spec.FlagName) = value
+    decorator := validatorDecorator{
+      Decorated: validator,
+    }
 
     if expectNil {
-      Expect(validator.Validate()).Error().To(BeNil())
+      Expect(decorator.Validate()).Error().To(BeNil())
     } else {
-      Expect(validator.Validate()).Error().ToNot(BeNil())
+      Expect(decorator.Validate()).Error().ToNot(BeNil())
     }
   },
   func(given, should string, value $($spec.GoType), expectNil bool, pattern, dummy $($spec.GoType)) string {

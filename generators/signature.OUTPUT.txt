@@ -1,8 +1,8 @@
+---> 🍄 [gen-ov] Signature Counts - 🍅functions: '48', 🥦types: '50'
 ---> 🍄 [gen-ps] Signature Counts - 🍅functions: '52', 🥦types: '0'
----> 🍄 [gen-ov] Signature Counts - 🍅functions: '24', 🥦types: '50'
 ---> 🍄 [gen-help] Signature Counts - 🍅functions: '116', 🥦types: '0'
----> 🍄 Total Counts - 🍅functions: '192', 🥦types: '50'
+---> 🍄 Total Counts - 🍅functions: '216', 🥦types: '50'
 
-===> [🤖]  THIS-HASH: '401EC3E4FD473C0E3EDF76EF8B22B3F91FEA569D88E5B2739980853FC3E00C91'
-===> [👾]   OLD-HASH: 'CC1F622BE3931613C9E629231E1BEE9237D0A06533049B7C47947515927ADEF4'
+===> [🤖]  THIS-HASH: '0D79F919DBBEC2A3212883A447191E837EDA91173B8815C9269BFEFDB7A40EB3'
+===> [👾]   OLD-HASH: '401EC3E4FD473C0E3EDF76EF8B22B3F91FEA569D88E5B2739980853FC3E00C91'
 ===> [🛡️] STATUS: '💥 Api changes detected' (COBRASS_API_HASH)

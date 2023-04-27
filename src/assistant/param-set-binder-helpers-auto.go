@@ -1,3 +1,4 @@
+//nolint:gocritic // regexp.MustCompile: solution unknown
 package assistant
 
 import (
@@ -20,9 +21,13 @@ func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -41,9 +46,13 @@ func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *ti
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -62,9 +71,13 @@ func (params *ParamSet[N]) BindValidatedContainsDuration(info *FlagInfo, to *tim
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -83,9 +96,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsDuration(info *FlagInfo, to *
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -104,9 +121,13 @@ func (params *ParamSet[N]) BindValidatedDurationGreaterThan(info *FlagInfo, to *
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -125,9 +146,13 @@ func (params *ParamSet[N]) BindValidatedDurationAtLeast(info *FlagInfo, to *time
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -146,9 +171,13 @@ func (params *ParamSet[N]) BindValidatedDurationLessThan(info *FlagInfo, to *tim
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -167,9 +196,13 @@ func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.
 
 	wrapper := GenericOptionValidatorWrapper[time.Duration]{
 		Fn: func(value time.Duration, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -188,9 +221,13 @@ func (params *ParamSet[N]) BindValidatedContainsEnum(info *FlagInfo, to *string,
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -209,9 +246,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsEnum(info *FlagInfo, to *stri
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -230,9 +271,13 @@ func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float3
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -251,9 +296,13 @@ func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *flo
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -272,9 +321,13 @@ func (params *ParamSet[N]) BindValidatedContainsFloat32(info *FlagInfo, to *floa
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -293,9 +346,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat32(info *FlagInfo, to *f
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -314,9 +371,13 @@ func (params *ParamSet[N]) BindValidatedFloat32GreaterThan(info *FlagInfo, to *f
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -335,9 +396,13 @@ func (params *ParamSet[N]) BindValidatedFloat32AtLeast(info *FlagInfo, to *float
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -356,9 +421,13 @@ func (params *ParamSet[N]) BindValidatedFloat32LessThan(info *FlagInfo, to *floa
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -377,9 +446,13 @@ func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float3
 
 	wrapper := GenericOptionValidatorWrapper[float32]{
 		Fn: func(value float32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -398,9 +471,13 @@ func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float6
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -419,9 +496,13 @@ func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *flo
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -440,9 +521,13 @@ func (params *ParamSet[N]) BindValidatedContainsFloat64(info *FlagInfo, to *floa
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -461,9 +546,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat64(info *FlagInfo, to *f
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -482,9 +571,13 @@ func (params *ParamSet[N]) BindValidatedFloat64GreaterThan(info *FlagInfo, to *f
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -503,9 +596,13 @@ func (params *ParamSet[N]) BindValidatedFloat64AtLeast(info *FlagInfo, to *float
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -524,9 +621,13 @@ func (params *ParamSet[N]) BindValidatedFloat64LessThan(info *FlagInfo, to *floa
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -545,9 +646,13 @@ func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float6
 
 	wrapper := GenericOptionValidatorWrapper[float64]{
 		Fn: func(value float64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -566,9 +671,13 @@ func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, low, 
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -587,9 +696,13 @@ func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -608,9 +721,13 @@ func (params *ParamSet[N]) BindValidatedContainsInt(info *FlagInfo, to *int, col
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -629,9 +746,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt(info *FlagInfo, to *int, 
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -650,9 +771,13 @@ func (params *ParamSet[N]) BindValidatedIntGreaterThan(info *FlagInfo, to *int, 
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -671,9 +796,13 @@ func (params *ParamSet[N]) BindValidatedIntAtLeast(info *FlagInfo, to *int, thre
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -692,9 +821,13 @@ func (params *ParamSet[N]) BindValidatedIntLessThan(info *FlagInfo, to *int, thr
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -713,9 +846,13 @@ func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, thres
 
 	wrapper := GenericOptionValidatorWrapper[int]{
 		Fn: func(value int, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -734,9 +871,13 @@ func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, l
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -755,9 +896,13 @@ func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -776,9 +921,13 @@ func (params *ParamSet[N]) BindValidatedContainsInt16(info *FlagInfo, to *int16,
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -797,9 +946,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt16(info *FlagInfo, to *int
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -818,9 +971,13 @@ func (params *ParamSet[N]) BindValidatedInt16GreaterThan(info *FlagInfo, to *int
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -839,9 +996,13 @@ func (params *ParamSet[N]) BindValidatedInt16AtLeast(info *FlagInfo, to *int16, 
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -860,9 +1021,13 @@ func (params *ParamSet[N]) BindValidatedInt16LessThan(info *FlagInfo, to *int16,
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -881,9 +1046,13 @@ func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, t
 
 	wrapper := GenericOptionValidatorWrapper[int16]{
 		Fn: func(value int16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -902,9 +1071,13 @@ func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, l
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -923,9 +1096,13 @@ func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -944,9 +1121,13 @@ func (params *ParamSet[N]) BindValidatedContainsInt32(info *FlagInfo, to *int32,
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -965,9 +1146,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt32(info *FlagInfo, to *int
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -986,9 +1171,13 @@ func (params *ParamSet[N]) BindValidatedInt32GreaterThan(info *FlagInfo, to *int
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1007,9 +1196,13 @@ func (params *ParamSet[N]) BindValidatedInt32AtLeast(info *FlagInfo, to *int32, 
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1028,9 +1221,13 @@ func (params *ParamSet[N]) BindValidatedInt32LessThan(info *FlagInfo, to *int32,
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1049,9 +1246,13 @@ func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, t
 
 	wrapper := GenericOptionValidatorWrapper[int32]{
 		Fn: func(value int32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1070,9 +1271,13 @@ func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, l
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1091,9 +1296,13 @@ func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1112,9 +1321,13 @@ func (params *ParamSet[N]) BindValidatedContainsInt64(info *FlagInfo, to *int64,
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1133,9 +1346,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt64(info *FlagInfo, to *int
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1154,9 +1371,13 @@ func (params *ParamSet[N]) BindValidatedInt64GreaterThan(info *FlagInfo, to *int
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1175,9 +1396,13 @@ func (params *ParamSet[N]) BindValidatedInt64AtLeast(info *FlagInfo, to *int64, 
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1196,9 +1421,13 @@ func (params *ParamSet[N]) BindValidatedInt64LessThan(info *FlagInfo, to *int64,
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1217,9 +1446,13 @@ func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, t
 
 	wrapper := GenericOptionValidatorWrapper[int64]{
 		Fn: func(value int64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1238,9 +1471,13 @@ func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, low
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1259,9 +1496,13 @@ func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, 
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1280,9 +1521,13 @@ func (params *ParamSet[N]) BindValidatedContainsInt8(info *FlagInfo, to *int8, c
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1301,9 +1546,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt8(info *FlagInfo, to *int8
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1322,9 +1571,13 @@ func (params *ParamSet[N]) BindValidatedInt8GreaterThan(info *FlagInfo, to *int8
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1343,9 +1596,13 @@ func (params *ParamSet[N]) BindValidatedInt8AtLeast(info *FlagInfo, to *int8, th
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1364,9 +1621,13 @@ func (params *ParamSet[N]) BindValidatedInt8LessThan(info *FlagInfo, to *int8, t
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1385,9 +1646,13 @@ func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, thr
 
 	wrapper := GenericOptionValidatorWrapper[int8]{
 		Fn: func(value int8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1406,9 +1671,13 @@ func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string,
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1427,9 +1696,13 @@ func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *stri
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1448,9 +1721,13 @@ func (params *ParamSet[N]) BindValidatedContainsString(info *FlagInfo, to *strin
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1469,9 +1746,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsString(info *FlagInfo, to *st
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1490,9 +1771,13 @@ func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
-			if regexp.MustCompile(pattern).Match([]byte(value)) { //nolint:gocritic // solution unknown
+			if !flag.Changed {
 				return nil
 			}
+			if regexp.MustCompile(pattern).Match([]byte(value)) {
+				return nil
+			}
+
 			return i18n.NewMatchOptValidationError(info.FlagName(), value, pattern)
 		},
 		Value: to,
@@ -1511,9 +1796,13 @@ func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *str
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
-			if !(regexp.MustCompile(pattern).Match([]byte(value))) { //nolint:gocritic // solution unknown
+			if !flag.Changed {
 				return nil
 			}
+			if !(regexp.MustCompile(pattern).Match([]byte(value))) {
+				return nil
+			}
+
 			return i18n.NewNotMatchOptValidationError(info.FlagName(), value, pattern)
 		},
 		Value: to,
@@ -1532,9 +1821,13 @@ func (params *ParamSet[N]) BindValidatedStringGreaterThan(info *FlagInfo, to *st
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1553,9 +1846,13 @@ func (params *ParamSet[N]) BindValidatedStringAtLeast(info *FlagInfo, to *string
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1574,9 +1871,13 @@ func (params *ParamSet[N]) BindValidatedStringLessThan(info *FlagInfo, to *strin
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1595,9 +1896,13 @@ func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string,
 
 	wrapper := GenericOptionValidatorWrapper[string]{
 		Fn: func(value string, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1616,9 +1921,13 @@ func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16,
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1637,9 +1946,13 @@ func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1658,9 +1971,13 @@ func (params *ParamSet[N]) BindValidatedContainsUint16(info *FlagInfo, to *uint1
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1679,9 +1996,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint16(info *FlagInfo, to *ui
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1700,9 +2021,13 @@ func (params *ParamSet[N]) BindValidatedUint16GreaterThan(info *FlagInfo, to *ui
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1721,9 +2046,13 @@ func (params *ParamSet[N]) BindValidatedUint16AtLeast(info *FlagInfo, to *uint16
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1742,9 +2071,13 @@ func (params *ParamSet[N]) BindValidatedUint16LessThan(info *FlagInfo, to *uint1
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1763,9 +2096,13 @@ func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16,
 
 	wrapper := GenericOptionValidatorWrapper[uint16]{
 		Fn: func(value uint16, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1784,9 +2121,13 @@ func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32,
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1805,9 +2146,13 @@ func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1826,9 +2171,13 @@ func (params *ParamSet[N]) BindValidatedContainsUint32(info *FlagInfo, to *uint3
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1847,9 +2196,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint32(info *FlagInfo, to *ui
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -1868,9 +2221,13 @@ func (params *ParamSet[N]) BindValidatedUint32GreaterThan(info *FlagInfo, to *ui
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1889,9 +2246,13 @@ func (params *ParamSet[N]) BindValidatedUint32AtLeast(info *FlagInfo, to *uint32
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1910,9 +2271,13 @@ func (params *ParamSet[N]) BindValidatedUint32LessThan(info *FlagInfo, to *uint3
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1931,9 +2296,13 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 
 	wrapper := GenericOptionValidatorWrapper[uint32]{
 		Fn: func(value uint32, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -1952,9 +2321,13 @@ func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64,
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1973,9 +2346,13 @@ func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -1994,9 +2371,13 @@ func (params *ParamSet[N]) BindValidatedContainsUint64(info *FlagInfo, to *uint6
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -2015,9 +2396,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint64(info *FlagInfo, to *ui
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -2036,9 +2421,13 @@ func (params *ParamSet[N]) BindValidatedUint64GreaterThan(info *FlagInfo, to *ui
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2057,9 +2446,13 @@ func (params *ParamSet[N]) BindValidatedUint64AtLeast(info *FlagInfo, to *uint64
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2078,9 +2471,13 @@ func (params *ParamSet[N]) BindValidatedUint64LessThan(info *FlagInfo, to *uint6
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2099,9 +2496,13 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 
 	wrapper := GenericOptionValidatorWrapper[uint64]{
 		Fn: func(value uint64, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2120,9 +2521,13 @@ func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, l
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -2141,9 +2546,13 @@ func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -2162,9 +2571,13 @@ func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8,
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -2183,9 +2596,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint8(info *FlagInfo, to *uin
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -2204,9 +2621,13 @@ func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uin
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2225,9 +2646,13 @@ func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, 
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2246,9 +2671,13 @@ func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8,
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2267,9 +2696,13 @@ func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, t
 
 	wrapper := GenericOptionValidatorWrapper[uint8]{
 		Fn: func(value uint8, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2288,9 +2721,13 @@ func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, low
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= low && value <= high {
 				return nil
 			}
+
 			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -2309,9 +2746,13 @@ func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, 
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(value >= low && value <= high) {
 				return nil
 			}
+
 			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
@@ -2330,9 +2771,13 @@ func (params *ParamSet[N]) BindValidatedContainsUint(info *FlagInfo, to *uint, c
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if lo.IndexOf(collection, value) >= 0 {
 				return nil
 			}
+
 			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -2351,9 +2796,13 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint(info *FlagInfo, to *uint
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if !(lo.IndexOf(collection, value) >= 0) {
 				return nil
 			}
+
 			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
@@ -2372,9 +2821,13 @@ func (params *ParamSet[N]) BindValidatedUintGreaterThan(info *FlagInfo, to *uint
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value > threshold {
 				return nil
 			}
+
 			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2393,9 +2846,13 @@ func (params *ParamSet[N]) BindValidatedUintAtLeast(info *FlagInfo, to *uint, th
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value >= threshold {
 				return nil
 			}
+
 			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2414,9 +2871,13 @@ func (params *ParamSet[N]) BindValidatedUintLessThan(info *FlagInfo, to *uint, t
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value < threshold {
 				return nil
 			}
+
 			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
@@ -2435,9 +2896,13 @@ func (params *ParamSet[N]) BindValidatedUintAtMost(info *FlagInfo, to *uint, thr
 
 	wrapper := GenericOptionValidatorWrapper[uint]{
 		Fn: func(value uint, flag *pflag.Flag) error {
+			if !flag.Changed {
+				return nil
+			}
 			if value <= threshold {
 				return nil
 			}
+
 			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
