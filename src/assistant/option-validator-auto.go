@@ -22,6 +22,11 @@ func (validator DurationOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for time.Duration type.
+func (validator DurationOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // DurationSliceOptionValidator defines the validator function for DurationSlice type.
 type DurationSliceValidatorFn func([]time.Duration, *pflag.Flag) error
 
@@ -31,6 +36,11 @@ type DurationSliceOptionValidator GenericOptionValidatorWrapper[[]time.Duration]
 // Validate invokes the client defined validator function for []time.Duration type.
 func (validator DurationSliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []time.Duration type.
+func (validator DurationSliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // EnumValidatorFn defines the validator function for enum type.
@@ -54,6 +64,11 @@ func (validator Float32OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for float32 type.
+func (validator Float32OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // Float32SliceOptionValidator defines the validator function for Float32Slice type.
 type Float32SliceValidatorFn func([]float32, *pflag.Flag) error
 
@@ -63,6 +78,11 @@ type Float32SliceOptionValidator GenericOptionValidatorWrapper[[]float32]
 // Validate invokes the client defined validator function for []float32 type.
 func (validator Float32SliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []float32 type.
+func (validator Float32SliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // Float64ValidatorFn defines the validator function for float64 type.
@@ -78,6 +98,11 @@ func (validator Float64OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for float64 type.
+func (validator Float64OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // Float64SliceOptionValidator defines the validator function for Float64Slice type.
 type Float64SliceValidatorFn func([]float64, *pflag.Flag) error
 
@@ -87,6 +112,11 @@ type Float64SliceOptionValidator GenericOptionValidatorWrapper[[]float64]
 // Validate invokes the client defined validator function for []float64 type.
 func (validator Float64SliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []float64 type.
+func (validator Float64SliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // IntValidatorFn defines the validator function for int type.
@@ -102,6 +132,11 @@ func (validator IntOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for int type.
+func (validator IntOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // IntSliceOptionValidator defines the validator function for IntSlice type.
 type IntSliceValidatorFn func([]int, *pflag.Flag) error
 
@@ -111,6 +146,11 @@ type IntSliceOptionValidator GenericOptionValidatorWrapper[[]int]
 // Validate invokes the client defined validator function for []int type.
 func (validator IntSliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []int type.
+func (validator IntSliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // Int16ValidatorFn defines the validator function for int16 type.
@@ -126,6 +166,11 @@ func (validator Int16OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for int16 type.
+func (validator Int16OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // Int32ValidatorFn defines the validator function for int32 type.
 type Int32ValidatorFn func(int32, *pflag.Flag) error
 
@@ -139,6 +184,11 @@ func (validator Int32OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for int32 type.
+func (validator Int32OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // Int32SliceOptionValidator defines the validator function for Int32Slice type.
 type Int32SliceValidatorFn func([]int32, *pflag.Flag) error
 
@@ -148,6 +198,11 @@ type Int32SliceOptionValidator GenericOptionValidatorWrapper[[]int32]
 // Validate invokes the client defined validator function for []int32 type.
 func (validator Int32SliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []int32 type.
+func (validator Int32SliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // Int64ValidatorFn defines the validator function for int64 type.
@@ -163,6 +218,11 @@ func (validator Int64OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for int64 type.
+func (validator Int64OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // Int64SliceOptionValidator defines the validator function for Int64Slice type.
 type Int64SliceValidatorFn func([]int64, *pflag.Flag) error
 
@@ -172,6 +232,11 @@ type Int64SliceOptionValidator GenericOptionValidatorWrapper[[]int64]
 // Validate invokes the client defined validator function for []int64 type.
 func (validator Int64SliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []int64 type.
+func (validator Int64SliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // Int8ValidatorFn defines the validator function for int8 type.
@@ -187,6 +252,11 @@ func (validator Int8OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for int8 type.
+func (validator Int8OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // IPMaskValidatorFn defines the validator function for net.IPMask type.
 type IPMaskValidatorFn func(net.IPMask, *pflag.Flag) error
 
@@ -198,6 +268,11 @@ type IPMaskOptionValidator GenericOptionValidatorWrapper[net.IPMask]
 // Validate invokes the client defined validator function for net.IPMask type.
 func (validator IPMaskOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for net.IPMask type.
+func (validator IPMaskOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // IPNetValidatorFn defines the validator function for net.IPNet type.
@@ -213,6 +288,11 @@ func (validator IPNetOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for net.IPNet type.
+func (validator IPNetOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // StringValidatorFn defines the validator function for string type.
 type StringValidatorFn func(string, *pflag.Flag) error
 
@@ -226,6 +306,11 @@ func (validator StringOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for string type.
+func (validator StringOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // StringSliceOptionValidator defines the validator function for StringSlice type.
 type StringSliceValidatorFn func([]string, *pflag.Flag) error
 
@@ -235,6 +320,11 @@ type StringSliceOptionValidator GenericOptionValidatorWrapper[[]string]
 // Validate invokes the client defined validator function for []string type.
 func (validator StringSliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []string type.
+func (validator StringSliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // Uint16ValidatorFn defines the validator function for uint16 type.
@@ -250,6 +340,11 @@ func (validator Uint16OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for uint16 type.
+func (validator Uint16OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // Uint32ValidatorFn defines the validator function for uint32 type.
 type Uint32ValidatorFn func(uint32, *pflag.Flag) error
 
@@ -261,6 +356,11 @@ type Uint32OptionValidator GenericOptionValidatorWrapper[uint32]
 // Validate invokes the client defined validator function for uint32 type.
 func (validator Uint32OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for uint32 type.
+func (validator Uint32OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // Uint64ValidatorFn defines the validator function for uint64 type.
@@ -276,6 +376,11 @@ func (validator Uint64OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for uint64 type.
+func (validator Uint64OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // Uint8ValidatorFn defines the validator function for uint8 type.
 type Uint8ValidatorFn func(uint8, *pflag.Flag) error
 
@@ -287,6 +392,11 @@ type Uint8OptionValidator GenericOptionValidatorWrapper[uint8]
 // Validate invokes the client defined validator function for uint8 type.
 func (validator Uint8OptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for uint8 type.
+func (validator Uint8OptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // UintValidatorFn defines the validator function for uint type.
@@ -302,6 +412,11 @@ func (validator UintOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
 }
 
+// GetFlag returns the flag for uint type.
+func (validator UintOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
+}
+
 // UintSliceOptionValidator defines the validator function for UintSlice type.
 type UintSliceValidatorFn func([]uint, *pflag.Flag) error
 
@@ -311,6 +426,11 @@ type UintSliceOptionValidator GenericOptionValidatorWrapper[[]uint]
 // Validate invokes the client defined validator function for []uint type.
 func (validator UintSliceOptionValidator) Validate() error {
 	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for []uint type.
+func (validator UintSliceOptionValidator) GetFlag() *pflag.Flag {
+	return validator.Flag
 }
 
 // <---- end of auto generated

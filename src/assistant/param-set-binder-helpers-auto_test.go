@@ -11,6 +11,17 @@ import (
 	"github.com/snivilised/cobrass/src/assistant"
 )
 
+type validatorDecorator struct {
+	Decorated assistant.OptionValidator
+}
+
+func (v *validatorDecorator) Validate() error {
+	flag := v.Decorated.GetFlag()
+	flag.Changed = true
+
+	return v.Decorated.Validate()
+}
+
 var _ = Describe("ParamSetBinderHelpers", func() {
 	var rootCommand *cobra.Command
 	var widgetCommand *cobra.Command
@@ -52,12 +63,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Latency = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) string {
@@ -77,12 +92,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Latency = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) string {
@@ -103,11 +122,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Latency, collection,
 				)
 				paramSet.Native.Latency = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) string {
@@ -125,11 +147,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Latency, collection,
 				)
 				paramSet.Native.Latency = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) string {
@@ -147,11 +172,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Latency, threshold,
 				)
 				paramSet.Native.Latency = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
@@ -170,11 +198,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Latency, threshold,
 				)
 				paramSet.Native.Latency = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
@@ -193,11 +224,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Latency, threshold,
 				)
 				paramSet.Native.Latency = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
@@ -216,11 +250,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Latency, threshold,
 				)
 				paramSet.Native.Latency = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
@@ -239,11 +276,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&outputFormatEnum.Source, collection,
 				)
 				outputFormatEnum.Source = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
@@ -261,11 +301,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&outputFormatEnum.Source, collection,
 				)
 				outputFormatEnum.Source = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
@@ -282,12 +325,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Gradientf32 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, low, high float32) string {
@@ -307,12 +354,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Gradientf32 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, low, high float32) string {
@@ -333,11 +384,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf32, collection,
 				)
 				paramSet.Native.Gradientf32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) string {
@@ -355,11 +409,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf32, collection,
 				)
 				paramSet.Native.Gradientf32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) string {
@@ -377,11 +434,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf32, threshold,
 				)
 				paramSet.Native.Gradientf32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
@@ -400,11 +460,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf32, threshold,
 				)
 				paramSet.Native.Gradientf32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
@@ -423,11 +486,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf32, threshold,
 				)
 				paramSet.Native.Gradientf32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
@@ -446,11 +512,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf32, threshold,
 				)
 				paramSet.Native.Gradientf32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
@@ -468,12 +537,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Gradientf64 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, low, high float64) string {
@@ -493,12 +566,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Gradientf64 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, low, high float64) string {
@@ -519,11 +596,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf64, collection,
 				)
 				paramSet.Native.Gradientf64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) string {
@@ -541,11 +621,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf64, collection,
 				)
 				paramSet.Native.Gradientf64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) string {
@@ -563,11 +646,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf64, threshold,
 				)
 				paramSet.Native.Gradientf64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
@@ -586,11 +672,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf64, threshold,
 				)
 				paramSet.Native.Gradientf64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
@@ -609,11 +698,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf64, threshold,
 				)
 				paramSet.Native.Gradientf64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
@@ -632,11 +724,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Gradientf64, threshold,
 				)
 				paramSet.Native.Gradientf64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
@@ -654,12 +749,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, low, high int) string {
@@ -679,12 +778,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, low, high int) string {
@@ -705,11 +808,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset, collection,
 				)
 				paramSet.Native.Offset = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, collection []int, dummy int) string {
@@ -727,11 +833,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset, collection,
 				)
 				paramSet.Native.Offset = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, collection []int, dummy int) string {
@@ -749,11 +858,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset, threshold,
 				)
 				paramSet.Native.Offset = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
@@ -772,11 +884,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset, threshold,
 				)
 				paramSet.Native.Offset = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
@@ -795,11 +910,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset, threshold,
 				)
 				paramSet.Native.Offset = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
@@ -818,11 +936,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset, threshold,
 				)
 				paramSet.Native.Offset = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
@@ -840,12 +961,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset16 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, low, high int16) string {
@@ -865,12 +990,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset16 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, low, high int16) string {
@@ -891,11 +1020,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset16, collection,
 				)
 				paramSet.Native.Offset16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, collection []int16, dummy int16) string {
@@ -913,11 +1045,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset16, collection,
 				)
 				paramSet.Native.Offset16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, collection []int16, dummy int16) string {
@@ -935,11 +1070,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset16, threshold,
 				)
 				paramSet.Native.Offset16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
@@ -958,11 +1096,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset16, threshold,
 				)
 				paramSet.Native.Offset16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
@@ -981,11 +1122,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset16, threshold,
 				)
 				paramSet.Native.Offset16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
@@ -1004,11 +1148,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset16, threshold,
 				)
 				paramSet.Native.Offset16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
@@ -1026,12 +1173,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset32 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, low, high int32) string {
@@ -1051,12 +1202,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset32 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, low, high int32) string {
@@ -1077,11 +1232,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset32, collection,
 				)
 				paramSet.Native.Offset32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, collection []int32, dummy int32) string {
@@ -1099,11 +1257,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset32, collection,
 				)
 				paramSet.Native.Offset32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, collection []int32, dummy int32) string {
@@ -1121,11 +1282,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset32, threshold,
 				)
 				paramSet.Native.Offset32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
@@ -1144,11 +1308,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset32, threshold,
 				)
 				paramSet.Native.Offset32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
@@ -1167,11 +1334,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset32, threshold,
 				)
 				paramSet.Native.Offset32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
@@ -1190,11 +1360,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset32, threshold,
 				)
 				paramSet.Native.Offset32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
@@ -1212,12 +1385,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset64 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, low, high int64) string {
@@ -1237,12 +1414,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset64 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, low, high int64) string {
@@ -1263,11 +1444,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset64, collection,
 				)
 				paramSet.Native.Offset64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, collection []int64, dummy int64) string {
@@ -1285,11 +1469,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset64, collection,
 				)
 				paramSet.Native.Offset64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, collection []int64, dummy int64) string {
@@ -1307,11 +1494,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset64, threshold,
 				)
 				paramSet.Native.Offset64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
@@ -1330,11 +1520,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset64, threshold,
 				)
 				paramSet.Native.Offset64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
@@ -1353,11 +1546,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset64, threshold,
 				)
 				paramSet.Native.Offset64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
@@ -1376,11 +1572,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset64, threshold,
 				)
 				paramSet.Native.Offset64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
@@ -1398,12 +1597,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset8 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, low, high int8) string {
@@ -1423,12 +1626,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Offset8 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, low, high int8) string {
@@ -1449,11 +1656,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset8, collection,
 				)
 				paramSet.Native.Offset8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, collection []int8, dummy int8) string {
@@ -1471,11 +1681,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset8, collection,
 				)
 				paramSet.Native.Offset8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, collection []int8, dummy int8) string {
@@ -1493,11 +1706,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset8, threshold,
 				)
 				paramSet.Native.Offset8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
@@ -1516,11 +1732,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset8, threshold,
 				)
 				paramSet.Native.Offset8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
@@ -1539,11 +1758,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset8, threshold,
 				)
 				paramSet.Native.Offset8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
@@ -1562,11 +1784,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Offset8, threshold,
 				)
 				paramSet.Native.Offset8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
@@ -1584,12 +1809,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Pattern = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, low, high string) string {
@@ -1609,12 +1838,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Pattern = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, low, high string) string {
@@ -1635,11 +1868,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, collection,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
@@ -1657,11 +1893,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, collection,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
@@ -1679,11 +1918,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, pattern,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
@@ -1701,11 +1943,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, pattern,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
@@ -1723,11 +1968,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, threshold,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
@@ -1746,11 +1994,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, threshold,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
@@ -1769,11 +2020,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, threshold,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
@@ -1792,11 +2046,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Pattern, threshold,
 				)
 				paramSet.Native.Pattern = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
@@ -1814,12 +2071,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count16 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, low, high uint16) string {
@@ -1839,12 +2100,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count16 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, low, high uint16) string {
@@ -1865,11 +2130,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count16, collection,
 				)
 				paramSet.Native.Count16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, collection []uint16, dummy uint16) string {
@@ -1887,11 +2155,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count16, collection,
 				)
 				paramSet.Native.Count16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, collection []uint16, dummy uint16) string {
@@ -1909,11 +2180,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count16, threshold,
 				)
 				paramSet.Native.Count16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
@@ -1932,11 +2206,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count16, threshold,
 				)
 				paramSet.Native.Count16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
@@ -1955,11 +2232,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count16, threshold,
 				)
 				paramSet.Native.Count16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
@@ -1978,11 +2258,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count16, threshold,
 				)
 				paramSet.Native.Count16 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
@@ -2000,12 +2283,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count32 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, low, high uint32) string {
@@ -2025,12 +2312,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count32 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, low, high uint32) string {
@@ -2051,11 +2342,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count32, collection,
 				)
 				paramSet.Native.Count32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, collection []uint32, dummy uint32) string {
@@ -2073,11 +2367,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count32, collection,
 				)
 				paramSet.Native.Count32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, collection []uint32, dummy uint32) string {
@@ -2095,11 +2392,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count32, threshold,
 				)
 				paramSet.Native.Count32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
@@ -2118,11 +2418,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count32, threshold,
 				)
 				paramSet.Native.Count32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
@@ -2141,11 +2444,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count32, threshold,
 				)
 				paramSet.Native.Count32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
@@ -2164,11 +2470,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count32, threshold,
 				)
 				paramSet.Native.Count32 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
@@ -2186,12 +2495,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count64 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, low, high uint64) string {
@@ -2211,12 +2524,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count64 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, low, high uint64) string {
@@ -2237,11 +2554,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count64, collection,
 				)
 				paramSet.Native.Count64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, collection []uint64, dummy uint64) string {
@@ -2259,11 +2579,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count64, collection,
 				)
 				paramSet.Native.Count64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, collection []uint64, dummy uint64) string {
@@ -2281,11 +2604,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count64, threshold,
 				)
 				paramSet.Native.Count64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
@@ -2304,11 +2630,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count64, threshold,
 				)
 				paramSet.Native.Count64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
@@ -2327,11 +2656,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count64, threshold,
 				)
 				paramSet.Native.Count64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
@@ -2350,11 +2682,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count64, threshold,
 				)
 				paramSet.Native.Count64 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
@@ -2372,12 +2707,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count8 = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, low, high uint8) string {
@@ -2397,12 +2736,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count8 = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, low, high uint8) string {
@@ -2423,11 +2766,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count8, collection,
 				)
 				paramSet.Native.Count8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) string {
@@ -2445,11 +2791,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count8, collection,
 				)
 				paramSet.Native.Count8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) string {
@@ -2467,11 +2816,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count8, threshold,
 				)
 				paramSet.Native.Count8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
@@ -2490,11 +2842,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count8, threshold,
 				)
 				paramSet.Native.Count8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
@@ -2513,11 +2868,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count8, threshold,
 				)
 				paramSet.Native.Count8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
@@ -2536,11 +2894,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count8, threshold,
 				)
 				paramSet.Native.Count8 = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
@@ -2558,12 +2919,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count = value
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, low, high uint) string {
@@ -2583,12 +2948,16 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, low, high,
 				)
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
+
 				paramSet.Native.Count = value
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, low, high uint) string {
@@ -2609,11 +2978,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count, collection,
 				)
 				paramSet.Native.Count = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, collection []uint, dummy uint) string {
@@ -2631,11 +3003,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count, collection,
 				)
 				paramSet.Native.Count = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if !expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, collection []uint, dummy uint) string {
@@ -2653,11 +3028,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count, threshold,
 				)
 				paramSet.Native.Count = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
@@ -2676,11 +3054,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count, threshold,
 				)
 				paramSet.Native.Count = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
@@ -2699,11 +3080,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count, threshold,
 				)
 				paramSet.Native.Count = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
@@ -2722,11 +3106,14 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					&paramSet.Native.Count, threshold,
 				)
 				paramSet.Native.Count = value
+				decorator := validatorDecorator{
+					Decorated: validator,
+				}
 
 				if expectNil {
-					Expect(validator.Validate()).Error().To(BeNil())
+					Expect(decorator.Validate()).Error().To(BeNil())
 				} else {
-					Expect(validator.Validate()).Error().ToNot(BeNil())
+					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
 			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
