@@ -2,10 +2,12 @@ package assistant
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"golang.org/x/exp/slices"
 )
 
 // AcceptableEnumValues maps values of enum type to an array of
@@ -120,6 +122,14 @@ func (info *EnumInfo[E]) NewValue() EnumValue[E] {
 	return EnumValue[E]{Info: info}
 }
 
+// NewValue creates new enum value initialised with the provided string value
+func (info *EnumInfo[E]) NewWith(value string) EnumValue[E] {
+	enum := EnumValue[E]{Info: info}
+	enum.Source = value
+
+	return enum
+}
+
 // NewSlice creates a new EnumSlice associated with this EnumInfo.
 func (info *EnumInfo[E]) NewSlice() EnumSlice[E] {
 	return EnumSlice[E]{Info: info, Source: []string{}}
@@ -153,15 +163,49 @@ func (info *EnumInfo[E]) IsValidOrEmpty(value string) bool {
 // String returns a string representing contents of all acceptable values for
 // the enum.
 func (info *EnumInfo[E]) String() string {
-	var builder strings.Builder
+	keys := lo.Keys(info.reverseLookup)
 
-	fmt.Fprintf(&builder, "=== (TYPE: %T) ===\n", info)
+	return lo.Reduce(keys, func(agg string, current string, index int) string {
+		return fmt.Sprintf("%v%v(%v), ", agg, current, info.En(current))
+	}, "")
+}
 
-	for k, v := range info.reverseLookup {
-		fmt.Fprintf(&builder, "--- [%v] => [%v] (%v) ---\n", k, info.NameOf(v), v)
+// Acceptable returns a string that indicates the set of acceptable values
+// for this enum. Since the client can create multiple values for a single
+// enum value, the client can choose whether they want all possible values
+// or just the primary value for each enum entry. The client should use
+// this method if all values for all enumerations in this enum info should
+// be represented in the returned string. This method (and AcceptablePrimes)
+// are typically used to prompt the end user of the acceptable values for an
+// enum based option in a cli application.
+func (info *EnumInfo[E]) Acceptable() string {
+	keys := lo.Keys(info.reverseLookup)
+	sort.Strings(keys)
+
+	return "//" + lo.Reduce(keys, func(agg, current string, _ int) string {
+		return fmt.Sprintf("%v%v/", agg, current)
+	}, "") + "/"
+}
+
+// AcceptablePrimes returns a string that indicates the set of acceptable values
+// for this enum. Similar to Acceptable except that the returned string only
+// indicates the primary entry for each enumeration in the enum info.
+func (info *EnumInfo[E]) AcceptablePrimes() string {
+	l := len(info.acceptables)
+	elements := make([]string, l)
+	keys := lo.Keys(info.acceptables)
+
+	slices.SortFunc(keys, func(a E, b E) bool {
+		return a > b
+	})
+
+	for i, v := range keys {
+		// can't reduce collection[E], because E is not accumulate-able
+		//
+		elements[i] = info.acceptables[v][0]
 	}
 
-	return builder.String()
+	return "//" + strings.Join(elements, "/") + "//"
 }
 
 // NameOf returns the first acceptable name for the enum value specified.
@@ -258,30 +302,4 @@ func (es *EnumSlice[E]) AllAreValidOrEmpty() bool {
 	return lo.EveryBy(es.Source, func(v string) bool {
 		return es.Info.IsValidOrEmpty(v)
 	})
-}
-
-// NewEnumProvider creates an enum info provider. The provider aims to
-// reduce the boilerplate required when defining enums.
-func NewEnumProvider[E ~int](acceptables map[E][]string) *EnumProvider[E] {
-	return &EnumProvider[E]{
-		Info: NewEnumInfo(acceptables),
-	}
-}
-
-// EnumProvider helper class for creating new enum values
-type EnumProvider[E ~int] struct {
-	Info *EnumInfo[E]
-}
-
-// NewValue creates new un-set enum value
-func (ep *EnumProvider[E]) NewValue() EnumValue[E] {
-	return ep.Info.NewValue()
-}
-
-// NewValue creates new enum value initialised with the provided string value
-func (ep *EnumProvider[E]) NewWith(value string) EnumValue[E] {
-	enum := ep.Info.NewValue()
-	enum.Source = value
-
-	return enum
 }
