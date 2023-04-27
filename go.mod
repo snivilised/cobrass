@@ -7,6 +7,7 @@ require (
 	github.com/onsi/gomega v1.27.6
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
+	golang.org/x/exp v0.0.0-20220602145555-4a0574d9293f
 )
 
 require (
@@ -15,7 +16,6 @@ require (
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/pprof v0.0.0-20210407192527-94a9f03dee38 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/exp v0.0.0-20220602145555-4a0574d9293f // indirect
 	golang.org/x/tools v0.7.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

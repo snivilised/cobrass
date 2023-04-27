@@ -85,6 +85,26 @@ var _ = Describe("Enum", func() {
 				})
 			})
 
+			Context("EnumInfo.AcceptablePrimes", func() {
+				When("primaryOnly is true", func() {
+					It("🧪 should: return contents of enum info", func() {
+						result := outputFormatEnumInfo.AcceptablePrimes()
+						Expect(result).To(Equal("//scribble/text/json/xml//"))
+						GinkgoWriter.Println("===> display contents of OutputFormatEnumInfo:")
+						GinkgoWriter.Println(result)
+					})
+				})
+
+				When("primaryOnly is false", func() {
+					It("🧪 should: return contents of enum info", func() {
+						result := outputFormatEnumInfo.Acceptable()
+						Expect(result).To(Equal("//j/json/scr/scribble/scribbler/text/tx/x/xml//"))
+						GinkgoWriter.Println("===> display contents of OutputFormatEnumInfo:")
+						GinkgoWriter.Println(result)
+					})
+				})
+			})
+
 			When("given: duplicated enum values in acceptables", func() {
 				It("🧪 should: panic", func() {
 					defer func() {
@@ -289,29 +309,10 @@ var _ = Describe("Enum", func() {
 			Context("EnumValue", func() {
 				Context("given: string differs in case from acceptables", func() {
 					It("🧪 should:  validate ok", func() {
-						outputFormatEnum := outputFormatEnumInfo.NewValue()
-						outputFormatEnum.Source = "Scribble"
+						outputFormatEnum := outputFormatEnumInfo.NewWith("Scribble")
 						Expect(outputFormatEnum.IsValid()).To(BeTrue())
 					})
 				})
-			})
-		})
-	})
-
-	Context("Provider", func() {
-		Context("NewValue", func() {
-			It("🧪 should: create a new un-initialised enum value", func() {
-				provider := assistant.NewEnumProvider(AcceptableOutputFormats)
-				enum := provider.NewValue()
-				Expect(enum.Source).To(BeEmpty())
-			})
-		})
-
-		Context("NewWith", func() {
-			It("🧪 should: create a new initialised enum value", func() {
-				provider := assistant.NewEnumProvider(AcceptableOutputFormats)
-				enum := provider.NewWith("json")
-				Expect(enum.Value()).To(Equal(JSONFormatEn))
 			})
 		})
 	})
