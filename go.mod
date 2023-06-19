@@ -3,7 +3,7 @@ module github.com/snivilised/cobrass
 go 1.19
 
 require (
-	github.com/onsi/ginkgo/v2 v2.10.0
+	github.com/onsi/ginkgo/v2 v2.11.0
 	github.com/onsi/gomega v1.27.8
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
@@ -26,6 +26,6 @@ require (
 	github.com/samber/lo v1.38.1
 	github.com/snivilised/extendio v0.1.20
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/sys v0.9.0 // indirect
 	golang.org/x/text v0.10.0
 )
