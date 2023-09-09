@@ -1,0 +1,14 @@
+package assistant
+
+import (
+	"net"
+	"time"
+
+	"github.com/spf13/pflag"
+)
+
+// ----> auto generated(Build-Validators/gen-ov)
+
+{{ PLACEHOLDER }}
+
+// <---- end of auto generated

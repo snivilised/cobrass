@@ -1,0 +1,82 @@
+package assistant_test
+
+import (
+	"fmt"
+	"time"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	"github.com/spf13/cobra"
+
+	"github.com/snivilised/cobrass/src/assistant"
+	"github.com/snivilised/cobrass/src/internal/helpers"
+)
+
+// the auto version of param-set_test.go
+
+var _ = Describe("ParamSet (auto)", func() {
+
+	When("Binding a flag (auto)", func() {
+		var rootCommand *cobra.Command
+		var widgetCommand *cobra.Command
+		var paramSet *assistant.ParamSet[WidgetParameterSet]
+		var outputFormatEnumInfo *assistant.EnumInfo[OutputFormatEnum]
+		var outputFormatEnum assistant.EnumValue[OutputFormatEnum]
+
+		BeforeEach(func() {
+			rootCommand = &cobra.Command{
+				Use:   "poke",
+				Short: "A brief description of your application",
+				Long:  "A long description of the root poke command",
+			}
+
+			widgetCommand = &cobra.Command{
+				Version: "1.0.1",
+				Use:     "widget",
+				Short:   "Create widget",
+				Long:    "Index file system at root: '/'",
+				Args:    cobra.ExactArgs(1),
+
+				PreRun: func(command *cobra.Command, args []string) {
+					GinkgoWriter.Printf("**** 🍉 PRE-RUN\n")
+				},
+				RunE: func(command *cobra.Command, args []string) error {
+					GinkgoWriter.Printf("===> 🍓 EXECUTE (Directory: '%v')\n", args[0])
+
+					paramSet.Native.Directory = args[0]
+					return nil
+				},
+				PostRun: func(command *cobra.Command, args []string) {
+					GinkgoWriter.Printf("**** 🥥 POST-RUN\n")
+				},
+			}
+			rootCommand.AddCommand(widgetCommand)
+
+			paramSet = assistant.NewParamSet[WidgetParameterSet](widgetCommand)
+
+			outputFormatEnumInfo = assistant.NewEnumInfo(AcceptableOutputFormats)
+			outputFormatEnum = outputFormatEnumInfo.NewValue()
+		})
+
+		DescribeTable("binder",
+			func(entry TcEntry) {
+				entry.Binder()
+
+				_, _ = helpers.ExecuteCommand(
+					rootCommand, "widget", "/usr/fuse/home/music", entry.CommandLine,
+				)
+				entry.Assert()
+			},
+
+			func(entry TcEntry) string {
+				return fmt.Sprintf("🧪 --> 🍒 given: flag is '%v'", entry.Message)
+			},
+
+			// ----> auto generated(Build-PsTestEntry/gen-ps-t)
+
+      {{ PLACEHOLDER }}
+
+			// <---- auto generated(Build-PsTestEntry/gen-ps-t)
+		)
+	})
+})

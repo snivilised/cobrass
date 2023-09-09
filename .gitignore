@@ -15,6 +15,7 @@
 # vendor/
 
 dist/
+generators/gola/out/
 
 # go-task intermediate files like checksums
 #
