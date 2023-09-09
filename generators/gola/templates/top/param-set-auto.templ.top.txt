@@ -1,0 +1,12 @@
+package assistant
+
+import (
+	"net"
+	"time"
+)
+
+// ----> auto generated(Build-ParamSet/gen-ps)
+
+{{ PLACEHOLDER }}
+
+// <---- end of auto generated

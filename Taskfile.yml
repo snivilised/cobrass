@@ -1,7 +1,14 @@
-version: '3'
+version: "3"
 silent: true
 
-dotenv: ['.env']
+dotenv: [".env"]
+
+vars:
+  FORMAT: json
+  GEN_BINARY_NAME: cobrass-gen
+  GEN_DIR: ./generators/gola/gen
+  GEN_TEST_OUTPUT_DIR: ./generators/gola/out/assistant
+  DIST_DIR: ./dist
 
 tasks:
   b:
@@ -57,3 +64,69 @@ tasks:
   cover:
     cmds:
       - goveralls -repotoken {{.COVERALLS_TOKEN}}
+
+  # === code generator =========================================
+  #
+  # NB: go generate can't evaluate variables, but we need to
+  # distinguish between a test run and a real run. For this reason
+  # we only invoke go generate for a real run and for a test run
+  # we invoke the generator directly without go generate, passing
+  # in the test flag.
+
+  ov-gen-t:
+    cmds:
+      - mkdir -p {{.GEN_TEST_OUTPUT_DIR}}
+      - cobrass-gen -test -cwd ./
+
+  ov-gen:
+    cmds:
+      - go generate ./...
+
+  # === build/deploy code generator ===========================
+
+  b-gen-linux:
+    cmds:
+      - task: build-generic
+        vars: { TARGET_OS: linux, TARGET_ARCH: amd64 }
+
+  build-generic:
+    vars:
+      APPLICATION_ENTRY: ./generators/gola/gen
+    cmds:
+      - echo "cross compiling generator from {{OS}} to {{.TARGET_OS}}"
+      - GOOS={{.TARGET_OS}} GOARCH={{.TARGET_ARCH}} go build -o {{.DIST_DIR}}/{{.TARGET_OS}}/{{.GEN_BINARY_NAME}} -v {{.APPLICATION_ENTRY}}
+
+    sources:
+      - ./generators/gola/*.go
+
+    generates:
+      - "{{.DIST_DIR}}/{{.TARGET_OS}}/{{.GEN_BINARY_NAME}}"
+
+  d:
+    cmds:
+      - task: deploy
+
+  # currently, this is hardcoded for linux
+  #
+  deploy:
+    vars:
+      TARGET_OS: linux
+      DEPLOY_BINARY: "{{.DIST_DIR}}/{{.TARGET_OS}}/{{.GEN_BINARY_NAME}}"
+
+    cmds:
+      - echo "deploying to location (.env) DEPLOY_TO  ==> '$DEPLOY_TO'"
+      - /bin/cp -f {{.DEPLOY_BINARY}} $DEPLOY_TO
+
+    generates:
+      - $DEPLOY_TO/{{.DEPLOY_BINARY}}
+      - $DEPLOY_TO/{{.ACTIVE_US}}
+
+    preconditions:
+      - test $DEPLOY_TO
+      - test -f {{.DEPLOY_BINARY}}
+
+  tbd:
+    cmds:
+      - task: t
+      - task: b-gen-linux
+      - task: d
