@@ -1,0 +1,26 @@
+{{- $validatorType := .Spec.TypeName -}}
+{{- $validatorFn := getValidatorFn .Spec.TypeName -}}
+{{- $validatorStruct := getValidatorStruct .Spec.TypeName -}}
+
+// {{ $validatorFn }} defines the validator function for {{ getDisplayType .Spec }} type.
+type {{ $validatorFn }} func({{ .Spec.GoType }}, *pflag.Flag) error
+
+// {{ $validatorStruct }} defines the struct that wraps the client defined validator function
+// {{ $validatorFn }} for {{ getDisplayType .Spec }} type. This is the instance that is returned by
+// validated binder function BindValidated{{ .Spec.TypeName }}.
+type {{ $validatorStruct }} GenericOptionValidatorWrapper[{{ .Spec.GoType }}]
+
+{{ if not .Spec.ForeignValidatorFn -}}
+// Validate invokes the client defined validator function for {{ getDisplayType .Spec }} type.
+func (validator {{ $validatorStruct }}) Validate() error {
+  return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for {{ getDisplayType .Spec }} type.
+func (validator {{ $validatorStruct }}) GetFlag() *pflag.Flag {
+  return validator.Flag
+}
+{{ end -}}
+{{- if .Spec.GenerateSlice }}
+{{ template "generate-slice" . }}
+{{ end -}}

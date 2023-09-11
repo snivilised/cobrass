@@ -58,4 +58,8 @@ linters:
     - wsl
 
 run:
+  skip-dirs:
+    - /generators/gola/templates
+  skip-files:
+    - .*\.tmpl$
   issues-exit-code: 1

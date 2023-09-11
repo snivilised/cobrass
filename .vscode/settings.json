@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "beezledub",
     "bindnative",
     "bodyclose",
     "colors",
@@ -11,6 +12,7 @@
     "errcheck",
     "exportloopref",
     "extendio",
+    "faydeaudeau",
     "fieldalignment",
     "foobar",
     "goconst",
@@ -32,6 +34,7 @@
     "ipnet",
     "linters",
     "nakedret",
+    "nolint",
     "nolintlint",
     "paramset",
     "prealloc",
@@ -45,11 +48,15 @@
     "stylecheck",
     "templatise",
     "thelper",
+    "tmpl",
     "tparallel",
     "unconvert",
     "unparam",
     "vactive",
     "Validatable",
     "varcheck"
-  ]
+  ],
+  "files.associations": {
+    "**/*.tmpl": "go"
+  }
 }

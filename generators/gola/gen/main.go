@@ -17,11 +17,12 @@ const (
 )
 
 var (
-	testFlag           = flag.Bool("test", false, "generate code in test location?")
-	cwdFlag            = flag.String("cwd", "", "current working directory")
-	testPath           = filepath.Join("generators", "gola", "out", "assistant")
-	sourcePath         = filepath.Join("src", "assistant")
-	outputPathNotFound = "Output path '%v', not found"
+	testFlag         = flag.Bool("test", false, "generate code in test location?")
+	cwdFlag          = flag.String("cwd", "", "current working directory")
+	templatesSubPath = flag.String("templates", "", "templates sub path")
+	write            = flag.Bool("write", false, "write generated code?")
+	testPath         = filepath.Join("generators", "gola", "out", "assistant")
+	sourcePath       = filepath.Join("src", "assistant")
 )
 
 func Usage() {
@@ -42,9 +43,6 @@ func fail(reason string, callback ...func()) {
 	os.Exit(outputPathNotFoundExitCode)
 }
 
-// ???
-// https://askgolang.com/how-to-get-current-directory-in-golang/
-
 func main() {
 	flag.Usage = Usage
 	flag.Parse()
@@ -58,18 +56,18 @@ func main() {
 	absolutePath, _ := filepath.Abs(*cwdFlag)
 	absolutePath = filepath.Join(absolutePath, outputPath)
 
-	if !utils.FileExists(absolutePath) {
+	if !utils.FolderExists(absolutePath) {
 		callback := func() {
 			fmt.Printf("💥 --->      CWD: '%v' \n", *cwdFlag)
 			fmt.Printf("💥 --->   OUTPUT: '%v' \n", outputPath)
 			fmt.Printf("💥 ---> RESOLVED: '%v' \n", absolutePath)
 		}
-		fail(fmt.Sprintf(outputPathNotFound, absolutePath), callback)
+		fail(fmt.Sprintf("Output path '%v', not found", absolutePath), callback)
 
 		return
 	}
 
-	sourceCode := gola.NewSourceCodeContainer()
+	sourceCode := gola.NewSourceCodeContainer(absolutePath, *templatesSubPath)
 	mode := lo.Ternary(*testFlag, "🧪 Test", "🎁 Source")
 
 	fmt.Printf("☑️ --->      CWD: '%v' \n", *cwdFlag)
@@ -78,12 +76,12 @@ func main() {
 	fmt.Printf("---> 🐲 cobrass generator (%v, to: %v)\n", mode, absolutePath)
 
 	if !*testFlag {
-		if sourceCode.AnyMissing(absolutePath) {
-			sourceCode.Verify(absolutePath, func(entry *gola.SourceCodeData) {
-				exists := entry.Exists(absolutePath)
+		if sourceCode.AnyMissing() {
+			sourceCode.Verify(func(entry *gola.SourceCodeData) {
+				exists := entry.Exists()
 				indicator := lo.Ternary(exists, "✔️", "❌")
 				status := lo.Ternary(exists, "exists", "missing")
-				path := entry.FullPath(absolutePath)
+				path := entry.FullPath()
 				message := fmt.Sprintf("%v source file: '%v' %v", indicator, path, status)
 
 				fmt.Printf("%v\n", message)
@@ -93,17 +91,7 @@ func main() {
 		}
 	}
 
-	sourceCode.Generator().Run()
-
-	logicalEnum := gola.LogicalType{
-		TypeName:           "Enum",
-		GoType:             "string",
-		DisplayType:        "enum",
-		UnderlyingTypeName: "String",
-		FlagName:           "Format",
-		Short:              "f",
-		Def:                "xml",
+	if err := sourceCode.Generator(*write).Run(); err != nil {
+		fail(err.Error())
 	}
-
-	fmt.Printf("---> 🐲 cobrass generator (enum: %+v)\n", logicalEnum)
 }

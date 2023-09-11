@@ -890,7 +890,7 @@ function Build-Validators {
       # - func (validator XXXXOptionValidator) Validate()
       # - func (validator XXXXOptionValidator) GetFlag() *pflag.Flag
       #
-      if ($spec.Validatable) {
+      if ($spec.Validatable) { # [+] option-validator-type-defs.templ.snip.txt
         @"
 // $($validatorFn) defines the validator function for $($displayType) type.
 type $($validatorFn) func($($spec.GoType), *pflag.Flag) error
@@ -901,7 +901,7 @@ type $($validatorFn) func($($spec.GoType), *pflag.Flag) error
 type $($validatorStruct) GenericOptionValidatorWrapper[$($spec.GoType)]
         
 "@
-        if (-not($spec.ForeignValidatorFn)) {
+        if (-not($spec.ForeignValidatorFn)) { # [+] option-validator-func-defs.templ.snip.txt
           @"
 // Validate invokes the client defined validator function for $($displayType) type.
 func (validator $($validatorStruct)) Validate() error {
@@ -916,7 +916,7 @@ func (validator $($validatorStruct)) GetFlag() *pflag.Flag {
 "@
         }
 
-        if ($spec.GenerateSlice) {
+        if ($spec.GenerateSlice) { # [+] option-validator-slice-defs.templ.snip.txt
           # generate
           # - type XXXXSliceValidatorFn
           # - type XXXXSliceOptionValidator
