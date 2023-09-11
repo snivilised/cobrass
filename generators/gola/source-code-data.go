@@ -1,13 +1,11 @@
 package gola
 
 import (
-	_ "embed"
+	"fmt"
 	"path/filepath"
-	"sort"
 	"strings"
 	"text/template"
 
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/generators/gola/internal/utils"
 )
 
@@ -16,33 +14,16 @@ import (
 
 type CodeFileName string
 
-var (
-	//go:embed templates/top/option-validator-auto.templ.top.txt
-	optionValidatorAutoTop string
-
-	//go:embed templates/top/option-validator-auto_test.templ.top.txt
-	optionValidatorAutoTestTop string
-
-	//go:embed templates/top/param-set-auto.templ.top.txt
-	paramSetAutoTop string
-
-	//go:embed templates/top/param-set-auto_test.templ.top.txt
-	paramSetAutoTestTop string
-
-	//go:embed templates/top/param-set-binder-helpers-auto.templ.top.txt
-	paramSetBinderHelpersAutoTop string
-
-	//go:embed templates/top/param-set-binder-helpers-auto_test.templ.top.txt
-	paramSetBinderHelpersAutoTestTop string
-)
-
 type SourceCodeData struct {
-	name  CodeFileName
-	top   string
-	templ *template.Template
+	name        CodeFileName
+	active      bool // THIS IS JUST TEMPORARY
+	directory   string
+	rootContent string
+	templ       *template.Template
+	funcs       map[string]any
 }
 
-func (d *SourceCodeData) FileName() string {
+func (d *SourceCodeData) GeneratedFileName() string {
 	return string(d.name) + ".go"
 }
 
@@ -50,123 +31,22 @@ func (d *SourceCodeData) IsTest() bool {
 	return strings.HasSuffix(string(d.name), "_test")
 }
 
-func (d *SourceCodeData) Exists(absolutePath string) bool {
-	return utils.FileExists(d.FullPath(absolutePath))
+func (d *SourceCodeData) Exists() bool {
+	return utils.FileExists(d.FullPath())
 }
 
-func (d *SourceCodeData) FullPath(absolutePath string) string {
-	filename := d.FileName()
-	return filepath.Join(absolutePath, filename)
+func (d *SourceCodeData) FullPath() string {
+	return filepath.Join(d.directory, d.GeneratedFileName())
 }
 
-type sourceCodeDataCollection map[CodeFileName]*SourceCodeData
-
-type SourceCodeContainer struct {
-	collection sourceCodeDataCollection
+func (d *SourceCodeData) templates() string {
+	return fmt.Sprintf("templates/%v/*.go.tmpl", d.name)
 }
 
-func (d *SourceCodeContainer) init() {
-	d.collection = sourceCodeDataCollection{
-		"option-validator-auto": &SourceCodeData{
-			name: "option-validator-auto",
-			top:  optionValidatorAutoTop,
-		},
-		"option-validator-auto_test": &SourceCodeData{
-			name: "option-validator-auto_test",
-			top:  optionValidatorAutoTestTop,
-		},
-		"param-set-auto": &SourceCodeData{
-			name: "param-set-auto",
-			top:  paramSetAutoTop,
-		},
-		"param-set-auto_test": &SourceCodeData{
-			name: "param-set-auto_test",
-			top:  paramSetAutoTestTop,
-		},
-		"param-set-binder-helpers-auto": &SourceCodeData{
-			name: "param-set-binder-helpers-auto",
-			top:  paramSetBinderHelpersAutoTop,
-		},
-		"param-set-binder-helpers-auto_test": &SourceCodeData{
-			name: "param-set-binder-helpers-auto_test",
-			top:  paramSetBinderHelpersAutoTestTop,
-		},
-	}
-
-	for _, data := range d.collection {
-		if templ, err := template.New(string(data.name)).Parse(data.top); err == nil {
-			data.templ = templ
-		}
-	}
+func (d *SourceCodeData) child(_ string) string {
+	panic("child template name not yet defined (<name>-XXX.go.tmpl?)")
 }
 
-func (d *SourceCodeContainer) sourceNames() []string {
-	keys := lo.Keys(d.collection)
-	sorted := lo.Map(keys, func(item CodeFileName, index int) string {
-		return string(item)
-	})
-	sort.Strings(sorted)
-
-	return sorted
-}
-
-func (d *SourceCodeContainer) AnyMissing(absolutePath string) bool {
-	names := d.sourceNames()
-
-	for _, name := range names {
-		sourceCodeName := CodeFileName(name)
-		data := (d.collection)[sourceCodeName]
-		exists := data.Exists(absolutePath)
-
-		if !exists {
-			return true
-		}
-	}
-
-	return false
-}
-
-func (d *SourceCodeContainer) ReportAll(fn ...func(entry *SourceCodeData)) {
-	names := d.sourceNames()
-
-	for _, name := range names {
-		sourceCodeName := CodeFileName(name)
-		data := (d.collection)[sourceCodeName]
-
-		if len(fn) > 0 {
-			fn[0](data)
-		}
-	}
-}
-
-func (d *SourceCodeContainer) Verify(absolutePath string, fn ...func(entry *SourceCodeData)) bool {
-	result := d.AnyMissing(absolutePath)
-
-	if !result {
-		return result
-	}
-
-	names := d.sourceNames()
-
-	for _, name := range names {
-		sourceCodeName := CodeFileName(name)
-		data := (d.collection)[sourceCodeName]
-
-		if len(fn) > 0 {
-			fn[0](data)
-		}
-	}
-
-	return result
-}
-
-func (d *SourceCodeContainer) Generator() *SourceCodeGenerator {
-	return &SourceCodeGenerator{}
-}
-
-func NewSourceCodeContainer() *SourceCodeContainer {
-	data := &SourceCodeContainer{}
-	data.init()
-
-	return data
+func (d *SourceCodeData) section(s string) string {
+	return fmt.Sprintf("%v-%v.go.tmpl", d.name, s)
 }

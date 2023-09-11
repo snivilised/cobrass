@@ -28,7 +28,7 @@ func (m *AreAllSourceCodeFilesPresentMatcher) Match(actual interface{}) (bool, e
 		return false, fmt.Errorf("matcher expected a SourceCodeContainer value (actual: '%v')", actual)
 	}
 
-	return !sourceCode.AnyMissing(m.directory), nil
+	return !sourceCode.AnyMissing(), nil
 }
 
 func (m *AreAllSourceCodeFilesPresentMatcher) report(
@@ -41,11 +41,11 @@ func (m *AreAllSourceCodeFilesPresentMatcher) report(
 		fmt.Sprintf("🔥 Expected all source code files %vto be present\n", not),
 	)
 
-	sourceCode.ReportAll(func(entry *gola.SourceCodeData) {
-		exists := entry.Exists(m.directory)
+	sourceCode.ForEach(func(entry *gola.SourceCodeData) {
+		exists := entry.Exists()
 		indicator := lo.Ternary(exists, "✔️", "❌")
 		status := lo.Ternary(exists, "exists", "missing")
-		path := entry.FullPath(m.directory)
+		path := entry.FullPath()
 		message := fmt.Sprintf("%v source file: '%v' %v\n", indicator, path, status)
 		builder.WriteString(message)
 	})

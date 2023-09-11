@@ -1,0 +1,24 @@
+{{- define "generate-slice" -}}
+{{- /* parameter:  executionInfo */ -}}
+{{- $sliceTypeName := getSliceTypeName .Spec -}}
+{{- $typeName := getValidatorStruct $sliceTypeName -}}
+{{- $sliceType := getSliceType .Spec -}}
+{{- $sliceValidationStruct := getValidatorStruct $sliceTypeName -}}
+{{- $sliceValidatorFn := getSliceValidationFn .Spec -}}
+
+// {{ $typeName }} defines the validator function for {{ $sliceTypeName }} type.
+type {{ $sliceValidatorFn }} func({{ $sliceType }}, *pflag.Flag) error
+
+// {{ $sliceValidationStruct }} wraps the client defined validator function for type {{ $sliceType }}.
+type {{ $sliceValidationStruct }} GenericOptionValidatorWrapper[{{ $sliceType }}]
+
+// Validate invokes the client defined validator function for {{ $sliceType }} type.
+func (validator {{ $sliceValidationStruct }}) Validate() error {
+	return validator.Fn(*validator.Value, validator.Flag)
+}
+
+// GetFlag returns the flag for {{ $sliceType }} type.
+func (validator {{ $sliceValidationStruct }}) GetFlag() *pflag.Flag {
+  return validator.Flag
+}
+{{ end -}}

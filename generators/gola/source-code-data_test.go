@@ -11,8 +11,6 @@ import (
 	"github.com/snivilised/cobrass/generators/gola"
 )
 
-// . "github.com/onsi/gomega/types"
-
 func Path(parent, relative string) string {
 	segments := strings.Split(relative, "/")
 	return filepath.Join(append([]string{parent}, segments...)...)
@@ -24,7 +22,6 @@ func Repo(relative string) string {
 }
 
 var _ = Describe("SourceCodeData", Ordered, func() {
-
 	var (
 		repo, testPath, sourcePath string
 	)
@@ -39,8 +36,9 @@ var _ = Describe("SourceCodeData", Ordered, func() {
 	Context("AnyMissing", func() {
 		When("source mode", func() {
 			It("should: find all source code files are present", func() {
-				codeData := gola.NewSourceCodeContainer()
 				outputPath := filepath.Join(repo, sourcePath)
+				templatesSubPath := ""
+				codeData := gola.NewSourceCodeContainer(outputPath, templatesSubPath)
 
 				Expect(codeData).To(ContainAllSourceCodeFilesAt(outputPath))
 			})

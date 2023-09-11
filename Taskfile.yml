@@ -76,11 +76,16 @@ tasks:
   ov-gen-t:
     cmds:
       - mkdir -p {{.GEN_TEST_OUTPUT_DIR}}
-      - cobrass-gen -test -cwd ./
+      - cobrass-gen -test -cwd ./ -templates generators/gola -write
+      - go fmt ./generators/gola/out/assistant/*.go
 
   ov-gen:
     cmds:
       - go generate ./...
+
+  clear-gen-t:
+    cmds:
+      - rm -f ./generators/gola/out/assistant/*auto*.go
 
   # === build/deploy code generator ===========================
 
@@ -97,7 +102,7 @@ tasks:
       - GOOS={{.TARGET_OS}} GOARCH={{.TARGET_ARCH}} go build -o {{.DIST_DIR}}/{{.TARGET_OS}}/{{.GEN_BINARY_NAME}} -v {{.APPLICATION_ENTRY}}
 
     sources:
-      - ./generators/gola/*.go
+      - ./generators/gola/**/*.go
 
     generates:
       - "{{.DIST_DIR}}/{{.TARGET_OS}}/{{.GEN_BINARY_NAME}}"
