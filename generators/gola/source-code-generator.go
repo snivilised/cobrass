@@ -1,39 +1,33 @@
 package gola
 
 import (
-	"bytes"
+	_ "embed"
 	"fmt"
 	"os"
 	"path"
-	"sort"
 
 	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/generators/gola/internal/storage"
 )
 
 var (
 	noData = struct{}{}
+	//go:embed signature.GO-HASH.txt
+	RegisteredHash string
 )
 
-type typeCollection map[TypeNameID]*TypeSpec
-type operatorCollection []*Operator
-
 type SourceCodeGenerator struct {
-	sourceCodeCollection *sourceCodeDataCollection
-	types                *typeCollection
+	vfs                  storage.VirtualFS
+	sourceCodeCollection sourceCodeDataCollection
+	types                typeCollection
 	operators            operatorCollection
 	doWrite              bool
 }
 
-func (g *SourceCodeGenerator) init() {
-	g.buildOperators()
+func (g *SourceCodeGenerator) init(sourceCode sourceCodeDataCollection) {
+	g.sourceCodeCollection = sourceCode
+	g.operators = buildOperators()
 	g.types = buildTypes()
-}
-
-func (g *SourceCodeGenerator) sortedTypeKeys() []TypeNameID {
-	keys := lo.Keys(*g.types)
-	sort.Strings(keys)
-
-	return keys
 }
 
 func (g *SourceCodeGenerator) preDefinedOrderedTypeKeys() []TypeNameID {
@@ -52,75 +46,79 @@ func (g *SourceCodeGenerator) preDefinedOrderedTypeKeys() []TypeNameID {
 	}
 }
 
-func (g *SourceCodeGenerator) Run() error {
-	for _, page := range *g.sourceCodeCollection {
-		var buffer bytes.Buffer
+func (g *SourceCodeGenerator) Run() (*SignatureResult, error) {
+	// g.sourceCodeCollection needs to be populated off the container,
+	// we can't just make an empty collection, that's just pointless
+	// an does not work.
+	//
+	contents := make(CodeContent, len(g.sourceCodeCollection))
 
-		overwrite := lo.Ternary(page.Exists(), "♻️ overwrite", "✨ new")
-		if page.active {
-			fmt.Printf("===> 🚀 (%v) generating code to '%v' (%v)\n",
-				page.name,
-				page.GeneratedFileName(),
-				overwrite,
-			)
+	for _, k := range g.sourceCodeCollection.Keys() {
+		page := g.sourceCodeCollection[k]
+		yield := &generatedYield{}
+		overwrite := lo.Ternary(g.vfs.FileExists(page.FullPath()), "♻️ overwrite", "✨ new")
 
-			if err := g.renderStatic("header", page, &buffer); err != nil {
-				return err
-			}
-
-			for _, specTypeKey := range g.preDefinedOrderedTypeKeys() {
-				fmt.Printf("---> 🍬🍬🍬 generating code for type '%v'\n", specTypeKey)
-				// TODO: the executionInfo needs to match the structure of the dot
-				// and child templates. executionInfo is the dot object and everything else
-				// needs to be relative to this dot.
-				//
-				dot := executionInfo{
-					Spec:      (*g.types)[specTypeKey],
-					Operators: g.operators,
-				}
-
-				if err := g.renderSection("body", page, &dot, &buffer); err != nil {
-					return err
-				}
-			}
-
-			if err := g.renderStatic("footer", page, &buffer); err != nil {
-				return err
-			}
-
-			if g.doWrite {
-				if err := g.flush(page.FullPath(), &buffer); err != nil {
-					fmt.Printf("---> 🔥 Write Error occurred for: '%v' (%v), aborting\n",
-						page.name, err,
-					)
-
-					return err
-				}
-			} else {
-				fmt.Printf("===> 🧊🧊🧊 Generated %v content: ...\n",
-					page.name,
-				)
-				fmt.Printf("%v\n", buffer.String())
-			}
-		} else {
+		if !page.active {
 			fmt.Printf("===> 📛 (%v) SKIPPING generation of code to '%v' (%v)\n",
 				page.name,
-				page.GeneratedFileName(),
+				page.OutputFileName(),
 				overwrite,
 			)
+
+			continue
+		}
+
+		fmt.Printf("===> 🚀 (%v) generating code to '%v' (%v)\n",
+			page.name,
+			page.OutputFileName(),
+			overwrite,
+		)
+
+		if err := g.static("header", page, yield); err != nil {
+			return nil, err
+		}
+
+		for _, specTypeKey := range g.preDefinedOrderedTypeKeys() {
+			// TODO: the executionInfo needs to match the structure of the dot
+			// and child templates. executionInfo is the dot object and everything else
+			// needs to be relative to this dot.
+			//
+			dot := executionInfo{
+				Spec:      g.types[specTypeKey],
+				Operators: g.operators,
+			}
+
+			if err := g.render("body", page, yield, &dot); err != nil {
+				return nil, err
+			}
+		}
+
+		if err := g.static("footer", page, yield); err != nil {
+			return nil, err
+		}
+
+		contents[page.name] = yield.Content()
+
+		if g.doWrite {
+			if err := g.flush(page.FullPath(), yield); err != nil {
+				fmt.Printf("---> 🔥 Write Error occurred for: '%v' (%v), aborting\n",
+					page.name, err,
+				)
+
+				return nil, err
+			}
 		}
 	}
 
-	return nil
+	return g.signature(contents)
 }
 
-func (g *SourceCodeGenerator) renderStatic(
-	section string, page *SourceCodeData, buffer *bytes.Buffer,
+func (g *SourceCodeGenerator) static(
+	section string, page *SourceCodeData, yield *generatedYield,
 ) error {
-	static := page.section(section)
 	if err := page.templ.ExecuteTemplate(
-		buffer,
-		static,
+		&yield.buffer,
+		page.section(section),
 		noData,
 	); err != nil {
 		fmt.Printf("---> 🔥 Error executing static section template for: '%v' (%v), aborting\n",
@@ -133,13 +131,12 @@ func (g *SourceCodeGenerator) renderStatic(
 	return nil
 }
 
-func (g *SourceCodeGenerator) renderSection(
-	section string, page *SourceCodeData, dot *executionInfo, buffer *bytes.Buffer,
+func (g *SourceCodeGenerator) render(
+	section string, page *SourceCodeData, yield *generatedYield, dot *executionInfo,
 ) error {
-	body := page.section(section)
 	if err := page.templ.ExecuteTemplate(
-		buffer,
-		body,
+		&yield.buffer,
+		page.section(section),
 		dot,
 	); err != nil {
 		fmt.Printf("---> 🔥 Error executing section template for: '%v' (%v), aborting\n",
@@ -152,27 +149,22 @@ func (g *SourceCodeGenerator) renderSection(
 	return nil
 }
 
-func (g *SourceCodeGenerator) buildOperators() {
-	g.operators = operatorCollection{
-		&Operator{
-			Name:          "Within",
-			Documentation: "fails validation if the option value does not lie within 'low' and 'high' (inclusive)",
-		},
-	}
+func (g *SourceCodeGenerator) signature(content CodeContent) (*SignatureResult, error) {
+	return parseInline(content)
 }
 
-func (g *SourceCodeGenerator) flush(filepath string, content *bytes.Buffer) error {
+func (g *SourceCodeGenerator) flush(outputPath string, yield *generatedYield) error {
 	faydeaudeau := 0o777
-	directory := path.Dir(filepath)
+	directory := path.Dir(outputPath)
 
-	if err := os.MkdirAll(directory, os.FileMode(faydeaudeau)); err != nil {
+	if err := g.vfs.MkdirAll(directory, os.FileMode(faydeaudeau)); err != nil {
 		return fmt.Errorf("failed to ensure parent directory '%v' exists (%v)", directory, err)
 	}
 
 	beezledub := 0o666
 
-	if err := os.WriteFile(filepath, content.Bytes(), os.FileMode(beezledub)); err != nil {
-		return fmt.Errorf("failed to write generated code to '%v' (%v)", filepath, err)
+	if err := g.vfs.WriteFile(outputPath, yield.buffer.Bytes(), os.FileMode(beezledub)); err != nil {
+		return fmt.Errorf("failed to write generated code to '%v' (%v)", outputPath, err)
 	}
 
 	return nil

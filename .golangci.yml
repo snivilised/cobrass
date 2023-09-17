@@ -4,6 +4,10 @@ linters-settings:
   goconst:
     min-len: 2
     min-occurrences: 3
+  # since upgrading to v1.21.1 of go:
+  # ERRO [linters_context] gocritic: load embedded ruleguard
+  # rules: rules/rules.go:13: can't load fmt: setting an explicit GOROOT can fix this problem.
+  #
   gocritic:
     enabled-tags:
       - diagnostic
@@ -24,7 +28,10 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - depguard
+    # depguard needs to be reviewed properly and then configured, before
+    # it can be re-enabled.
+    # https://github.com/OpenPeeDeeP/depguard#example-configs
+    # - depguard
     - dogsled
     # - dupl
     - errcheck

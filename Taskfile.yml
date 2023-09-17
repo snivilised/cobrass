@@ -73,19 +73,27 @@ tasks:
   # we invoke the generator directly without go generate, passing
   # in the test flag.
 
-  ov-gen-t:
+  co-gen-t:
     cmds:
       - mkdir -p {{.GEN_TEST_OUTPUT_DIR}}
       - cobrass-gen -test -cwd ./ -templates generators/gola -write
       - go fmt ./generators/gola/out/assistant/*.go
 
-  ov-gen:
-    cmds:
-      - go generate ./...
+  # co-gen:
+  #   cmds:
+  #     - go generate ./...
 
   clear-gen-t:
     cmds:
       - rm -f ./generators/gola/out/assistant/*auto*.go
+
+  sign-t:
+    cmds:
+      - cobrass-gen -sign -test -cwd ./
+
+  sign:
+    cmds:
+      - cobrass-gen -sign
 
   # === build/deploy code generator ===========================
 
@@ -106,6 +114,16 @@ tasks:
 
     generates:
       - "{{.DIST_DIR}}/{{.TARGET_OS}}/{{.GEN_BINARY_NAME}}"
+
+  build-play:
+    vars:
+      APPLICATION_ENTRY: ./generators/gola/gen
+    cmds:
+      - echo "cross compiling generator from {{OS}} to {{.TARGET_OS}}"
+      - GOOS={{.TARGET_OS}} GOARCH={{.TARGET_ARCH}} go build -gcflags=-m ./generators/gola/gen/main.go
+
+    sources:
+      - ./generators/gola/**/*.go
 
   d:
     cmds:
