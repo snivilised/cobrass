@@ -3,15 +3,18 @@ package gola
 import (
 	"fmt"
 	"path/filepath"
-	"sort"
+
 	"text/template"
 
 	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/generators/gola/internal/collections"
+	"github.com/snivilised/cobrass/generators/gola/internal/storage"
 )
 
-type sourceCodeDataCollection map[CodeFileName]*SourceCodeData
+type sourceCodeDataCollection = collections.OrderedKeysMap[CodeFileName, *SourceCodeData]
 
 type SourceCodeContainer struct {
+	vfs              storage.VirtualFS
 	absolutePath     string
 	templatesSubPath string
 	collection       sourceCodeDataCollection
@@ -78,13 +81,15 @@ func (d *SourceCodeContainer) init() {
 	}
 
 	for _, page := range d.collection {
-		path := page.templates()
+		relativeTemplPath := page.templates()
 
 		if d.templatesSubPath != "" {
-			path = filepath.Join(d.templatesSubPath, path)
+			relativeTemplPath = filepath.Join(d.templatesSubPath, relativeTemplPath)
 		}
 
-		if templ, err := template.New(string(page.name)).Funcs(page.funcs).ParseGlob(path); err == nil {
+		if templ, err := template.New(string(page.name)).Funcs(page.funcs).ParseGlob(
+			relativeTemplPath,
+		); err == nil {
 			page.templ = templ
 		} else {
 			panic(
@@ -96,30 +101,21 @@ func (d *SourceCodeContainer) init() {
 	}
 }
 
-func (d *SourceCodeContainer) sourceNames() []string {
-	keys := lo.Keys(d.collection)
-	sorted := lo.Map(keys, func(item CodeFileName, index int) string {
-		return string(item)
-	})
-	sort.Strings(sorted)
-
-	return sorted
+func (d *SourceCodeContainer) contentPath() string {
+	return filepath.Join(d.absolutePath, d.templatesSubPath)
 }
 
 func (d *SourceCodeContainer) AnyMissing() bool {
-	// TODO: this needs to verified after all has been built
-	//
 	return d.ForEachUntil(func(data *SourceCodeData) bool {
-		return !data.Exists()
+		return !d.vfs.FileExists(data.FullPath())
 	})
 }
 
 func (d *SourceCodeContainer) ForEach(fn func(entry *SourceCodeData)) {
-	names := d.sourceNames()
+	names := d.collection.Keys()
 
 	for _, name := range names {
-		sourceCodeName := CodeFileName(name)
-		data := (d.collection)[sourceCodeName]
+		data := (d.collection)[name]
 
 		fn(data)
 	}
@@ -127,11 +123,10 @@ func (d *SourceCodeContainer) ForEach(fn func(entry *SourceCodeData)) {
 
 // ForEachUntil returns true if exit's early, false otherwise
 func (d *SourceCodeContainer) ForEachUntil(fn func(entry *SourceCodeData) bool) bool {
-	names := d.sourceNames()
+	names := d.collection.Keys()
 
 	for _, name := range names {
-		sourceCodeName := CodeFileName(name)
-		data := (d.collection)[sourceCodeName]
+		data := (d.collection)[name]
 
 		if fn(data) {
 			return true
@@ -153,23 +148,33 @@ func (d *SourceCodeContainer) Generator(
 	doWrite bool,
 ) *SourceCodeGenerator {
 	generator := &SourceCodeGenerator{
+		vfs:                  d.vfs,
 		doWrite:              doWrite,
-		sourceCodeCollection: &d.collection,
+		sourceCodeCollection: d.collection,
 	}
-	generator.init()
+
+	d.init()
+	generator.init(d.collection)
 
 	return generator
 }
 
+// Signature used to compose the SHA256 hash of
+// pre-generated source code.
+func (d *SourceCodeContainer) Signature() (*SignatureResult, error) {
+	return parseFromFS(d.vfs, d.contentPath())
+}
+
 func NewSourceCodeContainer(
+	vfs storage.VirtualFS,
 	absolutePath string,
 	templatesSubPath string,
 ) *SourceCodeContainer {
 	container := &SourceCodeContainer{
+		vfs:              vfs,
 		absolutePath:     absolutePath,
 		templatesSubPath: templatesSubPath,
 	}
-	container.init()
 
 	return container
 }

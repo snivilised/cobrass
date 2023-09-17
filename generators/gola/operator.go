@@ -6,4 +6,14 @@ type Operator struct {
 	Name          OperatorName
 	Documentation string
 }
-type Operators = []*Operator
+
+type operatorCollection []*Operator
+
+func buildOperators() operatorCollection {
+	return operatorCollection{
+		&Operator{
+			Name:          "Within",
+			Documentation: "fails validation if the option value does not lie within 'low' and 'high' (inclusive)",
+		},
+	}
+}

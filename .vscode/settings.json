@@ -1,8 +1,10 @@
 {
   "cSpell.words": [
+    "avfs",
     "beezledub",
     "bindnative",
     "bodyclose",
+    "cogen",
     "colors",
     "Comparables",
     "deadcode",
@@ -15,6 +17,7 @@
     "faydeaudeau",
     "fieldalignment",
     "foobar",
+    "funcs",
     "goconst",
     "gocritic",
     "gocyclo",
@@ -33,6 +36,7 @@
     "ipmask",
     "ipnet",
     "linters",
+    "memfs",
     "nakedret",
     "nolint",
     "nolintlint",

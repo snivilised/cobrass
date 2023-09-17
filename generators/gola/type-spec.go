@@ -61,8 +61,8 @@ type TypeSpec struct {
 	BhTests            BhTestCollection
 }
 
-func buildTypes() *typeCollection {
-	return &typeCollection{
+func buildTypes() typeCollection {
+	return typeCollection{
 		"Enum": &TypeSpec{
 			TypeName:           "Enum",
 			GoType:             "string",

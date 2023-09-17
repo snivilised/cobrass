@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+
 	"os"
 	"path/filepath"
 
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/generators/gola"
-	"github.com/snivilised/cobrass/generators/gola/internal/utils"
+	"github.com/snivilised/cobrass/generators/gola/internal/storage"
 )
 
 const (
@@ -17,13 +18,31 @@ const (
 )
 
 var (
-	testFlag         = flag.Bool("test", false, "generate code in test location?")
-	cwdFlag          = flag.String("cwd", "", "current working directory")
-	templatesSubPath = flag.String("templates", "", "templates sub path")
-	write            = flag.Bool("write", false, "write generated code?")
-	testPath         = filepath.Join("generators", "gola", "out", "assistant")
-	sourcePath       = filepath.Join("src", "assistant")
+	testFlag             = flag.Bool("test", false, "generate code in test location?")
+	cwdFlag              = flag.String("cwd", "", "current working directory")
+	templatesSubPathFlag = flag.String("templates", "", "templates sub path")
+	writeFlag            = flag.Bool("write", false, "write generated code?")
+	signFlag             = flag.Bool("sign", false, "show signature of existing code only")
+
+	testPath   = filepath.Join("generators", "gola", "out", "assistant")
+	sourcePath = filepath.Join("src", "assistant")
 )
+
+func main() {
+	flag.Usage = Usage
+	flag.Parse()
+
+	outputPath := lo.Ternary(*testFlag, testPath, sourcePath)
+	nativeFS := storage.UseNativeFS()
+
+	if *signFlag {
+		sign(nativeFS, outputPath)
+	} else {
+		gen(nativeFS, outputPath)
+	}
+
+	os.Exit(0)
+}
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "Use of %v:\n", appName)
@@ -43,12 +62,7 @@ func fail(reason string, callback ...func()) {
 	os.Exit(outputPathNotFoundExitCode)
 }
 
-func main() {
-	flag.Usage = Usage
-	flag.Parse()
-
-	outputPath := lo.Ternary(*testFlag, testPath, sourcePath)
-
+func gen(vfs storage.VirtualFS, outputPath string) {
 	if *cwdFlag == "" {
 		fail("🔥 current working directory not specified")
 	}
@@ -56,7 +70,7 @@ func main() {
 	absolutePath, _ := filepath.Abs(*cwdFlag)
 	absolutePath = filepath.Join(absolutePath, outputPath)
 
-	if !utils.FolderExists(absolutePath) {
+	if !vfs.DirectoryExists(absolutePath) {
 		callback := func() {
 			fmt.Printf("💥 --->      CWD: '%v' \n", *cwdFlag)
 			fmt.Printf("💥 --->   OUTPUT: '%v' \n", outputPath)
@@ -67,7 +81,7 @@ func main() {
 		return
 	}
 
-	sourceCode := gola.NewSourceCodeContainer(absolutePath, *templatesSubPath)
+	sourceCode := gola.NewSourceCodeContainer(vfs, absolutePath, *templatesSubPathFlag)
 	mode := lo.Ternary(*testFlag, "🧪 Test", "🎁 Source")
 
 	fmt.Printf("☑️ --->      CWD: '%v' \n", *cwdFlag)
@@ -78,7 +92,7 @@ func main() {
 	if !*testFlag {
 		if sourceCode.AnyMissing() {
 			sourceCode.Verify(func(entry *gola.SourceCodeData) {
-				exists := entry.Exists()
+				exists := vfs.FileExists(entry.FullPath())
 				indicator := lo.Ternary(exists, "✔️", "❌")
 				status := lo.Ternary(exists, "exists", "missing")
 				path := entry.FullPath()
@@ -91,7 +105,33 @@ func main() {
 		}
 	}
 
-	if err := sourceCode.Generator(*write).Run(); err != nil {
+	result, err := sourceCode.Generator(*writeFlag).Run()
+
+	if err != nil {
 		fail(err.Error())
 	}
+
+	show(result)
+}
+
+func sign(vfs storage.VirtualFS, sourcePath string) {
+	templatesSubPath := ""
+
+	sourceCode := gola.NewSourceCodeContainer(vfs, sourcePath, templatesSubPath)
+	result, err := sourceCode.Signature()
+
+	if err != nil {
+		fail(
+			fmt.Sprintf(
+				"🔥 failed to calculate hash for existing source at: '%v' (%v)",
+				sourcePath, err,
+			),
+		)
+	}
+
+	show(result)
+}
+
+func show(result *gola.SignatureResult) {
+	fmt.Println(result.Output)
 }
