@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/avfs/avfs v0.33.0
-	github.com/onsi/ginkgo/v2 v2.12.0
+	github.com/onsi/ginkgo/v2 v2.12.1
 	github.com/onsi/gomega v1.27.10
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
@@ -27,6 +27,6 @@ require (
 	github.com/samber/lo v1.38.1
 	github.com/snivilised/extendio v0.1.20
 	golang.org/x/net v0.14.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0
 )
