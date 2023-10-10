@@ -1,0 +1,36 @@
+is-magical: true
+the-answer: 42
+delay: 10s
+portion-64: 0.1234
+int-no-of-buckets: 88
+counter-32: 132
+counter-64: 164
+int-slice:
+  - 5
+  - 1
+  - 5
+  - 0
+counter-uint: 99
+counter-u16: 216
+counter-u32: 232
+counter-u64: 264
+the-omen: 2006-06-06
+the-question: "are you master of your domain?"
+awards:
+  first: gold
+  second: silver
+  third: bronze
+themes:
+  first:
+    - "gold"
+    - "winner"
+  second:
+    - "silver"
+    - "first-loser"
+  third:
+    - "bronze"
+    - "dumpster"
+colours:
+  - "red"
+  - "green"
+  - "blue"
