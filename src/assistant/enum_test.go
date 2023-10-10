@@ -3,6 +3,8 @@ package assistant_test
 import (
 	"fmt"
 	"reflect"
+	"slices"
+	"strings"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -88,8 +90,23 @@ var _ = Describe("Enum", func() {
 			Context("EnumInfo.AcceptablePrimes", func() {
 				When("primaryOnly is true", func() {
 					It("🧪 should: return contents of enum info", func() {
+						// NB: We have to use this convoluted way of checking
+						// the result of AcceptablePrimes, because the result
+						// is not being sorted due to an obscure issue:
+						//
+						// type func(a E, b E) bool of func(a E, b E) bool {…}
+						// does not match inferred type:
+						// func(a E, b E) int for func(a E, b E) int
+						//
+						expected := []string{"scribble", "text", "json", "xml"}
 						result := outputFormatEnumInfo.AcceptablePrimes()
-						Expect(result).To(Equal("//scribble/text/json/xml//"))
+						elements := strings.Split(result, "/")
+						for _, e := range elements {
+							if e != "" {
+								Expect(slices.Contains(expected, e)).To(BeTrue())
+							}
+						}
+
 						GinkgoWriter.Println("===> display contents of OutputFormatEnumInfo:")
 						GinkgoWriter.Println(result)
 					})

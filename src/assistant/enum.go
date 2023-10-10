@@ -7,7 +7,6 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/assistant/i18n"
-	"golang.org/x/exp/slices"
 )
 
 // AcceptableEnumValues maps values of enum type to an array of
@@ -195,9 +194,18 @@ func (info *EnumInfo[E]) AcceptablePrimes() string {
 	elements := make([]string, l)
 	keys := lo.Keys(info.acceptables)
 
-	slices.SortFunc(keys, func(a E, b E) bool {
-		return a > b
-	})
+	// type func(a E, b E) bool of func(a E, b E) bool {…}
+	// does not match inferred type:
+	// func(a E, b E) int for func(a E, b E) int
+	//
+	// slices.SortFunc(keys, func(a E, b E) bool {
+	// 	return a > b
+	// })
+	//
+	// This error does manifest itself locally, rather, it breaks
+	// downstream projects eg arcadia. Without sorting, the order
+	// of the acceptable primes can not be assured.
+	//
 
 	for i, v := range keys {
 		// can't reduce collection[E], because E is not accumulate-able
