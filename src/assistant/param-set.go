@@ -124,6 +124,10 @@ type ParamSet[N any] struct {
 	// FlagSet is the default Cobra FlagSet
 	//
 	FlagSet *pflag.FlagSet
+
+	// Command is the cobra command that the parameter set is bound to.
+	//
+	Command *cobra.Command
 }
 
 // NewParamSet is the factory function, which creates a 'parameter set' for
@@ -140,6 +144,7 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 	ps = new(ParamSet[N])
 	ps.FlagSet = command.Flags()
 	ps.Native = new(N)
+	ps.Command = command
 
 	if reflect.TypeOf(*ps.Native).Kind() != reflect.Struct {
 		typeName := reflect.TypeOf(*ps.Native).Name()
