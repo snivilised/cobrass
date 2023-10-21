@@ -32,7 +32,7 @@ type (
 	}
 )
 
-func (i *tokenInput) yoke(nextIndex int, secondaryCL ThirdPartyCommandLine) int {
+func (i *tokenInput) consume(nextIndex int, secondaryCL ThirdPartyCommandLine) int {
 	const (
 		unaryIncrement = 1
 		pairIncrement  = 2
@@ -70,7 +70,7 @@ func (i *tokenInput) concatIf(concatFunc concatIfFunc) *concatenateResult {
 	}
 }
 
-func concatenate(input *tokenInput) *handleTokenResult {
+func notInPresent(input *tokenInput) *handleTokenResult {
 	var (
 		result = &handleTokenResult{}
 	)
@@ -124,7 +124,7 @@ func Evaluate(presentFlags PresentFlagsCollection,
 			presentFlags: presentFlags,
 			knownBy:      bilateralKnownBy,
 		}
-		result = input.concatIf(concatenate)
+		result = input.concatIf(notInPresent)
 
 		return result.commandLine
 	}
@@ -141,8 +141,8 @@ func Evaluate(presentFlags PresentFlagsCollection,
 			presentFlags: presentFlags,
 			knownBy:      bilateralKnownBy,
 		}
-		increment := input.yoke(n, secondaryCL)
-		result = input.concatIf(concatenate)
+		increment := input.consume(n, secondaryCL)
+		result = input.concatIf(notInPresent)
 
 		t += increment
 		n += increment
