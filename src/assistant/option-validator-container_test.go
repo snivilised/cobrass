@@ -18,7 +18,7 @@ var _ = Describe("ValidatorContainer", func() {
 	var paramSet *assistant.ParamSet[WidgetParameterSet]
 
 	Context("NewValidatorContainer", func() {
-		When("options not present", func() {
+		When("options not specified", func() {
 			It("🧪 should: create ValidatorContainer with default options", func() {
 				validators = assistant.NewValidatorContainer()
 				Expect(validators).ToNot(BeNil())

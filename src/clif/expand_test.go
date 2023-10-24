@@ -17,7 +17,7 @@ type baseTE struct {
 
 type expandTE struct {
 	baseTE
-	before clif.ThirdPartyCommandLine
+	before clif.ThirdPartyPositionalArgs
 	flags  clif.ThirdPartyCommandLine
 	after  []clif.ThirdPartyFlagName
 }
@@ -40,7 +40,7 @@ var _ = Describe("Expand", func() {
 				shouldReturn: "the single before",
 				expected:     []string{"--dry-run"},
 			},
-			before: clif.ThirdPartyCommandLine{},
+			before: clif.ThirdPartyPositionalArgs{},
 			flags:  clif.ThirdPartyCommandLine{"--dry-run"},
 		}),
 
@@ -50,7 +50,7 @@ var _ = Describe("Expand", func() {
 				shouldReturn: "the single before with flags",
 				expected:     []string{"file.jpg", "--dry-run"},
 			},
-			before: clif.ThirdPartyCommandLine{"file.jpg"},
+			before: clif.ThirdPartyPositionalArgs{"file.jpg"},
 			flags:  clif.ThirdPartyCommandLine{"--dry-run"},
 		}),
 
@@ -60,7 +60,7 @@ var _ = Describe("Expand", func() {
 				shouldReturn: "after and single after",
 				expected:     []string{"--dry-run", "result.jpg"},
 			},
-			before: clif.ThirdPartyCommandLine{},
+			before: clif.ThirdPartyPositionalArgs{},
 			flags:  clif.ThirdPartyCommandLine{"--dry-run"},
 			after:  []clif.ThirdPartyFlagName{"result.jpg"},
 		}),
@@ -74,7 +74,7 @@ var _ = Describe("Expand", func() {
 					"result-1.jpg", "result-2.jpg",
 				},
 			},
-			before: clif.ThirdPartyCommandLine{"first.jpg", "second.jpg"},
+			before: clif.ThirdPartyPositionalArgs{"first.jpg", "second.jpg"},
 			flags:  clif.ThirdPartyCommandLine{"--dry-run", "--interlace", "plane"},
 			after:  []clif.ThirdPartyFlagName{"result-1.jpg", "result-2.jpg"},
 		}),
@@ -87,7 +87,7 @@ var _ = Describe("Expand", func() {
 					"result-1.jpg", "result-2.jpg",
 				},
 			},
-			before: clif.ThirdPartyCommandLine{"first.jpg", "second.jpg"},
+			before: clif.ThirdPartyPositionalArgs{"first.jpg", "second.jpg"},
 			flags:  clif.ThirdPartyCommandLine{},
 			after:  []clif.ThirdPartyFlagName{"result-1.jpg", "result-2.jpg"},
 		}),

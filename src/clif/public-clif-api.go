@@ -8,25 +8,32 @@ type (
 	// ThirdPartyFlagName raw name of a flag, ie without the leading --/-
 	ThirdPartyFlagName = string
 
+	// ThirdPartyPositional represents a positional argument.
+	ThirdPartyPositional = string
+
+	// ThirdPartyPositionalArgs represents a collection of third party
+	// positional arguments.
+	ThirdPartyPositionalArgs = []string
+
 	// ThirdPartyOptionValue the string value of an option. Since this option
 	// is being delegated to a third party command, it does not have to be
 	// of a particular native go type and can be composed from a go type
 	// using the value's String() method.
 	ThirdPartyOptionValue = string
 
-	// PresentFlagsCollection represents the set of third party flags
+	// SpecifiedFlagsCollection represents the set of third party flags
 	// presented by the user on the command line.
 	// (NB: Cobra does not currently have a mechanism to collect third
 	// party flags, by convention, anything that follows " -- "), therefore
 	// we need to collect and handle these flags/options explicitly,
 	// which is less than ideal.
-	// A difference between PresentFlagsCollection and ThirdPartyCommandLine
-	// is that switch flags have a true/false option value in PresentFlagsCollection
+	// A difference between SpecifiedFlagsCollection and ThirdPartyCommandLine
+	// is that switch flags have a true/false option value in SpecifiedFlagsCollection
 	// but not in ThirdPartyCommandLine.
-	PresentFlagsCollection = collections.OrderedKeysMap[ThirdPartyFlagName, ThirdPartyOptionValue]
+	SpecifiedFlagsCollection = collections.OrderedKeysMap[ThirdPartyFlagName, ThirdPartyOptionValue]
 
-	// ThirdPartyPresentFlags (see PresentFlagsCollection).
-	ThirdPartyPresentFlags PresentFlagsCollection
+	// ThirdPartyPresentFlags (see SpecifiedFlagsCollection).
+	ThirdPartyPresentFlags SpecifiedFlagsCollection
 
 	// KnownByCollection collection maps a full flag name to the
 	// short name it is also known by. If a flag does not
@@ -34,8 +41,8 @@ type (
 	// string.
 	KnownByCollection map[ThirdPartyFlagName]ThirdPartyFlagName
 
-	// ThirdPartyFlagKnownBy (see KnownByCollection).
-	ThirdPartyFlagKnownBy KnownByCollection
+	// ThirdPartyFlagsKnownBy (see KnownByCollection).
+	ThirdPartyFlagsKnownBy KnownByCollection
 
 	// ThirdPartyCommandLine represents the collection of flags
 	// used to invoke a third party command. This collection
@@ -55,11 +62,12 @@ type (
 	// external third party command.
 	ExternalThirdParty struct {
 		// KnownBy represents the collection of all possible flags that
-		// can be specified in a particular invocation (see ThirdPartyFlagKnownBy)
-		KnownBy ThirdPartyFlagKnownBy
+		// can be specified in a particular invocation (see KnownByCollection)
+		KnownBy KnownByCollection
 
-		// Known represents a particular invocation of a third party
-		// command (see ThirdPartyFlagsInvocation).
-		Known ThirdPartyCommandLine
+		// ExecutionFlags represents a particular invocation of a third party
+		// command that contains flags explicitly specified and ones loaded
+		// from other sources, such as config. (see ThirdPartyCommandLine).
+		ExecutionFlags ThirdPartyCommandLine
 	}
 )

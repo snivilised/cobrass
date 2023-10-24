@@ -24,6 +24,17 @@ const (
 	shouldMessage = "🧪 should: bind all parameters without error"
 )
 
+// --files-gb(G)
+// --files-rx(X)
+// --folders-gb(Z)
+// --folders-rx(y)
+
+type fileFamilyTE struct {
+	familyType  string
+	persistent  bool
+	commandLine []string
+}
+
 var _ = Describe("Families", Ordered, func() {
 	var (
 		repo     string
@@ -71,92 +82,212 @@ var _ = Describe("Families", Ordered, func() {
 	})
 
 	DescribeTable("filter family",
-		func(commandLine []string) {
-			ps := assistant.NewParamSet[store.FilterParameterSet](rootCommand)
-			ps.Native.BindAll(ps)
+		func(entry *fileFamilyTE) {
+			switch entry.familyType {
+			case "poly":
+				{
+					ps := assistant.NewParamSet[store.PolyFilterParameterSet](rootCommand)
+					if entry.persistent {
+						ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+					} else {
+						ps.Native.BindAll(ps)
+					}
+				}
 
-			execute(commandLine)
+			case "files":
+				{
+					ps := assistant.NewParamSet[store.FilesFilterParameterSet](rootCommand)
+					if entry.persistent {
+						ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+					} else {
+						ps.Native.BindAll(ps)
+					}
+				}
+			case "folders":
+				{
+					ps := assistant.NewParamSet[store.FoldersFilterParameterSet](rootCommand)
+					if entry.persistent {
+						ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+					} else {
+						ps.Native.BindAll(ps)
+					}
+				}
+			}
+
+			execute(entry.commandLine)
 		},
-		func(args []string) string {
+		func(entry *fileFamilyTE) string {
 			return shouldMessage
 		},
 		Entry(
-			nil, []string{"--files-rx", "^foo", "--folders-gb", "bar*"},
+			nil,
+			&fileFamilyTE{
+				familyType:  "files",
+				persistent:  true,
+				commandLine: []string{"--files-rx", "^foo"},
+			},
 		),
 		Entry(
-			nil, []string{"-X", "^foo", "-z", "bar*"},
+			nil,
+			&fileFamilyTE{
+				familyType:  "files",
+				commandLine: []string{"-X", "^foo"},
+			},
+		),
+		//
+		Entry(
+			nil,
+			&fileFamilyTE{
+				familyType:  "folders",
+				commandLine: []string{"--folders-gb", "bar*"},
+			},
 		),
 		Entry(
-			nil, []string{"--files-gb", "foo*", "--folders-rx", "^bar"},
+			nil,
+			&fileFamilyTE{
+				familyType:  "folders",
+				persistent:  true,
+				commandLine: []string{"-Z", "bar*"},
+			},
+		),
+		//
+		Entry(
+			nil,
+			&fileFamilyTE{
+				familyType:  "poly",
+				commandLine: []string{"--files-rx", "^foo", "--folders-gb", "bar*"},
+			},
 		),
 		Entry(
-			nil, []string{"-G", "foo*", "-y", "^bar"},
+			nil,
+			&fileFamilyTE{
+				familyType:  "poly",
+				commandLine: []string{"-X", "^foo", "-Z", "bar*"},
+			},
 		),
+		Entry(
+			nil,
+			&fileFamilyTE{
+				familyType:  "poly",
+				persistent:  true,
+				commandLine: []string{"--files-gb", "foo*", "--folders-rx", "^bar"},
+			},
+		),
+		Entry(
+			nil,
+			&fileFamilyTE{
+				familyType:  "poly",
+				persistent:  true,
+				commandLine: []string{"-G", "foo*", "-Y", "^bar"},
+			},
+		),
+		//
+
 	)
 
 	DescribeTable("worker pool family",
-		func(commandLine []string) {
+		func(entry *fileFamilyTE) {
 			ps := assistant.NewParamSet[store.WorkerPoolParameterSet](rootCommand)
-			ps.Native.BindAll(ps)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
 
-			execute(commandLine)
+			execute(entry.commandLine)
 		},
-		func(args []string) string {
+		func(entry *fileFamilyTE) string {
 			return shouldMessage
 		},
 		Entry(
-			nil, []string{"--cpu"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"--cpu"},
+				persistent:  true,
+			},
 		),
 		Entry(
-			nil, []string{"-C"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"-C"},
+			},
 		),
 		Entry(
-			nil, []string{"--now", "4"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"--now", "4"},
+				persistent:  true,
+			},
 		),
 		Entry(
-			nil, []string{"-N", "4"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"-N", "4"},
+			},
 		),
 	)
 
 	DescribeTable("profile family",
-		func(commandLine []string) {
+		func(entry *fileFamilyTE) {
 			ps := assistant.NewParamSet[store.ProfileParameterSet](rootCommand)
-			ps.Native.BindAll(ps)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
 
-			execute(commandLine)
+			execute(entry.commandLine)
 		},
-		func(args []string) string {
+		func(entry *fileFamilyTE) string {
 			return shouldMessage
 		},
 		Entry(
-			nil, []string{"--profile", "foo"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"--profile", "foo"},
+			},
 		),
 		Entry(
-			nil, []string{"-P", "foo"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"-P", "foo"},
+				persistent:  true,
+			},
 		),
 	)
 
-	DescribeTable("profile family",
-		func(commandLine []string) {
+	DescribeTable("preview family",
+		func(entry *fileFamilyTE) {
 			ps := assistant.NewParamSet[store.PreviewParameterSet](rootCommand)
-			ps.Native.BindAll(ps)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
 
-			execute(commandLine)
+			execute(entry.commandLine)
 		},
-		func(args []string) string {
+		func(entry *fileFamilyTE) string {
 			return shouldMessage
 		},
 		Entry(
-			nil, []string{"--dry-run"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"--dry-run"},
+				persistent:  true,
+			},
 		),
 		Entry(
-			nil, []string{"-D"},
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"-D"},
+			},
 		),
 	)
 
 	When("usage requested", func() {
 		It("should: 🧪 show help text", func() {
-			filtersPS := assistant.NewParamSet[store.FilterParameterSet](rootCommand)
+			filtersPS := assistant.NewParamSet[store.PolyFilterParameterSet](rootCommand)
 			filtersPS.Native.BindAll(filtersPS)
 			//
 			poolPS := assistant.NewParamSet[store.WorkerPoolParameterSet](rootCommand)

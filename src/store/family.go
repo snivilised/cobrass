@@ -3,7 +3,9 @@ package store
 import (
 	"strings"
 
+	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/assistant"
+	"github.com/spf13/pflag"
 )
 
 type longFlagName = string
@@ -25,8 +27,8 @@ var shortFlags = flagDefinitions{
 	//
 	"files-gb":   "G",
 	"files-rx":   "X",
-	"folders-gb": "z",
-	"folders-rx": "y",
+	"folders-gb": "Z",
+	"folders-rx": "Y",
 
 	// parameter profile
 	//
@@ -38,4 +40,26 @@ func newFlagInfo[T any](usage string, defaultValue T) *assistant.FlagInfo {
 	short := shortFlags[name]
 
 	return assistant.NewFlagInfo(usage, short, defaultValue)
+}
+
+func newFlagInfoOnFlagSet[T any](usage string, defaultValue T,
+	alternativeFlagSet *pflag.FlagSet,
+) *assistant.FlagInfo {
+	name := strings.Split(usage, " ")[0]
+	short := shortFlags[name]
+
+	return assistant.NewFlagInfoOnFlagSet(usage, short, defaultValue, alternativeFlagSet)
+}
+
+func resolveNewFlagInfo[T any](usage string, defaultValue T,
+	alternativeFlagSet ...*pflag.FlagSet,
+) *assistant.FlagInfo {
+	return lo.TernaryF(len(alternativeFlagSet) == 0,
+		func() *assistant.FlagInfo {
+			return newFlagInfo(usage, defaultValue)
+		},
+		func() *assistant.FlagInfo {
+			return newFlagInfoOnFlagSet(usage, defaultValue, alternativeFlagSet[0])
+		},
+	)
 }
