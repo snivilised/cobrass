@@ -8,24 +8,31 @@ type (
 	// ThirdPartyFlagName raw name of a flag, ie without the leading --/-
 	ThirdPartyFlagName = clif.ThirdPartyFlagName
 
+	// ThirdPartyPositional represents a positional argument
+	ThirdPartyPositional = clif.ThirdPartyPositional
+
+	// ThirdPartyPositionalArgs represents a collection of third party
+	// positional arguments.
+	ThirdPartyPositionalArgs = clif.ThirdPartyPositionalArgs
+
 	// ThirdPartyOptionValue the string value of an option. Since this option
 	// is being delegated to a third party command, it does not have to be
 	// of a particular native go type and can be composed from a go type
 	// using the value's String() method.
 	ThirdPartyOptionValue = clif.ThirdPartyOptionValue
 
-	// PresentFlagsCollection represents the set of third party flags
+	// SpecifiedFlagsCollection represents the set of third party flags
 	// presented by the user on the command line.
 	// (NB: Cobra does not currently have a mechanism to collect third
 	// party flags, by convention, anything that follows " -- "), therefore
 	// we need to collect and handle these flags/options explicitly,
 	// which is less than ideal.
-	// A difference between PresentFlagsCollection and ThirdPartyCommandLine
-	// is that switch flags have a true/false option value in PresentFlagsCollection
+	// A difference between SpecifiedFlagsCollection and ThirdPartyCommandLine
+	// is that switch flags have a true/false option value in SpecifiedFlagsCollection
 	// but not in ThirdPartyCommandLine.
-	PresentFlagsCollection = clif.PresentFlagsCollection
+	SpecifiedFlagsCollection = clif.SpecifiedFlagsCollection
 
-	// ThirdPartyPresentFlags (see PresentFlagsCollection)
+	// ThirdPartyPresentFlags (see SpecifiedFlagsCollection)
 	ThirdPartyPresentFlags = clif.ThirdPartyPresentFlags
 
 	// KnownByCollection collection maps a full flag name to the
@@ -35,7 +42,7 @@ type (
 	KnownByCollection = clif.KnownByCollection
 
 	// ThirdPartyFlagKnownBy (see KnownByCollection).
-	ThirdPartyFlagKnownBy = clif.ThirdPartyFlagKnownBy
+	ThirdPartyFlagKnownBy = clif.ThirdPartyFlagsKnownBy
 
 	// ThirdPartyCommandLine represents the collection of flags
 	// used to invoke a third party command. This collection
@@ -57,12 +64,21 @@ type (
 )
 
 var (
-	// Evaluate merges the secondary command line with the present flags.
-	// The flags that occur in present take precedence over those in
+	// Evaluate merges the secondary command line with the specified flags.
+	// The flags that occur in specified take precedence over those in
 	// secondary. There is a slight complication caused by the fact that
-	// a flag in the present set may be in the secondary set but in the opposite
-	// form; eg a flag may be in its short from in present but in long form
-	// in secondary. This is resolved by the knownBy set. The present set
+	// a flag in the specified set may be in the secondary set but in the opposite
+	// form; eg a flag may be in its short from in specified but in long form
+	// in secondary. This is resolved by the knownBy set. The specified set
 	// contains flags in their bare long form (bare as in without dash prefix).
 	Evaluate = clif.Evaluate
+
+	// Expand returns a slice of strings representing the positional arguments and
+	// flags/options to be executed by the third party program. before and flags
+	// are represented as a ThirdPartyCommandLine. This means that they can be
+	// represented by any slice of strings. However, since before represents
+	// positional args, those args are not expected to include any flags. Those
+	// flags would be specified in the flags parameter. after is optional and
+	// again represents further positional arguments.
+	Expand = clif.Expand
 )

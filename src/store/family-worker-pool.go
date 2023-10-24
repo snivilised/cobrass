@@ -4,6 +4,7 @@ import (
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/i18n"
 	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/spf13/pflag"
 )
 
 type WorkerPoolParameterSet struct {
@@ -11,19 +12,23 @@ type WorkerPoolParameterSet struct {
 	NoWorkers int
 }
 
-func (f *WorkerPoolParameterSet) BindAll(self *assistant.ParamSet[WorkerPoolParameterSet]) {
+func (f *WorkerPoolParameterSet) BindAll(
+	parent *assistant.ParamSet[WorkerPoolParameterSet],
+	flagSet ...*pflag.FlagSet,
+) {
 	// --cpu(C)
 	//
 	const (
 		defaultCPU = false
 	)
 
-	self.BindBool(
-		newFlagInfo(
+	parent.BindBool(
+		resolveNewFlagInfo(
 			xi18n.Text(i18n.WorkerPoolCPUParamUsageTemplData{}),
 			defaultCPU,
+			flagSet...,
 		),
-		&self.Native.CPU,
+		&parent.Native.CPU,
 	)
 
 	// --now(N)
@@ -34,15 +39,16 @@ func (f *WorkerPoolParameterSet) BindAll(self *assistant.ParamSet[WorkerPoolPara
 		maxNow     = 100
 	)
 
-	self.BindValidatedIntWithin(
-		newFlagInfo(
+	parent.BindValidatedIntWithin(
+		resolveNewFlagInfo(
 			xi18n.Text(i18n.WorkerPoolNoWParamUsageTemplData{}),
 			defaultNoW,
+			flagSet...,
 		),
-		&self.Native.NoWorkers,
+		&parent.Native.NoWorkers,
 		minNow,
 		maxNow,
 	)
 
-	self.Command.MarkFlagsMutuallyExclusive("cpu", "now")
+	parent.Command.MarkFlagsMutuallyExclusive("cpu", "now")
 }

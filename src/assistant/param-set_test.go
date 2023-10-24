@@ -91,7 +91,7 @@ var _ = Describe("ParamSet (manual)", func() {
 			// special scenario, not auto generated
 			//
 			Entry(nil, TcEntry{
-				Message: "bool type flag is NOT present",
+				Message: "bool type flag is NOT specified",
 				Binder: func() {
 					paramSet.BindBool(
 						assistant.NewFlagInfo("concise ensures that output is compressed", "c", false),

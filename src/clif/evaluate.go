@@ -17,7 +17,7 @@ type (
 		bare         string
 		optionValue  string
 		existingCL   ThirdPartyCommandLine
-		presentFlags PresentFlagsCollection
+		presentFlags SpecifiedFlagsCollection
 		knownBy      KnownByCollection
 	}
 
@@ -92,14 +92,14 @@ func notInPresent(input *tokenInput) *handleTokenResult {
 	return result
 }
 
-// Evaluate merges the secondary command line with the present flags.
-// The flags that occur in present take precedence over those in
+// Evaluate merges the secondary command line with the specified flags.
+// The flags that occur in specified take precedence over those in
 // secondary. There is a slight complication caused by the fact that
-// a flag in the present set may be in the secondary set but in the opposite
-// form; eg a flag may be in its short from in present but in long form
-// in secondary. This is resolved by the knownBy set. The present set
+// a flag in the specified set may be in the secondary set but in the opposite
+// form; eg a flag may be in its short from in specified but in long form
+// in secondary. This is resolved by the knownBy set. The specified set
 // contains flags in their bare long form.
-func Evaluate(presentFlags PresentFlagsCollection,
+func Evaluate(presentFlags SpecifiedFlagsCollection,
 	knownBy KnownByCollection,
 	secondaryCL ThirdPartyCommandLine,
 ) ThirdPartyCommandLine {
@@ -168,7 +168,7 @@ func split(token string) (string, string) { //nolint:gocritic // pedant
 	return lead, bare
 }
 
-func spreadFlags(presentFlags PresentFlagsCollection) ThirdPartyCommandLine {
+func spreadFlags(presentFlags SpecifiedFlagsCollection) ThirdPartyCommandLine {
 	commandLine := ThirdPartyCommandLine{}
 
 	for _, flag := range presentFlags.Keys() {

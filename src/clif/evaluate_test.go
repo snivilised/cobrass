@@ -11,7 +11,7 @@ import (
 
 type evaluateTE struct {
 	baseTE
-	present   clif.PresentFlagsCollection
+	specified clif.SpecifiedFlagsCollection
 	secondary clif.ThirdPartyCommandLine
 }
 
@@ -31,7 +31,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 	DescribeTable("ThirdPartyCommandLine",
 		func(entry *evaluateTE) {
-			actual := clif.Evaluate(entry.present, knownBy, entry.secondary)
+			actual := clif.Evaluate(entry.specified, knownBy, entry.secondary)
 			Expect(actual).To(HaveExactElements(entry.expected))
 		},
 		func(entry *evaluateTE) string {
@@ -44,11 +44,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 		//
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single switch; secondary is empty",
-				shouldReturn: "present",
+				given:        "specified contains single switch; secondary is empty",
+				shouldReturn: "specified",
 				expected:     []string{"--dry-run"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{},
@@ -56,11 +56,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single flag; secondary is empty",
-				shouldReturn: "present",
+				given:        "specified contains single flag; secondary is empty",
+				shouldReturn: "specified",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{},
@@ -68,11 +68,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single flag; secondary is empty",
-				shouldReturn: "present",
+				given:        "specified contains single flag; secondary is empty",
+				shouldReturn: "specified",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{},
@@ -80,11 +80,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains flag and a switch; secondary is empty",
-				shouldReturn: "all present",
+				given:        "specified contains flag and a switch; secondary is empty",
+				shouldReturn: "all specified",
 				expected:     []string{"--dry-run", "--sampling-factor", "4:2:0"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run":         "true",
 				"sampling-factor": "4:2:0",
 			},
@@ -95,14 +95,14 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		// single secondary token
 		//
-		// ---> secondary switch in present
+		// ---> secondary switch in specified
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single switch; single long secondary switch in present",
-				shouldReturn: "present, ignore secondary",
+				given:        "specified contains single switch; single long secondary switch in specified",
+				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--dry-run"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run"},
@@ -110,23 +110,23 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single switch; single short secondary switch in present",
-				shouldReturn: "present, ignore secondary",
+				given:        "specified contains single switch; single short secondary switch in specified",
+				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--dry-run"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-D"},
 		}),
-		// ---> secondary switch NOT in present
+		// ---> secondary switch NOT in specified
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single switch; single long secondary switch NOT in present",
-				shouldReturn: "present with secondary",
+				given:        "specified contains single switch; single long secondary switch NOT in specified",
+				shouldReturn: "specified with secondary",
 				expected:     []string{"--dry-run", "--strip"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--strip"},
@@ -134,11 +134,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single switch; single short secondary switch NOT in present",
-				shouldReturn: "present with secondary",
+				given:        "specified contains single switch; single short secondary switch NOT in specified",
+				shouldReturn: "specified with secondary",
 				expected:     []string{"--dry-run", "-s"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-s"},
@@ -148,15 +148,15 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		// single flag/option secondary tokens
 		//
-		// ---> secondary flag in present
+		// ---> secondary flag in specified
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single flag; long secondary flag/option in present",
-				shouldReturn: "present, ignore secondary",
+				given:        "specified contains single flag; long secondary flag/option in specified",
+				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--sampling-factor", "2x1"},
@@ -164,23 +164,23 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single flag; short secondary flag/option in present",
-				shouldReturn: "present, ignore secondary",
+				given:        "specified contains single flag; short secondary flag/option in specified",
+				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-f", "2x1"},
 		}),
-		// ---> secondary flag NOT in present
+		// ---> secondary flag NOT in specified
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single flag; long secondary flag/option NOT in present",
-				shouldReturn: "present with secondary",
+				given:        "specified contains single flag; long secondary flag/option NOT in specified",
+				shouldReturn: "specified with secondary",
 				expected:     []string{"--sampling-factor", "4:2:0", "--gaussian-blur", "0.05"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--gaussian-blur", "0.05"},
@@ -188,11 +188,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "present contains single flag; short secondary flag/option NOT in present",
-				shouldReturn: "present with secondary",
+				given:        "specified contains single flag; short secondary flag/option NOT in specified",
+				shouldReturn: "specified with secondary",
 				expected:     []string{"--sampling-factor", "4:2:0", "-b", "0.05"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-b", "0.05"},
@@ -204,11 +204,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 		//
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "secondary switch followed by a flag; both in present",
-				shouldReturn: "present, ignore secondary",
+				given:        "secondary switch followed by a flag; both in specified",
+				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--dry-run", "--sampling-factor", "4:2:0"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run":         "true",
 				"sampling-factor": "4:2:0",
 			},
@@ -217,11 +217,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "secondary switch followed by a flag; switch in present",
-				shouldReturn: "present, with secondary flag",
+				given:        "secondary switch followed by a flag; switch in specified",
+				shouldReturn: "specified, with secondary flag",
 				expected:     []string{"--dry-run", "--sampling-factor", "2x1"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run", "--sampling-factor", "2x1"},
@@ -229,11 +229,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "secondary switch followed by a flag; flag in present",
-				shouldReturn: "present, with secondary switch",
+				given:        "secondary switch followed by a flag; flag in specified",
+				shouldReturn: "specified, with secondary switch",
 				expected:     []string{"--sampling-factor", "4:2:0", "--dry-run"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run", "--sampling-factor", "2x1"},
@@ -241,11 +241,11 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "secondary switch followed by a flag; neither in present",
-				shouldReturn: "present, secondary switch and flag",
+				given:        "secondary switch followed by a flag; neither in specified",
+				shouldReturn: "specified, secondary switch and flag",
 				expected:     []string{"--gaussian-blur", "0.05", "--dry-run", "--sampling-factor", "2x1"},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"gaussian-blur": "0.05",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run", "--sampling-factor", "2x1"},
@@ -255,8 +255,8 @@ var _ = Describe("Evaluate", Ordered, func() {
 
 		Entry(nil, &evaluateTE{
 			baseTE: baseTE{
-				given:        "many in present; many in secondary",
-				shouldReturn: "present flags/options overriding secondary flags/options",
+				given:        "many in specified; many in secondary",
+				shouldReturn: "specified flags/options overriding secondary flags/options",
 				expected: []string{
 					"--gaussian-blur", "0.05",
 					"-i", "plane",
@@ -265,7 +265,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 					"--strip",
 				},
 			},
-			present: clif.PresentFlagsCollection{
+			specified: clif.SpecifiedFlagsCollection{
 				"gaussian-blur": "0.05",
 				"i":             "plane",
 			},
