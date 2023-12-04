@@ -37,7 +37,7 @@ require (
 require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.2.2
-	github.com/samber/lo v1.38.1
+	github.com/samber/lo v1.39.0
 	github.com/snivilised/extendio v0.4.0
 	github.com/spf13/viper v1.17.0
 	golang.org/x/net v0.17.0 // indirect
