@@ -254,6 +254,19 @@ var _ = Describe("Families", Ordered, func() {
 				persistent:  true,
 			},
 		),
+		Entry(
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"--scheme", "foo"},
+			},
+		),
+		Entry(
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"-S", "foo"},
+				persistent:  true,
+			},
+		),
 	)
 
 	DescribeTable("preview family",
