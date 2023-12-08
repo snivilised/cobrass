@@ -21,19 +21,19 @@ type (
 	// using the value's String() method.
 	ThirdPartyOptionValue = clif.ThirdPartyOptionValue
 
-	// SpecifiedFlagsCollection represents the set of third party flags
+	// ChangedFlagsMap represents the set of third party flags
 	// presented by the user on the command line.
 	// (NB: Cobra does not currently have a mechanism to collect third
 	// party flags, by convention, anything that follows " -- "), therefore
 	// we need to collect and handle these flags/options explicitly,
 	// which is less than ideal.
-	// A difference between SpecifiedFlagsCollection and ThirdPartyCommandLine
-	// is that switch flags have a true/false option value in SpecifiedFlagsCollection
+	// A difference between ChangedFlagsMap and ThirdPartyCommandLine
+	// is that switch flags have a true/false option value in ChangedFlagsMap
 	// but not in ThirdPartyCommandLine.
-	SpecifiedFlagsCollection = clif.SpecifiedFlagsCollection
+	ChangedFlagsMap = clif.ChangedFlagsMap
 
-	// ThirdPartyPresentFlags (see SpecifiedFlagsCollection)
-	ThirdPartyPresentFlags = clif.ThirdPartyPresentFlags
+	// ThirdPartyChangedFlags (see ChangedFlagsMap)
+	ThirdPartyChangedFlags = clif.ThirdPartyChangedFlags
 
 	// KnownByCollection collection maps a full flag name to the
 	// short name it is also known by. If a flag does not

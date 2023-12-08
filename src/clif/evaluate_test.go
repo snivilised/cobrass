@@ -11,7 +11,7 @@ import (
 
 type evaluateTE struct {
 	baseTE
-	specified clif.SpecifiedFlagsCollection
+	specified clif.ChangedFlagsMap
 	secondary clif.ThirdPartyCommandLine
 }
 
@@ -48,7 +48,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified",
 				expected:     []string{"--dry-run"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{},
@@ -60,7 +60,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{},
@@ -72,7 +72,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{},
@@ -84,7 +84,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "all specified",
 				expected:     []string{"--dry-run", "--sampling-factor", "4:2:0"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run":         "true",
 				"sampling-factor": "4:2:0",
 			},
@@ -102,7 +102,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--dry-run"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run"},
@@ -114,7 +114,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--dry-run"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-D"},
@@ -126,7 +126,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified with secondary",
 				expected:     []string{"--dry-run", "--strip"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--strip"},
@@ -138,7 +138,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified with secondary",
 				expected:     []string{"--dry-run", "-s"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-s"},
@@ -156,7 +156,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--sampling-factor", "2x1"},
@@ -168,7 +168,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--sampling-factor", "4:2:0"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-f", "2x1"},
@@ -180,7 +180,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified with secondary",
 				expected:     []string{"--sampling-factor", "4:2:0", "--gaussian-blur", "0.05"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--gaussian-blur", "0.05"},
@@ -192,7 +192,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified with secondary",
 				expected:     []string{"--sampling-factor", "4:2:0", "-b", "0.05"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"-b", "0.05"},
@@ -208,7 +208,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, ignore secondary",
 				expected:     []string{"--dry-run", "--sampling-factor", "4:2:0"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run":         "true",
 				"sampling-factor": "4:2:0",
 			},
@@ -221,7 +221,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, with secondary flag",
 				expected:     []string{"--dry-run", "--sampling-factor", "2x1"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"dry-run": "true",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run", "--sampling-factor", "2x1"},
@@ -233,7 +233,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, with secondary switch",
 				expected:     []string{"--sampling-factor", "4:2:0", "--dry-run"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"sampling-factor": "4:2:0",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run", "--sampling-factor", "2x1"},
@@ -245,7 +245,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 				shouldReturn: "specified, secondary switch and flag",
 				expected:     []string{"--gaussian-blur", "0.05", "--dry-run", "--sampling-factor", "2x1"},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"gaussian-blur": "0.05",
 			},
 			secondary: clif.ThirdPartyCommandLine{"--dry-run", "--sampling-factor", "2x1"},
@@ -265,7 +265,7 @@ var _ = Describe("Evaluate", Ordered, func() {
 					"--strip",
 				},
 			},
-			specified: clif.SpecifiedFlagsCollection{
+			specified: clif.ChangedFlagsMap{
 				"gaussian-blur": "0.05",
 				"i":             "plane",
 			},

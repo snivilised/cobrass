@@ -17,7 +17,7 @@ type (
 		bare         string
 		optionValue  string
 		existingCL   ThirdPartyCommandLine
-		presentFlags SpecifiedFlagsCollection
+		presentFlags ChangedFlagsMap
 		knownBy      KnownByCollection
 	}
 
@@ -99,7 +99,7 @@ func notInPresent(input *tokenInput) *handleTokenResult {
 // form; eg a flag may be in its short from in specified but in long form
 // in secondary. This is resolved by the knownBy set. The specified set
 // contains flags in their bare long form.
-func Evaluate(presentFlags SpecifiedFlagsCollection,
+func Evaluate(presentFlags ChangedFlagsMap,
 	knownBy KnownByCollection,
 	secondaryCL ThirdPartyCommandLine,
 ) ThirdPartyCommandLine {
@@ -168,7 +168,7 @@ func split(token string) (string, string) { //nolint:gocritic // pedant
 	return lead, bare
 }
 
-func spreadFlags(presentFlags SpecifiedFlagsCollection) ThirdPartyCommandLine {
+func spreadFlags(presentFlags ChangedFlagsMap) ThirdPartyCommandLine {
 	commandLine := ThirdPartyCommandLine{}
 
 	for _, flag := range presentFlags.Keys() {
