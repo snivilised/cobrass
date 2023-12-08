@@ -112,7 +112,7 @@ func (td SchemeParamUsageTemplData) Message() *Message {
 	}
 }
 
-// WorkerPoolCPUParamUsageTemplData
+// DryRunParamUsageTemplData
 // 🧊
 type DryRunParamUsageTemplData struct {
 	CobrassTemplData
@@ -123,5 +123,19 @@ func (td DryRunParamUsageTemplData) Message() *Message {
 		ID:          "dry-run.param-usage",
 		Description: "allows the user to preview the effects of a command without running it",
 		Other:       "dry-run allows the user to see the effects of a command without running it",
+	}
+}
+
+// LanguageParamUsageTemplData
+// 🧊
+type LanguageParamUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td LanguageParamUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "language.param-usage",
+		Description: "language allows the user to override the language the app runs in",
+		Other:       "language allows the user to override the language the app runs in",
 	}
 }
