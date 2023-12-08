@@ -36,6 +36,7 @@
     "gradientf",
     "gradientsf",
     "ineffassign",
+    "infex",
     "Infexion",
     "ipaddress",
     "ipmask",
