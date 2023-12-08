@@ -84,7 +84,7 @@ func (td WorkerPoolNoWParamUsageTemplData) Message() *Message {
 	}
 }
 
-// WorkerPoolCPUParamUsageTemplData
+// ProfileParamUsageTemplData
 // 🧊
 type ProfileParamUsageTemplData struct {
 	CobrassTemplData
@@ -95,6 +95,20 @@ func (td ProfileParamUsageTemplData) Message() *Message {
 		ID:          "profile.param-usage",
 		Description: "pre-defined flag/option list in config file",
 		Other:       "profile specifies which set of flags/options to load from config",
+	}
+}
+
+// SchemeParamUsageTemplData
+// 🧊
+type SchemeParamUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td SchemeParamUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "scheme.param-usage",
+		Description: "scheme is a collection of profiles, typically to repeat an operation over",
+		Other:       "scheme is a collection of profiles, typically to repeat an operation over",
 	}
 }
 

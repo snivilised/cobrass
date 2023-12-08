@@ -30,9 +30,10 @@ var shortFlags = flagDefinitions{
 	"folders-gb": "Z",
 	"folders-rx": "Y",
 
-	// parameter profile
+	// profile family
 	//
 	"profile": "P",
+	"scheme":  "S",
 }
 
 func newFlagInfo[T any](usage string, defaultValue T) *assistant.FlagInfo {
