@@ -8,12 +8,12 @@ import (
 	"github.com/spf13/pflag"
 )
 
-type longFlagName = string
-type shortFlagName = string
+type LongFlagName = string
+type ShortFlagName = string
 
-type flagDefinitions map[longFlagName]shortFlagName
+type FlagDefinitions map[LongFlagName]ShortFlagName
 
-var shortFlags = flagDefinitions{
+var ShortFlags = FlagDefinitions{
 	// worker pool family
 	//
 	"cpu": "C",
@@ -34,11 +34,15 @@ var shortFlags = flagDefinitions{
 	//
 	"profile": "P",
 	"scheme":  "S",
+
+	// i18n family (niche option, so let's define without a short code)
+	//
+	"language": "",
 }
 
 func newFlagInfo[T any](usage string, defaultValue T) *assistant.FlagInfo {
 	name := strings.Split(usage, " ")[0]
-	short := shortFlags[name]
+	short := ShortFlags[name]
 
 	return assistant.NewFlagInfo(usage, short, defaultValue)
 }
@@ -47,7 +51,7 @@ func newFlagInfoOnFlagSet[T any](usage string, defaultValue T,
 	alternativeFlagSet *pflag.FlagSet,
 ) *assistant.FlagInfo {
 	name := strings.Split(usage, " ")[0]
-	short := shortFlags[name]
+	short := ShortFlags[name]
 
 	return assistant.NewFlagInfoOnFlagSet(usage, short, defaultValue, alternativeFlagSet)
 }

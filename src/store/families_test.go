@@ -298,6 +298,29 @@ var _ = Describe("Families", Ordered, func() {
 		),
 	)
 
+	DescribeTable("i18n family",
+		func(entry *fileFamilyTE) {
+			ps := assistant.NewParamSet[store.I18nParameterSet](rootCommand)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
+
+			execute(entry.commandLine)
+		},
+		func(entry *fileFamilyTE) string {
+			return shouldMessage
+		},
+		Entry(
+			nil,
+			&fileFamilyTE{
+				commandLine: []string{"--language", "en-GB"},
+				persistent:  true,
+			},
+		),
+	)
+
 	When("usage requested", func() {
 		It("should: 🧪 show help text", func() {
 			filtersPS := assistant.NewParamSet[store.PolyFilterParameterSet](rootCommand)
