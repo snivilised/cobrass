@@ -30,6 +30,7 @@
     "gola",
     "gomega",
     "gomnd",
+    "gomock",
     "gosec",
     "gosimple",
     "govet",
@@ -44,6 +45,7 @@
     "linters",
     "magick",
     "memfs",
+    "mockgen",
     "nakedret",
     "nicksnyder",
     "nolint",
@@ -69,6 +71,7 @@
     "unparam",
     "vactive",
     "Validatable",
+    "varargs",
     "varcheck"
   ],
   "files.associations": {

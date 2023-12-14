@@ -79,6 +79,10 @@ tasks:
       - cobrass-gen -test -cwd ./ -templates generators/gola -write
       - go fmt ./generators/gola/out/assistant/*.go
 
+  co-gen-vc:
+    cmds:
+      - go generate src/assistant/configuration
+
   # co-gen:
   #   cmds:
   #     - go generate ./...
