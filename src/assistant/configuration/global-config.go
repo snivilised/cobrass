@@ -7,6 +7,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+//go:generate mockgen -destination ../mocks/mock-global-viper-config.go -package mocks -source global-config.go -mock_names ViperConfig=MockViperConfig
+
 type ViperConfig interface {
 	AddConfigPath(in string)
 	AutomaticEnv()
