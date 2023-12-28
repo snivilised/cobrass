@@ -29,7 +29,7 @@ const (
 // --folders-gb(Z)
 // --folders-rx(y)
 
-type fileFamilyTE struct {
+type familyTE struct {
 	familyType  string
 	persistent  bool
 	commandLine []string
@@ -82,7 +82,7 @@ var _ = Describe("Families", Ordered, func() {
 	})
 
 	DescribeTable("filter family",
-		func(entry *fileFamilyTE) {
+		func(entry *familyTE) {
 			switch entry.familyType {
 			case "poly":
 				{
@@ -116,12 +116,12 @@ var _ = Describe("Families", Ordered, func() {
 
 			execute(entry.commandLine)
 		},
-		func(entry *fileFamilyTE) string {
+		func(entry *familyTE) string {
 			return shouldMessage
 		},
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "files",
 				persistent:  true,
 				commandLine: []string{"--files-rx", "^foo"},
@@ -129,7 +129,7 @@ var _ = Describe("Families", Ordered, func() {
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "files",
 				commandLine: []string{"-X", "^foo"},
 			},
@@ -137,14 +137,14 @@ var _ = Describe("Families", Ordered, func() {
 		//
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "folders",
 				commandLine: []string{"--folders-gb", "bar*"},
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "folders",
 				persistent:  true,
 				commandLine: []string{"-Z", "bar*"},
@@ -153,21 +153,21 @@ var _ = Describe("Families", Ordered, func() {
 		//
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "poly",
 				commandLine: []string{"--files-rx", "^foo", "--folders-gb", "bar*"},
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "poly",
 				commandLine: []string{"-X", "^foo", "-Z", "bar*"},
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "poly",
 				persistent:  true,
 				commandLine: []string{"--files-gb", "foo*", "--folders-rx", "^bar"},
@@ -175,7 +175,7 @@ var _ = Describe("Families", Ordered, func() {
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				familyType:  "poly",
 				persistent:  true,
 				commandLine: []string{"-G", "foo*", "-Y", "^bar"},
@@ -186,7 +186,7 @@ var _ = Describe("Families", Ordered, func() {
 	)
 
 	DescribeTable("worker pool family",
-		func(entry *fileFamilyTE) {
+		func(entry *familyTE) {
 			ps := assistant.NewParamSet[store.WorkerPoolParameterSet](rootCommand)
 			if entry.persistent {
 				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
@@ -196,39 +196,27 @@ var _ = Describe("Families", Ordered, func() {
 
 			execute(entry.commandLine)
 		},
-		func(entry *fileFamilyTE) string {
+		func(entry *familyTE) string {
 			return shouldMessage
 		},
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"--cpu"},
 				persistent:  true,
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
-				commandLine: []string{"-C"},
-			},
-		),
-		Entry(
-			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"--now", "4"},
 				persistent:  true,
-			},
-		),
-		Entry(
-			nil,
-			&fileFamilyTE{
-				commandLine: []string{"-N", "4"},
 			},
 		),
 	)
 
 	DescribeTable("profile family",
-		func(entry *fileFamilyTE) {
+		func(entry *familyTE) {
 			ps := assistant.NewParamSet[store.ProfileParameterSet](rootCommand)
 			if entry.persistent {
 				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
@@ -238,31 +226,31 @@ var _ = Describe("Families", Ordered, func() {
 
 			execute(entry.commandLine)
 		},
-		func(entry *fileFamilyTE) string {
+		func(entry *familyTE) string {
 			return shouldMessage
 		},
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"--profile", "foo"},
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"-P", "foo"},
 				persistent:  true,
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"--scheme", "foo"},
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"-S", "foo"},
 				persistent:  true,
 			},
@@ -270,7 +258,7 @@ var _ = Describe("Families", Ordered, func() {
 	)
 
 	DescribeTable("preview family",
-		func(entry *fileFamilyTE) {
+		func(entry *familyTE) {
 			ps := assistant.NewParamSet[store.PreviewParameterSet](rootCommand)
 			if entry.persistent {
 				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
@@ -280,26 +268,26 @@ var _ = Describe("Families", Ordered, func() {
 
 			execute(entry.commandLine)
 		},
-		func(entry *fileFamilyTE) string {
+		func(entry *familyTE) string {
 			return shouldMessage
 		},
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"--dry-run"},
 				persistent:  true,
 			},
 		),
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"-D"},
 			},
 		),
 	)
 
 	DescribeTable("i18n family",
-		func(entry *fileFamilyTE) {
+		func(entry *familyTE) {
 			ps := assistant.NewParamSet[store.I18nParameterSet](rootCommand)
 			if entry.persistent {
 				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
@@ -309,12 +297,12 @@ var _ = Describe("Families", Ordered, func() {
 
 			execute(entry.commandLine)
 		},
-		func(entry *fileFamilyTE) string {
+		func(entry *familyTE) string {
 			return shouldMessage
 		},
 		Entry(
 			nil,
-			&fileFamilyTE{
+			&familyTE{
 				commandLine: []string{"--language", "en-GB"},
 				persistent:  true,
 			},
@@ -342,4 +330,39 @@ var _ = Describe("Families", Ordered, func() {
 			Expect(err).Error().To(BeNil(), reason("BindAll", err))
 		})
 	})
+
+	DescribeTable("depth family",
+		func(entry *familyTE) {
+			ps := assistant.NewParamSet[store.DepthParameterSet](rootCommand)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
+
+			execute(entry.commandLine)
+		},
+		func(entry *familyTE) string {
+			return shouldMessage
+		},
+		Entry(
+			nil,
+			&familyTE{
+				commandLine: []string{"--depth", "3"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				commandLine: []string{"--skim"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				commandLine: []string{"-K"},
+				persistent:  true,
+			},
+		),
+	)
 })
