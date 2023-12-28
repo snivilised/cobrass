@@ -7,13 +7,13 @@ import (
 	"github.com/spf13/pflag"
 )
 
-type DepthParameterSet struct {
+type CascadeParameterSet struct {
 	Depth uint
 	Skim  bool
 }
 
-func (f *DepthParameterSet) BindAll(
-	parent *assistant.ParamSet[DepthParameterSet],
+func (f *CascadeParameterSet) BindAll(
+	parent *assistant.ParamSet[CascadeParameterSet],
 	flagSet ...*pflag.FlagSet,
 ) {
 	// --depth
@@ -24,7 +24,7 @@ func (f *DepthParameterSet) BindAll(
 
 	parent.BindUint(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.DepthDepthParamUsageTemplData{}),
+			xi18n.Text(i18n.CascadeDepthParamUsageTemplData{}),
 			defaultDepth,
 			flagSet...,
 		),
@@ -39,7 +39,7 @@ func (f *DepthParameterSet) BindAll(
 
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.DepthSkimParamUsageTemplData{}),
+			xi18n.Text(i18n.CascadeSkimParamUsageTemplData{}),
 			defaultSkim,
 			flagSet...,
 		),
