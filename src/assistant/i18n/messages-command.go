@@ -139,3 +139,31 @@ func (td LanguageParamUsageTemplData) Message() *Message {
 		Other:       "language allows the user to override the language the app runs in",
 	}
 }
+
+// DepthDepthParamUsageTemplData
+// 🧊
+type DepthDepthParamUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td DepthDepthParamUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "depth-depth.param-usage",
+		Description: "limits the number of sub directories navigated",
+		Other:       "depth denotes the number of sub directories to navigate",
+	}
+}
+
+// DepthSkimParamUsageTemplData
+// 🧊
+type DepthSkimParamUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td DepthSkimParamUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "depth-skim.param-usage",
+		Description: "sets the navigator to not descend into sub directories",
+		Other:       "skim sets the navigator to not descend into sub directories",
+	}
+}

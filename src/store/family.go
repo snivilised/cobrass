@@ -16,8 +16,8 @@ type FlagDefinitions map[LongFlagName]ShortFlagName
 var ShortFlags = FlagDefinitions{
 	// worker pool family
 	//
-	"cpu": "C",
-	"now": "N",
+	"cpu": "",
+	"now": "",
 
 	// preview family
 	//
@@ -38,6 +38,11 @@ var ShortFlags = FlagDefinitions{
 	// i18n family (niche option, so let's define without a short code)
 	//
 	"language": "",
+
+	// depth family
+	//
+	"depth": "",
+	"skim":  "K",
 }
 
 func newFlagInfo[T any](usage string, defaultValue T) *assistant.FlagInfo {
