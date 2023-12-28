@@ -140,29 +140,29 @@ func (td LanguageParamUsageTemplData) Message() *Message {
 	}
 }
 
-// DepthDepthParamUsageTemplData
+// CascadeDepthParamUsageTemplData
 // 🧊
-type DepthDepthParamUsageTemplData struct {
+type CascadeDepthParamUsageTemplData struct {
 	CobrassTemplData
 }
 
-func (td DepthDepthParamUsageTemplData) Message() *Message {
+func (td CascadeDepthParamUsageTemplData) Message() *Message {
 	return &Message{
-		ID:          "depth-depth.param-usage",
+		ID:          "cascade-depth.param-usage",
 		Description: "limits the number of sub directories navigated",
 		Other:       "depth denotes the number of sub directories to navigate",
 	}
 }
 
-// DepthSkimParamUsageTemplData
+// CascadeSkimParamUsageTemplData
 // 🧊
-type DepthSkimParamUsageTemplData struct {
+type CascadeSkimParamUsageTemplData struct {
 	CobrassTemplData
 }
 
-func (td DepthSkimParamUsageTemplData) Message() *Message {
+func (td CascadeSkimParamUsageTemplData) Message() *Message {
 	return &Message{
-		ID:          "depth-skim.param-usage",
+		ID:          "cascade-skim.param-usage",
 		Description: "sets the navigator to not descend into sub directories",
 		Other:       "skim sets the navigator to not descend into sub directories",
 	}

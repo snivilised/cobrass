@@ -331,9 +331,9 @@ var _ = Describe("Families", Ordered, func() {
 		})
 	})
 
-	DescribeTable("depth family",
+	DescribeTable("cascade family",
 		func(entry *familyTE) {
-			ps := assistant.NewParamSet[store.DepthParameterSet](rootCommand)
+			ps := assistant.NewParamSet[store.CascadeParameterSet](rootCommand)
 			if entry.persistent {
 				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
 			} else {
