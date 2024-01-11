@@ -4,6 +4,9 @@ import (
 	"github.com/snivilised/extendio/i18n"
 )
 
+// The code for these messages needs to be generated not hand coded. We
+// should be able enter data into a static array and then generate the messages.
+
 // These are user facing errors messages that occur due to
 // incorrect use of the cli application. They occur as a result
 // of validating the user provided options on the command line.
@@ -463,6 +466,45 @@ func NewAtMostOptValidationError(flag string, value, threshold any) AtMostOptVal
 					Value:     value,
 					Threshold: threshold,
 				},
+			},
+		},
+	}
+}
+
+// ❌ InvalidExtendedGlobFilterTemplData
+
+// AtMostOptValidationTemplData
+type InvalidExtendedGlobFilterTemplData struct {
+	CobrassTemplData
+	Delimiter string
+}
+
+func (td InvalidExtendedGlobFilterTemplData) Message() *i18n.Message {
+	return &i18n.Message{
+		ID:          "invalid-extended-glob-filter.cobrass",
+		Description: "Invalid extended glob filter definition (missing delimiter)",
+		Other:       "option validation failed, glob filter definition missing delimiter '{{.Delimiter}}'",
+	}
+}
+
+type InvalidExtendedGlobFilterBehaviourQuery interface {
+	error
+	IsInvalidExtendedGlobFilter() bool
+}
+
+type InvalidExtendedGlobFilterValidation struct {
+	i18n.LocalisableError
+}
+
+func (e InvalidExtendedGlobFilterValidation) IsInvalidExtendedGlobFilter() bool {
+	return true
+}
+
+func NewInvalidExtendedGlobFilterValidationError(delimiter string) InvalidExtendedGlobFilterBehaviourQuery {
+	return &InvalidExtendedGlobFilterValidation{
+		LocalisableError: i18n.LocalisableError{
+			Data: InvalidExtendedGlobFilterTemplData{
+				Delimiter: delimiter,
 			},
 		},
 	}

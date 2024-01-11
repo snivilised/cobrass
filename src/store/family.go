@@ -25,6 +25,7 @@ var ShortFlags = FlagDefinitions{
 
 	// filter family
 	//
+	"files":      "F",
 	"files-gb":   "G",
 	"files-rx":   "X",
 	"folders-gb": "Z",

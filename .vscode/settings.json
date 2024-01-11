@@ -6,6 +6,7 @@
     "bindnative",
     "bodyclose",
     "clif",
+    "cmds",
     "cobrass",
     "cogen",
     "colors",
@@ -58,12 +59,14 @@
     "rebinder",
     "refl",
     "repotoken",
+    "samber",
     "Selectf",
     "snivilised",
     "staticcheck",
     "structcheck",
     "stylecheck",
     "templatise",
+    "testcache",
     "thelper",
     "tmpl",
     "tparallel",
@@ -72,7 +75,8 @@
     "vactive",
     "Validatable",
     "varargs",
-    "varcheck"
+    "varcheck",
+    "watchv"
   ],
   "files.associations": {
     "**/*.tmpl": "go"
