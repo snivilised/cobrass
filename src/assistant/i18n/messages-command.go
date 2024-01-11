@@ -28,13 +28,41 @@ func (td FilesRegExParamUsageTemplData) Message() *Message {
 	}
 }
 
-// FolderGlobParamUsageTemplData
+// FilesExGlobParamUsageTemplData
 // 🧊
-type FolderGlobParamUsageTemplData struct {
+type FilesExGlobParamUsageTemplData struct {
 	CobrassTemplData
 }
 
-func (td FolderGlobParamUsageTemplData) Message() *Message {
+func (td FilesExGlobParamUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "files-ex-glob-filter.param-usage",
+		Description: "files extended glob filter (negate-able with leading !)",
+		Other:       "files extended glob filter: <glob>|<suffixes csv> (negate-able with leading !)",
+	}
+}
+
+// FoldersExGlobParamUsageTemplData
+// 🧊
+type FoldersExGlobParamUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td FoldersExGlobParamUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "folders-ex-glob-filter.param-usage",
+		Description: "folders extended glob filter (negate-able with leading !)",
+		Other:       "folders extended glob filter: <glob> (negate-able with leading !)",
+	}
+}
+
+// FoldersGlobParamUsageTemplData
+// 🧊
+type FoldersGlobParamUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td FoldersGlobParamUsageTemplData) Message() *Message {
 	return &Message{
 		ID:          "folders-glob-filter.param-usage",
 		Description: "folders glob (negate-able with leading !)",
@@ -42,13 +70,13 @@ func (td FolderGlobParamUsageTemplData) Message() *Message {
 	}
 }
 
-// FolderRexExParamUsageTemplData
+// FoldersRexExParamUsageTemplData
 // 🧊
-type FolderRexExParamUsageTemplData struct {
+type FoldersRexExParamUsageTemplData struct {
 	CobrassTemplData
 }
 
-func (td FolderRexExParamUsageTemplData) Message() *Message {
+func (td FoldersRexExParamUsageTemplData) Message() *Message {
 	return &Message{
 		ID:          "folders-regex-filter.param-usage",
 		Description: "folders regex filter (negate-able with leading !)",

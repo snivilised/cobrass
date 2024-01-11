@@ -31,7 +31,13 @@ const (
 // subscription type and in this case, --files-rx(x) and --files-gb(g)
 // are still free to be used without ambiguity.
 
+// FilesFilterParameterSet represents a family of parameters that can be used
+// to accept a file filter. files is considered the default as it is
+// the most user friendly to use, as a glob is easier and more intuitive
+// to use on the command line and supports (with te help of a delimiter)
+// multiple extensions to be specified with a csv, in contrast to a regular glob.
 type FilesFilterParameterSet struct {
+	Files      string
 	FilesGlob  string
 	FilesRexEx string
 }
@@ -40,6 +46,17 @@ func (f *FilesFilterParameterSet) BindAll(
 	parent *assistant.ParamSet[FilesFilterParameterSet],
 	flagSet ...*pflag.FlagSet,
 ) {
+	// --files(f)
+	//
+	parent.BindString(
+		resolveNewFlagInfo(
+			xi18n.Text(i18n.FilesExGlobParamUsageTemplData{}),
+			defaultFilterValue,
+			flagSet...,
+		),
+		&parent.Native.Files,
+	)
+
 	// --files-gb(G)
 	//
 	parent.BindString(
@@ -66,9 +83,13 @@ func (f *FilesFilterParameterSet) BindAll(
 		},
 	)
 
-	parent.Command.MarkFlagsMutuallyExclusive("files-gb", "files-rx")
+	parent.Command.MarkFlagsMutuallyExclusive("files", "files-gb", "files-rx")
 }
 
+// FoldersFilterParameterSet represents a family of parameters that can be used
+// to accept a folder filter. In contrast to files, the folders family does
+// not include an extended glob because folders do not contain extensions,
+// so the regular glob will suffice.
 type FoldersFilterParameterSet struct {
 	FoldersGlob  string
 	FoldersRexEx string
@@ -82,7 +103,7 @@ func (f *FoldersFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FolderGlobParamUsageTemplData{}),
+			xi18n.Text(i18n.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -93,7 +114,7 @@ func (f *FoldersFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FolderRexExParamUsageTemplData{}),
+			xi18n.Text(i18n.FoldersRexExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -107,8 +128,12 @@ func (f *FoldersFilterParameterSet) BindAll(
 	parent.Command.MarkFlagsMutuallyExclusive("folders-gb", "folders-rx")
 }
 
+// PolyFilterParameterSet represents a family of parameters that can be used
+// to accept file and folder filters. This family is composed of files and
+// filters. For files, either an extended glob or regex is supported. For
+// folders, either a regular glob or regex is supported.
 type PolyFilterParameterSet struct {
-	FilesGlob    string
+	Files        string
 	FilesRexEx   string
 	FoldersGlob  string
 	FoldersRexEx string
@@ -118,19 +143,15 @@ func (f *PolyFilterParameterSet) BindAll(
 	parent *assistant.ParamSet[PolyFilterParameterSet],
 	flagSet ...*pflag.FlagSet,
 ) {
-	// argh, code smell here, because we're duplicating the functionality
-	// in FileFilterParameterSet and FoldersFilterParameterSet, but that can't
-	// be helped because of the paramSet instance is type specific.
-	//
-	// --files-gb(G)
+	// --files(f)
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FilesGlobParamUsageTemplData{}),
+			xi18n.Text(i18n.FilesExGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
-		&parent.Native.FilesGlob,
+		&parent.Native.Files,
 	)
 
 	// --files-rx(X)
@@ -152,7 +173,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FolderGlobParamUsageTemplData{}),
+			xi18n.Text(i18n.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -163,7 +184,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FolderRexExParamUsageTemplData{}),
+			xi18n.Text(i18n.FoldersRexExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -174,6 +195,41 @@ func (f *PolyFilterParameterSet) BindAll(
 		},
 	)
 
-	parent.Command.MarkFlagsMutuallyExclusive("files-gb", "files-rx")
+	parent.Command.MarkFlagsMutuallyExclusive("files", "files-rx")
 	parent.Command.MarkFlagsMutuallyExclusive("folders-gb", "folders-rx")
+}
+
+// AlloyFilterParameterSet represents a family of parameters that can be used
+// to accept file and folder filters. Files are represented by an extended glob
+// and folders by a regular glob.
+type AlloyFilterParameterSet struct {
+	Files       string
+	FoldersGlob string
+}
+
+func (f *AlloyFilterParameterSet) BindAll(
+	parent *assistant.ParamSet[AlloyFilterParameterSet],
+	flagSet ...*pflag.FlagSet,
+) {
+	// --files(F)
+	//
+	parent.BindString(
+		resolveNewFlagInfo(
+			xi18n.Text(i18n.FilesExGlobParamUsageTemplData{}),
+			defaultFilterValue,
+			flagSet...,
+		),
+		&parent.Native.Files,
+	)
+
+	// --folders-gb(Z)
+	//
+	parent.BindString(
+		resolveNewFlagInfo(
+			xi18n.Text(i18n.FoldersGlobParamUsageTemplData{}),
+			defaultFilterValue,
+			flagSet...,
+		),
+		&parent.Native.FoldersGlob,
+	)
 }

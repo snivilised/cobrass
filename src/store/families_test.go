@@ -20,16 +20,14 @@ func reason(binder string, err error) string {
 	)
 }
 
-const (
-	shouldMessage = "🧪 should: bind all parameters without error"
-)
-
+// --files(F)
 // --files-gb(G)
 // --files-rx(X)
 // --folders-gb(Z)
-// --folders-rx(y)
+// --folders-rx(Y)
 
 type familyTE struct {
+	given       string
 	familyType  string
 	persistent  bool
 	commandLine []string
@@ -83,6 +81,14 @@ var _ = Describe("Families", Ordered, func() {
 
 	DescribeTable("filter family",
 		func(entry *familyTE) {
+			defer func() {
+				r := recover()
+
+				if r != nil {
+					Fail(fmt.Sprintf("!!! 💥 %v\n", r))
+				}
+			}()
+
 			switch entry.familyType {
 			case "poly":
 				{
@@ -103,9 +109,20 @@ var _ = Describe("Families", Ordered, func() {
 						ps.Native.BindAll(ps)
 					}
 				}
+
 			case "folders":
 				{
 					ps := assistant.NewParamSet[store.FoldersFilterParameterSet](rootCommand)
+					if entry.persistent {
+						ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+					} else {
+						ps.Native.BindAll(ps)
+					}
+				}
+
+			case "alloy":
+				{
+					ps := assistant.NewParamSet[store.AlloyFilterParameterSet](rootCommand)
 					if entry.persistent {
 						ps.Native.BindAll(ps, rootCommand.PersistentFlags())
 					} else {
@@ -117,11 +134,30 @@ var _ = Describe("Families", Ordered, func() {
 			execute(entry.commandLine)
 		},
 		func(entry *familyTE) string {
-			return shouldMessage
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
 		},
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--files",
+				familyType:  "files",
+				persistent:  true,
+				commandLine: []string{"--files", "foo*"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "-f",
+				familyType:  "files",
+				commandLine: []string{"-X", "foo*"},
+			},
+		),
+		//
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--files-rx",
 				familyType:  "files",
 				persistent:  true,
 				commandLine: []string{"--files-rx", "^foo"},
@@ -130,6 +166,7 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--X",
 				familyType:  "files",
 				commandLine: []string{"-X", "^foo"},
 			},
@@ -138,6 +175,7 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--folders-gb",
 				familyType:  "folders",
 				commandLine: []string{"--folders-gb", "bar*"},
 			},
@@ -145,6 +183,7 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
+				given:       "-Z",
 				familyType:  "folders",
 				persistent:  true,
 				commandLine: []string{"-Z", "bar*"},
@@ -154,35 +193,72 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--files --folders-gb",
 				familyType:  "poly",
-				commandLine: []string{"--files-rx", "^foo", "--folders-gb", "bar*"},
+				commandLine: []string{"--files", "foo*", "--folders-gb", "bar*"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
+				given:       "-F -Z",
 				familyType:  "poly",
-				commandLine: []string{"-X", "^foo", "-Z", "bar*"},
+				commandLine: []string{"-F", "foo*", "-Z", "bar*"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--files --folders-rx",
 				familyType:  "poly",
 				persistent:  true,
-				commandLine: []string{"--files-gb", "foo*", "--folders-rx", "^bar"},
+				commandLine: []string{"--files", "foo*", "--folders-rx", "^bar"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
+				given:       "-F -Y",
 				familyType:  "poly",
 				persistent:  true,
-				commandLine: []string{"-G", "foo*", "-Y", "^bar"},
+				commandLine: []string{"-F", "foo*", "-Y", "^bar"},
 			},
 		),
 		//
-
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--files",
+				familyType:  "alloy",
+				persistent:  true,
+				commandLine: []string{"--files", "foo*|jpg,txt"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "-F",
+				familyType:  "alloy",
+				commandLine: []string{"-F", "foo*"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--folders-gb",
+				familyType:  "alloy",
+				persistent:  true,
+				commandLine: []string{"--folders-gb", "foo*"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "-Z",
+				familyType:  "alloy",
+				commandLine: []string{"-Z", "foo*"},
+			},
+		),
 	)
 
 	DescribeTable("worker pool family",
@@ -197,11 +273,12 @@ var _ = Describe("Families", Ordered, func() {
 			execute(entry.commandLine)
 		},
 		func(entry *familyTE) string {
-			return shouldMessage
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
 		},
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--cpu",
 				commandLine: []string{"--cpu"},
 				persistent:  true,
 			},
@@ -209,6 +286,7 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--now",
 				commandLine: []string{"--now", "4"},
 				persistent:  true,
 			},
@@ -227,17 +305,19 @@ var _ = Describe("Families", Ordered, func() {
 			execute(entry.commandLine)
 		},
 		func(entry *familyTE) string {
-			return shouldMessage
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
 		},
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--profile",
 				commandLine: []string{"--profile", "foo"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
+				given:       "-P",
 				commandLine: []string{"-P", "foo"},
 				persistent:  true,
 			},
@@ -245,12 +325,14 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--scheme",
 				commandLine: []string{"--scheme", "foo"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
+				given:       "-S",
 				commandLine: []string{"-S", "foo"},
 				persistent:  true,
 			},
@@ -269,11 +351,12 @@ var _ = Describe("Families", Ordered, func() {
 			execute(entry.commandLine)
 		},
 		func(entry *familyTE) string {
-			return shouldMessage
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
 		},
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--dry-run",
 				commandLine: []string{"--dry-run"},
 				persistent:  true,
 			},
@@ -281,6 +364,7 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
+				given:       "-D",
 				commandLine: []string{"-D"},
 			},
 		),
@@ -298,11 +382,12 @@ var _ = Describe("Families", Ordered, func() {
 			execute(entry.commandLine)
 		},
 		func(entry *familyTE) string {
-			return shouldMessage
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
 		},
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--language",
 				commandLine: []string{"--language", "en-GB"},
 				persistent:  true,
 			},
@@ -343,23 +428,26 @@ var _ = Describe("Families", Ordered, func() {
 			execute(entry.commandLine)
 		},
 		func(entry *familyTE) string {
-			return shouldMessage
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
 		},
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--depth",
 				commandLine: []string{"--depth", "3"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
+				given:       "--skim",
 				commandLine: []string{"--skim"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
+				given:       "-K",
 				commandLine: []string{"-K"},
 				persistent:  true,
 			},
