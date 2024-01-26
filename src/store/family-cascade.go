@@ -8,8 +8,8 @@ import (
 )
 
 type CascadeParameterSet struct {
-	Depth uint
-	Skim  bool
+	Depth     uint
+	NoRecurse bool
 }
 
 func (f *CascadeParameterSet) BindAll(
@@ -31,20 +31,20 @@ func (f *CascadeParameterSet) BindAll(
 		&parent.Native.Depth,
 	)
 
-	// --skim(K)
+	// --no-recurse(N)
 	//
 	const (
-		defaultSkim = false
+		defaultNoRecurse = false
 	)
 
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.CascadeSkimParamUsageTemplData{}),
-			defaultSkim,
+			xi18n.Text(i18n.CascadeNoRecurseParamUsageTemplData{}),
+			defaultNoRecurse,
 			flagSet...,
 		),
-		&parent.Native.Skim,
+		&parent.Native.NoRecurse,
 	)
 
-	parent.Command.MarkFlagsMutuallyExclusive("depth", "skim")
+	parent.Command.MarkFlagsMutuallyExclusive("depth", "no-recurse")
 }

@@ -4,8 +4,8 @@ go 1.21
 
 require (
 	github.com/avfs/avfs v0.33.0
-	github.com/onsi/ginkgo/v2 v2.14.0
-	github.com/onsi/gomega v1.30.0
+	github.com/onsi/ginkgo/v2 v2.15.0
+	github.com/onsi/gomega v1.31.1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/mock v0.4.0
@@ -39,7 +39,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.3.0
 	github.com/samber/lo v1.39.0
-	github.com/snivilised/extendio v0.5.4
+	github.com/snivilised/extendio v0.6.0
 	github.com/spf13/viper v1.18.2
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
