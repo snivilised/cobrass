@@ -182,16 +182,16 @@ func (td CascadeDepthParamUsageTemplData) Message() *Message {
 	}
 }
 
-// CascadeSkimParamUsageTemplData
+// CascadeNoRecurseParamUsageTemplData
 // 🧊
-type CascadeSkimParamUsageTemplData struct {
+type CascadeNoRecurseParamUsageTemplData struct {
 	CobrassTemplData
 }
 
-func (td CascadeSkimParamUsageTemplData) Message() *Message {
+func (td CascadeNoRecurseParamUsageTemplData) Message() *Message {
 	return &Message{
-		ID:          "cascade-skim.param-usage",
+		ID:          "cascade-no-recurse.param-usage",
 		Description: "sets the navigator to not descend into sub directories",
-		Other:       "skim sets the navigator to not descend into sub directories",
+		Other:       "no-recurse sets the navigator to not descend into sub directories",
 	}
 }

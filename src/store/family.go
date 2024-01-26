@@ -42,8 +42,8 @@ var ShortFlags = FlagDefinitions{
 
 	// depth family
 	//
-	"depth": "",
-	"skim":  "K",
+	"depth":      "",
+	"no-recurse": "N",
 }
 
 func newFlagInfo[T any](usage string, defaultValue T) *assistant.FlagInfo {

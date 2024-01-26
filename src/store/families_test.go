@@ -440,15 +440,15 @@ var _ = Describe("Families", Ordered, func() {
 		Entry(
 			nil,
 			&familyTE{
-				given:       "--skim",
-				commandLine: []string{"--skim"},
+				given:       "--no-recurse",
+				commandLine: []string{"--no-recurse"},
 			},
 		),
 		Entry(
 			nil,
 			&familyTE{
-				given:       "-K",
-				commandLine: []string{"-K"},
+				given:       "-N",
+				commandLine: []string{"-N"},
 				persistent:  true,
 			},
 		),
