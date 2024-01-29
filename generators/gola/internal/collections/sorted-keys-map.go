@@ -2,9 +2,9 @@ package collections
 
 import (
 	"cmp"
+	"slices"
 
 	"github.com/samber/lo"
-	"golang.org/x/exp/slices"
 )
 
 // https://go.dev/blog/comparable

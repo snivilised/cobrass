@@ -1,11 +1,11 @@
 package clif
 
 import (
+	"maps"
+	"slices"
 	"strings"
 
 	"github.com/samber/lo"
-	"golang.org/x/exp/maps"
-	"golang.org/x/exp/slices"
 )
 
 var booleans = []string{"true", "false"}
