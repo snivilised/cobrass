@@ -2,9 +2,9 @@ package collections
 
 import (
 	"cmp"
+	"slices"
 
-	"golang.org/x/exp/maps"
-	"golang.org/x/exp/slices"
+	"github.com/samber/lo"
 )
 
 // https://go.dev/blog/comparable
@@ -19,7 +19,7 @@ import (
 type OrderedKeysMap[K cmp.Ordered, V any] map[K]V
 
 func (m *OrderedKeysMap[K, V]) Keys() []K {
-	keys := maps.Keys(*m)
+	keys := lo.Keys(*m)
 
 	slices.Sort(keys)
 
