@@ -453,4 +453,111 @@ var _ = Describe("Families", Ordered, func() {
 			},
 		),
 	)
+
+	DescribeTable("sampling family",
+		func(entry *familyTE) {
+			ps := assistant.NewParamSet[store.SamplingParameterSet](rootCommand)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
+
+			execute(entry.commandLine)
+		},
+		func(entry *familyTE) string {
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
+		},
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--sample",
+				commandLine: []string{"--sample"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--no-files",
+				commandLine: []string{"--no-files", "4"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--no-folders",
+				commandLine: []string{"--no-folders", "5"},
+				persistent:  true,
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--last",
+				commandLine: []string{"--last"},
+			},
+		),
+	)
+
+	DescribeTable("textual-interaction family",
+		func(entry *familyTE) {
+			ps := assistant.NewParamSet[store.TextualInteractionParameterSet](rootCommand)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
+
+			execute(entry.commandLine)
+		},
+		func(entry *familyTE) string {
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
+		},
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--no-tui",
+				commandLine: []string{"--no-tui"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--no-tui",
+				commandLine: []string{"--no-tui"},
+				persistent:  true,
+			},
+		),
+	)
+
+	DescribeTable("cli-interaction family",
+		func(entry *familyTE) {
+			ps := assistant.NewParamSet[store.CliInteractionParameterSet](rootCommand)
+			if entry.persistent {
+				ps.Native.BindAll(ps, rootCommand.PersistentFlags())
+			} else {
+				ps.Native.BindAll(ps)
+			}
+
+			execute(entry.commandLine)
+		},
+		func(entry *familyTE) string {
+			return fmt.Sprintf("🧪 given: '%v', should: bind all parameters without error", entry.given)
+		},
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--tui",
+				commandLine: []string{"--tui"},
+			},
+		),
+		Entry(
+			nil,
+			&familyTE{
+				given:       "--tui",
+				commandLine: []string{"--tui"},
+				persistent:  true,
+			},
+		),
+	)
 })
