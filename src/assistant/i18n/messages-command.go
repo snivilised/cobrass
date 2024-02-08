@@ -195,3 +195,87 @@ func (td CascadeNoRecurseParamUsageTemplData) Message() *Message {
 		Other:       "no-recurse sets the navigator to not descend into sub directories",
 	}
 }
+
+// SamplingSampleUsageTemplData
+// 🧊
+type SamplingSampleUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td SamplingSampleUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "sampling-sample.param-usage",
+		Description: "sampling sample usage; activates sampling",
+		Other:       "sample is a flag that activates sampling",
+	}
+}
+
+// SamplingNoFilesUsageTemplData
+// 🧊
+type SamplingNoFilesUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td SamplingNoFilesUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "sampling-no-files.param-usage",
+		Description: "sampling files usage; no of files in sample set",
+		Other:       "no-files specifies the number of files to sample",
+	}
+}
+
+// SamplingNoFoldersUsageTemplData
+// 🧊
+type SamplingNoFoldersUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td SamplingNoFoldersUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "sampling-no-folders.param-usage",
+		Description: "sampling folders usage; no of folders in sample set",
+		Other:       "no-folders specifies the number of folders to sample",
+	}
+}
+
+// SamplingLastUsageTemplData
+// 🧊
+type SamplingLastUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td SamplingLastUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "sampling-last.param-usage",
+		Description: "sampling last usage; indicates which n items are to be sampled",
+		Other:       "last is a flag that indicates last n items are to be sampled instead of the first",
+	}
+}
+
+// TextualInteractionIsNoTUIUsageTemplData
+// 🧊
+type TextualInteractionIsNoTUIUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td TextualInteractionIsNoTUIUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "textual-interaction-is-no-tui.param-usage",
+		Description: "textual interaction is no-tui usage; deactivates tui mode",
+		Other:       "no-tui is a flag that turns off tui mode",
+	}
+}
+
+// CliInteractionIsTUIUsageTemplData
+// 🧊
+type CliInteractionIsTUIUsageTemplData struct {
+	CobrassTemplData
+}
+
+func (td CliInteractionIsTUIUsageTemplData) Message() *Message {
+	return &Message{
+		ID:          "cli-interaction-is-tui.param-usage",
+		Description: "tui interaction is tui usage; activates tui mode",
+		Other:       "tui is a flag that enables tui mode",
+	}
+}

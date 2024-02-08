@@ -14,36 +14,24 @@ type ShortFlagName = string
 type FlagDefinitions map[LongFlagName]ShortFlagName
 
 var ShortFlags = FlagDefinitions{
-	// worker pool family
-	//
-	"cpu": "",
-	"now": "",
-
-	// preview family
-	//
-	"dry-run": "D",
-
-	// filter family
-	//
-	"files":      "F",
+	"cpu":        "", // worker pool family
+	"now":        "",
+	"dry-run":    "D", // preview family
+	"files":      "F", // filter family
 	"files-gb":   "G",
 	"files-rx":   "X",
 	"folders-gb": "Z",
 	"folders-rx": "Y",
-
-	// profile family
-	//
-	"profile": "P",
-	"scheme":  "S",
-
-	// i18n family (niche option, so let's define without a short code)
-	//
-	"language": "",
-
-	// depth family
-	//
-	"depth":      "",
+	"profile":    "P", // profile family
+	"scheme":     "S",
+	"language":   "", // i18n family
+	"depth":      "", // depth family
 	"no-recurse": "N",
+	"sample":     "", // sampling
+	"no-files":   "",
+	"no-folders": "",
+	"last":       "",
+	"tui":        "", // interaction
 }
 
 func newFlagInfo[T any](usage string, defaultValue T) *assistant.FlagInfo {
