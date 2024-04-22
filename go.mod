@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/avfs/avfs v0.33.0
 	github.com/onsi/ginkgo/v2 v2.17.1
-	github.com/onsi/gomega v1.32.0
+	github.com/onsi/gomega v1.33.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/mock v0.4.0
@@ -41,7 +41,7 @@ require (
 	github.com/samber/lo v1.39.0
 	github.com/snivilised/extendio v0.6.1
 	github.com/spf13/viper v1.18.2
-	golang.org/x/net v0.20.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0
 )
