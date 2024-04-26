@@ -8,7 +8,7 @@ import (
 	"github.com/snivilised/cobrass/generators/gola"
 	"github.com/snivilised/cobrass/generators/gola/internal/storage"
 
-	. "github.com/onsi/gomega/types"
+	. "github.com/onsi/gomega/types" //nolint:revive // gomega ok
 )
 
 type (

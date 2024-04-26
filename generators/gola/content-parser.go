@@ -47,9 +47,10 @@ func readEntries(vfs storage.VirtualFS, directoryPath string) ([]fs.DirEntry, er
 
 	autoPattern := "*auto*.go"
 	testPattern := "*auto*_test.go"
-	entries = lo.Filter(entries, func(item fs.DirEntry, index int) bool {
+	entries = lo.Filter(entries, func(item fs.DirEntry, _ int) bool {
 		auto, _ := filepath.Match(autoPattern, item.Name())
 		test, _ := filepath.Match(testPattern, item.Name())
+
 		return !item.IsDir() && auto && !test
 	})
 
@@ -98,11 +99,14 @@ func parseContents(contents CodeContent) (*SignatureResult, error) {
 				index := strings.LastIndex(line, " {")
 				if index >= 0 {
 					signature := line[0 : index+1]
+
 					hashBuilder.WriteString(fmt.Sprintf("%v\n", strings.TrimSpace(signature)))
+
 					metrics[name].Func++
 				}
 			} else if strings.HasPrefix(line, "type") {
 				hashBuilder.WriteString(fmt.Sprintf("%v\n", strings.TrimSpace(line)))
+
 				metrics[name].Type++
 			}
 		}
@@ -113,6 +117,7 @@ func parseContents(contents CodeContent) (*SignatureResult, error) {
 
 	sha256hash := hash(hashBuilder.String())
 	outputBuilder := strings.Builder{}
+
 	outputBuilder.WriteString(fmt.Sprintf("===> [🤖]        THIS-HASH: '%v'\n", sha256hash))
 	outputBuilder.WriteString(fmt.Sprintf("===> [👾]  REGISTERED-HASH: '%v'\n", RegisteredHash))
 
@@ -141,6 +146,7 @@ func parseContents(contents CodeContent) (*SignatureResult, error) {
 		"✔️ Hashes are equal",
 		"💥 Api changes detected",
 	)
+
 	outputBuilder.WriteString(fmt.Sprintf(">>>> Status: %v\n", status))
 
 	return &SignatureResult{
@@ -154,6 +160,7 @@ func parseContents(contents CodeContent) (*SignatureResult, error) {
 
 func hash(content string) string {
 	hasher := sha256.New()
+
 	hasher.Write([]byte(content))
 
 	return hex.EncodeToString(hasher.Sum(nil))

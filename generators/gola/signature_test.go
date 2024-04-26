@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gpmega ok
 	"github.com/snivilised/cobrass/generators/gola"
 	"github.com/snivilised/cobrass/generators/gola/internal/storage"
 )

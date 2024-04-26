@@ -1,11 +1,13 @@
 package assistant_test
 
+//golangci-lint:disable=revive
+
 import (
 	"fmt"
 	"time"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant"
@@ -46,8 +48,9 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 				Short:   "Create widget",
 				Long:    "Index file system at root: '/'",
 				Args:    cobra.ExactArgs(1),
-				RunE: func(command *cobra.Command, args []string) error {
+				RunE: func(_ *cobra.Command, args []string) error {
 					paramSet.Native.Directory = args[0]
+
 					return nil
 				},
 			}
@@ -58,7 +61,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		// ----> auto generated(Build-BinderHelperTests/gen-help-t)
 
 		DescribeTable("BindValidatedDurationWithin",
-			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, low, high time.Duration) {
 				validator := paramSet.BindValidatedDurationWithin(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, low, high,
@@ -75,7 +78,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍋 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -87,7 +90,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedDurationNotWithin",
-			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, low, high time.Duration) {
 				validator := paramSet.BindValidatedDurationNotWithin(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, low, high,
@@ -104,7 +107,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, low, high time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍋 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -116,7 +119,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsDuration",
-			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, collection []time.Duration, _ time.Duration) {
 				validator := paramSet.BindValidatedContainsDuration(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, collection,
@@ -132,7 +135,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _ []time.Duration, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -141,7 +144,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsDuration",
-			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, collection []time.Duration, _ time.Duration) {
 				validator := paramSet.BindValidatedNotContainsDuration(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, collection,
@@ -157,7 +160,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, collection []time.Duration, dummy time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _ []time.Duration, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -166,7 +169,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedDurationGreaterThan",
-			func(given, should string, value time.Duration, expectNil bool, threshold, dummy time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, threshold, _ time.Duration) {
 				validator := paramSet.BindValidatedDurationGreaterThan(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, threshold,
@@ -182,7 +185,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -192,7 +195,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedDurationAtLeast",
-			func(given, should string, value time.Duration, expectNil bool, threshold, dummy time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, threshold, _ time.Duration) {
 				validator := paramSet.BindValidatedDurationAtLeast(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, threshold,
@@ -208,7 +211,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -218,7 +221,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedDurationLessThan",
-			func(given, should string, value time.Duration, expectNil bool, threshold, dummy time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, threshold, _ time.Duration) {
 				validator := paramSet.BindValidatedDurationLessThan(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, threshold,
@@ -234,7 +237,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -244,7 +247,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedDurationAtMost",
-			func(given, should string, value time.Duration, expectNil bool, threshold, dummy time.Duration) {
+			func(_, _ string, value time.Duration, expectNil bool, threshold, _ time.Duration) {
 				validator := paramSet.BindValidatedDurationAtMost(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency, threshold,
@@ -260,7 +263,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value time.Duration, expectNil bool, pattern, dummy time.Duration) string {
+			func(given, should string, _ time.Duration, _ bool, _, _ time.Duration) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -270,7 +273,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsEnum",
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) {
+			func(_, _ string, value string, expectNil bool, collection []string, _ string) {
 				validator := paramSet.BindValidatedContainsEnum(
 					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source, collection,
@@ -286,7 +289,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
+			func(given, should string, _ string, _ bool, _ []string, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -295,7 +298,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsEnum",
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) {
+			func(_, _ string, value string, expectNil bool, collection []string, _ string) {
 				validator := paramSet.BindValidatedNotContainsEnum(
 					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source, collection,
@@ -311,7 +314,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
+			func(given, should string, _ string, _ bool, _ []string, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -320,7 +323,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat32Within",
-			func(given, should string, value float32, expectNil bool, low, high float32) {
+			func(_, _ string, value float32, expectNil bool, low, high float32) {
 				validator := paramSet.BindValidatedFloat32Within(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, low, high,
@@ -337,7 +340,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, low, high float32) string {
+			func(given, should string, _ float32, _ bool, _, _ float32) string {
 				return fmt.Sprintf("🧪 --> 🍋 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -349,7 +352,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat32NotWithin",
-			func(given, should string, value float32, expectNil bool, low, high float32) {
+			func(_, _ string, value float32, expectNil bool, low, high float32) {
 				validator := paramSet.BindValidatedFloat32NotWithin(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, low, high,
@@ -366,7 +369,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, low, high float32) string {
+			func(given, should string, _ float32, expectNil bool, low, high float32) string {
 				return fmt.Sprintf("🧪 --> 🍋 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -378,7 +381,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsFloat32",
-			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) {
+			func(_, _ string, value float32, expectNil bool, collection []float32, _ float32) {
 				validator := paramSet.BindValidatedContainsFloat32(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, collection,
@@ -394,7 +397,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) string {
+			func(given, should string, _ float32, _ bool, _ []float32, _ float32) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -403,7 +406,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsFloat32",
-			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) {
+			func(given, should string, value float32, expectNil bool, collection []float32, _ float32) {
 				validator := paramSet.BindValidatedNotContainsFloat32(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, collection,
@@ -419,7 +422,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, collection []float32, dummy float32) string {
+			func(given, should string, _ float32, expectNil bool, collection []float32, _ float32) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -428,7 +431,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat32GreaterThan",
-			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
+			func(_, _ string, value float32, expectNil bool, threshold, _ float32) {
 				validator := paramSet.BindValidatedFloat32GreaterThan(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, threshold,
@@ -444,7 +447,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
+			func(given, should string, _ float32, expectNil bool, pattern, _ float32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -454,7 +457,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat32AtLeast",
-			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
+			func(_, _ string, value float32, expectNil bool, threshold, _ float32) {
 				validator := paramSet.BindValidatedFloat32AtLeast(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, threshold,
@@ -470,7 +473,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
+			func(given, should string, _ float32, expectNil bool, pattern, _ float32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -480,7 +483,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat32LessThan",
-			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
+			func(_, _ string, value float32, expectNil bool, threshold, _ float32) {
 				validator := paramSet.BindValidatedFloat32LessThan(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, threshold,
@@ -496,7 +499,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
+			func(given, should string, _ float32, expectNil bool, pattern, _ float32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -506,7 +509,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat32AtMost",
-			func(given, should string, value float32, expectNil bool, threshold, dummy float32) {
+			func(_, _ string, value float32, expectNil bool, threshold, _ float32) {
 				validator := paramSet.BindValidatedFloat32AtMost(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32, threshold,
@@ -522,7 +525,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float32, expectNil bool, pattern, dummy float32) string {
+			func(given, should string, _ float32, expectNil bool, pattern, _ float32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -532,7 +535,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat64Within",
-			func(given, should string, value float64, expectNil bool, low, high float64) {
+			func(_, _ string, value float64, expectNil bool, low, high float64) {
 				validator := paramSet.BindValidatedFloat64Within(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, low, high,
@@ -561,7 +564,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat64NotWithin",
-			func(given, should string, value float64, expectNil bool, low, high float64) {
+			func(_, _ string, value float64, expectNil bool, low, high float64) {
 				validator := paramSet.BindValidatedFloat64NotWithin(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, low, high,
@@ -590,7 +593,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsFloat64",
-			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) {
+			func(_, _ string, value float64, expectNil bool, collection []float64, _ float64) {
 				validator := paramSet.BindValidatedContainsFloat64(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, collection,
@@ -606,7 +609,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) string {
+			func(given, should string, value float64, expectNil bool, collection []float64, _ float64) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -615,7 +618,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsFloat64",
-			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) {
+			func(_, _ string, value float64, expectNil bool, collection []float64, _ float64) {
 				validator := paramSet.BindValidatedNotContainsFloat64(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, collection,
@@ -631,7 +634,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float64, expectNil bool, collection []float64, dummy float64) string {
+			func(given, should string, value float64, expectNil bool, collection []float64, _ float64) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -640,7 +643,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat64GreaterThan",
-			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
+			func(_, _ string, value float64, expectNil bool, threshold, _ float64) {
 				validator := paramSet.BindValidatedFloat64GreaterThan(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, threshold,
@@ -656,7 +659,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
+			func(given, should string, value float64, expectNil bool, pattern, _ float64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -666,7 +669,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat64AtLeast",
-			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
+			func(_, _ string, value float64, expectNil bool, threshold, _ float64) {
 				validator := paramSet.BindValidatedFloat64AtLeast(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, threshold,
@@ -682,7 +685,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
+			func(given, should string, value float64, expectNil bool, pattern, _ float64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -692,7 +695,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat64LessThan",
-			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
+			func(_, _ string, value float64, expectNil bool, threshold, _ float64) {
 				validator := paramSet.BindValidatedFloat64LessThan(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, threshold,
@@ -708,7 +711,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
+			func(given, should string, value float64, expectNil bool, pattern, _ float64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -718,7 +721,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedFloat64AtMost",
-			func(given, should string, value float64, expectNil bool, threshold, dummy float64) {
+			func(_, _ string, value float64, expectNil bool, threshold, _ float64) {
 				validator := paramSet.BindValidatedFloat64AtMost(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64, threshold,
@@ -734,7 +737,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value float64, expectNil bool, pattern, dummy float64) string {
+			func(given, should string, value float64, expectNil bool, pattern, _ float64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -744,7 +747,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedIntWithin",
-			func(given, should string, value int, expectNil bool, low, high int) {
+			func(_, _ string, value int, expectNil bool, low, high int) {
 				validator := paramSet.BindValidatedIntWithin(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, low, high,
@@ -773,7 +776,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedIntNotWithin",
-			func(given, should string, value int, expectNil bool, low, high int) {
+			func(_, _ string, value int, expectNil bool, low, high int) {
 				validator := paramSet.BindValidatedIntNotWithin(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, low, high,
@@ -802,7 +805,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsInt",
-			func(given, should string, value int, expectNil bool, collection []int, dummy int) {
+			func(_, _ string, value int, expectNil bool, collection []int, _ int) {
 				validator := paramSet.BindValidatedContainsInt(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, collection,
@@ -818,7 +821,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int, expectNil bool, collection []int, dummy int) string {
+			func(given, should string, value int, expectNil bool, collection []int, _ int) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -827,7 +830,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsInt",
-			func(given, should string, value int, expectNil bool, collection []int, dummy int) {
+			func(_, _ string, value int, expectNil bool, collection []int, _ int) {
 				validator := paramSet.BindValidatedNotContainsInt(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, collection,
@@ -843,7 +846,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int, expectNil bool, collection []int, dummy int) string {
+			func(given, should string, value int, expectNil bool, collection []int, _ int) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -852,7 +855,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedIntGreaterThan",
-			func(given, should string, value int, expectNil bool, threshold, dummy int) {
+			func(_, _ string, value int, expectNil bool, threshold, _ int) {
 				validator := paramSet.BindValidatedIntGreaterThan(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, threshold,
@@ -868,7 +871,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
+			func(given, should string, value int, expectNil bool, pattern, _ int) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -878,7 +881,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedIntAtLeast",
-			func(given, should string, value int, expectNil bool, threshold, dummy int) {
+			func(_, _ string, value int, expectNil bool, threshold, _ int) {
 				validator := paramSet.BindValidatedIntAtLeast(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, threshold,
@@ -894,7 +897,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
+			func(given, should string, value int, expectNil bool, pattern, _ int) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -904,7 +907,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedIntLessThan",
-			func(given, should string, value int, expectNil bool, threshold, dummy int) {
+			func(_, _ string, value int, expectNil bool, threshold, _ int) {
 				validator := paramSet.BindValidatedIntLessThan(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, threshold,
@@ -920,7 +923,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
+			func(given, should string, value int, expectNil bool, pattern, _ int) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -930,7 +933,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedIntAtMost",
-			func(given, should string, value int, expectNil bool, threshold, dummy int) {
+			func(_, _ string, value int, expectNil bool, threshold, _ int) {
 				validator := paramSet.BindValidatedIntAtMost(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset, threshold,
@@ -946,7 +949,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int, expectNil bool, pattern, dummy int) string {
+			func(given, should string, value int, expectNil bool, pattern, _ int) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -956,7 +959,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt16Within",
-			func(given, should string, value int16, expectNil bool, low, high int16) {
+			func(_, _ string, value int16, expectNil bool, low, high int16) {
 				validator := paramSet.BindValidatedInt16Within(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, low, high,
@@ -985,7 +988,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt16NotWithin",
-			func(given, should string, value int16, expectNil bool, low, high int16) {
+			func(_, _ string, value int16, expectNil bool, low, high int16) {
 				validator := paramSet.BindValidatedInt16NotWithin(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, low, high,
@@ -1014,7 +1017,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsInt16",
-			func(given, should string, value int16, expectNil bool, collection []int16, dummy int16) {
+			func(_, _ string, value int16, expectNil bool, collection []int16, _ int16) {
 				validator := paramSet.BindValidatedContainsInt16(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, collection,
@@ -1030,7 +1033,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int16, expectNil bool, collection []int16, dummy int16) string {
+			func(given, should string, value int16, expectNil bool, collection []int16, _ int16) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1039,7 +1042,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsInt16",
-			func(given, should string, value int16, expectNil bool, collection []int16, dummy int16) {
+			func(_, _ string, value int16, expectNil bool, collection []int16, _ int16) {
 				validator := paramSet.BindValidatedNotContainsInt16(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, collection,
@@ -1055,7 +1058,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int16, expectNil bool, collection []int16, dummy int16) string {
+			func(given, should string, value int16, expectNil bool, collection []int16, _ int16) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1064,7 +1067,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt16GreaterThan",
-			func(given, should string, value int16, expectNil bool, threshold, dummy int16) {
+			func(_, _ string, value int16, expectNil bool, threshold, _ int16) {
 				validator := paramSet.BindValidatedInt16GreaterThan(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, threshold,
@@ -1080,7 +1083,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
+			func(given, should string, value int16, expectNil bool, pattern, _ int16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1090,7 +1093,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt16AtLeast",
-			func(given, should string, value int16, expectNil bool, threshold, dummy int16) {
+			func(_, _ string, value int16, expectNil bool, threshold, _ int16) {
 				validator := paramSet.BindValidatedInt16AtLeast(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, threshold,
@@ -1106,7 +1109,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
+			func(given, should string, value int16, expectNil bool, pattern, _ int16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1116,7 +1119,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt16LessThan",
-			func(given, should string, value int16, expectNil bool, threshold, dummy int16) {
+			func(_, _ string, value int16, expectNil bool, threshold, _ int16) {
 				validator := paramSet.BindValidatedInt16LessThan(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, threshold,
@@ -1132,7 +1135,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
+			func(given, should string, value int16, expectNil bool, pattern, _ int16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1142,7 +1145,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt16AtMost",
-			func(given, should string, value int16, expectNil bool, threshold, dummy int16) {
+			func(_, _ string, value int16, expectNil bool, threshold, _ int16) {
 				validator := paramSet.BindValidatedInt16AtMost(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16, threshold,
@@ -1158,7 +1161,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int16, expectNil bool, pattern, dummy int16) string {
+			func(given, should string, value int16, expectNil bool, pattern, _ int16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1168,7 +1171,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt32Within",
-			func(given, should string, value int32, expectNil bool, low, high int32) {
+			func(_, _ string, value int32, expectNil bool, low, high int32) {
 				validator := paramSet.BindValidatedInt32Within(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, low, high,
@@ -1197,7 +1200,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt32NotWithin",
-			func(given, should string, value int32, expectNil bool, low, high int32) {
+			func(_, _ string, value int32, expectNil bool, low, high int32) {
 				validator := paramSet.BindValidatedInt32NotWithin(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, low, high,
@@ -1226,7 +1229,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsInt32",
-			func(given, should string, value int32, expectNil bool, collection []int32, dummy int32) {
+			func(_, _ string, value int32, expectNil bool, collection []int32, _ int32) {
 				validator := paramSet.BindValidatedContainsInt32(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, collection,
@@ -1242,7 +1245,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int32, expectNil bool, collection []int32, dummy int32) string {
+			func(given, should string, value int32, expectNil bool, collection []int32, _ int32) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1251,7 +1254,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsInt32",
-			func(given, should string, value int32, expectNil bool, collection []int32, dummy int32) {
+			func(_, _ string, value int32, expectNil bool, collection []int32, _ int32) {
 				validator := paramSet.BindValidatedNotContainsInt32(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, collection,
@@ -1267,7 +1270,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int32, expectNil bool, collection []int32, dummy int32) string {
+			func(given, should string, value int32, expectNil bool, collection []int32, _ int32) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1276,7 +1279,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt32GreaterThan",
-			func(given, should string, value int32, expectNil bool, threshold, dummy int32) {
+			func(_, _ string, value int32, expectNil bool, threshold, _ int32) {
 				validator := paramSet.BindValidatedInt32GreaterThan(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, threshold,
@@ -1292,7 +1295,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
+			func(given, should string, value int32, expectNil bool, pattern, _ int32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1302,7 +1305,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt32AtLeast",
-			func(given, should string, value int32, expectNil bool, threshold, dummy int32) {
+			func(_, _ string, value int32, expectNil bool, threshold, _ int32) {
 				validator := paramSet.BindValidatedInt32AtLeast(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, threshold,
@@ -1318,7 +1321,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
+			func(given, should string, value int32, expectNil bool, pattern, _ int32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1328,7 +1331,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt32LessThan",
-			func(given, should string, value int32, expectNil bool, threshold, dummy int32) {
+			func(_, _ string, value int32, expectNil bool, threshold, _ int32) {
 				validator := paramSet.BindValidatedInt32LessThan(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, threshold,
@@ -1344,7 +1347,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
+			func(given, should string, value int32, expectNil bool, pattern, _ int32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1354,7 +1357,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt32AtMost",
-			func(given, should string, value int32, expectNil bool, threshold, dummy int32) {
+			func(_, _ string, value int32, expectNil bool, threshold, _ int32) {
 				validator := paramSet.BindValidatedInt32AtMost(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32, threshold,
@@ -1370,7 +1373,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int32, expectNil bool, pattern, dummy int32) string {
+			func(given, should string, value int32, expectNil bool, pattern, _ int32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1380,7 +1383,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt64Within",
-			func(given, should string, value int64, expectNil bool, low, high int64) {
+			func(_, _ string, value int64, expectNil bool, low, high int64) {
 				validator := paramSet.BindValidatedInt64Within(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, low, high,
@@ -1409,7 +1412,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt64NotWithin",
-			func(given, should string, value int64, expectNil bool, low, high int64) {
+			func(_, _ string, value int64, expectNil bool, low, high int64) {
 				validator := paramSet.BindValidatedInt64NotWithin(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, low, high,
@@ -1438,7 +1441,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsInt64",
-			func(given, should string, value int64, expectNil bool, collection []int64, dummy int64) {
+			func(_, _ string, value int64, expectNil bool, collection []int64, _ int64) {
 				validator := paramSet.BindValidatedContainsInt64(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, collection,
@@ -1454,7 +1457,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int64, expectNil bool, collection []int64, dummy int64) string {
+			func(given, should string, value int64, expectNil bool, collection []int64, _ int64) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1463,7 +1466,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsInt64",
-			func(given, should string, value int64, expectNil bool, collection []int64, dummy int64) {
+			func(_, _ string, value int64, expectNil bool, collection []int64, _ int64) {
 				validator := paramSet.BindValidatedNotContainsInt64(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, collection,
@@ -1479,7 +1482,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int64, expectNil bool, collection []int64, dummy int64) string {
+			func(given, should string, value int64, expectNil bool, collection []int64, _ int64) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1488,7 +1491,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt64GreaterThan",
-			func(given, should string, value int64, expectNil bool, threshold, dummy int64) {
+			func(_, _ string, value int64, expectNil bool, threshold, _ int64) {
 				validator := paramSet.BindValidatedInt64GreaterThan(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, threshold,
@@ -1504,7 +1507,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
+			func(given, should string, value int64, expectNil bool, pattern, _ int64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1514,7 +1517,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt64AtLeast",
-			func(given, should string, value int64, expectNil bool, threshold, dummy int64) {
+			func(_, _ string, value int64, expectNil bool, threshold, _ int64) {
 				validator := paramSet.BindValidatedInt64AtLeast(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, threshold,
@@ -1530,7 +1533,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
+			func(given, should string, value int64, expectNil bool, pattern, _ int64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1540,7 +1543,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt64LessThan",
-			func(given, should string, value int64, expectNil bool, threshold, dummy int64) {
+			func(_, _ string, value int64, expectNil bool, threshold, _ int64) {
 				validator := paramSet.BindValidatedInt64LessThan(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, threshold,
@@ -1556,7 +1559,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
+			func(given, should string, value int64, expectNil bool, pattern, _ int64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1566,7 +1569,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt64AtMost",
-			func(given, should string, value int64, expectNil bool, threshold, dummy int64) {
+			func(_, _ string, value int64, expectNil bool, threshold, _ int64) {
 				validator := paramSet.BindValidatedInt64AtMost(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64, threshold,
@@ -1582,7 +1585,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int64, expectNil bool, pattern, dummy int64) string {
+			func(given, should string, value int64, expectNil bool, pattern, _ int64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1592,7 +1595,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt8Within",
-			func(given, should string, value int8, expectNil bool, low, high int8) {
+			func(_, _ string, value int8, expectNil bool, low, high int8) {
 				validator := paramSet.BindValidatedInt8Within(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, low, high,
@@ -1621,7 +1624,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt8NotWithin",
-			func(given, should string, value int8, expectNil bool, low, high int8) {
+			func(_, _ string, value int8, expectNil bool, low, high int8) {
 				validator := paramSet.BindValidatedInt8NotWithin(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, low, high,
@@ -1650,7 +1653,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsInt8",
-			func(given, should string, value int8, expectNil bool, collection []int8, dummy int8) {
+			func(_, _ string, value int8, expectNil bool, collection []int8, _ int8) {
 				validator := paramSet.BindValidatedContainsInt8(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, collection,
@@ -1666,7 +1669,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int8, expectNil bool, collection []int8, dummy int8) string {
+			func(given, should string, value int8, expectNil bool, collection []int8, _ int8) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1675,7 +1678,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsInt8",
-			func(given, should string, value int8, expectNil bool, collection []int8, dummy int8) {
+			func(_, _ string, value int8, expectNil bool, collection []int8, _ int8) {
 				validator := paramSet.BindValidatedNotContainsInt8(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, collection,
@@ -1691,7 +1694,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int8, expectNil bool, collection []int8, dummy int8) string {
+			func(given, should string, value int8, expectNil bool, collection []int8, _ int8) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1700,7 +1703,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt8GreaterThan",
-			func(given, should string, value int8, expectNil bool, threshold, dummy int8) {
+			func(_, _ string, value int8, expectNil bool, threshold, _ int8) {
 				validator := paramSet.BindValidatedInt8GreaterThan(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, threshold,
@@ -1716,7 +1719,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
+			func(given, should string, value int8, expectNil bool, pattern, _ int8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1726,7 +1729,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt8AtLeast",
-			func(given, should string, value int8, expectNil bool, threshold, dummy int8) {
+			func(_, _ string, value int8, expectNil bool, threshold, _ int8) {
 				validator := paramSet.BindValidatedInt8AtLeast(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, threshold,
@@ -1742,7 +1745,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
+			func(given, should string, value int8, expectNil bool, pattern, _ int8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1752,7 +1755,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt8LessThan",
-			func(given, should string, value int8, expectNil bool, threshold, dummy int8) {
+			func(_, _ string, value int8, expectNil bool, threshold, _ int8) {
 				validator := paramSet.BindValidatedInt8LessThan(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, threshold,
@@ -1768,7 +1771,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
+			func(given, should string, value int8, expectNil bool, pattern, _ int8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1778,7 +1781,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedInt8AtMost",
-			func(given, should string, value int8, expectNil bool, threshold, dummy int8) {
+			func(_, _ string, value int8, expectNil bool, threshold, _ int8) {
 				validator := paramSet.BindValidatedInt8AtMost(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8, threshold,
@@ -1794,7 +1797,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value int8, expectNil bool, pattern, dummy int8) string {
+			func(given, should string, value int8, expectNil bool, pattern, _ int8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1804,7 +1807,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringWithin",
-			func(given, should string, value string, expectNil bool, low, high string) {
+			func(_, _ string, value string, expectNil bool, low, high string) {
 				validator := paramSet.BindValidatedStringWithin(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, low, high,
@@ -1833,7 +1836,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringNotWithin",
-			func(given, should string, value string, expectNil bool, low, high string) {
+			func(_, _ string, value string, expectNil bool, low, high string) {
 				validator := paramSet.BindValidatedStringNotWithin(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, low, high,
@@ -1862,7 +1865,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsString",
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) {
+			func(_, _ string, value string, expectNil bool, collection []string, _ string) {
 				validator := paramSet.BindValidatedContainsString(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, collection,
@@ -1878,7 +1881,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
+			func(given, should string, value string, expectNil bool, collection []string, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1887,7 +1890,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsString",
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) {
+			func(_, _ string, value string, expectNil bool, collection []string, _ string) {
 				validator := paramSet.BindValidatedNotContainsString(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, collection,
@@ -1903,7 +1906,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, collection []string, dummy string) string {
+			func(given, should string, value string, expectNil bool, collection []string, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1912,7 +1915,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringIsMatch",
-			func(given, should string, value string, expectNil bool, pattern, dummy string) {
+			func(_, _ string, value string, expectNil bool, pattern, _ string) {
 				validator := paramSet.BindValidatedStringIsMatch(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, pattern,
@@ -1928,7 +1931,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
+			func(given, should string, value string, expectNil bool, pattern, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍇 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1937,7 +1940,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringIsNotMatch",
-			func(given, should string, value string, expectNil bool, pattern, dummy string) {
+			func(_, _ string, value string, expectNil bool, pattern, _ string) {
 				validator := paramSet.BindValidatedStringIsNotMatch(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, pattern,
@@ -1953,7 +1956,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
+			func(given, should string, value string, expectNil bool, pattern, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍇 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1962,7 +1965,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringGreaterThan",
-			func(given, should string, value string, expectNil bool, threshold, dummy string) {
+			func(_, _ string, value string, expectNil bool, threshold, _ string) {
 				validator := paramSet.BindValidatedStringGreaterThan(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, threshold,
@@ -1978,7 +1981,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
+			func(given, should string, value string, expectNil bool, pattern, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -1988,7 +1991,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringAtLeast",
-			func(given, should string, value string, expectNil bool, threshold, dummy string) {
+			func(_, _ string, value string, expectNil bool, threshold, _ string) {
 				validator := paramSet.BindValidatedStringAtLeast(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, threshold,
@@ -2004,7 +2007,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
+			func(given, should string, value string, expectNil bool, pattern, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2014,7 +2017,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringLessThan",
-			func(given, should string, value string, expectNil bool, threshold, dummy string) {
+			func(_, _ string, value string, expectNil bool, threshold, _ string) {
 				validator := paramSet.BindValidatedStringLessThan(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, threshold,
@@ -2030,7 +2033,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
+			func(given, should string, value string, expectNil bool, pattern, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2040,7 +2043,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedStringAtMost",
-			func(given, should string, value string, expectNil bool, threshold, dummy string) {
+			func(_, _ string, value string, expectNil bool, threshold, _ string) {
 				validator := paramSet.BindValidatedStringAtMost(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern, threshold,
@@ -2056,7 +2059,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value string, expectNil bool, pattern, dummy string) string {
+			func(given, should string, value string, expectNil bool, pattern, _ string) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2066,7 +2069,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint16Within",
-			func(given, should string, value uint16, expectNil bool, low, high uint16) {
+			func(_, _ string, value uint16, expectNil bool, low, high uint16) {
 				validator := paramSet.BindValidatedUint16Within(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, low, high,
@@ -2095,7 +2098,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint16NotWithin",
-			func(given, should string, value uint16, expectNil bool, low, high uint16) {
+			func(_, _ string, value uint16, expectNil bool, low, high uint16) {
 				validator := paramSet.BindValidatedUint16NotWithin(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, low, high,
@@ -2124,7 +2127,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsUint16",
-			func(given, should string, value uint16, expectNil bool, collection []uint16, dummy uint16) {
+			func(_, _ string, value uint16, expectNil bool, collection []uint16, _ uint16) {
 				validator := paramSet.BindValidatedContainsUint16(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, collection,
@@ -2140,7 +2143,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint16, expectNil bool, collection []uint16, dummy uint16) string {
+			func(given, should string, value uint16, expectNil bool, collection []uint16, _ uint16) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2149,7 +2152,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsUint16",
-			func(given, should string, value uint16, expectNil bool, collection []uint16, dummy uint16) {
+			func(_, _ string, value uint16, expectNil bool, collection []uint16, _ uint16) {
 				validator := paramSet.BindValidatedNotContainsUint16(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, collection,
@@ -2165,7 +2168,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint16, expectNil bool, collection []uint16, dummy uint16) string {
+			func(given, should string, value uint16, expectNil bool, collection []uint16, _ uint16) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2174,7 +2177,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint16GreaterThan",
-			func(given, should string, value uint16, expectNil bool, threshold, dummy uint16) {
+			func(_, _ string, value uint16, expectNil bool, threshold, _ uint16) {
 				validator := paramSet.BindValidatedUint16GreaterThan(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, threshold,
@@ -2190,7 +2193,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
+			func(given, should string, value uint16, expectNil bool, pattern, _ uint16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2200,7 +2203,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint16AtLeast",
-			func(given, should string, value uint16, expectNil bool, threshold, dummy uint16) {
+			func(_, _ string, value uint16, expectNil bool, threshold, _ uint16) {
 				validator := paramSet.BindValidatedUint16AtLeast(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, threshold,
@@ -2216,7 +2219,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
+			func(given, should string, value uint16, expectNil bool, pattern, _ uint16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2226,7 +2229,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint16LessThan",
-			func(given, should string, value uint16, expectNil bool, threshold, dummy uint16) {
+			func(_, _ string, value uint16, expectNil bool, threshold, _ uint16) {
 				validator := paramSet.BindValidatedUint16LessThan(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, threshold,
@@ -2242,7 +2245,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
+			func(given, should string, value uint16, expectNil bool, pattern, _ uint16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2252,7 +2255,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint16AtMost",
-			func(given, should string, value uint16, expectNil bool, threshold, dummy uint16) {
+			func(_, _ string, value uint16, expectNil bool, threshold, _ uint16) {
 				validator := paramSet.BindValidatedUint16AtMost(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16, threshold,
@@ -2268,7 +2271,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint16, expectNil bool, pattern, dummy uint16) string {
+			func(given, should string, value uint16, expectNil bool, pattern, _ uint16) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2278,7 +2281,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint32Within",
-			func(given, should string, value uint32, expectNil bool, low, high uint32) {
+			func(_, _ string, value uint32, expectNil bool, low, high uint32) {
 				validator := paramSet.BindValidatedUint32Within(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, low, high,
@@ -2307,7 +2310,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint32NotWithin",
-			func(given, should string, value uint32, expectNil bool, low, high uint32) {
+			func(_, _ string, value uint32, expectNil bool, low, high uint32) {
 				validator := paramSet.BindValidatedUint32NotWithin(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, low, high,
@@ -2336,7 +2339,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsUint32",
-			func(given, should string, value uint32, expectNil bool, collection []uint32, dummy uint32) {
+			func(_, _ string, value uint32, expectNil bool, collection []uint32, _ uint32) {
 				validator := paramSet.BindValidatedContainsUint32(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, collection,
@@ -2352,7 +2355,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint32, expectNil bool, collection []uint32, dummy uint32) string {
+			func(given, should string, value uint32, expectNil bool, collection []uint32, _ uint32) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2361,7 +2364,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsUint32",
-			func(given, should string, value uint32, expectNil bool, collection []uint32, dummy uint32) {
+			func(_, _ string, value uint32, expectNil bool, collection []uint32, _ uint32) {
 				validator := paramSet.BindValidatedNotContainsUint32(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, collection,
@@ -2377,7 +2380,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint32, expectNil bool, collection []uint32, dummy uint32) string {
+			func(given, should string, value uint32, expectNil bool, collection []uint32, _ uint32) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2386,7 +2389,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint32GreaterThan",
-			func(given, should string, value uint32, expectNil bool, threshold, dummy uint32) {
+			func(_, _ string, value uint32, expectNil bool, threshold, _ uint32) {
 				validator := paramSet.BindValidatedUint32GreaterThan(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, threshold,
@@ -2402,7 +2405,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
+			func(given, should string, value uint32, expectNil bool, pattern, _ uint32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2412,7 +2415,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint32AtLeast",
-			func(given, should string, value uint32, expectNil bool, threshold, dummy uint32) {
+			func(_, _ string, value uint32, expectNil bool, threshold, _ uint32) {
 				validator := paramSet.BindValidatedUint32AtLeast(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, threshold,
@@ -2428,7 +2431,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
+			func(given, should string, value uint32, expectNil bool, pattern, _ uint32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2438,7 +2441,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint32LessThan",
-			func(given, should string, value uint32, expectNil bool, threshold, dummy uint32) {
+			func(_, _ string, value uint32, expectNil bool, threshold, _ uint32) {
 				validator := paramSet.BindValidatedUint32LessThan(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, threshold,
@@ -2454,7 +2457,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
+			func(given, should string, value uint32, expectNil bool, pattern, _ uint32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2464,7 +2467,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint32AtMost",
-			func(given, should string, value uint32, expectNil bool, threshold, dummy uint32) {
+			func(_, _ string, value uint32, expectNil bool, threshold, _ uint32) {
 				validator := paramSet.BindValidatedUint32AtMost(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32, threshold,
@@ -2480,7 +2483,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint32, expectNil bool, pattern, dummy uint32) string {
+			func(given, should string, value uint32, expectNil bool, pattern, _ uint32) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2490,7 +2493,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint64Within",
-			func(given, should string, value uint64, expectNil bool, low, high uint64) {
+			func(_, _ string, value uint64, expectNil bool, low, high uint64) {
 				validator := paramSet.BindValidatedUint64Within(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, low, high,
@@ -2519,7 +2522,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint64NotWithin",
-			func(given, should string, value uint64, expectNil bool, low, high uint64) {
+			func(_, _ string, value uint64, expectNil bool, low, high uint64) {
 				validator := paramSet.BindValidatedUint64NotWithin(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, low, high,
@@ -2548,7 +2551,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsUint64",
-			func(given, should string, value uint64, expectNil bool, collection []uint64, dummy uint64) {
+			func(_, _ string, value uint64, expectNil bool, collection []uint64, _ uint64) {
 				validator := paramSet.BindValidatedContainsUint64(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, collection,
@@ -2564,7 +2567,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint64, expectNil bool, collection []uint64, dummy uint64) string {
+			func(given, should string, value uint64, expectNil bool, collection []uint64, _ uint64) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2573,7 +2576,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsUint64",
-			func(given, should string, value uint64, expectNil bool, collection []uint64, dummy uint64) {
+			func(_, _ string, value uint64, expectNil bool, collection []uint64, _ uint64) {
 				validator := paramSet.BindValidatedNotContainsUint64(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, collection,
@@ -2589,7 +2592,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint64, expectNil bool, collection []uint64, dummy uint64) string {
+			func(given, should string, value uint64, expectNil bool, collection []uint64, _ uint64) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2598,7 +2601,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint64GreaterThan",
-			func(given, should string, value uint64, expectNil bool, threshold, dummy uint64) {
+			func(_, _ string, value uint64, expectNil bool, threshold, _ uint64) {
 				validator := paramSet.BindValidatedUint64GreaterThan(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, threshold,
@@ -2614,7 +2617,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
+			func(given, should string, value uint64, expectNil bool, pattern, _ uint64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2624,7 +2627,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint64AtLeast",
-			func(given, should string, value uint64, expectNil bool, threshold, dummy uint64) {
+			func(_, _ string, value uint64, expectNil bool, threshold, _ uint64) {
 				validator := paramSet.BindValidatedUint64AtLeast(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, threshold,
@@ -2640,7 +2643,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
+			func(given, should string, value uint64, expectNil bool, pattern, _ uint64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2650,7 +2653,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint64LessThan",
-			func(given, should string, value uint64, expectNil bool, threshold, dummy uint64) {
+			func(_, _ string, value uint64, expectNil bool, threshold, _ uint64) {
 				validator := paramSet.BindValidatedUint64LessThan(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, threshold,
@@ -2666,7 +2669,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
+			func(given, should string, value uint64, expectNil bool, pattern, _ uint64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2676,7 +2679,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint64AtMost",
-			func(given, should string, value uint64, expectNil bool, threshold, dummy uint64) {
+			func(_, _ string, value uint64, expectNil bool, threshold, _ uint64) {
 				validator := paramSet.BindValidatedUint64AtMost(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64, threshold,
@@ -2692,7 +2695,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint64, expectNil bool, pattern, dummy uint64) string {
+			func(given, should string, value uint64, expectNil bool, pattern, _ uint64) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2702,7 +2705,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint8Within",
-			func(given, should string, value uint8, expectNil bool, low, high uint8) {
+			func(_, _ string, value uint8, expectNil bool, low, high uint8) {
 				validator := paramSet.BindValidatedUint8Within(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, low, high,
@@ -2731,7 +2734,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint8NotWithin",
-			func(given, should string, value uint8, expectNil bool, low, high uint8) {
+			func(_, _ string, value uint8, expectNil bool, low, high uint8) {
 				validator := paramSet.BindValidatedUint8NotWithin(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, low, high,
@@ -2760,7 +2763,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsUint8",
-			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) {
+			func(_, _ string, value uint8, expectNil bool, collection []uint8, _ uint8) {
 				validator := paramSet.BindValidatedContainsUint8(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, collection,
@@ -2776,7 +2779,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) string {
+			func(given, should string, value uint8, expectNil bool, collection []uint8, _ uint8) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2785,7 +2788,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsUint8",
-			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) {
+			func(_, _ string, value uint8, expectNil bool, collection []uint8, _ uint8) {
 				validator := paramSet.BindValidatedNotContainsUint8(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, collection,
@@ -2801,7 +2804,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint8, expectNil bool, collection []uint8, dummy uint8) string {
+			func(given, should string, value uint8, expectNil bool, collection []uint8, _ uint8) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2810,7 +2813,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint8GreaterThan",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+			func(given, should string, value uint8, expectNil bool, threshold, _ uint8) {
 				validator := paramSet.BindValidatedUint8GreaterThan(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, threshold,
@@ -2826,7 +2829,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
+			func(given, should string, value uint8, expectNil bool, pattern, _ uint8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2836,7 +2839,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint8AtLeast",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+			func(_, _ string, value uint8, expectNil bool, threshold, _ uint8) {
 				validator := paramSet.BindValidatedUint8AtLeast(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, threshold,
@@ -2852,7 +2855,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
+			func(given, should string, value uint8, expectNil bool, pattern, _ uint8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2862,7 +2865,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint8LessThan",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+			func(_, _ string, value uint8, expectNil bool, threshold, _ uint8) {
 				validator := paramSet.BindValidatedUint8LessThan(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, threshold,
@@ -2878,7 +2881,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
+			func(given, should string, value uint8, expectNil bool, pattern, _ uint8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2888,7 +2891,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUint8AtMost",
-			func(given, should string, value uint8, expectNil bool, threshold, dummy uint8) {
+			func(_, _ string, value uint8, expectNil bool, threshold, _ uint8) {
 				validator := paramSet.BindValidatedUint8AtMost(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8, threshold,
@@ -2904,7 +2907,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint8, expectNil bool, pattern, dummy uint8) string {
+			func(given, should string, value uint8, expectNil bool, pattern, _ uint8) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2914,7 +2917,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUintWithin",
-			func(given, should string, value uint, expectNil bool, low, high uint) {
+			func(_, _ string, value uint, expectNil bool, low, high uint) {
 				validator := paramSet.BindValidatedUintWithin(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, low, high,
@@ -2943,7 +2946,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUintNotWithin",
-			func(given, should string, value uint, expectNil bool, low, high uint) {
+			func(_, _ string, value uint, expectNil bool, low, high uint) {
 				validator := paramSet.BindValidatedUintNotWithin(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, low, high,
@@ -2972,7 +2975,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedContainsUint",
-			func(given, should string, value uint, expectNil bool, collection []uint, dummy uint) {
+			func(_, _ string, value uint, expectNil bool, collection []uint, _ uint) {
 				validator := paramSet.BindValidatedContainsUint(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, collection,
@@ -2988,7 +2991,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint, expectNil bool, collection []uint, dummy uint) string {
+			func(given, should string, value uint, expectNil bool, collection []uint, _ uint) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -2997,7 +3000,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedNotContainsUint",
-			func(given, should string, value uint, expectNil bool, collection []uint, dummy uint) {
+			func(_, _ string, value uint, expectNil bool, collection []uint, _ uint) {
 				validator := paramSet.BindValidatedNotContainsUint(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, collection,
@@ -3013,7 +3016,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint, expectNil bool, collection []uint, dummy uint) string {
+			func(given, should string, value uint, expectNil bool, collection []uint, _ uint) string {
 				return fmt.Sprintf("🧪 --> 🍎 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -3022,7 +3025,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUintGreaterThan",
-			func(given, should string, value uint, expectNil bool, threshold, dummy uint) {
+			func(_, _ string, value uint, expectNil bool, threshold, _ uint) {
 				validator := paramSet.BindValidatedUintGreaterThan(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, threshold,
@@ -3038,7 +3041,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
+			func(given, should string, value uint, expectNil bool, pattern, _ uint) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -3048,7 +3051,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUintAtLeast",
-			func(given, should string, value uint, expectNil bool, threshold, dummy uint) {
+			func(_, _ string, value uint, expectNil bool, threshold, _ uint) {
 				validator := paramSet.BindValidatedUintAtLeast(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, threshold,
@@ -3064,7 +3067,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
+			func(given, should string, value uint, expectNil bool, pattern, _ uint) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -3074,7 +3077,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUintLessThan",
-			func(given, should string, value uint, expectNil bool, threshold, dummy uint) {
+			func(_, _ string, value uint, expectNil bool, threshold, _ uint) {
 				validator := paramSet.BindValidatedUintLessThan(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, threshold,
@@ -3090,7 +3093,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
+			func(given, should string, value uint, expectNil bool, pattern, _ uint) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},
@@ -3100,7 +3103,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 		)
 
 		DescribeTable("BindValidatedUintAtMost",
-			func(given, should string, value uint, expectNil bool, threshold, dummy uint) {
+			func(_, _ string, value uint, expectNil bool, threshold, _ uint) {
 				validator := paramSet.BindValidatedUintAtMost(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count, threshold,
@@ -3116,7 +3119,7 @@ var _ = Describe("ParamSetBinderHelpers", func() {
 					Expect(decorator.Validate()).Error().ToNot(BeNil())
 				}
 			},
-			func(given, should string, value uint, expectNil bool, pattern, dummy uint) string {
+			func(given, should string, value uint, expectNil bool, pattern, _ uint) string {
 				return fmt.Sprintf("🧪 --> 🍌 given: '%v', should: '%v'",
 					given, should)
 			},

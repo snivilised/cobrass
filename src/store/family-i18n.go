@@ -29,7 +29,7 @@ func (f *I18nParameterSet) BindAll(
 			flagSet...,
 		),
 		&parent.Native.Language,
-		func(s string, f *pflag.Flag) error {
+		func(s string, _ *pflag.Flag) error {
 			if _, err := language.Parse(s); err != nil {
 				return err
 			}

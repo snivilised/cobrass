@@ -164,7 +164,7 @@ func (info *EnumInfo[E]) IsValidOrEmpty(value string) bool {
 func (info *EnumInfo[E]) String() string {
 	keys := lo.Keys(info.reverseLookup)
 
-	return lo.Reduce(keys, func(agg string, current string, index int) string {
+	return lo.Reduce(keys, func(agg string, current string, _ int) string {
 		return fmt.Sprintf("%v%v(%v), ", agg, current, info.En(current))
 	}, "")
 }
@@ -181,7 +181,7 @@ func (info *EnumInfo[E]) Acceptable() string {
 	keys := lo.Keys(info.reverseLookup)
 	sort.Strings(keys)
 
-	return "//" + lo.Reduce(keys, func(agg, current string, _ int) string {
+	return slashes + lo.Reduce(keys, func(agg, current string, _ int) string {
 		return fmt.Sprintf("%v%v/", agg, current)
 	}, "") + "/"
 }
@@ -213,7 +213,7 @@ func (info *EnumInfo[E]) AcceptablePrimes() string {
 		elements[i] = info.acceptables[v][0]
 	}
 
-	return "//" + strings.Join(elements, "/") + "//"
+	return slashes + strings.Join(elements, "/") + slashes
 }
 
 // NameOf returns the first acceptable name for the enum value specified.
@@ -311,3 +311,7 @@ func (es *EnumSlice[E]) AllAreValidOrEmpty() bool {
 		return es.Info.IsValidOrEmpty(v)
 	})
 }
+
+const (
+	slashes = "//"
+)

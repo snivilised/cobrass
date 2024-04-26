@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"time"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 	"github.com/spf13/viper"
 	"go.uber.org/mock/gomock"
 
@@ -243,7 +243,7 @@ var _ = Describe("GlobalConfig", Ordered, func() {
 				mock.EXPECT().ConfigFileUsed().Return(e.expected)
 			},
 			expected: "cobrass.yml",
-			actual: func(e *configTE) any {
+			actual: func(_ *configTE) any {
 				full := config.ConfigFileUsed()
 				_ = mock.ConfigFileUsed()
 
@@ -419,7 +419,7 @@ var _ = Describe("GlobalConfig", Ordered, func() {
 
 				return config.GetTime(e.field)
 			},
-			assert: func(entry *configTE, actual any) {
+			assert: func(_ *configTE, _ any) {
 				// how does the time work in config?
 				//
 			},
@@ -437,7 +437,7 @@ var _ = Describe("GlobalConfig", Ordered, func() {
 
 				return config.GetSizeInBytes(e.field)
 			},
-			assert: func(entry *configTE, actual any) {
+			assert: func(_ *configTE, _ any) {
 				// how does the GetSizeInBytes work in config?
 				//
 			},
@@ -473,7 +473,7 @@ var _ = Describe("GlobalConfig", Ordered, func() {
 
 				return config.GetStringMap(e.field)
 			},
-			assert: func(entry *configTE, actual any) {
+			assert: func(_ *configTE, _ any) {
 				// how does the GetSizeInBytes work in config?
 				//
 			},
@@ -521,7 +521,7 @@ var _ = Describe("GlobalConfig", Ordered, func() {
 
 				return config.Sub(e.field)
 			},
-			assert: func(entry *configTE, actual any) {
+			assert: func(_ *configTE, _ any) {
 				//
 			},
 		}),
@@ -541,7 +541,7 @@ var _ = Describe("GlobalConfig", Ordered, func() {
 
 				return config.UnmarshalKey(e.field, &positions)
 			},
-			assert: func(entry *configTE, actual any) {
+			assert: func(_ *configTE, _ any) {
 				//
 			},
 		}),

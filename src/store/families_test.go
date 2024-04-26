@@ -3,8 +3,8 @@ package store_test
 import (
 	"fmt"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant"
@@ -73,7 +73,7 @@ var _ = Describe("Families", Ordered, func() {
 			Use:   "scorch",
 			Short: "scotch",
 			Long:  "scorch is a fake test command which contains filtering capabilities",
-			RunE: func(cmd *cobra.Command, args []string) error {
+			RunE: func(_ *cobra.Command, _ []string) error {
 				return nil
 			},
 		}
