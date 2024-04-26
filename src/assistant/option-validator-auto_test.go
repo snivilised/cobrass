@@ -5,8 +5,8 @@ import (
 	"net"
 	"time"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
@@ -42,7 +42,7 @@ var _ = Describe("OptionValidator", func() {
 			Long:    "Index file system at root: '/'",
 			Args:    cobra.ExactArgs(1),
 
-			RunE: func(command *cobra.Command, args []string) error {
+			RunE: func(_ *cobra.Command, args []string) error {
 				GinkgoWriter.Printf("===> 🍓 EXECUTE (Directory: '%v')\n", args[0])
 
 				paramSet.Native.Directory = args[0]
@@ -76,9 +76,10 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedDuration(
 					assistant.NewFlagInfo("latency", "l", duration("0ms")),
 					&paramSet.Native.Latency,
-					func(value time.Duration, flag *pflag.Flag) error {
+					func(value time.Duration, _ *pflag.Flag) error {
 						expect := duration("300ms")
 						Expect(value).To(BeEquivalentTo(expect))
+
 						return nil
 					},
 				)
@@ -94,8 +95,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedDurationSlice(
 					assistant.NewFlagInfo("Latencies", "L", []time.Duration{}),
 					&paramSet.Native.Latencies,
-					func(value []time.Duration, flag *pflag.Flag) error {
+					func(value []time.Duration, _ *pflag.Flag) error {
 						Expect(value).To(BeEquivalentTo([]time.Duration{duration("1s"), duration("2s"), duration("3s")}))
+
 						return nil
 					},
 				)
@@ -112,8 +114,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedEnum(
 					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
-					func(value string, flag *pflag.Flag) error {
+					func(value string, _ *pflag.Flag) error {
 						Expect(value).To(Equal("xml"))
+
 						return nil
 					},
 				)
@@ -130,8 +133,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedFloat32(
 					assistant.NewFlagInfo("gradientf32", "t", float32(0)),
 					&paramSet.Native.Gradientf32,
-					func(value float32, flag *pflag.Flag) error {
+					func(value float32, _ *pflag.Flag) error {
 						Expect(value).To(Equal(float32(32.0)))
+
 						return nil
 					},
 				)
@@ -147,8 +151,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedFloat32Slice(
 					assistant.NewFlagInfo("Gradientsf32", "G", []float32{}),
 					&paramSet.Native.Gradientsf32,
-					func(value []float32, flag *pflag.Flag) error {
+					func(value []float32, _ *pflag.Flag) error {
 						Expect(value).To(Equal([]float32{3.0, 5.0, 7.0, 9.0}))
+
 						return nil
 					},
 				)
@@ -165,8 +170,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedFloat64(
 					assistant.NewFlagInfo("gradientf64", "t", float64(0)),
 					&paramSet.Native.Gradientf64,
-					func(value float64, flag *pflag.Flag) error {
+					func(value float64, _ *pflag.Flag) error {
 						Expect(value).To(Equal(float64(64.1234)))
+
 						return nil
 					},
 				)
@@ -182,8 +188,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedFloat64Slice(
 					assistant.NewFlagInfo("Gradientsf64", "G", []float64{}),
 					&paramSet.Native.Gradientsf64,
-					func(value []float64, flag *pflag.Flag) error {
+					func(value []float64, _ *pflag.Flag) error {
 						Expect(value).To(Equal([]float64{4.0, 6.0, 8.0, 10.0}))
+
 						return nil
 					},
 				)
@@ -200,8 +207,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedInt(
 					assistant.NewFlagInfo("offset", "o", -1),
 					&paramSet.Native.Offset,
-					func(value int, flag *pflag.Flag) error {
+					func(value int, _ *pflag.Flag) error {
 						Expect(value).To(Equal(-9))
+
 						return nil
 					},
 				)
@@ -217,8 +225,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedIntSlice(
 					assistant.NewFlagInfo("Offsets", "D", []int{}),
 					&paramSet.Native.Offsets,
-					func(value []int, flag *pflag.Flag) error {
+					func(value []int, _ *pflag.Flag) error {
 						Expect(value).To(Equal([]int{2, 4, 6, 8}))
+
 						return nil
 					},
 				)
@@ -235,8 +244,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedInt16(
 					assistant.NewFlagInfo("offset16", "o", int16(-1)),
 					&paramSet.Native.Offset16,
-					func(value int16, flag *pflag.Flag) error {
+					func(value int16, _ *pflag.Flag) error {
 						Expect(value).To(Equal(int16(-999)))
+
 						return nil
 					},
 				)
@@ -253,8 +263,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedInt32(
 					assistant.NewFlagInfo("offset32", "o", int32(-1)),
 					&paramSet.Native.Offset32,
-					func(value int32, flag *pflag.Flag) error {
+					func(value int32, _ *pflag.Flag) error {
 						Expect(value).To(Equal(int32(-9999)))
+
 						return nil
 					},
 				)
@@ -270,8 +281,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedInt32Slice(
 					assistant.NewFlagInfo("Offsets32", "O", []int32{}),
 					&paramSet.Native.Offsets32,
-					func(value []int32, flag *pflag.Flag) error {
+					func(value []int32, _ *pflag.Flag) error {
 						Expect(value).To(Equal([]int32{2, 4, 6, 8}))
+
 						return nil
 					},
 				)
@@ -288,8 +300,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedInt64(
 					assistant.NewFlagInfo("offset64", "o", int64(-1)),
 					&paramSet.Native.Offset64,
-					func(value int64, flag *pflag.Flag) error {
+					func(value int64, _ *pflag.Flag) error {
 						Expect(value).To(Equal(int64(-99999)))
+
 						return nil
 					},
 				)
@@ -305,8 +318,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedInt64Slice(
 					assistant.NewFlagInfo("Offsets64", "O", []int64{}),
 					&paramSet.Native.Offsets64,
-					func(value []int64, flag *pflag.Flag) error {
+					func(value []int64, _ *pflag.Flag) error {
 						Expect(value).To(Equal([]int64{2, 4, 6, 8}))
+
 						return nil
 					},
 				)
@@ -323,8 +337,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedInt8(
 					assistant.NewFlagInfo("offset8", "o", int8(-1)),
 					&paramSet.Native.Offset8,
-					func(value int8, flag *pflag.Flag) error {
+					func(value int8, _ *pflag.Flag) error {
 						Expect(value).To(Equal(int8(-99)))
+
 						return nil
 					},
 				)
@@ -341,8 +356,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedIPMask(
 					assistant.NewFlagInfo("ipmask", "m", ipmask("default")),
 					&paramSet.Native.IPMask,
-					func(value net.IPMask, flag *pflag.Flag) error {
+					func(value net.IPMask, _ *pflag.Flag) error {
 						Expect(value).To(BeEquivalentTo(ipmask("orion.net")))
+
 						return nil
 					},
 				)
@@ -359,8 +375,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedIPNet(
 					assistant.NewFlagInfo("ipaddress", "i", ipnet("default")),
 					&paramSet.Native.IPAddress,
-					func(value net.IPNet, flag *pflag.Flag) error {
+					func(value net.IPNet, _ *pflag.Flag) error {
 						Expect(value).To(BeEquivalentTo(ipnet("orion.net")))
+
 						return nil
 					},
 				)
@@ -377,8 +394,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedString(
 					assistant.NewFlagInfo("pattern", "p", "default-pattern"),
 					&paramSet.Native.Pattern,
-					func(value string, flag *pflag.Flag) error {
+					func(value string, _ *pflag.Flag) error {
 						Expect(value).To(Equal("*music.infex*"))
+
 						return nil
 					},
 				)
@@ -394,8 +412,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedStringSlice(
 					assistant.NewFlagInfo("Directories", "C", []string{}),
 					&paramSet.Native.Directories,
-					func(value []string, flag *pflag.Flag) error {
+					func(value []string, _ *pflag.Flag) error {
 						Expect(value).To(Equal([]string{"alpha", "beta", "delta"}))
+
 						return nil
 					},
 				)
@@ -412,8 +431,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedUint16(
 					assistant.NewFlagInfo("count16", "c", uint16(0)),
 					&paramSet.Native.Count16,
-					func(value uint16, flag *pflag.Flag) error {
+					func(value uint16, _ *pflag.Flag) error {
 						Expect(value).To(Equal(uint16(333)))
+
 						return nil
 					},
 				)
@@ -430,8 +450,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedUint32(
 					assistant.NewFlagInfo("count32", "c", uint32(0)),
 					&paramSet.Native.Count32,
-					func(value uint32, flag *pflag.Flag) error {
+					func(value uint32, _ *pflag.Flag) error {
 						Expect(value).To(Equal(uint32(3333)))
+
 						return nil
 					},
 				)
@@ -448,8 +469,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedUint64(
 					assistant.NewFlagInfo("count64", "c", uint64(0)),
 					&paramSet.Native.Count64,
-					func(value uint64, flag *pflag.Flag) error {
+					func(value uint64, _ *pflag.Flag) error {
 						Expect(value).To(Equal(uint64(33333)))
+
 						return nil
 					},
 				)
@@ -466,8 +488,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedUint8(
 					assistant.NewFlagInfo("count8", "c", uint8(0)),
 					&paramSet.Native.Count8,
-					func(value uint8, flag *pflag.Flag) error {
+					func(value uint8, _ *pflag.Flag) error {
 						Expect(value).To(Equal(uint8(33)))
+
 						return nil
 					},
 				)
@@ -484,8 +507,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedUint(
 					assistant.NewFlagInfo("count", "c", uint(0)),
 					&paramSet.Native.Count,
-					func(value uint, flag *pflag.Flag) error {
+					func(value uint, _ *pflag.Flag) error {
 						Expect(value).To(Equal(uint(99999)))
+
 						return nil
 					},
 				)
@@ -501,8 +525,9 @@ var _ = Describe("OptionValidator", func() {
 				return paramSet.BindValidatedUintSlice(
 					assistant.NewFlagInfo("Counts", "P", []uint{}),
 					&paramSet.Native.Counts,
-					func(value []uint, flag *pflag.Flag) error {
+					func(value []uint, _ *pflag.Flag) error {
 						Expect(value).To(Equal([]uint{2, 4, 6, 8}))
+
 						return nil
 					},
 				)

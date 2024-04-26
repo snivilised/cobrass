@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant"
@@ -37,16 +37,16 @@ var _ = Describe("ParamSet (auto)", func() {
 				Long:    "Index file system at root: '/'",
 				Args:    cobra.ExactArgs(1),
 
-				PreRun: func(command *cobra.Command, args []string) {
+				PreRun: func(_ *cobra.Command, _ []string) {
 					GinkgoWriter.Printf("**** 🍉 PRE-RUN\n")
 				},
-				RunE: func(command *cobra.Command, args []string) error {
+				RunE: func(_ *cobra.Command, args []string) error {
 					GinkgoWriter.Printf("===> 🍓 EXECUTE (Directory: '%v')\n", args[0])
 
 					paramSet.Native.Directory = args[0]
 					return nil
 				},
-				PostRun: func(command *cobra.Command, args []string) {
+				PostRun: func(_ *cobra.Command, _ []string) {
 					GinkgoWriter.Printf("**** 🥥 POST-RUN\n")
 				},
 			}

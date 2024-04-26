@@ -3,8 +3,8 @@ package i18n_test
 import (
 	"fmt"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 
 	"github.com/snivilised/cobrass/src/assistant/i18n"
 	"github.com/snivilised/cobrass/src/internal/helpers"
@@ -73,7 +73,7 @@ var _ = Describe("MessagesValidationErrors", Ordered, func() {
 			Name: "NewNotWithinOptValidationError",
 			Fn:   i18n.NewNotWithinOptValidationError,
 			Args: []any{"foo-flag", 5, 10, 20},
-			Verify: func(err error) bool {
+			Verify: func(_ error) bool {
 				return true
 			},
 		}),

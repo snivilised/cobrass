@@ -52,7 +52,7 @@ linters:
     - nakedret
     - prealloc
     - predeclared
-    - revive
+    # - revive // over-bearing for generated code, too many instances
     - staticcheck
     # - structcheck
     - stylecheck

@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
+	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -143,14 +143,14 @@ var _ = Describe("Enum", func() {
 
 		Context("EnumSlice", func() {
 			DescribeTable("Values",
-				func(given, should string, source []string, expect []OutputFormatEnum) {
+				func(_, _ string, source []string, expect []OutputFormatEnum) {
 					outputFormatEnumSlice.Source = source
 
 					Expect(reflect.DeepEqual(
 						outputFormatEnumSlice.Values(), expect,
 					)).To(BeTrue())
 				},
-				func(given, should string, source []string, expect []OutputFormatEnum) string {
+				func(given, should string, _ []string, _ []OutputFormatEnum) string {
 					return fmt.Sprintf("🧪 --> 🍈 given: '%v', should: '%v'",
 						given, should)
 				},
@@ -169,12 +169,12 @@ var _ = Describe("Enum", func() {
 			)
 
 			DescribeTable("AllAreValid",
-				func(given, should string, source []string, expect bool) {
+				func(_, _ string, source []string, expect bool) {
 					outputFormatEnumSlice.Source = source
 
 					Expect(outputFormatEnumSlice.AllAreValid()).To(Equal(expect))
 				},
-				func(given, should string, source []string, expect bool) string {
+				func(given, should string, _ []string, _ bool) string {
 					return fmt.Sprintf("🧪 --> 🍈 given: '%v', should: '%v'",
 						given, should)
 				},
@@ -193,12 +193,12 @@ var _ = Describe("Enum", func() {
 			)
 
 			DescribeTable("AllAreValidOrEmpty",
-				func(given, should string, source []string, expect bool) {
+				func(_, _ string, source []string, expect bool) {
 					outputFormatEnumSlice.Source = source
 
 					Expect(outputFormatEnumSlice.AllAreValidOrEmpty()).To(Equal(expect))
 				},
-				func(given, should string, source []string, expect bool) string {
+				func(given, should string, _ []string, _ bool) string {
 					return fmt.Sprintf("🧪 --> 🍈 given: '%v', should: '%v'",
 						given, should)
 				},
@@ -271,7 +271,7 @@ var _ = Describe("Enum", func() {
 				wrapper := paramSet.BindValidatedEnum(
 					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
-					func(value string, flag *pflag.Flag) error {
+					func(value string, _ *pflag.Flag) error {
 						return lo.Ternary(outputFormatEnumInfo.IsValid(value), nil,
 							fmt.Errorf("Enum value: '%v' is not valid", value))
 					},
@@ -288,7 +288,7 @@ var _ = Describe("Enum", func() {
 				wrapper := paramSet.BindValidatedEnum(
 					assistant.NewFlagInfo("format", "f", "xml"),
 					&outputFormatEnum.Source,
-					func(value string, flag *pflag.Flag) error {
+					func(value string, _ *pflag.Flag) error {
 						return lo.Ternary(outputFormatEnum.IsValid(), nil,
 							fmt.Errorf("Enum value: '%v' is not valid", value))
 					},

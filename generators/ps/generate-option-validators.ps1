@@ -1249,11 +1249,13 @@ Entry(nil, OvEntry{
   },
   Validator: func() assistant.OptionValidator {
     $($spec.Assign)
+
     return paramSet.BindValidated$($spec.TypeName)(
       assistant.NewFlagInfo("$($lowerFlagName)", "$($spec.Short)", $default),
       $bindTo,
       func(value $($spec.GoType), flag *pflag.Flag) error {
         $($assert)
+
         return nil
       },
     )
@@ -1282,6 +1284,7 @@ Entry(nil, OvEntry{
       &paramSet.Native.$($spec.SliceFlagName),
       func(value $($sliceType), flag *pflag.Flag) error {
         Expect(value).To($($spec.Equate)($($spec.ExpectSlice)))
+
         return nil
       },
     )
