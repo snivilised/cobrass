@@ -1,6 +1,6 @@
 module github.com/snivilised/cobrass
 
-go 1.21
+go 1.22
 
 require (
 	github.com/avfs/avfs v0.33.0
