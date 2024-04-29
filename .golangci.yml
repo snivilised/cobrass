@@ -4,7 +4,7 @@ linters-settings:
   goconst:
     min-len: 2
     min-occurrences: 3
-  # since upgrading to v1.22.1 of go:
+  # since upgrading to v1.22.0 of go:
   # ERRO [linters_context] gocritic: load embedded ruleguard
   # rules: rules/rules.go:13: can't load fmt: setting an explicit GOROOT can fix this problem.
   #
@@ -63,6 +63,13 @@ linters:
     # - varcheck
     - whitespace
     - wsl
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  fix: true
+  exclude:
+    - "cuddle"
 
 run:
   skip-dirs:
