@@ -4,7 +4,7 @@ go 1.22.0
 
 require (
 	github.com/avfs/avfs v0.33.0
-	github.com/onsi/ginkgo/v2 v2.18.0
+	github.com/onsi/ginkgo/v2 v2.19.0
 	github.com/onsi/gomega v1.33.1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
