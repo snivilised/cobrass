@@ -43,5 +43,5 @@ require (
 	github.com/spf13/viper v1.19.0
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect
-	golang.org/x/text v0.18.0
+	golang.org/x/text v0.19.0
 )
