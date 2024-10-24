@@ -3,7 +3,7 @@ module github.com/snivilised/cobrass
 go 1.22.0
 
 require (
-	github.com/avfs/avfs v0.33.0
+	github.com/avfs/avfs v0.34.0
 	github.com/onsi/ginkgo/v2 v2.20.2
 	github.com/onsi/gomega v1.34.2
 	github.com/spf13/cobra v1.8.1
