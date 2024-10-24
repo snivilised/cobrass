@@ -3,6 +3,7 @@ package gola_test
 import (
 	_ "embed"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 
@@ -13,8 +14,14 @@ import (
 )
 
 var (
-	faydeaudeau = os.FileMode(0o777)
-	beezledub   = os.FileMode(0o666)
+	// to go into a lab
+	Perms = struct {
+		File fs.FileMode
+		Dir  fs.FileMode
+	}{
+		File: 0o666, //nolint:mnd // ok (pedantic)
+		Dir:  0o777, //nolint:mnd // ok (pedantic)
+	}
 )
 
 type setupFile struct {
@@ -23,12 +30,12 @@ type setupFile struct {
 }
 
 func setup(fs nef.UniversalFS, directoryPath string, files ...setupFile) {
-	if e := fs.MakeDirAll(directoryPath, faydeaudeau); e != nil {
+	if e := fs.MakeDirAll(directoryPath, Perms.Dir); e != nil {
 		Fail(e.Error())
 	}
 
 	for _, f := range files {
-		if e := fs.WriteFile(f.path, f.data, beezledub); e != nil {
+		if e := fs.WriteFile(f.path, f.data, Perms.File); e != nil {
 			Fail(e.Error())
 		}
 	}

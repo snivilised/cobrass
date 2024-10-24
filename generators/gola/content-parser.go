@@ -20,26 +20,26 @@ func parseInline(contents CodeContent) (*SignatureResult, error) {
 }
 
 // parseFromFS parses content acquired from the filesystem.
-func parseFromFS(vfs nef.ReaderFS, directoryPath string) (*SignatureResult, error) {
+func parseFromFS(fS nef.ReaderFS, directoryPath string) (*SignatureResult, error) {
 	var (
 		entries         []fs.DirEntry
 		contents        CodeContent
 		readErr, acqErr error
 	)
 
-	if entries, readErr = readEntries(vfs, directoryPath); readErr != nil {
+	if entries, readErr = readEntries(fS, directoryPath); readErr != nil {
 		return nil, readErr
 	}
 
-	if contents, acqErr = acquire(vfs, directoryPath, entries); acqErr != nil {
+	if contents, acqErr = acquire(fS, directoryPath, entries); acqErr != nil {
 		return nil, acqErr
 	}
 
 	return parseContents(contents)
 }
 
-func readEntries(vfs nef.ReaderFS, directoryPath string) ([]fs.DirEntry, error) {
-	entries, err := vfs.ReadDir(directoryPath)
+func readEntries(fS nef.ReaderFS, directoryPath string) ([]fs.DirEntry, error) {
+	entries, err := fS.ReadDir(directoryPath)
 
 	if err != nil {
 		return nil, err
@@ -64,13 +64,13 @@ func readEntries(vfs nef.ReaderFS, directoryPath string) ([]fs.DirEntry, error) 
 	return entries, nil
 }
 
-func acquire(vfs nef.ReaderFS, directoryPath string, entries []fs.DirEntry) (CodeContent, error) {
+func acquire(fS nef.ReaderFS, directoryPath string, entries []fs.DirEntry) (CodeContent, error) {
 	contents := make(CodeContent, len(entries))
 
 	for _, entry := range entries {
 		name := entry.Name()
 		sourcePath := filepath.Join(directoryPath, name)
-		c, err := vfs.ReadFile(sourcePath)
+		c, err := fS.ReadFile(sourcePath)
 
 		if err != nil {
 			return nil, err
