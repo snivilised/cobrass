@@ -12,25 +12,22 @@ import (
 
 var _ = Describe("SourceCodeGenerator", Ordered, func() {
 	var (
-		repo, testPath, sourcePath string
-		fs                         nef.UniversalFS
+		repo, testPath string
+		fS             nef.UniversalFS
 	)
 
 	BeforeAll(func() {
 		repo = Repo("../..")
 		testPath = filepath.Join("generators", "gola", "out", "assistant")
-		sourcePath = filepath.Join("src", "assistant")
-		fs = nef.NewUniversalABS() // use mapFS
-
-		_ = sourcePath
+		fS = NewTestMemFS()
 	})
 
 	Context("AnyMissing", func() {
 		When("test mode", func() {
-			XIt("should: find all source code files are present", func() {
+			It("should: find all source code files are present", func() {
 				outputPath := filepath.Join(repo, testPath)
 				templatesSubPath := ""
-				codeContainer := gola.NewSourceCodeContainer(fs, outputPath, templatesSubPath)
+				codeContainer := gola.NewSourceCodeContainer(fS, outputPath, templatesSubPath)
 
 				omitWrite := false
 				_, err := codeContainer.Generator(omitWrite).Run()

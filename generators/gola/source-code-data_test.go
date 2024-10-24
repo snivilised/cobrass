@@ -39,7 +39,7 @@ var _ = Describe("SourceCodeData", Ordered, func() {
 
 	Context("AnyMissing", func() {
 		When("source mode", func() {
-			XIt("🧪 should: find all source code files are present", func() {
+			It("🧪 should: find all source code files are present", func() {
 				outputPath := filepath.Join(repo, sourcePath)
 				templatesSubPath := ""
 				sourceContainer := gola.NewSourceCodeContainer(fS, outputPath, templatesSubPath)

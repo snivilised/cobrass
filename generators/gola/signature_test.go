@@ -14,7 +14,6 @@ import (
 )
 
 var (
-	// to go into a lab
 	Perms = struct {
 		File fs.FileMode
 		Dir  fs.FileMode
@@ -31,12 +30,12 @@ type setupFile struct {
 
 func setup(fS nef.UniversalFS, directoryPath string, files ...setupFile) {
 	if e := fS.MakeDirAll(directoryPath, Perms.Dir); e != nil {
-		Fail(e.Error())
+		Fail(fmt.Sprintf("%q, path: %q", e.Error(), directoryPath))
 	}
 
 	for _, f := range files {
 		if e := fS.WriteFile(f.path, f.data, Perms.File); e != nil {
-			Fail(e.Error())
+			Fail(fmt.Sprintf("%q, path: %q", e.Error(), f.path))
 		}
 	}
 }
@@ -50,7 +49,7 @@ func setup(fS nef.UniversalFS, directoryPath string, files ...setupFile) {
 // having to over-write the source code. Only when the new defined generated code
 // is deemed to be correct, the existing code can be overridden.
 
-var _ = XDescribe("Signature", Ordered, func() {
+var _ = Describe("Signature", Ordered, func() {
 	var (
 		repo,
 		testPath,
@@ -69,32 +68,30 @@ var _ = XDescribe("Signature", Ordered, func() {
 			Context("and: Test mode", func() {
 				Context("and: without write", func() {
 					It("🧪 should: return hash result of newly generated content", func() {
-						// use mapFile
-						//
-						mfs := nef.NewUniversalABS()
+						fS := NewTestMemFS()
 						templatesSubPath := ""
 						outputPath = filepath.Join(repo, testPath)
 
-						// ☢️ TODO: !! what about the other files?; this is short term and will
+						// 👻 TODO: !! what about the other files?; this is short term and will
 						// need to accommodate the other source files.
 						//
-						path := filepath.Join(outputPath, "option-validator-auto.go")
+						path := filepath.Join(testPath, "option-validator-auto.go")
 
 						if data, err := os.ReadFile(path); err != nil {
-							setup(mfs, outputPath, setupFile{
+							setup(fS, testPath, setupFile{
 								path: path,
 								data: data,
 							})
 						}
-						Expect(mfs.FileExists(path)).To(BeTrue())
+						Expect(fS.FileExists(path)).To(BeTrue())
 
-						sourceCode := gola.NewSourceCodeContainer(mfs, outputPath, templatesSubPath)
+						sourceCode := gola.NewSourceCodeContainer(fS, testPath, templatesSubPath)
 						result, err := sourceCode.Signature()
 
 						Expect(err).Error().To(BeNil())
 						Expect(result.Hash).NotTo(BeEmpty())
 
-						// ⚠️ Can't expect this to match yet, since the registered hash is
+						// 👻 Can't expect this to match yet, since the registered hash is
 						// generated from all 3 sources, but only the generation of
 						// option-validator-auto.go has been implemented so far
 						//
@@ -106,11 +103,11 @@ var _ = XDescribe("Signature", Ordered, func() {
 			Context("and: Source mode", func() {
 				Context("and: without write", func() {
 					It("🧪 should: return hash result of src/assistant/*auto*.go", func() {
-						nfs := nef.NewUniversalABS() // TODO: check
+						fS := nef.NewUniversalABS()
 						templatesSubPath := ""
 						outputPath = filepath.Join(repo, sourcePath)
 
-						sourceCode := gola.NewSourceCodeContainer(nfs, outputPath, templatesSubPath)
+						sourceCode := gola.NewSourceCodeContainer(fS, outputPath, templatesSubPath)
 						result, err := sourceCode.Signature()
 
 						fmt.Printf("===> [👾] REGISTERED-HASH: '%v'\n", gola.RegisteredHash)
@@ -128,31 +125,37 @@ var _ = XDescribe("Signature", Ordered, func() {
 			Context("and: Test mode", func() {
 				Context("and: without write", func() {
 					It("🧪 should: return hash result of parsed contents sources", func() {
-						nfs := nef.NewUniversalABS()
+						const (
+							doWrite = false
+						)
+						fS := nef.NewUniversalABS()
 						templatesSubPath := ""
 						outputPath = filepath.Join(repo, testPath)
-						sourceCode := gola.NewSourceCodeContainer(nfs, outputPath, templatesSubPath)
-						doWrite := false
+						sourceCode := gola.NewSourceCodeContainer(fS, outputPath, templatesSubPath)
 						result, err := sourceCode.Generator(doWrite).Run()
 
 						Expect(err).Error().To(BeNil())
 						Expect(result.Output).NotTo(BeEmpty())
-						Expect(result.Hash).NotTo(MatchRegisteredHash(gola.RegisteredHash)) // ⚠️
+						Expect(result.Hash).NotTo(MatchRegisteredHash(gola.RegisteredHash)) // 👻
 					})
 				})
 
 				Context("and: with write", func() {
 					It("🧪 should: return hash result of generators/gola/out/assistant/*auto*.go", func() {
-						mfs := nef.NewUniversalABS() // use mapFS
+						const (
+							doWrite = true
+						)
+
+						fS := NewTestMemFS()
 						templatesSubPath := ""
 						outputPath = filepath.Join(repo, testPath)
 
-						sourceCode := gola.NewSourceCodeContainer(mfs, outputPath, templatesSubPath)
-						doWrite := true
+						// only use testPath as this is relative and required when using mapFS
+						sourceCode := gola.NewSourceCodeContainer(fS, testPath, templatesSubPath)
 						result, err := sourceCode.Generator(doWrite).Run()
-						path := filepath.Join(outputPath, "option-validator-auto.go") // ☢️
+						path := filepath.Join(testPath, "option-validator-auto.go") // ☢️
 
-						Expect(mfs.FileExists(path)).To(BeTrue(),
+						Expect(fS.FileExists(path)).To(BeTrue(),
 							fmt.Sprintf("⛔⛔⛔ generated file '%v' not found\n", path),
 						)
 
@@ -161,7 +164,7 @@ var _ = XDescribe("Signature", Ordered, func() {
 
 						Expect(err).Error().To(BeNil())
 						Expect(result.Output).NotTo(BeEmpty())
-						Expect(result.Hash).NotTo(MatchRegisteredHash(gola.RegisteredHash)) // ⚠️
+						Expect(result.Hash).NotTo(MatchRegisteredHash(gola.RegisteredHash)) // 👻
 					})
 				})
 			})
