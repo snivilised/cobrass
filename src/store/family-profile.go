@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	xi18n "github.com/snivilised/extendio/i18n"
 	"github.com/spf13/pflag"
 )
@@ -24,7 +24,7 @@ func (f *ProfileParameterSet) BindAll(
 
 	parent.BindValidatedStringIsMatch(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.ProfileParamUsageTemplData{}),
+			xi18n.Text(locale.ProfileParamUsageTemplData{}),
 			defaultProfile,
 			flagSet...,
 		),
@@ -40,7 +40,7 @@ func (f *ProfileParameterSet) BindAll(
 
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.SchemeParamUsageTemplData{}),
+			xi18n.Text(locale.SchemeParamUsageTemplData{}),
 			defaultScheme,
 			flagSet...,
 		),

@@ -9,7 +9,7 @@ import (
 
 	"github.com/snivilised/cobrass"
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	"github.com/snivilised/cobrass/src/clif"
 	"github.com/snivilised/cobrass/src/internal/helpers"
 	"github.com/snivilised/cobrass/src/store"
@@ -47,7 +47,7 @@ var _ = Describe("GetThirdPartyCL", Ordered, func() {
 		from = xi18n.LoadFrom{
 			Path: l10nPath,
 			Sources: xi18n.TranslationFiles{
-				i18n.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
+				locale.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
 			},
 		}
 

@@ -1,4 +1,4 @@
-package i18n_test
+package locale_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	"github.com/snivilised/cobrass/src/internal/helpers"
 	xi18n "github.com/snivilised/extendio/i18n"
 )
@@ -34,7 +34,7 @@ var _ = Describe("MessagesValidationErrors", Ordered, func() {
 		from = xi18n.LoadFrom{
 			Path: l10nPath,
 			Sources: xi18n.TranslationFiles{
-				i18n.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
+				locale.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
 			},
 		}
 
@@ -59,10 +59,10 @@ var _ = Describe("MessagesValidationErrors", Ordered, func() {
 
 		Entry(nil, validationEntry{
 			Name: "NewWithinOptValidationError",
-			Fn:   i18n.NewWithinOptValidationError,
+			Fn:   locale.NewWithinOptValidationError,
 			Args: []any{"foo-flag", 1, 10, 20},
 			Verify: func(err error) bool {
-				if e, ok := err.(i18n.WithinOptValidationBehaviourQuery); ok {
+				if e, ok := err.(locale.WithinOptValidationBehaviourQuery); ok {
 					return e.IsOutOfRange()
 				}
 				return false
@@ -71,7 +71,7 @@ var _ = Describe("MessagesValidationErrors", Ordered, func() {
 
 		Entry(nil, validationEntry{
 			Name: "NewNotWithinOptValidationError",
-			Fn:   i18n.NewNotWithinOptValidationError,
+			Fn:   locale.NewNotWithinOptValidationError,
 			Args: []any{"foo-flag", 5, 10, 20},
 			Verify: func(_ error) bool {
 				return true
@@ -81,7 +81,7 @@ var _ = Describe("MessagesValidationErrors", Ordered, func() {
 
 	Context("NewNotContainsOptValidationError", func() {
 		It("should: create error", func() {
-			err := i18n.NewNotContainsOptValidationError("foo-flag", int(1), []int{2, 4, 6, 8})
+			err := locale.NewNotContainsOptValidationError("foo-flag", int(1), []int{2, 4, 6, 8})
 			GinkgoWriter.Printf("💥💥💥 ===> ERROR: '%v'", err)
 		})
 	})

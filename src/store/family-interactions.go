@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	xi18n "github.com/snivilised/extendio/i18n"
 	"github.com/spf13/pflag"
 )
@@ -23,7 +23,7 @@ func (f *TextualInteractionParameterSet) BindAll(
 
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.TextualInteractionIsNoTUIUsageTemplData{}),
+			xi18n.Text(locale.TextualInteractionIsNoTUIUsageTemplData{}),
 			defNoTUI,
 			flagSet...,
 		),
@@ -47,7 +47,7 @@ func (f *CliInteractionParameterSet) BindAll(
 
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.CliInteractionIsTUIUsageTemplData{}),
+			xi18n.Text(locale.CliInteractionIsTUIUsageTemplData{}),
 			defIsTUI,
 			flagSet...,
 		),

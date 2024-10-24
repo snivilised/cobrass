@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	xi18n "github.com/snivilised/extendio/i18n"
 	"github.com/spf13/pflag"
 )
@@ -26,7 +26,7 @@ func (f *SamplingParameterSet) BindAll(
 	//
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.SamplingSampleUsageTemplData{}),
+			xi18n.Text(locale.SamplingSampleUsageTemplData{}),
 			defIsSampling,
 			flagSet...,
 		),
@@ -43,7 +43,7 @@ func (f *SamplingParameterSet) BindAll(
 	//
 	parent.BindValidatedUintWithin(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.SamplingNoFilesUsageTemplData{}),
+			xi18n.Text(locale.SamplingNoFilesUsageTemplData{}),
 			defFSItems,
 			flagSet...,
 		),
@@ -56,7 +56,7 @@ func (f *SamplingParameterSet) BindAll(
 	//
 	parent.BindValidatedUintWithin(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.SamplingNoFoldersUsageTemplData{}),
+			xi18n.Text(locale.SamplingNoFoldersUsageTemplData{}),
 			defFSItems,
 			flagSet...,
 		),
@@ -73,7 +73,7 @@ func (f *SamplingParameterSet) BindAll(
 	//
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.SamplingLastUsageTemplData{}),
+			xi18n.Text(locale.SamplingLastUsageTemplData{}),
 			defIsLast,
 			flagSet...,
 		),

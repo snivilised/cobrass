@@ -4,7 +4,7 @@ import (
 	"regexp"
 
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	xi18n "github.com/snivilised/extendio/i18n"
 	"github.com/spf13/pflag"
 )
@@ -50,7 +50,7 @@ func (f *FilesFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FilesExGlobParamUsageTemplData{}),
+			xi18n.Text(locale.FilesExGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -61,7 +61,7 @@ func (f *FilesFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FilesGlobParamUsageTemplData{}),
+			xi18n.Text(locale.FilesGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -72,7 +72,7 @@ func (f *FilesFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FilesRegExParamUsageTemplData{}),
+			xi18n.Text(locale.FilesRegExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -103,7 +103,7 @@ func (f *FoldersFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FoldersGlobParamUsageTemplData{}),
+			xi18n.Text(locale.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -114,7 +114,7 @@ func (f *FoldersFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FoldersRexExParamUsageTemplData{}),
+			xi18n.Text(locale.FoldersRexExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -147,7 +147,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FilesExGlobParamUsageTemplData{}),
+			xi18n.Text(locale.FilesExGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -158,7 +158,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FilesRegExParamUsageTemplData{}),
+			xi18n.Text(locale.FilesRegExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -173,7 +173,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FoldersGlobParamUsageTemplData{}),
+			xi18n.Text(locale.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -184,7 +184,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FoldersRexExParamUsageTemplData{}),
+			xi18n.Text(locale.FoldersRexExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -215,7 +215,7 @@ func (f *AlloyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FilesExGlobParamUsageTemplData{}),
+			xi18n.Text(locale.FilesExGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -226,7 +226,7 @@ func (f *AlloyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.FoldersGlobParamUsageTemplData{}),
+			xi18n.Text(locale.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),

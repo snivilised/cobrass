@@ -1,4 +1,4 @@
-package i18n_test
+package locale_test
 
 import (
 	"testing"

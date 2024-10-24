@@ -1,4 +1,4 @@
-package i18n_test
+package locale_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	"github.com/snivilised/cobrass/src/internal/helpers"
 )
 
@@ -30,55 +30,55 @@ var _ = Describe("MessagesNativeErrors", func() {
 
 		Entry(nil, nativeEntry{
 			Name: "NewEnumValueValueAlreadyExistsNativeError",
-			Fn:   i18n.NewEnumValueValueAlreadyExistsNativeError,
+			Fn:   locale.NewEnumValueValueAlreadyExistsNativeError,
 			Args: []any{"foo-bar", 2},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewIsNotValidEnumValueNativeError",
-			Fn:   i18n.NewIsNotValidEnumValueNativeError,
+			Fn:   locale.NewIsNotValidEnumValueNativeError,
 			Args: []any{"foo-bar"},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewFailedToAddValidatorAlreadyExistsNativeError",
-			Fn:   i18n.NewFailedToAddValidatorAlreadyExistsNativeError,
+			Fn:   locale.NewFailedToAddValidatorAlreadyExistsNativeError,
 			Args: []any{"foo-flag"},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewCommandAlreadyRegisteredNativeError",
-			Fn:   i18n.NewCommandAlreadyRegisteredNativeError,
+			Fn:   locale.NewCommandAlreadyRegisteredNativeError,
 			Args: []any{"foo-name"},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewParentCommandNotRegisteredNativeError",
-			Fn:   i18n.NewParentCommandNotRegisteredNativeError,
+			Fn:   locale.NewParentCommandNotRegisteredNativeError,
 			Args: []any{"foo-parent"},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewParamSetAlreadyRegisteredNativeError",
-			Fn:   i18n.NewParamSetAlreadyRegisteredNativeError,
+			Fn:   locale.NewParamSetAlreadyRegisteredNativeError,
 			Args: []any{"foo-name"},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewParamSetObjectMustBeStructNativeError",
-			Fn:   i18n.NewParamSetObjectMustBeStructNativeError,
+			Fn:   locale.NewParamSetObjectMustBeStructNativeError,
 			Args: []any{"foo-name", "foo-typ"},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewParamSetObjectMustBePointerNativeError",
-			Fn:   i18n.NewParamSetObjectMustBePointerNativeError,
+			Fn:   locale.NewParamSetObjectMustBePointerNativeError,
 			Args: []any{"foo-pointer-name", "foo-pointer-typ"},
 		}),
 
 		Entry(nil, nativeEntry{
 			Name: "NewParamSetNotFoundNativeError",
-			Fn:   i18n.NewParamSetNotFoundNativeError,
+			Fn:   locale.NewParamSetNotFoundNativeError,
 			Args: []any{"foo-name"},
 		}),
 	)

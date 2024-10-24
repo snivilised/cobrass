@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	"github.com/snivilised/cobrass/src/internal/helpers"
 	"github.com/snivilised/cobrass/src/store"
 	xi18n "github.com/snivilised/extendio/i18n"
@@ -50,7 +50,7 @@ var _ = Describe("Families", Ordered, func() {
 		from = xi18n.LoadFrom{
 			Path: l10nPath,
 			Sources: xi18n.TranslationFiles{
-				i18n.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
+				locale.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
 			},
 		}
 
