@@ -8,13 +8,13 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/generators/gola/internal/collections"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 type sourceCodeDataCollection = collections.OrderedKeysMap[CodeFileName, *SourceCodeData]
 
 type SourceCodeContainer struct {
-	vfs              storage.VirtualFS
+	vfs              nef.UniversalFS
 	absolutePath     string
 	templatesSubPath string
 	collection       sourceCodeDataCollection
@@ -166,7 +166,7 @@ func (d *SourceCodeContainer) Signature() (*SignatureResult, error) {
 }
 
 func NewSourceCodeContainer(
-	vfs storage.VirtualFS,
+	vfs nef.UniversalFS,
 	absolutePath string,
 	templatesSubPath string,
 ) *SourceCodeContainer {

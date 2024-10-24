@@ -6,20 +6,20 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/generators/gola"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 
 	. "github.com/onsi/gomega/types" //nolint:revive // gomega ok
 )
 
 type (
 	AreAllSourceCodeFilesPresentMatcher struct {
-		fs        storage.VirtualFS
+		fs        nef.UniversalFS
 		directory string
 	}
 )
 
 // ContainAllSourceCodeFilesAt
-func ContainAllSourceCodeFilesAt(fs storage.VirtualFS, directory string) GomegaMatcher {
+func ContainAllSourceCodeFilesAt(fs nef.UniversalFS, directory string) GomegaMatcher {
 	return &AreAllSourceCodeFilesPresentMatcher{
 		fs:        fs,
 		directory: directory,

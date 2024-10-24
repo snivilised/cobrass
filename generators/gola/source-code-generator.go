@@ -7,7 +7,7 @@ import (
 	"path"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 var (
@@ -17,7 +17,7 @@ var (
 )
 
 type SourceCodeGenerator struct {
-	vfs                  storage.VirtualFS
+	vfs                  nef.UniversalFS
 	sourceCodeCollection sourceCodeDataCollection
 	types                typeCollection
 	operators            operatorCollection
@@ -157,7 +157,7 @@ func (g *SourceCodeGenerator) flush(outputPath string, yield *generatedYield) er
 	faydeaudeau := 0o777
 	directory := path.Dir(outputPath)
 
-	if err := g.vfs.MkdirAll(directory, os.FileMode(faydeaudeau)); err != nil {
+	if err := g.vfs.MakeDirAll(directory, os.FileMode(faydeaudeau)); err != nil {
 		return fmt.Errorf("failed to ensure parent directory '%v' exists (%v)", directory, err)
 	}
 

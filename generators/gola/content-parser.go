@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 // parseInline does not need to use the filesystem to acquire
@@ -20,7 +20,7 @@ func parseInline(contents CodeContent) (*SignatureResult, error) {
 }
 
 // parseFromFS parses content acquired from the filesystem.
-func parseFromFS(vfs storage.VirtualFS, directoryPath string) (*SignatureResult, error) {
+func parseFromFS(vfs nef.ReaderFS, directoryPath string) (*SignatureResult, error) {
 	var (
 		entries         []fs.DirEntry
 		contents        CodeContent
@@ -38,7 +38,7 @@ func parseFromFS(vfs storage.VirtualFS, directoryPath string) (*SignatureResult,
 	return parseContents(contents)
 }
 
-func readEntries(vfs storage.VirtualFS, directoryPath string) ([]fs.DirEntry, error) {
+func readEntries(vfs nef.ReaderFS, directoryPath string) ([]fs.DirEntry, error) {
 	entries, err := vfs.ReadDir(directoryPath)
 
 	if err != nil {
@@ -64,7 +64,7 @@ func readEntries(vfs storage.VirtualFS, directoryPath string) ([]fs.DirEntry, er
 	return entries, nil
 }
 
-func acquire(vfs storage.VirtualFS, directoryPath string, entries []fs.DirEntry) (CodeContent, error) {
+func acquire(vfs nef.ReaderFS, directoryPath string, entries []fs.DirEntry) (CodeContent, error) {
 	contents := make(CodeContent, len(entries))
 
 	for _, entry := range entries {
