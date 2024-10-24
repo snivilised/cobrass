@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 
 	"github.com/snivilised/cobrass/src/assistant/locale"
-	"github.com/snivilised/cobrass/src/internal/helpers"
+	"github.com/snivilised/cobrass/src/internal/lab"
 )
 
 type nativeEntry struct {
@@ -20,7 +20,7 @@ var _ = Describe("MessagesNativeErrors", func() {
 
 	DescribeTable("Native Errors",
 		func(entry nativeEntry) {
-			err := helpers.CallE(entry.Fn, entry.Args)
+			err := lab.CallE(entry.Fn, entry.Args)
 			GinkgoWriter.Printf("⚠️ NATIVE-ERROR-RESULT: %v", err)
 			Expect(err).Error().NotTo(BeNil())
 		},

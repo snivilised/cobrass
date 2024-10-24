@@ -19,8 +19,8 @@ var (
 		File fs.FileMode
 		Dir  fs.FileMode
 	}{
-		File: 0o666, //nolint:mnd // ok (pedantic)
-		Dir:  0o777, //nolint:mnd // ok (pedantic)
+		File: 0o666,
+		Dir:  0o777,
 	}
 )
 
@@ -29,13 +29,13 @@ type setupFile struct {
 	data []byte
 }
 
-func setup(fs nef.UniversalFS, directoryPath string, files ...setupFile) {
-	if e := fs.MakeDirAll(directoryPath, Perms.Dir); e != nil {
+func setup(fS nef.UniversalFS, directoryPath string, files ...setupFile) {
+	if e := fS.MakeDirAll(directoryPath, Perms.Dir); e != nil {
 		Fail(e.Error())
 	}
 
 	for _, f := range files {
-		if e := fs.WriteFile(f.path, f.data, Perms.File); e != nil {
+		if e := fS.WriteFile(f.path, f.data, Perms.File); e != nil {
 			Fail(e.Error())
 		}
 	}

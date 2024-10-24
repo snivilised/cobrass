@@ -11,7 +11,7 @@ import (
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/locale"
 	"github.com/snivilised/cobrass/src/clif"
-	"github.com/snivilised/cobrass/src/internal/helpers"
+	"github.com/snivilised/cobrass/src/internal/lab"
 	"github.com/snivilised/cobrass/src/store"
 	"github.com/snivilised/li18ngo"
 )
@@ -41,8 +41,8 @@ var _ = Describe("GetThirdPartyCL", Ordered, func() {
 	)
 
 	BeforeAll(func() {
-		repo = helpers.Repo("../..")
-		l10nPath = helpers.Path(repo, "Test/data/l10n")
+		repo = lab.Repo("../..")
+		l10nPath = lab.Path(repo, "Test/data/l10n")
 
 		from = li18ngo.LoadFrom{
 			Path: l10nPath,
@@ -84,7 +84,7 @@ var _ = Describe("GetThirdPartyCL", Ordered, func() {
 			paramSet = assistant.NewParamSet[store.ProfileParameterSet](rootCommand)
 			paramSet.Native.BindAll(paramSet, rootCommand.PersistentFlags())
 
-			_, err := helpers.ExecuteCommand(
+			_, err := lab.ExecuteCommand(
 				rootCommand, args...,
 			)
 

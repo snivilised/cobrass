@@ -9,7 +9,7 @@ import (
 
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/locale"
-	"github.com/snivilised/cobrass/src/internal/helpers"
+	"github.com/snivilised/cobrass/src/internal/lab"
 	"github.com/snivilised/cobrass/src/store"
 	"github.com/snivilised/li18ngo"
 )
@@ -44,8 +44,8 @@ var _ = Describe("Families", Ordered, func() {
 	)
 
 	BeforeAll(func() {
-		repo = helpers.Repo("../..")
-		l10nPath = helpers.Path(repo, "Test/data/l10n")
+		repo = lab.Repo("../..")
+		l10nPath = lab.Path(repo, "Test/data/l10n")
 
 		from = li18ngo.LoadFrom{
 			Path: l10nPath,
@@ -61,7 +61,7 @@ var _ = Describe("Families", Ordered, func() {
 		}
 
 		execute = func(args []string) {
-			_, err := helpers.ExecuteCommand(
+			_, err := lab.ExecuteCommand(
 				rootCommand, args...,
 			)
 			Expect(err).Error().To(BeNil(), reason("BindAll", err))
@@ -409,7 +409,7 @@ var _ = Describe("Families", Ordered, func() {
 			previewPS.Native.BindAll(previewPS)
 			//
 			commandLine := []string{"scorch", "--help"}
-			_, err := helpers.ExecuteCommand(
+			_, err := lab.ExecuteCommand(
 				rootCommand, commandLine...,
 			)
 			Expect(err).Error().To(BeNil(), reason("BindAll", err))

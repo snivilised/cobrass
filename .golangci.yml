@@ -66,6 +66,9 @@ issues:
   fix: true
   exclude:
     - "cuddle"
+  exclude-files:
+    - ".*-auto\\.go$"
+    - ".*-auto_test\\.go$"
 
 run:
   issues-exit-code: 1

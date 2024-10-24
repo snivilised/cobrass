@@ -4,7 +4,6 @@ import (
 	_ "embed"
 	"fmt"
 	"io/fs"
-	"os"
 	"path"
 
 	"github.com/samber/lo"
@@ -167,7 +166,7 @@ func (g *SourceCodeGenerator) flush(outputPath string, yield *generatedYield) er
 
 	if err := g.fS.MakeDirAll(
 		directory,
-		os.FileMode(Perms.Dir),
+		Perms.Dir,
 	); err != nil {
 		return fmt.Errorf("failed to ensure parent directory '%v' exists (%v)", directory, err)
 	}
@@ -175,7 +174,7 @@ func (g *SourceCodeGenerator) flush(outputPath string, yield *generatedYield) er
 	if err := g.fS.WriteFile(
 		outputPath,
 		yield.buffer.Bytes(),
-		os.FileMode(Perms.File),
+		Perms.File,
 	); err != nil {
 		return fmt.Errorf("failed to write generated code to '%v' (%v)", outputPath, err)
 	}
