@@ -3,7 +3,7 @@ package store
 import (
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/locale"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/li18ngo"
 	"github.com/spf13/pflag"
 )
 
@@ -24,7 +24,7 @@ func (f *WorkerPoolParameterSet) BindAll(
 
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.WorkerPoolCPUParamUsageTemplData{}),
+			li18ngo.Text(locale.WorkerPoolCPUParamUsageTemplData{}),
 			defaultCPU,
 			flagSet...,
 		),
@@ -41,7 +41,7 @@ func (f *WorkerPoolParameterSet) BindAll(
 
 	parent.BindValidatedIntWithin(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.WorkerPoolNoWParamUsageTemplData{}),
+			li18ngo.Text(locale.WorkerPoolNoWParamUsageTemplData{}),
 			defaultNoW,
 			flagSet...,
 		),

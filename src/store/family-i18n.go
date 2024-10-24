@@ -3,7 +3,7 @@ package store
 import (
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/locale"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/li18ngo"
 	"github.com/spf13/pflag"
 	"golang.org/x/text/language"
 )
@@ -24,7 +24,7 @@ func (f *I18nParameterSet) BindAll(
 
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.LanguageParamUsageTemplData{}),
+			li18ngo.Text(locale.LanguageParamUsageTemplData{}),
 			defaultLanguage,
 			flagSet...,
 		),

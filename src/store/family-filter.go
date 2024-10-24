@@ -5,7 +5,7 @@ import (
 
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/locale"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/li18ngo"
 	"github.com/spf13/pflag"
 )
 
@@ -18,12 +18,12 @@ const (
 // Therefore, for compound filters typically used when we want to filter
 // file system nodes by file name and directory name, we forego the
 // ability to specify compound file names (when using the navigator
-// in extendio with the FoldersWithFiles subscription type) with a
+// in traverse with the FoldersWithFiles subscription type) with a
 // short code, as this is seen as a niche feature. The more common
 // scenarios would be to either filter files, directories or both
 // by using an 'any' scope. With this compromise, the user would
 // always have to spell the compound file filter in it full form:
-// --files-rx or --files-gb. When using extendio nav, the folders
+// --files-rx or --files-gb. When using traverse nav, the folders
 // with files subscription would have to be used, ie there is no
 // standalone file file, so --files-rx and --files-gb are both free
 // to use without ambiguity.
@@ -50,7 +50,7 @@ func (f *FilesFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FilesExGlobParamUsageTemplData{}),
+			li18ngo.Text(locale.FilesExGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -61,7 +61,7 @@ func (f *FilesFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FilesGlobParamUsageTemplData{}),
+			li18ngo.Text(locale.FilesGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -72,7 +72,7 @@ func (f *FilesFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FilesRegExParamUsageTemplData{}),
+			li18ngo.Text(locale.FilesRegExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -103,7 +103,7 @@ func (f *FoldersFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FoldersGlobParamUsageTemplData{}),
+			li18ngo.Text(locale.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -114,7 +114,7 @@ func (f *FoldersFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FoldersRexExParamUsageTemplData{}),
+			li18ngo.Text(locale.FoldersRexExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -147,7 +147,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FilesExGlobParamUsageTemplData{}),
+			li18ngo.Text(locale.FilesExGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -158,7 +158,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FilesRegExParamUsageTemplData{}),
+			li18ngo.Text(locale.FilesRegExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -173,7 +173,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FoldersGlobParamUsageTemplData{}),
+			li18ngo.Text(locale.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -184,7 +184,7 @@ func (f *PolyFilterParameterSet) BindAll(
 	//
 	parent.BindValidatedString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FoldersRexExParamUsageTemplData{}),
+			li18ngo.Text(locale.FoldersRexExParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -215,7 +215,7 @@ func (f *AlloyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FilesExGlobParamUsageTemplData{}),
+			li18ngo.Text(locale.FilesExGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),
@@ -226,7 +226,7 @@ func (f *AlloyFilterParameterSet) BindAll(
 	//
 	parent.BindString(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.FoldersGlobParamUsageTemplData{}),
+			li18ngo.Text(locale.FoldersGlobParamUsageTemplData{}),
 			defaultFilterValue,
 			flagSet...,
 		),

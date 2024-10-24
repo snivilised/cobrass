@@ -3,7 +3,7 @@ package store
 import (
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/assistant/locale"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/li18ngo"
 	"github.com/spf13/pflag"
 )
 
@@ -23,7 +23,7 @@ func (f *PreviewParameterSet) BindAll(
 
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(locale.DryRunParamUsageTemplData{}),
+			li18ngo.Text(locale.DryRunParamUsageTemplData{}),
 			defaultDryRun,
 			flagSet...,
 		),

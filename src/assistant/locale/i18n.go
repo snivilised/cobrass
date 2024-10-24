@@ -1,9 +1,9 @@
 package locale
 
 import (
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/li18ngo"
 )
 
-func Use(options ...xi18n.UseOptionFn) error {
-	return xi18n.Use(options...)
+func Use(options ...li18ngo.UseOptionFn) error {
+	return li18ngo.Use(options...)
 }

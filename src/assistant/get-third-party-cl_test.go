@@ -13,7 +13,7 @@ import (
 	"github.com/snivilised/cobrass/src/clif"
 	"github.com/snivilised/cobrass/src/internal/helpers"
 	"github.com/snivilised/cobrass/src/store"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/li18ngo"
 )
 
 type baseTE struct {
@@ -33,7 +33,7 @@ var _ = Describe("GetThirdPartyCL", Ordered, func() {
 		repo     string
 		l10nPath string
 
-		from        xi18n.LoadFrom
+		from        li18ngo.LoadFrom
 		rootCommand *cobra.Command
 
 		paramSet *assistant.ParamSet[store.ProfileParameterSet]
@@ -44,14 +44,14 @@ var _ = Describe("GetThirdPartyCL", Ordered, func() {
 		repo = helpers.Repo("../..")
 		l10nPath = helpers.Path(repo, "Test/data/l10n")
 
-		from = xi18n.LoadFrom{
+		from = li18ngo.LoadFrom{
 			Path: l10nPath,
-			Sources: xi18n.TranslationFiles{
-				locale.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
+			Sources: li18ngo.TranslationFiles{
+				locale.CobrassSourceID: li18ngo.TranslationSource{Name: "test"},
 			},
 		}
 
-		if err := xi18n.Use(func(o *xi18n.UseOptions) {
+		if err := li18ngo.Use(func(o *li18ngo.UseOptions) {
 			o.From = from
 		}); err != nil {
 			Fail(err.Error())
