@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 
 	"github.com/spf13/pflag"
 )
@@ -28,7 +28,7 @@ func (params *ParamSet[N]) BindValidatedDurationWithin(info *FlagInfo, to *time.
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -53,7 +53,7 @@ func (params *ParamSet[N]) BindValidatedDurationNotWithin(info *FlagInfo, to *ti
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -78,7 +78,7 @@ func (params *ParamSet[N]) BindValidatedContainsDuration(info *FlagInfo, to *tim
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -103,7 +103,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsDuration(info *FlagInfo, to *
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -128,7 +128,7 @@ func (params *ParamSet[N]) BindValidatedDurationGreaterThan(info *FlagInfo, to *
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -153,7 +153,7 @@ func (params *ParamSet[N]) BindValidatedDurationAtLeast(info *FlagInfo, to *time
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -178,7 +178,7 @@ func (params *ParamSet[N]) BindValidatedDurationLessThan(info *FlagInfo, to *tim
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -203,7 +203,7 @@ func (params *ParamSet[N]) BindValidatedDurationAtMost(info *FlagInfo, to *time.
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -228,7 +228,7 @@ func (params *ParamSet[N]) BindValidatedContainsEnum(info *FlagInfo, to *string,
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -253,7 +253,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsEnum(info *FlagInfo, to *stri
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -278,7 +278,7 @@ func (params *ParamSet[N]) BindValidatedFloat32Within(info *FlagInfo, to *float3
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -303,7 +303,7 @@ func (params *ParamSet[N]) BindValidatedFloat32NotWithin(info *FlagInfo, to *flo
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -328,7 +328,7 @@ func (params *ParamSet[N]) BindValidatedContainsFloat32(info *FlagInfo, to *floa
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -353,7 +353,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat32(info *FlagInfo, to *f
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -378,7 +378,7 @@ func (params *ParamSet[N]) BindValidatedFloat32GreaterThan(info *FlagInfo, to *f
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -403,7 +403,7 @@ func (params *ParamSet[N]) BindValidatedFloat32AtLeast(info *FlagInfo, to *float
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -428,7 +428,7 @@ func (params *ParamSet[N]) BindValidatedFloat32LessThan(info *FlagInfo, to *floa
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -453,7 +453,7 @@ func (params *ParamSet[N]) BindValidatedFloat32AtMost(info *FlagInfo, to *float3
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -478,7 +478,7 @@ func (params *ParamSet[N]) BindValidatedFloat64Within(info *FlagInfo, to *float6
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -503,7 +503,7 @@ func (params *ParamSet[N]) BindValidatedFloat64NotWithin(info *FlagInfo, to *flo
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -528,7 +528,7 @@ func (params *ParamSet[N]) BindValidatedContainsFloat64(info *FlagInfo, to *floa
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -553,7 +553,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsFloat64(info *FlagInfo, to *f
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -578,7 +578,7 @@ func (params *ParamSet[N]) BindValidatedFloat64GreaterThan(info *FlagInfo, to *f
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -603,7 +603,7 @@ func (params *ParamSet[N]) BindValidatedFloat64AtLeast(info *FlagInfo, to *float
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -628,7 +628,7 @@ func (params *ParamSet[N]) BindValidatedFloat64LessThan(info *FlagInfo, to *floa
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -653,7 +653,7 @@ func (params *ParamSet[N]) BindValidatedFloat64AtMost(info *FlagInfo, to *float6
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -678,7 +678,7 @@ func (params *ParamSet[N]) BindValidatedIntWithin(info *FlagInfo, to *int, low, 
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -703,7 +703,7 @@ func (params *ParamSet[N]) BindValidatedIntNotWithin(info *FlagInfo, to *int, lo
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -728,7 +728,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt(info *FlagInfo, to *int, col
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -753,7 +753,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt(info *FlagInfo, to *int, 
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -778,7 +778,7 @@ func (params *ParamSet[N]) BindValidatedIntGreaterThan(info *FlagInfo, to *int, 
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -803,7 +803,7 @@ func (params *ParamSet[N]) BindValidatedIntAtLeast(info *FlagInfo, to *int, thre
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -828,7 +828,7 @@ func (params *ParamSet[N]) BindValidatedIntLessThan(info *FlagInfo, to *int, thr
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -853,7 +853,7 @@ func (params *ParamSet[N]) BindValidatedIntAtMost(info *FlagInfo, to *int, thres
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -878,7 +878,7 @@ func (params *ParamSet[N]) BindValidatedInt16Within(info *FlagInfo, to *int16, l
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -903,7 +903,7 @@ func (params *ParamSet[N]) BindValidatedInt16NotWithin(info *FlagInfo, to *int16
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -928,7 +928,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt16(info *FlagInfo, to *int16,
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -953,7 +953,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt16(info *FlagInfo, to *int
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -978,7 +978,7 @@ func (params *ParamSet[N]) BindValidatedInt16GreaterThan(info *FlagInfo, to *int
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1003,7 +1003,7 @@ func (params *ParamSet[N]) BindValidatedInt16AtLeast(info *FlagInfo, to *int16, 
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1028,7 +1028,7 @@ func (params *ParamSet[N]) BindValidatedInt16LessThan(info *FlagInfo, to *int16,
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1053,7 +1053,7 @@ func (params *ParamSet[N]) BindValidatedInt16AtMost(info *FlagInfo, to *int16, t
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1078,7 +1078,7 @@ func (params *ParamSet[N]) BindValidatedInt32Within(info *FlagInfo, to *int32, l
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1103,7 +1103,7 @@ func (params *ParamSet[N]) BindValidatedInt32NotWithin(info *FlagInfo, to *int32
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1128,7 +1128,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt32(info *FlagInfo, to *int32,
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1153,7 +1153,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt32(info *FlagInfo, to *int
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1178,7 +1178,7 @@ func (params *ParamSet[N]) BindValidatedInt32GreaterThan(info *FlagInfo, to *int
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1203,7 +1203,7 @@ func (params *ParamSet[N]) BindValidatedInt32AtLeast(info *FlagInfo, to *int32, 
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1228,7 +1228,7 @@ func (params *ParamSet[N]) BindValidatedInt32LessThan(info *FlagInfo, to *int32,
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1253,7 +1253,7 @@ func (params *ParamSet[N]) BindValidatedInt32AtMost(info *FlagInfo, to *int32, t
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1278,7 +1278,7 @@ func (params *ParamSet[N]) BindValidatedInt64Within(info *FlagInfo, to *int64, l
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1303,7 +1303,7 @@ func (params *ParamSet[N]) BindValidatedInt64NotWithin(info *FlagInfo, to *int64
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1328,7 +1328,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt64(info *FlagInfo, to *int64,
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1353,7 +1353,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt64(info *FlagInfo, to *int
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1378,7 +1378,7 @@ func (params *ParamSet[N]) BindValidatedInt64GreaterThan(info *FlagInfo, to *int
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1403,7 +1403,7 @@ func (params *ParamSet[N]) BindValidatedInt64AtLeast(info *FlagInfo, to *int64, 
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1428,7 +1428,7 @@ func (params *ParamSet[N]) BindValidatedInt64LessThan(info *FlagInfo, to *int64,
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1453,7 +1453,7 @@ func (params *ParamSet[N]) BindValidatedInt64AtMost(info *FlagInfo, to *int64, t
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1478,7 +1478,7 @@ func (params *ParamSet[N]) BindValidatedInt8Within(info *FlagInfo, to *int8, low
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1503,7 +1503,7 @@ func (params *ParamSet[N]) BindValidatedInt8NotWithin(info *FlagInfo, to *int8, 
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1528,7 +1528,7 @@ func (params *ParamSet[N]) BindValidatedContainsInt8(info *FlagInfo, to *int8, c
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1553,7 +1553,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsInt8(info *FlagInfo, to *int8
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1578,7 +1578,7 @@ func (params *ParamSet[N]) BindValidatedInt8GreaterThan(info *FlagInfo, to *int8
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1603,7 +1603,7 @@ func (params *ParamSet[N]) BindValidatedInt8AtLeast(info *FlagInfo, to *int8, th
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1628,7 +1628,7 @@ func (params *ParamSet[N]) BindValidatedInt8LessThan(info *FlagInfo, to *int8, t
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1653,7 +1653,7 @@ func (params *ParamSet[N]) BindValidatedInt8AtMost(info *FlagInfo, to *int8, thr
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1678,7 +1678,7 @@ func (params *ParamSet[N]) BindValidatedStringWithin(info *FlagInfo, to *string,
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1703,7 +1703,7 @@ func (params *ParamSet[N]) BindValidatedStringNotWithin(info *FlagInfo, to *stri
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1728,7 +1728,7 @@ func (params *ParamSet[N]) BindValidatedContainsString(info *FlagInfo, to *strin
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1753,7 +1753,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsString(info *FlagInfo, to *st
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1778,7 +1778,7 @@ func (params *ParamSet[N]) BindValidatedStringIsMatch(info *FlagInfo, to *string
 				return nil
 			}
 
-			return i18n.NewMatchOptValidationError(info.FlagName(), value, pattern)
+			return locale.NewMatchOptValidationError(info.FlagName(), value, pattern)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1803,7 +1803,7 @@ func (params *ParamSet[N]) BindValidatedStringIsNotMatch(info *FlagInfo, to *str
 				return nil
 			}
 
-			return i18n.NewNotMatchOptValidationError(info.FlagName(), value, pattern)
+			return locale.NewNotMatchOptValidationError(info.FlagName(), value, pattern)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1828,7 +1828,7 @@ func (params *ParamSet[N]) BindValidatedStringGreaterThan(info *FlagInfo, to *st
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1853,7 +1853,7 @@ func (params *ParamSet[N]) BindValidatedStringAtLeast(info *FlagInfo, to *string
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1878,7 +1878,7 @@ func (params *ParamSet[N]) BindValidatedStringLessThan(info *FlagInfo, to *strin
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1903,7 +1903,7 @@ func (params *ParamSet[N]) BindValidatedStringAtMost(info *FlagInfo, to *string,
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1928,7 +1928,7 @@ func (params *ParamSet[N]) BindValidatedUint16Within(info *FlagInfo, to *uint16,
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1953,7 +1953,7 @@ func (params *ParamSet[N]) BindValidatedUint16NotWithin(info *FlagInfo, to *uint
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -1978,7 +1978,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint16(info *FlagInfo, to *uint1
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2003,7 +2003,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint16(info *FlagInfo, to *ui
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2028,7 +2028,7 @@ func (params *ParamSet[N]) BindValidatedUint16GreaterThan(info *FlagInfo, to *ui
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2053,7 +2053,7 @@ func (params *ParamSet[N]) BindValidatedUint16AtLeast(info *FlagInfo, to *uint16
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2078,7 +2078,7 @@ func (params *ParamSet[N]) BindValidatedUint16LessThan(info *FlagInfo, to *uint1
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2103,7 +2103,7 @@ func (params *ParamSet[N]) BindValidatedUint16AtMost(info *FlagInfo, to *uint16,
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2128,7 +2128,7 @@ func (params *ParamSet[N]) BindValidatedUint32Within(info *FlagInfo, to *uint32,
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2153,7 +2153,7 @@ func (params *ParamSet[N]) BindValidatedUint32NotWithin(info *FlagInfo, to *uint
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2178,7 +2178,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint32(info *FlagInfo, to *uint3
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2203,7 +2203,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint32(info *FlagInfo, to *ui
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2228,7 +2228,7 @@ func (params *ParamSet[N]) BindValidatedUint32GreaterThan(info *FlagInfo, to *ui
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2253,7 +2253,7 @@ func (params *ParamSet[N]) BindValidatedUint32AtLeast(info *FlagInfo, to *uint32
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2278,7 +2278,7 @@ func (params *ParamSet[N]) BindValidatedUint32LessThan(info *FlagInfo, to *uint3
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2303,7 +2303,7 @@ func (params *ParamSet[N]) BindValidatedUint32AtMost(info *FlagInfo, to *uint32,
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2328,7 +2328,7 @@ func (params *ParamSet[N]) BindValidatedUint64Within(info *FlagInfo, to *uint64,
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2353,7 +2353,7 @@ func (params *ParamSet[N]) BindValidatedUint64NotWithin(info *FlagInfo, to *uint
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2378,7 +2378,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint64(info *FlagInfo, to *uint6
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2403,7 +2403,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint64(info *FlagInfo, to *ui
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2428,7 +2428,7 @@ func (params *ParamSet[N]) BindValidatedUint64GreaterThan(info *FlagInfo, to *ui
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2453,7 +2453,7 @@ func (params *ParamSet[N]) BindValidatedUint64AtLeast(info *FlagInfo, to *uint64
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2478,7 +2478,7 @@ func (params *ParamSet[N]) BindValidatedUint64LessThan(info *FlagInfo, to *uint6
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2503,7 +2503,7 @@ func (params *ParamSet[N]) BindValidatedUint64AtMost(info *FlagInfo, to *uint64,
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2528,7 +2528,7 @@ func (params *ParamSet[N]) BindValidatedUint8Within(info *FlagInfo, to *uint8, l
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2553,7 +2553,7 @@ func (params *ParamSet[N]) BindValidatedUint8NotWithin(info *FlagInfo, to *uint8
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2578,7 +2578,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint8(info *FlagInfo, to *uint8,
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2603,7 +2603,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint8(info *FlagInfo, to *uin
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2628,7 +2628,7 @@ func (params *ParamSet[N]) BindValidatedUint8GreaterThan(info *FlagInfo, to *uin
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2653,7 +2653,7 @@ func (params *ParamSet[N]) BindValidatedUint8AtLeast(info *FlagInfo, to *uint8, 
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2678,7 +2678,7 @@ func (params *ParamSet[N]) BindValidatedUint8LessThan(info *FlagInfo, to *uint8,
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2703,7 +2703,7 @@ func (params *ParamSet[N]) BindValidatedUint8AtMost(info *FlagInfo, to *uint8, t
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2728,7 +2728,7 @@ func (params *ParamSet[N]) BindValidatedUintWithin(info *FlagInfo, to *uint, low
 				return nil
 			}
 
-			return i18n.NewWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2753,7 +2753,7 @@ func (params *ParamSet[N]) BindValidatedUintNotWithin(info *FlagInfo, to *uint, 
 				return nil
 			}
 
-			return i18n.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
+			return locale.NewNotWithinOptValidationError(info.FlagName(), value, low, high)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2778,7 +2778,7 @@ func (params *ParamSet[N]) BindValidatedContainsUint(info *FlagInfo, to *uint, c
 				return nil
 			}
 
-			return i18n.NewContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2803,7 +2803,7 @@ func (params *ParamSet[N]) BindValidatedNotContainsUint(info *FlagInfo, to *uint
 				return nil
 			}
 
-			return i18n.NewNotContainsOptValidationError(info.FlagName(), value, collection)
+			return locale.NewNotContainsOptValidationError(info.FlagName(), value, collection)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2828,7 +2828,7 @@ func (params *ParamSet[N]) BindValidatedUintGreaterThan(info *FlagInfo, to *uint
 				return nil
 			}
 
-			return i18n.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewGreaterThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2853,7 +2853,7 @@ func (params *ParamSet[N]) BindValidatedUintAtLeast(info *FlagInfo, to *uint, th
 				return nil
 			}
 
-			return i18n.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtLeastOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2878,7 +2878,7 @@ func (params *ParamSet[N]) BindValidatedUintLessThan(info *FlagInfo, to *uint, t
 				return nil
 			}
 
-			return i18n.NewLessThanOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewLessThanOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),
@@ -2903,7 +2903,7 @@ func (params *ParamSet[N]) BindValidatedUintAtMost(info *FlagInfo, to *uint, thr
 				return nil
 			}
 
-			return i18n.NewAtMostOptValidationError(info.FlagName(), value, threshold)
+			return locale.NewAtMostOptValidationError(info.FlagName(), value, threshold)
 		},
 		Value: to,
 		Flag:  params.ResolveFlagSet(info).Lookup(info.Name),

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 )
 
 // AcceptableEnumValues maps values of enum type to an array of
@@ -104,7 +104,7 @@ func NewEnumInfo[E ~int](acceptables AcceptableEnumValues[E]) *EnumInfo[E] {
 	for enum, values := range acceptables {
 		for _, acc := range values {
 			if existing, found := info.reverseLookup[acc]; found {
-				panic(i18n.NewEnumValueValueAlreadyExistsNativeError(
+				panic(locale.NewEnumValueValueAlreadyExistsNativeError(
 					info.NameOf(existing), int(existing)),
 				)
 			}
@@ -264,7 +264,7 @@ func (ev *EnumValue[E]) IsValidOrEmpty() bool {
 // client needs to validate incoming input as performed in a binder operation.
 func (ev *EnumValue[E]) String() string {
 	if _, found := ev.Info.reverseLookup[ev.Source]; !found {
-		panic(i18n.NewIsNotValidEnumValueNativeError(ev.Source))
+		panic(locale.NewIsNotValidEnumValueNativeError(ev.Source))
 	}
 
 	return ev.Source

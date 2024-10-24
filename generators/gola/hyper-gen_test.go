@@ -253,8 +253,8 @@ var _ = Describe("HyperGen", Ordered, func() {
 		}
 	})
 
-	Context("generate", func() {
-		XIt("types ...", func() {
+	Context("generate code", func() {
+		XIt("show types in console...", func() {
 			for _, ot := range orderedTypes {
 				if spec, ok := types[ot]; ok {
 					generate(spec, "")

@@ -12,12 +12,11 @@ import (
 type CodeFileName string
 
 type SourceCodeData struct {
-	name        CodeFileName
-	active      bool // THIS IS JUST TEMPORARY
-	directory   string
-	rootContent string
-	templ       *template.Template
-	funcs       map[string]any
+	name      CodeFileName
+	active    bool // THIS IS JUST TEMPORARY
+	directory string
+	templ     *template.Template
+	funcs     map[string]any
 }
 
 func (d *SourceCodeData) OutputFileName() string {

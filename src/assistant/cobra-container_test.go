@@ -115,7 +115,7 @@ var _ = Describe("CobraContainer", func() {
 			})
 
 			When("requested command NOT previously registered", func() {
-				It("🧪 should: register requesyted command ok", func() {
+				It("🧪 should: register requested command ok", func() {
 					name := DummyCommand.Name()
 					parent := ParentCommand.Name()
 					Container.MustRegisterRootedCommand(ParentCommand)
@@ -136,7 +136,7 @@ var _ = Describe("CobraContainer", func() {
 				}()
 				Container.MustRegisterCommand("foo", DummyCommand)
 
-				Fail("❌ expected panic due to parent not being regsitered")
+				Fail("❌ expected panic due to parent not being registered")
 			})
 		})
 	})

@@ -4,10 +4,6 @@ linters-settings:
   goconst:
     min-len: 2
     min-occurrences: 3
-  # since upgrading to v1.22.0 of go:
-  # ERRO [linters_context] gocritic: load embedded ruleguard
-  # rules: rules/rules.go:13: can't load fmt: setting an explicit GOROOT can fix this problem.
-  #
   gocritic:
     enabled-tags:
       - diagnostic
@@ -16,43 +12,43 @@ linters-settings:
       - performance
       - style
   govet:
-    check-shadowing: true
+    shadow: true
     disable:
       - fieldalignment # too strict
 
   nolintlint:
-    require-explanation: true
+    require-explanation: false
     require-specific: true
-
 linters:
   disable-all: true
   enable:
     - bodyclose
+    # - deadcode
     # depguard needs to be reviewed properly and then configured, before
     # it can be re-enabled.
     # https://github.com/OpenPeeDeeP/depguard#example-configs
     # - depguard
+    - copyloopvar
     - dogsled
     # - dupl
     - errcheck
-    - exportloopref
     - exhaustive
     - goconst
     - gocritic
     - gofmt
     - goimports
-    - gomnd
     - gocyclo
     - gosec
     - gosimple
     - govet
     - ineffassign
     - misspell
+    - mnd
     - nolintlint
     - nakedret
     - prealloc
     - predeclared
-    # - revive // over-bearing for generated code, too many instances
+    - revive
     - staticcheck
     # - structcheck
     - stylecheck
@@ -70,10 +66,10 @@ issues:
   fix: true
   exclude:
     - "cuddle"
+  exclude-files:
+    - ".*-auto\\.go$"
+    - ".*-auto_test\\.go$"
 
 run:
-  skip-dirs:
-    - /generators/gola/templates
-  skip-files:
-    - .*\.tmpl$
   issues-exit-code: 1
+  timeout: "5m"

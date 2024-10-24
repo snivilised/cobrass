@@ -7,22 +7,19 @@ import (
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 
 	"github.com/snivilised/cobrass/generators/gola"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 var _ = Describe("SourceCodeGenerator", Ordered, func() {
 	var (
-		repo, testPath, sourcePath string
-		fs                         storage.VirtualFS
+		repo, testPath string
+		fS             nef.UniversalFS
 	)
 
 	BeforeAll(func() {
 		repo = Repo("../..")
 		testPath = filepath.Join("generators", "gola", "out", "assistant")
-		sourcePath = filepath.Join("src", "assistant")
-		fs = storage.UseMemFS()
-
-		_ = sourcePath
+		fS = NewTestMemFS()
 	})
 
 	Context("AnyMissing", func() {
@@ -30,7 +27,7 @@ var _ = Describe("SourceCodeGenerator", Ordered, func() {
 			It("should: find all source code files are present", func() {
 				outputPath := filepath.Join(repo, testPath)
 				templatesSubPath := ""
-				codeContainer := gola.NewSourceCodeContainer(fs, outputPath, templatesSubPath)
+				codeContainer := gola.NewSourceCodeContainer(fS, outputPath, templatesSubPath)
 
 				omitWrite := false
 				_, err := codeContainer.Generator(omitWrite).Run()

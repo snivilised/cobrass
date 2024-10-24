@@ -9,7 +9,7 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/generators/gola"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 const (
@@ -33,7 +33,7 @@ func main() {
 	flag.Parse()
 
 	outputPath := lo.Ternary(*testFlag, testPath, sourcePath)
-	nativeFS := storage.UseNativeFS()
+	nativeFS := nef.NewUniversalABS()
 
 	if *signFlag {
 		sign(nativeFS, outputPath)
@@ -62,7 +62,7 @@ func fail(reason string, callback ...func()) {
 	os.Exit(outputPathNotFoundExitCode)
 }
 
-func gen(vfs storage.VirtualFS, outputPath string) {
+func gen(fS nef.UniversalFS, outputPath string) {
 	if *cwdFlag == "" {
 		fail("🔥 current working directory not specified")
 	}
@@ -70,7 +70,7 @@ func gen(vfs storage.VirtualFS, outputPath string) {
 	absolutePath, _ := filepath.Abs(*cwdFlag)
 	absolutePath = filepath.Join(absolutePath, outputPath)
 
-	if !vfs.DirectoryExists(absolutePath) {
+	if !fS.DirectoryExists(absolutePath) {
 		callback := func() {
 			fmt.Printf("💥 --->      CWD: '%v' \n", *cwdFlag)
 			fmt.Printf("💥 --->   OUTPUT: '%v' \n", outputPath)
@@ -81,7 +81,7 @@ func gen(vfs storage.VirtualFS, outputPath string) {
 		return
 	}
 
-	sourceCode := gola.NewSourceCodeContainer(vfs, absolutePath, *templatesSubPathFlag)
+	sourceCode := gola.NewSourceCodeContainer(fS, absolutePath, *templatesSubPathFlag)
 	mode := lo.Ternary(*testFlag, "🧪 Test", "🎁 Source")
 
 	fmt.Printf("☑️ --->      CWD: '%v' \n", *cwdFlag)
@@ -92,7 +92,7 @@ func gen(vfs storage.VirtualFS, outputPath string) {
 	if !*testFlag {
 		if sourceCode.AnyMissing() {
 			sourceCode.Verify(func(entry *gola.SourceCodeData) {
-				exists := vfs.FileExists(entry.FullPath())
+				exists := fS.FileExists(entry.FullPath())
 				indicator := lo.Ternary(exists, "✔️", "❌")
 				status := lo.Ternary(exists, "exists", "missing")
 				path := entry.FullPath()
@@ -114,10 +114,10 @@ func gen(vfs storage.VirtualFS, outputPath string) {
 	show(result)
 }
 
-func sign(vfs storage.VirtualFS, sourcePath string) {
+func sign(fS nef.UniversalFS, sourcePath string) {
 	templatesSubPath := ""
 
-	sourceCode := gola.NewSourceCodeContainer(vfs, sourcePath, templatesSubPath)
+	sourceCode := gola.NewSourceCodeContainer(fS, sourcePath, templatesSubPath)
 	result, err := sourceCode.Signature()
 
 	if err != nil {

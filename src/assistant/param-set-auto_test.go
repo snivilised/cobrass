@@ -6,10 +6,9 @@ import (
 
 	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
-	"github.com/spf13/cobra"
-
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/internal/helpers"
+	"github.com/snivilised/cobrass/src/internal/lab"
+	"github.com/spf13/cobra"
 )
 
 // the auto version of param-set_test.go
@@ -62,7 +61,7 @@ var _ = Describe("ParamSet (auto)", func() {
 			func(entry TcEntry) {
 				entry.Binder()
 
-				_, _ = helpers.ExecuteCommand(
+				_, _ = lab.ExecuteCommand(
 					rootCommand, "widget", "/usr/fuse/home/music", entry.CommandLine,
 				)
 				entry.Assert()

@@ -23,7 +23,10 @@ generators/gola/out/
 .env
 
 coverage
+coverage.out
 ginkgo.report
+report.json
+coverage.html
 
 src/assistant/internal/l10n/out/translate.en-US.json
 
