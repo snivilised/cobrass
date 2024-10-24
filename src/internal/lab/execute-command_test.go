@@ -1,4 +1,4 @@
-package helpers_test
+package lab_test
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 	"github.com/spf13/cobra"
 
-	"github.com/snivilised/cobrass/src/internal/helpers"
+	"github.com/snivilised/cobrass/src/internal/lab"
 )
 
 func emptyRun(*cobra.Command, []string) {}
@@ -30,7 +30,7 @@ var _ = Describe("Execute", func() {
 		aCmd := &cobra.Command{Use: "a", Args: cobra.NoArgs, Run: emptyRun}
 		bCmd := &cobra.Command{Use: "b", Args: cobra.NoArgs, Run: emptyRun}
 		rootCmd.AddCommand(aCmd, bCmd)
-		output, err := helpers.ExecuteCommand(rootCmd, "one", "two")
+		output, err := lab.ExecuteCommand(rootCmd, "one", "two")
 
 		Expect(output).To(Equal(""), fmt.Sprintf(
 			"❌ Unexpected output '%v'", output,

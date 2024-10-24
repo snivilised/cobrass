@@ -9,7 +9,7 @@ import (
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 
 	"github.com/snivilised/cobrass/generators/gola"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 func Path(parent, relative string) string {
@@ -25,14 +25,14 @@ func Repo(relative string) string {
 var _ = Describe("SourceCodeData", Ordered, func() {
 	var (
 		repo, testPath, sourcePath string
-		fs                         storage.VirtualFS
+		fS                         nef.UniversalFS
 	)
 
 	BeforeAll(func() {
 		repo = Repo("../..")
 		testPath = filepath.Join("generators", "gola", "out", "assistant")
 		sourcePath = filepath.Join("src", "assistant")
-		fs = storage.UseNativeFS()
+		fS = nef.NewUniversalABS()
 
 		_ = testPath
 	})
@@ -42,10 +42,10 @@ var _ = Describe("SourceCodeData", Ordered, func() {
 			It("🧪 should: find all source code files are present", func() {
 				outputPath := filepath.Join(repo, sourcePath)
 				templatesSubPath := ""
-				sourceContainer := gola.NewSourceCodeContainer(fs, outputPath, templatesSubPath)
+				sourceContainer := gola.NewSourceCodeContainer(fS, outputPath, templatesSubPath)
 
 				Expect(sourceContainer).To(ContainAllSourceCodeFilesAt(
-					fs, outputPath,
+					fS, outputPath,
 				))
 			})
 		})

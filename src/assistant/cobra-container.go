@@ -6,7 +6,7 @@ import (
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 )
 
 // CobraCommandSpec is a wrapper around the cobra command, require to register
@@ -43,7 +43,7 @@ func NewCobraContainer(root *cobra.Command) *CobraContainer {
 func (container *CobraContainer) insert(command *cobra.Command) error {
 	name := command.Name()
 	if _, exists := container.commands[name]; exists {
-		return i18n.NewCommandAlreadyRegisteredNativeError(name)
+		return locale.NewCommandAlreadyRegisteredNativeError(name)
 	}
 
 	container.commands[name] = command
@@ -68,7 +68,7 @@ func (container *CobraContainer) MustRegisterCommand(parent string, command *cob
 
 		pc.AddCommand(command)
 	} else {
-		panic(i18n.NewParentCommandNotRegisteredNativeError(parent))
+		panic(locale.NewParentCommandNotRegisteredNativeError(parent))
 	}
 }
 
@@ -130,19 +130,19 @@ func (container *CobraContainer) Command(name string) *cobra.Command {
 // an inappropriate type.
 func (container *CobraContainer) MustRegisterParamSet(name string, ps any) {
 	if _, exists := container.paramSets[name]; exists {
-		panic(i18n.NewParamSetAlreadyRegisteredNativeError(name))
+		panic(locale.NewParamSetAlreadyRegisteredNativeError(name))
 	}
 
 	if reflect.TypeOf(ps).Kind() != reflect.Ptr {
 		typeOf := reflect.TypeOf(ps)
 
-		panic(i18n.NewParamSetObjectMustBePointerNativeError(name, typeOf.String()))
+		panic(locale.NewParamSetObjectMustBePointerNativeError(name, typeOf.String()))
 	}
 
 	if reflect.TypeOf(ps).Elem().Kind() != reflect.Struct {
 		typeOf := reflect.TypeOf(ps)
 
-		panic(i18n.NewParamSetObjectMustBeStructNativeError(name, typeOf.String()))
+		panic(locale.NewParamSetObjectMustBeStructNativeError(name, typeOf.String()))
 	}
 
 	container.paramSets[name] = ps
@@ -162,7 +162,7 @@ func (container *CobraContainer) Native(name string) any {
 		return paramSetStruct.FieldByName("Native").Interface()
 	}
 
-	panic(i18n.NewParamSetNotFoundNativeError(name))
+	panic(locale.NewParamSetNotFoundNativeError(name))
 }
 
 // MustGetParamSet like Native, except that it returns the parameter set
@@ -174,5 +174,5 @@ func (container *CobraContainer) MustGetParamSet(name string) any {
 		return paramSet
 	}
 
-	panic(i18n.NewParamSetNotFoundNativeError(name))
+	panic(locale.NewParamSetNotFoundNativeError(name))
 }

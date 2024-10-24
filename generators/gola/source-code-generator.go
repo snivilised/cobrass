@@ -3,21 +3,29 @@ package gola
 import (
 	_ "embed"
 	"fmt"
-	"os"
+	"io/fs"
 	"path"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 var (
 	noData = struct{}{}
 	//go:embed signature.GO-HASH.txt
 	RegisteredHash string
+
+	Perms = struct {
+		File fs.FileMode
+		Dir  fs.FileMode
+	}{
+		File: 0o666, //nolint:mnd // ok (pedantic)
+		Dir:  0o777, //nolint:mnd // ok (pedantic)
+	}
 )
 
 type SourceCodeGenerator struct {
-	vfs                  storage.VirtualFS
+	fS                   nef.UniversalFS
 	sourceCodeCollection sourceCodeDataCollection
 	types                typeCollection
 	operators            operatorCollection
@@ -56,7 +64,7 @@ func (g *SourceCodeGenerator) Run() (*SignatureResult, error) {
 	for _, k := range g.sourceCodeCollection.Keys() {
 		page := g.sourceCodeCollection[k]
 		yield := &generatedYield{}
-		overwrite := lo.Ternary(g.vfs.FileExists(page.FullPath()), "♻️ overwrite", "✨ new")
+		overwrite := lo.Ternary(g.fS.FileExists(page.FullPath()), "♻️ overwrite", "✨ new")
 
 		if !page.active {
 			fmt.Printf("===> 📛 (%v) SKIPPING generation of code to '%v' (%v)\n",
@@ -154,16 +162,20 @@ func (g *SourceCodeGenerator) signature(content CodeContent) (*SignatureResult, 
 }
 
 func (g *SourceCodeGenerator) flush(outputPath string, yield *generatedYield) error {
-	faydeaudeau := 0o777
 	directory := path.Dir(outputPath)
 
-	if err := g.vfs.MkdirAll(directory, os.FileMode(faydeaudeau)); err != nil {
+	if err := g.fS.MakeDirAll(
+		directory,
+		Perms.Dir,
+	); err != nil {
 		return fmt.Errorf("failed to ensure parent directory '%v' exists (%v)", directory, err)
 	}
 
-	beezledub := 0o666
-
-	if err := g.vfs.WriteFile(outputPath, yield.buffer.Bytes(), os.FileMode(beezledub)); err != nil {
+	if err := g.fS.WriteFile(
+		outputPath,
+		yield.buffer.Bytes(),
+		Perms.File,
+	); err != nil {
 		return fmt.Errorf("failed to write generated code to '%v' (%v)", outputPath, err)
 	}
 

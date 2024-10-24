@@ -8,10 +8,10 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
-	"github.com/snivilised/cobrass/src/internal/helpers"
+	"github.com/snivilised/cobrass/src/assistant/locale"
+	"github.com/snivilised/cobrass/src/internal/lab"
 	"github.com/snivilised/cobrass/src/store"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/li18ngo"
 )
 
 func reason(binder string, err error) string {
@@ -38,30 +38,30 @@ var _ = Describe("Families", Ordered, func() {
 		repo     string
 		l10nPath string
 
-		from        xi18n.LoadFrom
+		from        li18ngo.LoadFrom
 		rootCommand *cobra.Command
 		execute     func(args []string)
 	)
 
 	BeforeAll(func() {
-		repo = helpers.Repo("../..")
-		l10nPath = helpers.Path(repo, "Test/data/l10n")
+		repo = lab.Repo("../..")
+		l10nPath = lab.Path(repo, "Test/data/l10n")
 
-		from = xi18n.LoadFrom{
+		from = li18ngo.LoadFrom{
 			Path: l10nPath,
-			Sources: xi18n.TranslationFiles{
-				i18n.CobrassSourceID: xi18n.TranslationSource{Name: "test"},
+			Sources: li18ngo.TranslationFiles{
+				locale.CobrassSourceID: li18ngo.TranslationSource{Name: "test"},
 			},
 		}
 
-		if err := xi18n.Use(func(o *xi18n.UseOptions) {
+		if err := li18ngo.Use(func(o *li18ngo.UseOptions) {
 			o.From = from
 		}); err != nil {
 			Fail(err.Error())
 		}
 
 		execute = func(args []string) {
-			_, err := helpers.ExecuteCommand(
+			_, err := lab.ExecuteCommand(
 				rootCommand, args...,
 			)
 			Expect(err).Error().To(BeNil(), reason("BindAll", err))
@@ -409,7 +409,7 @@ var _ = Describe("Families", Ordered, func() {
 			previewPS.Native.BindAll(previewPS)
 			//
 			commandLine := []string{"scorch", "--help"}
-			_, err := helpers.ExecuteCommand(
+			_, err := lab.ExecuteCommand(
 				rootCommand, commandLine...,
 			)
 			Expect(err).Error().To(BeNil(), reason("BindAll", err))

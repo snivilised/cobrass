@@ -8,13 +8,13 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/generators/gola/internal/collections"
-	"github.com/snivilised/cobrass/generators/gola/internal/storage"
+	nef "github.com/snivilised/nefilim"
 )
 
 type sourceCodeDataCollection = collections.OrderedKeysMap[CodeFileName, *SourceCodeData]
 
 type SourceCodeContainer struct {
-	vfs              storage.VirtualFS
+	fS               nef.UniversalFS
 	absolutePath     string
 	templatesSubPath string
 	collection       sourceCodeDataCollection
@@ -107,7 +107,7 @@ func (d *SourceCodeContainer) contentPath() string {
 
 func (d *SourceCodeContainer) AnyMissing() bool {
 	return d.ForEachUntil(func(data *SourceCodeData) bool {
-		return !d.vfs.FileExists(data.FullPath())
+		return !d.fS.FileExists(data.FullPath())
 	})
 }
 
@@ -148,7 +148,7 @@ func (d *SourceCodeContainer) Generator(
 	doWrite bool,
 ) *SourceCodeGenerator {
 	generator := &SourceCodeGenerator{
-		vfs:                  d.vfs,
+		fS:                   d.fS,
 		doWrite:              doWrite,
 		sourceCodeCollection: d.collection,
 	}
@@ -162,16 +162,16 @@ func (d *SourceCodeContainer) Generator(
 // Signature used to compose the SHA256 hash of
 // pre-generated source code.
 func (d *SourceCodeContainer) Signature() (*SignatureResult, error) {
-	return parseFromFS(d.vfs, d.contentPath())
+	return parseFromFS(d.fS, d.contentPath())
 }
 
 func NewSourceCodeContainer(
-	vfs storage.VirtualFS,
+	fS nef.UniversalFS,
 	absolutePath string,
 	templatesSubPath string,
 ) *SourceCodeContainer {
 	container := &SourceCodeContainer{
-		vfs:              vfs,
+		fS:               fS,
 		absolutePath:     absolutePath,
 		templatesSubPath: templatesSubPath,
 	}

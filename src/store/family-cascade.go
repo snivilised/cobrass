@@ -2,8 +2,9 @@ package store
 
 import (
 	"github.com/snivilised/cobrass/src/assistant"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
-	xi18n "github.com/snivilised/extendio/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
+	"github.com/snivilised/li18ngo"
+
 	"github.com/spf13/pflag"
 )
 
@@ -24,7 +25,7 @@ func (f *CascadeParameterSet) BindAll(
 
 	parent.BindUint(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.CascadeDepthParamUsageTemplData{}),
+			li18ngo.Text(locale.CascadeDepthParamUsageTemplData{}),
 			defaultDepth,
 			flagSet...,
 		),
@@ -39,7 +40,7 @@ func (f *CascadeParameterSet) BindAll(
 
 	parent.BindBool(
 		resolveNewFlagInfo(
-			xi18n.Text(i18n.CascadeNoRecurseParamUsageTemplData{}),
+			li18ngo.Text(locale.CascadeNoRecurseParamUsageTemplData{}),
 			defaultNoRecurse,
 			flagSet...,
 		),

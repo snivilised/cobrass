@@ -1,7 +1,7 @@
 package assistant
 
 import (
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 )
 
 type ValidatorCollection map[string]OptionValidator
@@ -44,7 +44,7 @@ func NewValidatorContainer(options ...ValidatorContainerOptionFn) *ValidatorCont
 // already has a validator registered for it.
 func (container ValidatorContainer) Add(flag string, validator OptionValidator) {
 	if _, found := container.validators[flag]; found {
-		panic(i18n.NewFailedToAddValidatorAlreadyExistsNativeError(flag))
+		panic(locale.NewFailedToAddValidatorAlreadyExistsNativeError(flag))
 	}
 
 	container.validators[flag] = validator

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/src/assistant/i18n"
+	"github.com/snivilised/cobrass/src/assistant/locale"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -150,7 +150,7 @@ func NewParamSet[N any](command *cobra.Command) (ps *ParamSet[N]) {
 		typeName := reflect.TypeOf(*ps.Native).Name()
 
 		panic(
-			i18n.NewParamSetObjectMustBeStructNativeError(command.Name(), typeName),
+			locale.NewParamSetObjectMustBeStructNativeError(command.Name(), typeName),
 		)
 	}
 
