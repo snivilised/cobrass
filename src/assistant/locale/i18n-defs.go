@@ -1,9 +1,5 @@
 package locale
 
-import (
-	"github.com/nicksnyder/go-i18n/v2/i18n"
-)
-
 const CobrassSourceID = "github.com/snivilised/cobrass"
 
 // These definitions are in support of extendio's Localisable
@@ -14,5 +10,3 @@ type CobrassTemplData struct{}
 func (td CobrassTemplData) SourceID() string {
 	return CobrassSourceID
 }
-
-type Message = i18n.Message
