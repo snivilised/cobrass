@@ -6,9 +6,9 @@ import (
 
 	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/assistant"
 	"github.com/snivilised/cobrass/src/internal/lab"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 	"github.com/spf13/cobra"
 )
 

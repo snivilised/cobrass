@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/generators/gola"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 	nef "github.com/snivilised/nefilim"
 
 	. "github.com/onsi/gomega/types" //nolint:revive // gomega ok

@@ -4,7 +4,7 @@ import (
 	"cmp"
 	"slices"
 
-	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 )
 
 // https://go.dev/blog/comparable

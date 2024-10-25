@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 	nef "github.com/snivilised/nefilim"
 )
 

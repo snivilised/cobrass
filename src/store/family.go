@@ -3,8 +3,8 @@ package store
 import (
 	"strings"
 
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/assistant"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 	"github.com/spf13/pflag"
 )
 

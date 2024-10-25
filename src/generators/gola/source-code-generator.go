@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/internal/lab"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 	nef "github.com/snivilised/nefilim"
 )
 

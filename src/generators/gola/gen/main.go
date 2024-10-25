@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/generators/gola"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 	nef "github.com/snivilised/nefilim"
 )
 

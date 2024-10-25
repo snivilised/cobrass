@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 )
 
 var booleans = []string{"true", "false"}
