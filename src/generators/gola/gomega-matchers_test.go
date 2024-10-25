@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/generators/gola"
+	"github.com/snivilised/cobrass/src/generators/gola"
 	nef "github.com/snivilised/nefilim"
 
 	. "github.com/onsi/gomega/types" //nolint:revive // gomega ok

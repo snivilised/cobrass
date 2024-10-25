@@ -8,7 +8,7 @@ import (
 	. "github.com/onsi/ginkgo/v2" //nolint:revive // ginkgo ok
 	. "github.com/onsi/gomega"    //nolint:revive // gomega ok
 
-	"github.com/snivilised/cobrass/generators/gola"
+	"github.com/snivilised/cobrass/src/generators/gola"
 	nef "github.com/snivilised/nefilim"
 )
 
@@ -30,7 +30,7 @@ var _ = Describe("SourceCodeData", Ordered, func() {
 
 	BeforeAll(func() {
 		repo = Repo("../..")
-		testPath = filepath.Join("generators", "gola", "out", "assistant")
+		testPath = filepath.Join("src", "generators", "gola", "out", "assistant")
 		sourcePath = filepath.Join("src", "assistant")
 		fS = nef.NewUniversalABS()
 

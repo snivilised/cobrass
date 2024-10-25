@@ -92,7 +92,7 @@ var _ = Describe("HyperGen", Ordered, func() {
 
 	BeforeAll(func() {
 		repo = Repo("../..")
-		testPath = filepath.Join("generators", "gola", "out", "assistant")
+		testPath = filepath.Join("src", "generators", "gola", "out", "assistant")
 		sourcePath = filepath.Join("src", "assistant")
 		_ = testPath
 		_ = sourcePath

@@ -3,7 +3,7 @@ package gola
 import (
 	"bytes"
 
-	"github.com/snivilised/cobrass/generators/gola/internal/collections"
+	"github.com/snivilised/cobrass/src/generators/gola/internal/collections"
 )
 
 type executionInfo struct {

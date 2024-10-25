@@ -3,10 +3,10 @@ package gola
 import (
 	_ "embed"
 	"fmt"
-	"io/fs"
 	"path"
 
 	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/src/internal/lab"
 	nef "github.com/snivilised/nefilim"
 )
 
@@ -14,14 +14,6 @@ var (
 	noData = struct{}{}
 	//go:embed signature.GO-HASH.txt
 	RegisteredHash string
-
-	Perms = struct {
-		File fs.FileMode
-		Dir  fs.FileMode
-	}{
-		File: 0o666, //nolint:mnd // ok (pedantic)
-		Dir:  0o777, //nolint:mnd // ok (pedantic)
-	}
 )
 
 type SourceCodeGenerator struct {
@@ -166,7 +158,7 @@ func (g *SourceCodeGenerator) flush(outputPath string, yield *generatedYield) er
 
 	if err := g.fS.MakeDirAll(
 		directory,
-		Perms.Dir,
+		lab.Perms.Dir,
 	); err != nil {
 		return fmt.Errorf("failed to ensure parent directory '%v' exists (%v)", directory, err)
 	}
@@ -174,7 +166,7 @@ func (g *SourceCodeGenerator) flush(outputPath string, yield *generatedYield) er
 	if err := g.fS.WriteFile(
 		outputPath,
 		yield.buffer.Bytes(),
-		Perms.File,
+		lab.Perms.File,
 	); err != nil {
 		return fmt.Errorf("failed to write generated code to '%v' (%v)", outputPath, err)
 	}

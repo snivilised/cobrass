@@ -1,9 +1,20 @@
 package lab
 
 import (
+	"io/fs"
 	"path/filepath"
 	"runtime"
 	"strings"
+)
+
+var (
+	Perms = struct {
+		File fs.FileMode
+		Dir  fs.FileMode
+	}{
+		File: 0o666, //nolint:mnd // ok (pedantic)
+		Dir:  0o777, //nolint:mnd // ok (pedantic)
+	}
 )
 
 func Path(parent, relative string) string {

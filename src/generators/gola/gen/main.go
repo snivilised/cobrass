@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/generators/gola"
+	"github.com/snivilised/cobrass/src/generators/gola"
 	nef "github.com/snivilised/nefilim"
 )
 
@@ -24,7 +24,7 @@ var (
 	writeFlag            = flag.Bool("write", false, "write generated code?")
 	signFlag             = flag.Bool("sign", false, "show signature of existing code only")
 
-	testPath   = filepath.Join("generators", "gola", "out", "assistant")
+	testPath   = filepath.Join("src", "generators", "gola", "out", "assistant")
 	sourcePath = filepath.Join("src", "assistant")
 )
 
