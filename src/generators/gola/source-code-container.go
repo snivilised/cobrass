@@ -6,8 +6,8 @@ import (
 
 	"text/template"
 
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/generators/gola/internal/collections"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 	nef "github.com/snivilised/nefilim"
 )
 

@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/samber/lo"
 	"github.com/snivilised/cobrass/src/assistant/locale"
+	"github.com/snivilised/cobrass/src/internal/third/lo"
 )
 
 // AcceptableEnumValues maps values of enum type to an array of
