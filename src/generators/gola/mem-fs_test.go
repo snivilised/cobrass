@@ -7,6 +7,7 @@ import (
 	"testing/fstest"
 
 	"github.com/samber/lo"
+	"github.com/snivilised/cobrass/src/internal/lab"
 	nef "github.com/snivilised/nefilim"
 )
 
@@ -43,7 +44,7 @@ func (f *TestMemFS) Create(name string) (*os.File, error) {
 	}
 
 	file := &fstest.MapFile{
-		Mode: Perms.File,
+		Mode: lab.Perms.File,
 	}
 
 	f.MapFS[name] = file

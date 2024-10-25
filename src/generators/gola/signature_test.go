@@ -3,24 +3,14 @@ package gola_test
 import (
 	_ "embed"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 
 	. "github.com/onsi/ginkgo/v2" //nolint:revive // ok
 	. "github.com/onsi/gomega"    //nolint:revive // ok
-	"github.com/snivilised/cobrass/generators/gola"
+	"github.com/snivilised/cobrass/src/generators/gola"
+	"github.com/snivilised/cobrass/src/internal/lab"
 	nef "github.com/snivilised/nefilim"
-)
-
-var (
-	Perms = struct {
-		File fs.FileMode
-		Dir  fs.FileMode
-	}{
-		File: 0o666,
-		Dir:  0o777,
-	}
 )
 
 type setupFile struct {
@@ -29,12 +19,12 @@ type setupFile struct {
 }
 
 func setup(fS nef.UniversalFS, directoryPath string, files ...setupFile) {
-	if e := fS.MakeDirAll(directoryPath, Perms.Dir); e != nil {
+	if e := fS.MakeDirAll(directoryPath, lab.Perms.Dir); e != nil {
 		Fail(fmt.Sprintf("%q, path: %q", e.Error(), directoryPath))
 	}
 
 	for _, f := range files {
-		if e := fS.WriteFile(f.path, f.data, Perms.File); e != nil {
+		if e := fS.WriteFile(f.path, f.data, lab.Perms.File); e != nil {
 			Fail(fmt.Sprintf("%q, path: %q", e.Error(), f.path))
 		}
 	}
@@ -59,8 +49,8 @@ var _ = Describe("Signature", Ordered, func() {
 
 	BeforeAll(func() {
 		repo = Repo("../..")
-		testPath = filepath.Join("generators", "gola", "out", "assistant")
-		sourcePath = filepath.Join("src", "assistant")
+		testPath = filepath.Join("src", "generators", "gola", "out", "assistant")
+		sourcePath = "assistant"
 	})
 
 	Context("sign", func() {

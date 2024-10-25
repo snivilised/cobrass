@@ -7,7 +7,7 @@ import (
 	"text/template"
 
 	"github.com/samber/lo"
-	"github.com/snivilised/cobrass/generators/gola/internal/collections"
+	"github.com/snivilised/cobrass/src/generators/gola/internal/collections"
 	nef "github.com/snivilised/nefilim"
 )
 
