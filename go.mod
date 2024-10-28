@@ -6,7 +6,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.20.2
 	github.com/onsi/gomega v1.34.2
 	github.com/snivilised/li18ngo v0.1.7
-	github.com/snivilised/nefilim v0.1.4
+	github.com/snivilised/nefilim v0.1.5
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/mock v0.5.0
