@@ -5,8 +5,8 @@ go 1.23.0
 require (
 	github.com/onsi/ginkgo/v2 v2.21.0
 	github.com/onsi/gomega v1.35.1
-	github.com/snivilised/li18ngo v0.1.7
-	github.com/snivilised/nefilim v0.1.7
+	github.com/snivilised/li18ngo v0.1.9
+	github.com/snivilised/nefilim v0.1.8
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/mock v0.5.0
