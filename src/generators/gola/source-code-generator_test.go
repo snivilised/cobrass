@@ -8,6 +8,7 @@ import (
 
 	"github.com/snivilised/cobrass/src/generators/gola"
 	nef "github.com/snivilised/nefilim"
+	"github.com/snivilised/nefilim/test/luna"
 )
 
 var _ = Describe("SourceCodeGenerator", Ordered, func() {
@@ -19,7 +20,8 @@ var _ = Describe("SourceCodeGenerator", Ordered, func() {
 	BeforeAll(func() {
 		repo = Repo("../..")
 		testPath = filepath.Join("src", "generators", "gola", "out", "assistant")
-		fS = NewTestMemFS()
+		luna.NewMemFS()
+		fS = luna.NewMemFS()
 	})
 
 	Context("AnyMissing", func() {
