@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/onsi/ginkgo/v2 v2.21.0
-	github.com/onsi/gomega v1.34.2
+	github.com/onsi/gomega v1.35.1
 	github.com/snivilised/li18ngo v0.1.7
 	github.com/snivilised/nefilim v0.1.4
 	github.com/spf13/cobra v1.8.1
