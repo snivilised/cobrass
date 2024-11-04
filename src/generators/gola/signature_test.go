@@ -11,6 +11,7 @@ import (
 	"github.com/snivilised/cobrass/src/generators/gola"
 	"github.com/snivilised/cobrass/src/internal/lab"
 	nef "github.com/snivilised/nefilim"
+	"github.com/snivilised/nefilim/test/luna"
 )
 
 type setupFile struct {
@@ -58,7 +59,7 @@ var _ = Describe("Signature", Ordered, func() {
 			Context("and: Test mode", func() {
 				Context("and: without write", func() {
 					It("🧪 should: return hash result of newly generated content", func() {
-						fS := NewTestMemFS()
+						fS := luna.NewMemFS()
 						templatesSubPath := ""
 						outputPath = filepath.Join(repo, testPath)
 
@@ -136,7 +137,7 @@ var _ = Describe("Signature", Ordered, func() {
 							doWrite = true
 						)
 
-						fS := NewTestMemFS()
+						fS := luna.NewMemFS()
 						templatesSubPath := ""
 						outputPath = filepath.Join(repo, testPath)
 
