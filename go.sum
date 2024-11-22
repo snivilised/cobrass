@@ -51,8 +51,8 @@ github.com/sagikazarmark/slog-shim v0.1.0 h1:diDBnUNK9N/354PgrxMywXnAwEr1QZcOr6g
 github.com/sagikazarmark/slog-shim v0.1.0/go.mod h1:SrcSrq8aKtyuqEI1uvTDTK1arOWRIczQRv+GVI1AkeQ=
 github.com/snivilised/li18ngo v0.1.9 h1:xq+9yUv9JBY3fwzCzqCt0bIUdFlzDXcSjC2fQiSF3O0=
 github.com/snivilised/li18ngo v0.1.9/go.mod h1:7soFZVy6K6P8jgHYn0fN2Sw0r66isPa/K/K+r3fl19Q=
-github.com/snivilised/nefilim v0.1.8 h1:Srnl6rw7cB/cy3jQT8QfQ0ZNxumQX0Yj/Z+qH3+5TWc=
-github.com/snivilised/nefilim v0.1.8/go.mod h1:xcQnPeB+zVD+xgw9yzy0QiMTGqjYNEWKeoaZL0TBQeA=
+github.com/snivilised/nefilim v0.1.10 h1:j8EGMZSGgFIjcxaVOvYvn7/r66Q5ffXihmq52F55r/E=
+github.com/snivilised/nefilim v0.1.10/go.mod h1:xcQnPeB+zVD+xgw9yzy0QiMTGqjYNEWKeoaZL0TBQeA=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spf13/afero v1.11.0 h1:WJQKhtpdm3v2IzqG8VMqrr6Rf3UYpEF239Jy9wNepM8=
