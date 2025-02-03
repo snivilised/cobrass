@@ -8,7 +8,7 @@ require (
 	github.com/snivilised/li18ngo v0.1.9
 	github.com/snivilised/nefilim v0.1.10
 	github.com/spf13/cobra v1.8.1
-	github.com/spf13/pflag v1.0.5
+	github.com/spf13/pflag v1.0.6
 	go.uber.org/mock v0.5.0
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
 )
